@@ -7,13 +7,13 @@ import {
   isDevelopment,
   isIsomorphic,
   isProduction,
-  isRHL
+  isRHL,
 } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
 import { isomorphicEntry, serverEntry, spaEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
 import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './plugins/js';
-import babelRules from './rules/babel';
+import compiler from './rules/compiler';
 import { externalCSS, internalCSS } from './rules/css';
 import { file } from './rules/files';
 
@@ -49,32 +49,34 @@ const reactBabelPlugin = [
 const RHL_patch = isRHL ? ['react-hot-loader/patch'] : [];
 
 const spa = generalWebpackConfig({
-  entry: isIsomorphic ? isomorphicEntry([
-    ...RHL_patch
-  ]) : spaEntry([
-    ...RHL_patch
-  ]),
-  rules: [
-    babelRules(
-      /\.(jsx|js)?$/,
-      reactBabelPresets,
-      reactBabelPlugin,
-      babelEnvSpa,
-      [/node_modules/, /mobx.js/],
-    ),
-    internalCSS(),
-    externalCSS(),
-    file(),
-  ],
-  plugins: [
-    extractVendors(),
-    ...extractCSS(),
-    ...HMR(),
-    ...uglify(),
-    ...getAssetsFile(),
-    ...getIndexHtmlFile()
-  ],
-});
+    entry: isIsomorphic ? isomorphicEntry([
+      ...RHL_patch
+    ]) : spaEntry([
+      ...RHL_patch
+    ]),
+    rules: [
+      ...compiler({
+        babel: {
+          presets: reactBabelPresets,
+          plugins: reactBabelPlugin,
+          envPreset: babelEnvSpa,
+        },
+        exclude: [/node_modules/, /mobx.js/],
+      }),
+      internalCSS(),
+      externalCSS(),
+      file(),
+    ],
+    plugins: [
+      extractVendors(),
+      ...extractCSS(),
+      ...HMR(),
+      ...uglify(),
+      ...getAssetsFile(),
+      ...getIndexHtmlFile()
+    ],
+  })
+;
 
 const server = generalWebpackConfig({
   entry: serverEntry(),
@@ -85,12 +87,14 @@ const server = generalWebpackConfig({
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
-    babelRules(
-      /\.(js|jsx)?$/,
-      reactBabelPresets,
-      reactBabelPlugin,
-      babelEnvServer,
-    ),
+    ...compiler({
+      babel: {
+        presets: reactBabelPresets,
+        plugins: reactBabelPlugin,
+        envPreset: babelEnvServer,
+      },
+      exclude: [/node_modules/, /mobx.js/],
+    }),
     internalCSS(),
     externalCSS(),
     file(),

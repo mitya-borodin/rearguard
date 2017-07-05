@@ -1,4 +1,5 @@
 import webpackConfig from '../../configs/webpack/inferno.webpack.config';
-import start from '../general/start';
 
-start(webpackConfig);
+console.log(JSON.stringify(webpackConfig, null, 2));
+
+//start(webpackConfig);

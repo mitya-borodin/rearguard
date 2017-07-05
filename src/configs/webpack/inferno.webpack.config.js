@@ -5,20 +5,27 @@ import {
   babelEnvSpa,
   filenameServer,
   isDevelopment,
-  isIsomorphic
+  isIsomorphic,
 } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
 import { isomorphicEntry, serverEntry, spaEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
 import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './plugins/js';
-import babelRules from './rules/babel';
+import compiler from './rules/compiler';
 import { externalCSS, internalCSS } from './rules/css';
 import { file } from './rules/files';
 
 const spa = generalWebpackConfig({
   entry: isIsomorphic ? isomorphicEntry() : spaEntry(),
   rules: [
-    babelRules(/\.(jsx|js)?$/, [], ['inferno'], babelEnvSpa, [/node_modules/, /mobx.js/]),
+    ...compiler({
+      babel: {
+        presets: [],
+        plugins: ['inferno'],
+        envPreset: babelEnvSpa,
+      },
+      exclude: [/node_modules/, /mobx.js/],
+    }),
     internalCSS(),
     externalCSS(),
     file(),
@@ -42,7 +49,14 @@ const server = generalWebpackConfig({
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
-    babelRules(/\.(js|jsx)?$/, [], ['inferno'], babelEnvServer),
+    ...compiler({
+      babel: {
+        presets: [],
+        plugins: ['inferno'],
+        envPreset: babelEnvServer,
+      },
+      exclude: [/node_modules/, /mobx.js/],
+    }),
     internalCSS(),
     externalCSS(),
     file(),
@@ -65,7 +79,7 @@ const server = generalWebpackConfig({
     /^\.\/config\.json$/,
     nodeExternals(),
   ],
-  devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
+  devtool: 'source-map',
   node: {
     console: false,
     global: false,

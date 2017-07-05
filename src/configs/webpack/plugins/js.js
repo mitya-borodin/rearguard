@@ -97,6 +97,7 @@ export const getAssetsFile = () => {
 
   return [];
 };
+
 export const getIndexHtmlFile = () => {
   if (!isIsomorphic) {
     return [

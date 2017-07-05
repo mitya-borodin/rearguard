@@ -4,9 +4,10 @@ import {
   isDebug,
   isDevelopment,
   isProduction,
+  isTS,
   modules,
   output as defaultOutput,
-  stats
+  stats,
 } from '../prepare.build-tools.config';
 import { analyze, defineEnv } from './plugins/js';
 
@@ -38,7 +39,7 @@ export default ({
     target,
     resolve: {
       modules,
-      extensions: ['.js', '.css', '.json', '.jsx'],
+      extensions: ['.css', '.json', ...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx'],
     },
     module: {rules},
     stats,
