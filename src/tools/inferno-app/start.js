@@ -7,6 +7,4 @@ if (isTS) {
   generateTSConfig();
 }
 
-console.log(JSON.stringify(webpackConfig, null, 2));
-
 start(webpackConfig);

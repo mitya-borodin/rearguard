@@ -10,7 +10,7 @@ export default ({
                   exclude = [/node_modules/],
                 }) => {
   const common = {
-    test: isTS ? /\.(ts|tsx)?$/ : /\.(js|jsx)?$/,
+    test: isTS ? /\.(ts|tsx|js|jsx)?$/ : /\.(js|jsx)?$/,
     exclude,
     include: [context],
   };

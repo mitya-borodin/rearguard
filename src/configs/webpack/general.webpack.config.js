@@ -32,10 +32,12 @@ export default ({
     devTool = isDevelopment ? 'inline-source-map' : false;
   }
 
+  const _output = Object.assign({}, defaultOutput, output);
+
   return {
     context,
     entry,
-    output: Object.assign({}, defaultOutput, output),
+    output: _output,
     target,
     resolve: {
       modules,
