@@ -34,8 +34,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "TSLint-tools": "git@github.com:DmitriyBorodin/TSLint.git",
-    "utils-tools": "git@github.com:DmitriyBorodin/utils.git",
+    "utils-tools": "git+ssh://git@github.com:DmitriyBorodin/utils.git",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.1.1",
     "babel-cli": "6.24.1",
