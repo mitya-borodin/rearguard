@@ -1,0 +1,92 @@
+{
+  "name": "build-tools",
+  "private": true,
+  "homepage": "https://github.com/DmitriyBorodin/build-tools",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "bin": {
+    "react-app": "./bin/react-app.js",
+    "vue-app": "./bin/vue-app.js",
+    "inferno-app": "./bin/inferno-app.js"
+  },
+  "bugs": {
+    "url": "https://github.com/DmitriyBorodin/build-tools/issues",
+    "email": "dmitriy@borodin.site"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:DmitriyBorodin/build-tools.git"
+  },
+  "author": {
+    "name": "Borodin Dmitriy",
+    "email": "dmitriy@borodin.site",
+    "url": "http://borodin.site"
+  },
+  "scripts": {
+    "start": "babel src --watch --out-dir lib --source-maps",
+    "build": "babel src --out-dir lib --source-maps",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "TSLint-tools": "git@github.com:DmitriyBorodin/TSLint.git",
+    "utils-tools": "git@github.com:DmitriyBorodin/utils.git",
+    "assets-webpack-plugin": "3.5.1",
+    "autoprefixer": "7.1.1",
+    "babel-cli": "6.24.1",
+    "babel-loader": "7.1.1",
+    "babel-plugin-inferno": "3.2.0",
+    "babel-plugin-mobx-deep-action": "1.5.2",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-plugin-transform-object-rest-spread": "6.23.0",
+    "babel-plugin-transform-react-jsx-self": "6.22.0",
+    "babel-plugin-transform-react-jsx-source": "6.22.0",
+    "babel-plugin-transform-regenerator": "6.24.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-react-optimize": "1.0.1",
+    "babel-preset-stage-2": "6.24.1",
+    "browser-sync": "2.18.12",
+    "chalk": "2.0.1",
+    "compression": "1.6.2",
+    "cross-spawn": "5.1.0",
+    "css-loader": "0.28.4",
+    "extract-text-webpack-plugin": "2.1.2",
+    "file-loader": "0.11.2",
+    "glob": "7.1.2",
+    "html-webpack-plugin": "2.29.0",
+    "isomorphic-style-loader": "2.0.0",
+    "joi": "10.6.0",
+    "meow": "3.7.0",
+    "mkdirp": "0.5.1",
+    "pleeease-filters": "4.0.0",
+    "postcss-autoreset": "2.0.0",
+    "postcss-color-function": "4.0.0",
+    "postcss-custom-media": "6.0.0",
+    "postcss-custom-properties": "6.1.0",
+    "postcss-custom-selectors": "4.0.1",
+    "postcss-flexbugs-fixes": "3.0.0",
+    "postcss-import": "10.0.0",
+    "postcss-initial": "2.0.0",
+    "postcss-loader": "2.0.6",
+    "postcss-media-minmax": "3.0.0",
+    "postcss-selector-matches": "3.0.1",
+    "postcss-selector-not": "3.0.1",
+    "react-hot-loader": "3.0.0-beta.7",
+    "rimraf": "2.6.1",
+    "style-loader": "0.18.2",
+    "uglifyjs-webpack-plugin": "0.4.6",
+    "webpack": "3.0.0",
+    "webpack-bundle-analyzer": "2.8.2",
+    "webpack-dev-middleware": "1.11.0",
+    "webpack-dev-server": "2.5.0",
+    "webpack-hot-middleware": "2.18.0",
+    "webpack-node-externals": "1.6.0"
+  }
+}
