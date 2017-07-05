@@ -34,7 +34,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "utils-tools": "git+ssh://git@github.com:DmitriyBorodin/utils.git",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.1.1",
     "babel-cli": "6.24.1",
@@ -81,11 +80,13 @@
     "rimraf": "2.6.1",
     "style-loader": "0.18.2",
     "uglifyjs-webpack-plugin": "0.4.6",
+    "utils-tools": "git+ssh://git@github.com:DmitriyBorodin/utils.git",
     "webpack": "3.0.0",
     "webpack-bundle-analyzer": "2.8.2",
     "webpack-dev-middleware": "1.11.0",
     "webpack-dev-server": "2.5.0",
     "webpack-hot-middleware": "2.18.0",
-    "webpack-node-externals": "1.6.0"
+    "webpack-node-externals": "1.6.0",
+    "write-file-webpack-plugin": "4.1.0"
   }
 }
