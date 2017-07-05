@@ -2,7 +2,7 @@
 const path = require('path');
 const meow = require('meow');
 const spawn = require('cross-spawn');
-const {isString, isUndefined} = require('utils-tools/lib');
+const {isString, isUndefined} = require('@borodindmitriy/utils/lib');
 const getDescription = require('./configs/utils/getDescription');
 
 module.exports = (binName = 'react-app', isRelay = false) => {
@@ -10,7 +10,6 @@ module.exports = (binName = 'react-app', isRelay = false) => {
     getDescription(binName, isRelay),
     {
       alias: {
-        ts: 'typeScript',
         bs: 'sync',
         m: 'mobx',
         i: 'isomorphic',

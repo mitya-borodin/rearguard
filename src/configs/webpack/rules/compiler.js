@@ -1,3 +1,4 @@
+import path from 'path';
 import { context, isDevelopment, isMobx, isTS } from '../../prepare.build-tools.config';
 
 export default ({
@@ -40,10 +41,18 @@ export default ({
     return [
       {
         ...common,
-        loader: 'awesome-typescript-loader',
-        options: {
-          //configFileName: '',
-        },
+        use: [
+          {
+            loader: 'babel-loader',
+            query: babelQuery,
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFileName: path.resolve(__dirname, '../../../../tmp/tsconfig.json'),
+            },
+          }
+        ],
       },
       {
         test: /\.js$/,
@@ -51,15 +60,15 @@ export default ({
         include: [context],
         enforce: 'pre',
         loader: 'source-map-loader',
-      }
-    ]
+      },
+    ];
   } else {
     return [
       {
         ...common,
         loader: 'babel-loader',
         query: babelQuery,
-      }
-    ]
+      },
+    ];
   }
 }

@@ -1,12 +1,6 @@
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import {
-  babelEnvServer,
-  babelEnvSpa,
-  filenameServer,
-  isDevelopment,
-  isIsomorphic,
-} from '../prepare.build-tools.config';
+import { babelEnvServer, babelEnvSpa, filenameServer, isIsomorphic } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
 import { isomorphicEntry, serverEntry, spaEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
@@ -21,7 +15,7 @@ const spa = generalWebpackConfig({
     ...compiler({
       babel: {
         presets: [],
-        plugins: ['inferno'],
+        plugins: [['inferno', {'imports': true}]],
         envPreset: babelEnvSpa,
       },
       exclude: [/node_modules/, /mobx.js/],
