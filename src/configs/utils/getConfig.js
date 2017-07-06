@@ -9,38 +9,35 @@ import isomorphic from '../validate-config/isomorphic';
 import modules from '../validate-config/modules';
 import output from '../validate-config/output';
 import proxy from '../validate-config/proxy';
+import typescript from '../validate-config/typescript';
 import socket from '../validate-config/socket';
 
 export default () => {
   const CWD = process.cwd();
   const pkgPath = path.resolve(CWD, 'package.json');
 
-  const propTypes = {
+  const buildPropTypes = {
     context,
     entry,
     output,
     modules,
-    socket,
     browserslist,
     proxy,
     isomorphic,
     css,
+    typescript
   };
 
-  if (fs.existsSync(pkgPath)) {
-    const configPath = path.resolve(CWD, 'build-tools.config.json');
-    const pkg = require(pkgPath);
-    const nodeVersion = parseFloat(pkg.engines.node.match(/(\d+\.?)+/)[0]);
-    const engines = pkg.engines;
-    const dependencies = pkg.dependencies;
+  const socketPropTypes = {
+    socket,
+  };
+
+  const prepareConfig = (fileName, propTypes) => {
+    const configPath = path.resolve(CWD, fileName);
 
     if (fs.existsSync(configPath)) {
+      const config = {};
       const __config__ = require(configPath);
-      const config = {
-        nodeVersion,
-        engines,
-        dependencies,
-      };
 
       for (let propName in propTypes) {
         if (propTypes.hasOwnProperty(propName)) {
@@ -67,13 +64,25 @@ export default () => {
 
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
 
-      return {
-        ...config,
-        nodeVersion,
-        engines,
-        dependencies,
-      };
+      return config;
     }
+  };
+
+  if (fs.existsSync(pkgPath)) {
+    const pkg = require(pkgPath);
+    const nodeVersion = parseFloat(pkg.engines.node.match(/(\d+\.?)+/)[0]);
+    const engines = pkg.engines;
+    const dependencies = pkg.dependencies;
+    const buildConfig = prepareConfig('build.config.json', buildPropTypes);
+    const socketConfig = prepareConfig('socket.config.json', socketPropTypes);
+
+    return {
+      ...buildConfig,
+      ...socketConfig,
+      nodeVersion,
+      engines,
+      dependencies,
+    };
   } else {
     throw new Error('Не найден файл package.json, build-tools предназначен для npm пакетов, пожалуйста выполните npm init.');
   }

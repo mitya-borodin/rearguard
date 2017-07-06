@@ -5,7 +5,7 @@ import path from 'path';
 import getConfig from './utils/getConfig';
 
 const CWD = process.cwd();
-const getProjectAbsPath = (relPath) => {
+export const getProjectAbsPath = (relPath) => {
   if (relPath) {
     return path.resolve(CWD, relPath);
   }
@@ -13,7 +13,7 @@ const getProjectAbsPath = (relPath) => {
   return '';
 };
 const config = getConfig();
-//console.log(JSON.stringify(config, null, 2))
+//console.log(JSON.stringify(config, null, 2));
 const additionalModules = config.modules.map(relPath => getProjectAbsPath(relPath));
 
 export const isDevelopment = process.env.NODE_ENV === 'development';
@@ -121,4 +121,6 @@ export const css = {
   reset: config.css.reset,
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
 };
+export const tmpTypescryptConfigPath = path.resolve(__dirname, '../../tmp/tsconfig.json');
+export const typescript = config.typescript;
 export const postCssConfig = require(path.resolve(__dirname, 'postcss.config.js'));

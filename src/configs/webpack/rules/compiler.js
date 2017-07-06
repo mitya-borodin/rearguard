@@ -1,5 +1,4 @@
-import path from 'path';
-import { context, isDevelopment, isMobx, isTS } from '../../prepare.build-tools.config';
+import { context, isDevelopment, isMobx, isTS, tmpTypescryptConfigPath } from '../../prepare.build-tools.config';
 
 export default ({
                   babel: {
@@ -10,7 +9,6 @@ export default ({
                   exclude = [/node_modules/],
                 }) => {
   const common = {
-    test: isTS ? /\.(ts|tsx|js|jsx)?$/ : /\.(js|jsx)?$/,
     exclude,
     include: [context],
   };
@@ -41,6 +39,7 @@ export default ({
     return [
       {
         ...common,
+        test: /\.(ts)?$/,
         use: [
           {
             loader: 'babel-loader',
@@ -49,10 +48,16 @@ export default ({
           {
             loader: 'ts-loader',
             options: {
-              configFileName: path.resolve(__dirname, '../../../../tmp/tsconfig.json'),
+              configFileName: tmpTypescryptConfigPath,
             },
-          }
+          },
         ],
+      },
+      {
+        ...common,
+        test: /\.(js|jsx)?$/,
+        loader: 'babel-loader',
+        query: babelQuery,
       },
       {
         test: /\.js$/,
@@ -66,6 +71,7 @@ export default ({
     return [
       {
         ...common,
+        test: /\.(js|jsx)?$/,
         loader: 'babel-loader',
         query: babelQuery,
       },

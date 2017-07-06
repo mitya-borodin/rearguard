@@ -5,7 +5,15 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import WDS from 'webpack-dev-server';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import WriteFilePlugin from 'write-file-webpack-plugin';
-import { host, isDebug, isDevelopment, isIsomorphic, port, socket } from '../../configs/prepare.build-tools.config';
+import {
+  host,
+  isDebug,
+  isDevelopment,
+  isIsomorphic,
+  port,
+  socket,
+} from '../../configs/prepare.build-tools.config';
+import prepareTypescriptConfig from '../../configs/prepareTypescriptConfig';
 import runServer from '../../configs/utils/runServer';
 import webpackDevServerConfig from '../../configs/webpack/webpack.devserver.config';
 import run from '../run';
@@ -13,6 +21,8 @@ import clean from './clean';
 import copy from './copy';
 
 function start (webpackConfig) {
+  prepareTypescriptConfig();
+
   if (isIsomorphic) {
     run(clean)
     .then(() => run(copy))
