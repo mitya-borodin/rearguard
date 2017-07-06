@@ -1,11 +1,19 @@
 import fs from 'fs';
+import mkdirp from 'mkdirp';
 import path from 'path';
-import { context, getProjectAbsPath, isTS, typescript, tmpTypescryptConfigPath } from './prepare.build-tools.config';
+import {
+  context,
+  getProjectAbsPath,
+  isTS,
+  tmpTypescryptConfigDir,
+  tmpTypescryptConfigPath,
+  typescript,
+} from './prepare.build-tools.config';
 
 export default () => {
   if (isTS) {
     const {configPath, showConfigForIDE, config: {compilerOptions, compileOnSave}} = typescript;
-    const {dependencies:{typescript:version}} = require(path.resolve(__dirname, '../../package.json'));
+    const {dependencies: {typescript: version}} = require(path.resolve(__dirname, '../../package.json'));
     const config = {
       version,
       compilerOptions: Object.assign({
@@ -43,7 +51,7 @@ export default () => {
     } else {
       fs.unlinkSync(getProjectAbsPath(configPath));
     }
-
+    mkdirp.sync(tmpTypescryptConfigDir);
     fs.writeFileSync(tmpTypescryptConfigPath, JSON.stringify(config, null, 2));
   }
 }

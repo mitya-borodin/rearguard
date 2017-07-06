@@ -121,6 +121,7 @@ export const css = {
   reset: config.css.reset,
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
 };
+export const tmpTypescryptConfigDir = path.resolve(__dirname, '../../tmp');
 export const tmpTypescryptConfigPath = path.resolve(__dirname, '../../tmp/tsconfig.json');
 export const typescript = config.typescript;
 export const postCssConfig = require(path.resolve(__dirname, 'postcss.config.js'));
