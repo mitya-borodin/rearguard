@@ -38,8 +38,15 @@ export default ({
   if (isTS) {
     return [
       {
+        test: /\.js$/,
+        exclude,
+        include: [context],
+        enforce: 'pre',
+        loader: 'source-map-loader',
+      },
+      {
         ...common,
-        test: /\.(ts)?$/,
+        test: /\.(ts|tsx)?$/,
         use: [
           {
             loader: 'babel-loader',
@@ -59,13 +66,7 @@ export default ({
         loader: 'babel-loader',
         query: babelQuery,
       },
-      {
-        test: /\.js$/,
-        exclude,
-        include: [context],
-        enforce: 'pre',
-        loader: 'source-map-loader',
-      },
+
     ];
   } else {
     return [

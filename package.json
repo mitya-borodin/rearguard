@@ -1,7 +1,21 @@
 {
   "name": "@borodindmitriy/build-tools",
-  "version": "1.1.4",
+  "description": "BorodinDmitriy's tools for building frontend apps, easies my work))",
+  "version": "1.1.5",
   "homepage": "https://github.com/DmitriyBorodin/build-tools",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:DmitriyBorodin/build-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DmitriyBorodin/build-tools/issues",
+    "email": "dmitriy@borodin.site"
+  },
+  "author": {
+    "name": "Borodin Dmitriy",
+    "email": "dmitriy@borodin.site",
+    "url": "http://borodin.site"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "restricted"
@@ -19,26 +33,13 @@
     "vue-app": "./bin/vue-app.js",
     "inferno-app": "./bin/inferno-app.js"
   },
-  "bugs": {
-    "url": "https://github.com/DmitriyBorodin/build-tools/issues",
-    "email": "dmitriy@borodin.site"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:DmitriyBorodin/build-tools.git"
-  },
-  "author": {
-    "name": "Borodin Dmitriy",
-    "email": "dmitriy@borodin.site",
-    "url": "http://borodin.site"
-  },
   "scripts": {
     "start": "babel src --watch --out-dir lib --source-maps",
     "build": "babel src --out-dir lib --source-maps",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@borodindmitriy/utils": "1.1.4",
+    "@borodindmitriy/utils": "1.1.5",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.1.1",
     "babel-cli": "6.24.1",
@@ -99,5 +100,8 @@
     "webpack-hot-middleware": "2.18.0",
     "webpack-node-externals": "1.6.0",
     "write-file-webpack-plugin": "4.1.0"
+  },
+  "devDependencies": {
+    "@borodindmitriy/eslint": "1.1.5"
   }
 }
