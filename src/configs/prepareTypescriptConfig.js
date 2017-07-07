@@ -4,6 +4,7 @@ import path from 'path';
 import {
   context,
   getProjectAbsPath,
+  isInferno,
   isTS,
   tmpTypescryptConfigDir,
   tmpTypescryptConfigPath,
@@ -29,10 +30,14 @@ export default () => {
           'es7',
           'dom',
         ],
-        types: [
-          'inferno',
-        ],
-        jsx: 'preserve',
+        ...isInferno ? {
+          types: [
+            'inferno',
+          ],
+          jsx: 'preserve',
+        } : {
+          jsx: 'react',
+        },
         noUnusedLocals: true,
         strictNullChecks: true,
         removeComments: false,
