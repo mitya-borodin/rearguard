@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/tools/inferno-app/start.js"],"names":[],"mappings":";;AAAA;;;;AACA;;;;;;AAEA","file":"start.js","sourcesContent":["import webpackConfig from '../../configs/webpack/inferno.webpack.config';\nimport start from '../general/start';\n\nstart(webpackConfig);\n"]}
