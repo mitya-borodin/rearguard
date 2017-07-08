@@ -6,10 +6,11 @@ const {isString, isUndefined} = require('@borodindmitriy/utils/lib');
 const getDescription = require('./configs/utils/getDescription');
 
 module.exports = (binName = 'react-app', isRelay = false) => {
-  const {input, flags: {release, verbose, analyze, debug, mobx, isomorphic, relay, sync, typeScript, rhl}} = meow(
+  const {input, flags: {release, verbose, analyze, debug, mobx, isomorphic, relay, sync, typescript, rhl}} = meow(
     getDescription(binName, isRelay),
     {
       alias: {
+        ts: 'typescript',
         bs: 'sync',
         m: 'mobx',
         i: 'isomorphic',
@@ -38,7 +39,7 @@ module.exports = (binName = 'react-app', isRelay = false) => {
   process.env.ENABLED_ISOMORPHIC = !isUndefined(isomorphic) ? isomorphic : false;
   process.env.ENABLED_RELAY = !isUndefined(relay) ? relay : false;
   process.env.ENABLED_BROWSER_SYNC = !isUndefined(sync) ? sync : false;
-  process.env.ENABLED_TYPE_SCRIPT = !isUndefined(typeScript) ? typeScript : false;
+  process.env.ENABLED_TYPE_SCRIPT = !isUndefined(typescript) ? typescript : false;
   process.env.ENABLED_RHL = !isUndefined(rhl) ? rhl : false;
 
   if (isString(actionFiles[actionName])) {

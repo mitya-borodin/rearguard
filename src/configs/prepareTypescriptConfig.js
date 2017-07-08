@@ -18,12 +18,14 @@ export default () => {
     const config = {
       version,
       compilerOptions: Object.assign({
+        baseUrl: context,
         target: 'es6',
         module: 'es6',
         allowJs: false,
         allowSyntheticDefaultImports: true,
         preserveConstEnums: true,
         sourceMap: true,
+        alwaysStrict: true,
         moduleResolution: 'node',
         lib: [
           'es6',
