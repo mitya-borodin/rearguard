@@ -17,8 +17,8 @@ export const exec = (command, options) => new Promise((resolve, reject) => {
       return;
     }
 
-    resolve({stdout, stderr});
+    resolve({ stdout, stderr });
   });
 });
 
-export default {spawn, exec};
+export default { spawn, exec };

@@ -6,7 +6,7 @@ import {
   isIsomorphic,
   isProduction,
   output,
-  postCssConfig
+  postCssConfig,
 } from '../../prepare.build-tools.config';
 
 const use = (isExternal = false) => {

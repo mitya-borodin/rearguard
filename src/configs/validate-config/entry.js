@@ -10,7 +10,7 @@ export default (entry, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({entry}, propType);
+  const { error, value } = Joi.validate({ entry }, propType);
   if (error !== null) {
     console.error(error.message);
     console.log(chalk.bold.yellow(`Current value: "${entry}"`));

@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import { babelEnvServer, babelEnvSpa, filenameServer, isIsomorphic } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
-import { isomorphicEntry, serverEntry, spaEntry } from './general/entry';
+import { clientEntry, serverEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
 import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './plugins/js';
 import compiler from './rules/compiler';
@@ -10,12 +10,12 @@ import { externalCSS, internalCSS } from './rules/css';
 import { file } from './rules/files';
 
 const spa = generalWebpackConfig({
-  entry: isIsomorphic ? isomorphicEntry() : spaEntry(),
+  entry: clientEntry(),
   rules: [
     ...compiler({
       babel: {
         presets: [],
-        plugins: [['inferno', {'imports': true}]],
+        plugins: [['inferno', { 'imports': true }]],
         envPreset: babelEnvSpa,
       },
       exclude: [/node_modules/, /mobx.js/],
@@ -58,7 +58,7 @@ const server = generalWebpackConfig({
   plugins: [
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
-    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
 
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin

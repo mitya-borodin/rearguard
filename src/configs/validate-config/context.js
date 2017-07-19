@@ -10,7 +10,7 @@ export default (context, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({context}, propType);
+  const { error, value } = Joi.validate({ context }, propType);
   if (error !== null) {
     console.error(error.message);
     console.log(chalk.bold.yellow(`Current value: "${context}"`));

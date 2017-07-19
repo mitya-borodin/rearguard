@@ -12,7 +12,7 @@ export default (modules, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({modules}, propType);
+  const { error, value } = Joi.validate({ modules }, propType);
 
   if (error !== null) {
 

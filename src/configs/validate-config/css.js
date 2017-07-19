@@ -22,7 +22,7 @@ export default (css, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({css}, propType);
+  const { error, value } = Joi.validate({ css }, propType);
 
   if (error !== null) {
     console.error(error.message);

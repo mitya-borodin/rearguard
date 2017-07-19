@@ -1,5 +1,3 @@
-'use strict';
-
 import fs from 'fs';
 import path from 'path';
 import getConfig from './utils/getConfig';
@@ -61,13 +59,14 @@ export const stats = {
   cached: isVerbose,
   cachedAssets: isVerbose,
 };
+export const proxy = config.proxy;
 export const devServer = {
   publicPath: output.publicPath,
   contentBase: outputPublicPath,
   stats,
+  proxy,
 };
 export const browserslist = config.browserslist;
-export const proxy = config.proxy;
 export const host = config.socket.host;
 export const port = config.socket.port;
 export const protocol = 'http';
@@ -125,3 +124,8 @@ export const tmpTypescryptConfigDir = path.resolve(__dirname, '../../tmp');
 export const tmpTypescryptConfigPath = path.resolve(__dirname, '../../tmp/tsconfig.json');
 export const typescript = config.typescript;
 export const postCssConfig = require(path.resolve(__dirname, 'postcss.config.js'));
+
+export const proxyServer = {
+  output: path.resolve(__dirname, '../proxy'),
+  serverFile: path.resolve(__dirname, '../proxy/proxyServer.js'),
+};

@@ -10,14 +10,10 @@ import {
   stats,
 } from '../prepare.build-tools.config';
 import { analyze, defineEnv } from './plugins/js';
+import DashboardPlugin from 'webpack-dashboard/plugin';
 
 export default ({
-                  entry = defaultEntry,
-                  output = {},
-                  target = 'web',
-                  rules = [],
-                  plugins = [],
-                  externals = [],
+                  entry = defaultEntry, output = {}, target = 'web', rules = [], plugins = [], externals = [],
                   node = {
                     fs: 'empty',
                     net: 'empty',
@@ -25,14 +21,12 @@ export default ({
                   },
                   devtool = isDevelopment ? 'cheap-module-source-map' : false,
                 }) => {
-
+  const _output = Object.assign({}, defaultOutput, output);
   let devTool = devtool;
 
   if (isDebug) {
     devTool = isDevelopment ? 'inline-source-map' : false;
   }
-
-  const _output = Object.assign({}, defaultOutput, output);
 
   return {
     context,
@@ -43,14 +37,15 @@ export default ({
       modules,
       extensions: ['.css', '.json', ...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx'],
     },
-    module: {rules},
+    module: { rules },
     stats,
     externals,
     devtool: devTool,
     plugins: [
       defineEnv(),
       ...plugins,
-      ...analyze()
+      ...analyze(),
+      new DashboardPlugin()
     ],
     node,
     bail: isProduction,

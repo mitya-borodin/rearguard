@@ -1,13 +1,6 @@
 import { context, isDevelopment, isMobx, isTS, tmpTypescryptConfigPath } from '../../prepare.build-tools.config';
 
-export default ({
-                  babel: {
-                    presets = [],
-                    plugins = [],
-                    envPreset = [],
-                  },
-                  exclude = [/node_modules/],
-                }) => {
+export default ({ babel: { presets = [], plugins = [], envPreset = [] }, exclude = [/node_modules/] }) => {
   const common = {
     exclude,
     include: [context],

@@ -2,11 +2,11 @@
 const path = require('path');
 const meow = require('meow');
 const spawn = require('cross-spawn');
-const {isString, isUndefined} = require('@borodindmitriy/utils/lib');
+const { isString, isUndefined } = require('@borodindmitriy/utils/lib');
 const getDescription = require('./configs/utils/getDescription');
 
 module.exports = (binName = 'react-app', isRelay = false) => {
-  const {input, flags: {release, verbose, analyze, debug, mobx, isomorphic, relay, sync, typescript, rhl}} = meow(
+  const { input, flags: { release, verbose, analyze, debug, mobx, isomorphic, relay, sync, typescript, rhl } } = meow(
     getDescription(binName, isRelay),
     {
       alias: {
@@ -43,7 +43,7 @@ module.exports = (binName = 'react-app', isRelay = false) => {
   process.env.ENABLED_RHL = !isUndefined(rhl) ? rhl : false;
 
   if (isString(actionFiles[actionName])) {
-    const result = spawn.sync('node', [actionFiles[actionName]], {stdio: 'inherit'});
+    const result = spawn.sync('node', [actionFiles[actionName]], { stdio: 'inherit' });
 
     if (result.signal) {
       if (result.signal === 'SIGKILL') {

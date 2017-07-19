@@ -7,7 +7,7 @@ const defaultValue = {
   config: {
     compilerOptions: {},
     compileOnSave: false,
-  }
+  },
 };
 const propType = {
   typescript: Joi.object().keys({
@@ -15,16 +15,16 @@ const propType = {
     showConfigForIDE: Joi.boolean().required(),
     config: Joi.object().keys({
       compilerOptions: Joi.object(),
-      compileOnSave: Joi.boolean()
-    })
-}).required(),
+      compileOnSave: Joi.boolean(),
+    }),
+  }).required(),
 };
 
 export default (typescript, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({typescript}, propType);
+  const { error, value } = Joi.validate({ typescript }, propType);
 
   if (error !== null) {
     console.error(error.message);

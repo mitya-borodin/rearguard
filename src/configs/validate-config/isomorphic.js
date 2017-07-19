@@ -16,7 +16,7 @@ export default (isomorphic, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({isomorphic}, propType);
+  const { error, value } = Joi.validate({ isomorphic }, propType);
 
   if (error !== null) {
     console.error(error.message);

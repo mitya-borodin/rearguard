@@ -14,7 +14,7 @@ export default (browserslist, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({browserslist}, propType);
+  const { error, value } = Joi.validate({ browserslist }, propType);
 
   if (error !== null) {
     console.error(error.message);

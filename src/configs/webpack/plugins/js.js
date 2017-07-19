@@ -10,7 +10,7 @@ import {
   isIsomorphic,
   isProduction,
   isVerbose,
-  outputServer
+  outputServer,
 } from '../../prepare.build-tools.config';
 
 export const HMR = () => {

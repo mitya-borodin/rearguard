@@ -9,8 +9,8 @@ import isomorphic from '../validate-config/isomorphic';
 import modules from '../validate-config/modules';
 import output from '../validate-config/output';
 import proxy from '../validate-config/proxy';
-import typescript from '../validate-config/typescript';
 import socket from '../validate-config/socket';
+import typescript from '../validate-config/typescript';
 
 export default () => {
   const CWD = process.cwd();
@@ -25,7 +25,7 @@ export default () => {
     proxy,
     isomorphic,
     css,
-    typescript
+    typescript,
   };
 
   const socketPropTypes = {

@@ -16,7 +16,7 @@ export default (socket, getDefaultValue = false) => {
   if (getDefaultValue) {
     return defaultValue;
   }
-  const {error, value} = Joi.validate({socket}, propType);
+  const { error, value } = Joi.validate({ socket }, propType);
 
   if (error !== null) {
     console.error(error.message);

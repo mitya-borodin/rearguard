@@ -10,7 +10,7 @@ import {
   isRHL,
 } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
-import { isomorphicEntry, serverEntry, spaEntry } from './general/entry';
+import { clientEntry, serverEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
 import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './plugins/js';
 import compiler from './rules/compiler';
@@ -49,11 +49,7 @@ const reactBabelPlugin = [
 const RHL_patch = isRHL ? ['react-hot-loader/patch'] : [];
 
 const spa = generalWebpackConfig({
-    entry: isIsomorphic ? isomorphicEntry([
-      ...RHL_patch
-    ]) : spaEntry([
-      ...RHL_patch
-    ]),
+    entry: clientEntry([...RHL_patch]),
     rules: [
       ...compiler({
         babel: {
@@ -103,7 +99,7 @@ const server = generalWebpackConfig({
 
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
-    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
 
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin

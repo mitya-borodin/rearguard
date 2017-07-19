@@ -11,8 +11,8 @@ export default (proxy, getDefaultValue = false) => {
 
   for (let proxyName in proxy) {
     if (proxy.hasOwnProperty(proxyName)) {
-      const {error: proxyNameError} = Joi.validate(proxyName, Joi.string().trim().min(3).required());
-      const {error: proxyValueError} = Joi.validate(proxy[proxyName], Joi.string().trim().min(6).required());
+      const { error: proxyNameError } = Joi.validate(proxyName, Joi.string().trim().min(3).required());
+      const { error: proxyValueError } = Joi.validate(proxy[proxyName], Joi.string().trim().min(6).required());
 
       if (proxyNameError !== null) {
         console.error(proxyNameError.message);

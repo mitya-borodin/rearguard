@@ -1,24 +1,10 @@
-import { devServer, proxy } from '../prepare.build-tools.config';
-
-const proxyWDS = {};
-
-for (let from in proxy) {
-  if (proxy.hasOwnProperty(from)) {
-    proxyWDS[`${from}/**`] = {
-      target: proxy[from],
-      secure: false,
-      changeOrigin: true,
-    };
-  }
-}
+import { devServer } from '../prepare.build-tools.config';
 
 export default {
   ...devServer,
   compress: true,
   historyApiFallback: true,
   hot: true,
-  https: false,
-  inline: true,
   overlay: {
     errors: true,
   },
@@ -26,5 +12,4 @@ export default {
     ignored: /node_modules/,
   },
   clientLogLevel: 'info',
-  proxy: proxyWDS,
 };

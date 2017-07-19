@@ -13,8 +13,8 @@ import {
 
 export default () => {
   if (isTS) {
-    const {configPath, showConfigForIDE, config: {compilerOptions, compileOnSave}} = typescript;
-    const {dependencies: {typescript: version}} = require(path.resolve(__dirname, '../../package.json'));
+    const { configPath, showConfigForIDE, config: { compilerOptions, compileOnSave } } = typescript;
+    const { dependencies: { typescript: version } } = require(path.resolve(__dirname, '../../package.json'));
     const config = {
       version,
       compilerOptions: Object.assign({
