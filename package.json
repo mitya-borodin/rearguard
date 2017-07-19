@@ -1,7 +1,7 @@
 {
   "name": "@borodindmitriy/build-tools",
   "description": "BorodinDmitriy's tools for building frontend apps, easies my work))",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "https://github.com/DmitriyBorodin/build-tools",
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
   ],
   "bin": {
     "react-app": "./bin/react-app.js",
-    "vue-app": "./bin/vue-app.js",
     "inferno-app": "./bin/inferno-app.js"
   },
   "scripts": {

@@ -11,7 +11,6 @@ module.exports = (binName = 'react-app', isRelay = false) => {
     {
       alias: {
         ts: 'typescript',
-        bs: 'sync',
         m: 'mobx',
         i: 'isomorphic',
         v: 'verbose',
@@ -37,7 +36,6 @@ module.exports = (binName = 'react-app', isRelay = false) => {
   process.env.WEBPACK_DEBUG = !isUndefined(debug) ? debug : false;
   process.env.ENABLED_MOBX_TOOLS = !isUndefined(mobx) ? mobx : false;
   process.env.ENABLED_ISOMORPHIC = !isUndefined(isomorphic) ? isomorphic : false;
-  process.env.ENABLED_RELAY = !isUndefined(relay) ? relay : false;
   process.env.ENABLED_BROWSER_SYNC = !isUndefined(sync) ? sync : false;
   process.env.ENABLED_TYPE_SCRIPT = !isUndefined(typescript) ? typescript : false;
   process.env.ENABLED_RHL = !isUndefined(rhl) ? rhl : false;

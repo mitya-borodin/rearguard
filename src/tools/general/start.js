@@ -1,27 +1,17 @@
 import browserSync from 'browser-sync';
 import compress from 'compression';
 import webpack from 'webpack';
-import WDS from 'webpack-dev-server';
 import webpackDevMiddleware from 'webpack-dev-middleware';
+import WDS from 'webpack-dev-server';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import WriteFilePlugin from 'write-file-webpack-plugin';
-import {
-  host,
-  isDebug,
-  isDevelopment,
-  isIsomorphic,
-  port,
-  //proxyServer,
-  socket
-} from '../../configs/prepare.build-tools.config';
+import { host, isDebug, isDevelopment, isIsomorphic, port, socket } from '../../configs/prepare.build-tools.config';
 import prepareTypescriptConfig from '../../configs/prepareTypescriptConfig';
-//import runProxyServer from '../../configs/utils/runProxyServer';
 import runServer from '../../configs/utils/runServer';
 import webpackDevServerConfig from '../../configs/webpack/webpack.devserver.config';
 import run from '../run';
 import clean from './clean';
 import copy from './copy';
-//import makeServerConfig from './makeServerConfig';
 
 function start (webpackConfig) {
   prepareTypescriptConfig();
@@ -72,32 +62,6 @@ function start (webpackConfig) {
 
     server.listen(port, host, () => console.log(`Launched on ${socket}`));
   }
-/*    makeServerConfig(proxyServer.output)
-    .then(() => {
-      const bundler = webpack(webpackConfig);
-      const wpMiddleware = webpackDevMiddleware(bundler, webpackDevServerConfig);
-      const hotMiddleware = webpackHotMiddleware(bundler, webpackDevServerConfig);
-
-      let handleBundleComplete = () => {
-        handleBundleComplete = () => null;
-
-        runProxyServer().then(() => {
-          const bs = browserSync.create();
-
-          bs.init({
-            ...isDevelopment ? {} : { notify: isDebug, ui: isDebug },
-
-            proxy: {
-              target,
-              middleware: [compress(), wpMiddleware, hotMiddleware],
-            },
-          });
-        });
-      };
-
-      bundler.plugin('done', stats => handleBundleComplete(stats));
-    });
-  }*/
 }
 
 export default start;

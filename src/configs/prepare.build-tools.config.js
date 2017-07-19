@@ -21,11 +21,9 @@ export const isVerbose = process.env.BUILD_TOOLS_VERBOSE === 'true';
 export const isAnalyze = process.env.BUILD_TOOLS_ANALYZE === 'true';
 export const isMobx = process.env.ENABLED_MOBX_TOOLS === 'true';
 export const isIsomorphic = process.env.ENABLED_ISOMORPHIC === 'true';
-export const isRelay = process.env.ENABLED_RELAY === 'true';
-export const isBrovserSync = process.env.ENABLED_BROWSER_SYNC === 'true';
 export const isInferno = process.env.INFERNOJS_SPA === 'true';
 export const isTS = process.env.ENABLED_TYPE_SCRIPT === 'true';
-export const isRHL = process.env.ENABLED_RHL === 'true';
+export const isRHL = process.env.ENABLED_RHL === 'true' && !isIsomorphic;
 
 const filename = isDevelopment ? '[name].js?[hash:4]' : '[chunkhash:32].js';
 const chunkFilename = isDevelopment ? '[name].chunk.js?[hash:4]' : '[chunkhash:32].chunk.js';
@@ -124,8 +122,3 @@ export const tmpTypescryptConfigDir = path.resolve(__dirname, '../../tmp');
 export const tmpTypescryptConfigPath = path.resolve(__dirname, '../../tmp/tsconfig.json');
 export const typescript = config.typescript;
 export const postCssConfig = require(path.resolve(__dirname, 'postcss.config.js'));
-
-export const proxyServer = {
-  output: path.resolve(__dirname, '../proxy'),
-  serverFile: path.resolve(__dirname, '../proxy/proxyServer.js'),
-};
