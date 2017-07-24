@@ -10,30 +10,19 @@ module.exports = (loader) => ([
   require('postcss-import')({
     path: context,
   }),
-  // W3C variables, e.g. :root { --color: red; } div { background: var(--color); }
-  // https://github.com/postcss/postcss-custom-properties
-  require('postcss-custom-properties')(),
-  // W3C CSS Custom Media Queries, e.g. @custom-media --small-viewport (max-width: 30em);
-  // https://github.com/postcss/postcss-custom-media
-  require('postcss-custom-media')(),
-  // CSS4 Media Queries, e.g. @media screen and (width >= 500px) and (width <= 1200px) { }
-  // https://github.com/postcss/postcss-media-minmax
-  require('postcss-media-minmax')(),
-  // W3C CSS Custom Selectors, e.g. @custom-selector :--heading h1, h2, h3, h4, h5, h6;
-  // https://github.com/postcss/postcss-custom-selectors
-  require('postcss-custom-selectors')(),
+
   // W3C color() function, e.g. div { background: color(red alpha(90%)); }
   // https://github.com/postcss/postcss-color-function
   require('postcss-color-function')(),
-  // Convert CSS shorthand filters to SVG equivalent, e.g. .blur { filter: blur(4px); }
-  // https://github.com/iamvdo/pleeease-filters
-  require('pleeease-filters')(),
-  // W3C CSS Level4 :matches() pseudo class, e.g. p:matches(:first-child, .special) { }
-  // https://github.com/postcss/postcss-selector-matches
-  require('postcss-selector-matches')(),
-  // Transforms :not() W3C CSS Level 4 pseudo class to :not() CSS Level 3 selectors
-  // https://github.com/postcss/postcss-selector-not
-  require('postcss-selector-not')(),
+
+  // W3C CSS Custom Media Queries, e.g. @custom-media --small-viewport (max-width: 30em);
+  // https://github.com/postcss/postcss-custom-media
+  require('postcss-custom-media')(),
+
+  // CSS4 Media Queries, e.g. @media screen and (width >= 500px) and (width <= 1200px) { }
+  // https://github.com/postcss/postcss-media-minmax
+  require('postcss-media-minmax')(),
+
   // Postcss flexbox bug fixer
   // https://github.com/luisrudge/postcss-flexbugs-fixes
   require('postcss-flexbugs-fixes')(),
