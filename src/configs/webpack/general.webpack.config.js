@@ -1,3 +1,4 @@
+import DashboardPlugin from 'webpack-dashboard/plugin';
 import {
   context,
   entry as defaultEntry,
@@ -10,7 +11,6 @@ import {
   stats,
 } from '../prepare.build-tools.config';
 import { analyze, defineEnv } from './plugins/js';
-import DashboardPlugin from 'webpack-dashboard/plugin';
 
 export default ({
                   entry = defaultEntry, output = {}, target = 'web', rules = [], plugins = [], externals = [],
@@ -37,6 +37,11 @@ export default ({
       modules,
       extensions: ['.css', '.json', ...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx'],
     },
+    resolveLoader: {
+      modules,
+      extensions: [".js", ".json"],
+      mainFields: ["loader", "main"]
+    },
     module: { rules },
     stats,
     externals,
@@ -45,7 +50,7 @@ export default ({
       defineEnv(),
       ...plugins,
       ...analyze(),
-      new DashboardPlugin()
+      new DashboardPlugin(),
     ],
     node,
     bail: isProduction,

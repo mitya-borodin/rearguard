@@ -1,4 +1,4 @@
-module.exports = (rootName, relay = false) => (
+module.exports = (rootName) => (
   `Usage
     ${rootName}                             - запустит WDS
     ${rootName} [-h|--help]                 - покажет список команд

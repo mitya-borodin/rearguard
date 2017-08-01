@@ -1,4 +1,11 @@
-import { context, isDevelopment, isMobx, isTS, tmpTypescryptConfigPath } from '../../prepare.build-tools.config';
+import {
+  context,
+  isDevelopment,
+  isMobx,
+  isTS,
+  tmpTypescryptConfigPath,
+} from '../../prepare.build-tools.config';
+import resolveBuildToolsModules from '../../utils/resolveBuildToolsModules';
 
 export default ({ babel: { presets = [], plugins = [], envPreset = [] }, exclude = [/node_modules/] }) => {
   const common = {
@@ -19,11 +26,11 @@ export default ({ babel: { presets = [], plugins = [], envPreset = [] }, exclude
       envPreset,
       // Stage 2: draft
       // https://babeljs.io/docs/plugins/preset-stage-2/
-      'stage-2',
+      resolveBuildToolsModules('babel-preset-stage-2'),
       ...presets
     ],
     plugins: [
-      ...isMobx ? ['transform-decorators-legacy'] : [],
+      ...isMobx ? [require(resolveBuildToolsModules('babel-plugin-transform-decorators-legacy')).default] : [],
       ...plugins
     ],
   };

@@ -7,7 +7,7 @@ import {
   isDevelopment,
   isIsomorphic,
   isProduction,
-  isRHL,
+  isRHL
 } from '../prepare.build-tools.config';
 import generalWebpackConfig from './general.webpack.config';
 import { clientEntry, serverEntry } from './general/entry';
@@ -16,37 +16,38 @@ import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './
 import compiler from './rules/compiler';
 import { externalCSS, internalCSS } from './rules/css';
 import { file } from './rules/files';
+import resolveBuildToolsModules from '../utils/resolveBuildToolsModules';
 
 const reactBabelPresets = [
   // JSX, Flow
   // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-  'react',
+  resolveBuildToolsModules('babel-preset-react'),
 
   // Optimize React code for the production build
   // https://github.com/thejameskyle/babel-react-optimize
   // https://github.com/thejameskyle/babel-react-optimize#transform-react-inline-elements
   // Note: You should use this with babel-runtime and babel-transform-runtime to avoid duplicating the helper code in every file.
-  ...isProduction ? ['react-optimize'] : [],
+  ...isProduction ? [resolveBuildToolsModules('babel-preset-react-optimize')] : [],
 ];
 
 const reactBabelPlugin = [
   // https://www.npmjs.com/package/babel-plugin-transform-runtime
   // Note: You should use this with babel-runtime and babel-transform-runtime to avoid duplicating the helper code in every file.
-  ...isProduction ? ['transform-runtime'] : [],
+  ...isProduction ? [resolveBuildToolsModules('babel-plugin-transform-runtime')] : [],
 
   // http://gaearon.github.io/react-hot-loader/getstarted/
-  ...isDevelopment && isRHL ? ['react-hot-loader/babel'] : [],
+  ...isDevelopment && isRHL ? [resolveBuildToolsModules('babel-plugin-react-hot-loader/babel')] : [],
 
   // Adds component stack to warning messages
   // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source
-  ...isDevelopment ? ['transform-react-jsx-source'] : [],
+  ...isDevelopment ? [resolveBuildToolsModules('babel-plugin-transform-react-jsx-source')] : [],
 
   // Adds __self attribute to JSX which React will use for some warnings
   // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-self
-  ...isDevelopment ? ['transform-react-jsx-self'] : [],
+  ...isDevelopment ? [resolveBuildToolsModules('babel-plugin-transform-react-jsx-self')] : [],
 ];
 
-const RHL_patch = isRHL ? ['react-hot-loader/patch'] : [];
+const RHL_patch = isRHL ? [resolveBuildToolsModules('react-hot-loader/patch')] : [];
 
 const spa = generalWebpackConfig({
     entry: clientEntry([...RHL_patch]),
@@ -104,7 +105,7 @@ const server = generalWebpackConfig({
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: 'require("source-map-support").install();',
+      banner: `require("${resolveBuildToolsModules('source-map-support')}").install();`,
       raw: true,
       entryOnly: false,
     }),

@@ -13,7 +13,7 @@ import run from '../run';
 import clean from './clean';
 import copy from './copy';
 
-function start (webpackConfig) {
+function start(webpackConfig) {
   prepareTypescriptConfig();
 
   const target = `${host}:${port}`;
@@ -36,7 +36,8 @@ function start (webpackConfig) {
       let handleBundleComplete = () => {
         handleBundleComplete = stats => !stats.stats[1].compilation.errors.length && runServer();
 
-        runServer(target).then(() => {
+        runServer(target)
+        .then(() => {
           const bs = browserSync.create();
 
           bs.init({

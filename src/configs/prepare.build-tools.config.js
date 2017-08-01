@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import getConfig from './utils/getConfig';
+import resolveBuildToolsModules from './utils/resolveBuildToolsModules';
 
 const CWD = process.cwd();
 export const getProjectAbsPath = (relPath) => {
@@ -42,7 +43,8 @@ export const output = {
   chunkFilename,
   pathinfo: isVerbose || isDebug,
 };
-export const modules = ['node_modules', ...additionalModules];
+
+export const modules = [...additionalModules, 'node_modules', resolveBuildToolsModules()];
 export const stats = {
   colors: true,
   timings: true,
@@ -79,7 +81,7 @@ export const env = {
 // A Babel preset that can automatically determine the Babel plugins and polyfills
 // https://github.com/babel/babel-preset-env
 export const babelEnvSpa = [
-  'env',
+  resolveBuildToolsModules('babel-preset-env'),
   {
     targets: {
       browsers: browserslist,
@@ -96,7 +98,7 @@ export const publicDirName = _publicDirName;
 export const outputServer = outputProtectPath;
 export const filenameServer = `../${entryServer}`;
 export const babelEnvServer = [
-  'env',
+  resolveBuildToolsModules('babel-preset-env'),
   {
     targets: {
       node: config.nodeVersion,

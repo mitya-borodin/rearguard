@@ -1,22 +1,26 @@
 'use strict';
+const fs = require('fs');
 const path = require('path');
 const meow = require('meow');
 const spawn = require('cross-spawn');
 const { isString, isUndefined } = require('@borodindmitriy/utils/lib');
 const getDescription = require('./configs/utils/getDescription');
+const { execSync } = require('child_process');
 
-module.exports = (binName = 'react-app', isRelay = false) => {
-  const { input, flags: { release, verbose, analyze, debug, mobx, isomorphic, relay, sync, typescript, rhl } } = meow(
-    getDescription(binName, isRelay),
+module.exports = (binName = 'react-app') => {
+  const { input, flags: { release, verbose, analyze, debug, mobx, isomorphic, sync, typescript, rhl } } = meow(
+    getDescription(binName),
     {
       alias: {
         ts: 'typescript',
         m: 'mobx',
         i: 'isomorphic',
+
         v: 'verbose',
         r: 'release',
         d: 'debug',
         a: 'analyze',
+
         h: 'help',
       },
     },
@@ -28,6 +32,13 @@ module.exports = (binName = 'react-app', isRelay = false) => {
     start: path.resolve(TOOLS_DIR, 'start.js'),
     build: path.resolve(TOOLS_DIR, 'build.js'),
   };
+  const GLOBAL_NODE_MODULES_PATH = execSync('npm root -g', { encoding: 'utf-8' }).replace('\n', '');
+  const LOCAL_NODE_MODULE = path.resolve(process.cwd(), 'node_modules/@borodindmitriy/build-tools/node_modules');
+  let NODE_MODULE = path.resolve(GLOBAL_NODE_MODULES_PATH, '@borodindmitriy/build-tools/node_modules');
+
+  if (fs.existsSync(LOCAL_NODE_MODULE)) {
+    NODE_MODULE = LOCAL_NODE_MODULE;
+  }
 
   process.env.NODE_ENV = !release ? 'development' : 'production';
   process.env.BUILD_TOOLS_VERBOSE = !isUndefined(verbose) ? verbose : false;
@@ -39,6 +50,7 @@ module.exports = (binName = 'react-app', isRelay = false) => {
   process.env.ENABLED_BROWSER_SYNC = !isUndefined(sync) ? sync : false;
   process.env.ENABLED_TYPE_SCRIPT = !isUndefined(typescript) ? typescript : false;
   process.env.ENABLED_RHL = !isUndefined(rhl) ? rhl : false;
+  process.env.BUILD_TOOLS_NODE_MODULE = NODE_MODULE;
 
   if (isString(actionFiles[actionName])) {
     const result = spawn.sync('node', [actionFiles[actionName]], { stdio: 'inherit' });

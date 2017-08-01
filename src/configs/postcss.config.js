@@ -4,12 +4,19 @@ import { browserslist, context, css } from './prepare.build-tools.config';
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
 
 module.exports = (loader) => ([
-  ...css.postCssPlugins,
   // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
   // https://github.com/postcss/postcss-import
-  require('postcss-import')({
-    path: context,
-  }),
+  require('postcss-import')({ path: context }),
+
+  ...css.isolation ? [
+    // PostCSS plugin for automatic rules isolation
+    // https://github.com/maximkoretskiy/postcss-autoreset
+    require('postcss-autoreset')({ reset: css.reset }),
+    // https://github.com/maximkoretskiy/postcss-initial
+    require('postcss-initial')({ reset: css.reset }),
+  ] : [],
+
+  ...css.postCssPlugins,
 
   // W3C color() function, e.g. div { background: color(red alpha(90%)); }
   // https://github.com/postcss/postcss-color-function
@@ -26,18 +33,6 @@ module.exports = (loader) => ([
   // Postcss flexbox bug fixer
   // https://github.com/luisrudge/postcss-flexbugs-fixes
   require('postcss-flexbugs-fixes')(),
-
-  ...css.isolation ? [
-    // PostCSS plugin for automatic rules isolation
-    // https://github.com/maximkoretskiy/postcss-autoreset
-    require('postcss-autoreset')({
-      reset: css.reset,
-    }),
-    // https://github.com/maximkoretskiy/postcss-initial
-    require('postcss-initial')({
-      reset: css.reset,
-    }),
-  ] : [],
 
   // Add vendor prefixes to CSS rules using values from caniuse.com
   // https://github.com/postcss/autoprefixer
