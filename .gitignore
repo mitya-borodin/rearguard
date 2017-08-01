@@ -3,4 +3,3 @@ node_modules
 yarn.lock
 tmp
 lib
-!/src/tools/lib/
