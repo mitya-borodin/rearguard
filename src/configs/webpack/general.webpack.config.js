@@ -1,4 +1,3 @@
-import DashboardPlugin from 'webpack-dashboard/plugin';
 import {
   context,
   entry as defaultEntry,
@@ -50,7 +49,6 @@ export default ({
       defineEnv(),
       ...plugins,
       ...analyze(),
-      new DashboardPlugin(),
     ],
     node,
     bail: isProduction,

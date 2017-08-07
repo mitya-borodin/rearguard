@@ -1,28 +1,10 @@
 {
-  "name": "@borodindmitriy/build-tools",
-  "description": "BorodinDmitriy's tools for building frontend apps, easies my work))",
-  "version": "1.2.8",
-  "homepage": "https://github.com/DmitriyBorodin/build-tools",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:DmitriyBorodin/build-tools.git"
-  },
-  "bugs": {
-    "url": "https://github.com/DmitriyBorodin/build-tools/issues",
-    "email": "dmitriy@borodin.site"
-  },
-  "author": {
-    "name": "Borodin Dmitriy",
-    "email": "dmitriy@borodin.site",
-    "url": "http://borodin.site"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "restricted"
-  },
+  "name": "rearguard",
+  "description": "The merging of existing tools for developing front-end projects.",
+  "version": "1.5.5",
   "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "node": ">=6",
+    "npm": ">=3.10"
   },
   "files": [
     "bin",
@@ -32,14 +14,31 @@
     "react-app": "./bin/react-app.js",
     "inferno-app": "./bin/inferno-app.js"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "homepage": "https://github.com/Techintouch/rearguard",
+  "bugs": {
+    "url": "https://github.com/Techintouch/rearguard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Techintouch/rearguard.git"
+  },
+  "author": {
+    "name": "Dmitriy Borodin",
+    "email": "dmitriy@borodin.site",
+    "url": "http://borodin.site"
+  },
   "scripts": {
     "start": "babel src --watch --out-dir lib --source-maps",
     "build": "babel src --out-dir lib --source-maps",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@borodindmitriy/utils": "1.2.1",
-    "@types/webpack-env": "1.13.0",
+    "eslint-config-techintouch": "1.5.0",
+    "@techintouch/utils": "1.5.0",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.1.2",
     "babel-cli": "6.24.1",
@@ -57,17 +56,14 @@
     "babel-preset-react-optimize": "1.0.1",
     "babel-preset-stage-2": "6.24.1",
     "browser-sync": "2.18.13",
-    "chalk": "2.0.1",
-    "chokidar": "1.7.0",
+    "chalk": "2.1.0",
     "compression": "1.7.0",
     "cross-spawn": "5.1.0",
     "css-loader": "0.28.4",
-    "express": "4.15.3",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
     "glob": "7.1.2",
     "html-webpack-plugin": "2.30.1",
-    "http-proxy": "1.16.2",
     "isomorphic-style-loader": "3.0.0",
     "joi": "10.6.0",
     "meow": "3.7.0",
@@ -89,22 +85,16 @@
     "rimraf": "2.6.1",
     "source-map-loader": "0.2.1",
     "style-loader": "0.18.2",
-    "sw-precache-webpack-plugin": "0.11.4",
     "ts-loader": "2.3.2",
-    "tslint-loader": "3.5.3",
-    "tslint-react": "3.1.0",
     "typescript": "2.4.2",
     "uglifyjs-webpack-plugin": "0.4.6",
     "webpack": "3.4.1",
-    "webpack-bundle-analyzer": "2.8.3",
-    "webpack-dashboard": "0.4.0",
+    "webpack-bundle-analyzer": "2.9.0",
     "webpack-dev-middleware": "1.12.0",
     "webpack-dev-server": "2.6.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-node-externals": "1.6.0",
     "write-file-webpack-plugin": "4.1.0"
   },
-  "devDependencies": {
-    "@borodindmitriy/eslint": "1.2.1"
-  }
+  "license": "MIT"
 }
