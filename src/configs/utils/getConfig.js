@@ -84,6 +84,6 @@ export default () => {
       dependencies,
     };
   } else {
-    throw new Error('Не найден файл package.json, build-tools предназначен для npm пакетов, пожалуйста выполните npm init.');
+    throw new Error('Не найден файл package.json, rearguard предназначен для npm пакетов, пожалуйста выполните npm init.');
   }
 }

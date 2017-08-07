@@ -33,8 +33,8 @@ module.exports = (binName = 'react-app') => {
     build: path.resolve(TOOLS_DIR, 'build.js'),
   };
   const GLOBAL_NODE_MODULES_PATH = execSync('npm root -g', { encoding: 'utf-8' }).replace('\n', '');
-  const LOCAL_NODE_MODULE = path.resolve(process.cwd(), 'node_modules/@borodindmitriy/build-tools/node_modules');
-  let NODE_MODULE = path.resolve(GLOBAL_NODE_MODULES_PATH, '@borodindmitriy/build-tools/node_modules');
+  const LOCAL_NODE_MODULE = path.resolve(process.cwd(), 'node_modules/rearguard/node_modules');
+  let NODE_MODULE = path.resolve(GLOBAL_NODE_MODULES_PATH, 'rearguard/node_modules');
 
   if (fs.existsSync(LOCAL_NODE_MODULE)) {
     NODE_MODULE = LOCAL_NODE_MODULE;

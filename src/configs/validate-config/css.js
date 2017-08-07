@@ -6,16 +6,22 @@ const defaultValue = {
   reset: {
     'all': 'initial',
     'display': 'block',
+    'font-size': 'inherit',
     'boxSizing': 'border-box',
   },
   postCssPlugins: 'postCssPlugins.js',
 };
 const propType = {
-  css: Joi.object().keys({
-    isolation: Joi.boolean().required(),
-    reset: Joi.object().required(),
-    postCssPlugins: Joi.string().required(),
-  }).required(),
+  css: Joi.object()
+  .keys({
+    isolation: Joi.boolean()
+    .required(),
+    reset: Joi.object()
+    .required(),
+    postCssPlugins: Joi.string()
+    .required(),
+  })
+  .required(),
 };
 
 export default (css, getDefaultValue = false) => {
