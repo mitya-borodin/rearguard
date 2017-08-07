@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const meow = require('meow');
 const spawn = require('cross-spawn');
-const { isString, isUndefined } = require('@borodindmitriy/utils/lib');
+const { isString, isUndefined } = require('@techintouch/utils/lib');
 const getDescription = require('./configs/utils/getDescription');
 const { execSync } = require('child_process');
 

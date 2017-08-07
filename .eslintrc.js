@@ -1,6 +1,6 @@
 module.exports = {
   extends: [
-    '@borodindmitriy/eslint',
+    'eslint-config-techintouch',
   ].map(require.resolve),
   rules: {},
 };
