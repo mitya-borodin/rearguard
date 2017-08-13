@@ -58,9 +58,9 @@ export default (
     ],
     plugins: [
       ...isOldNode ? [resolveBuildToolsModules('babel-plugin-transform-regenerator')] : [],
+      resolveBuildToolsModules('babel-plugin-transform-decorators-legacy'),
       resolveBuildToolsModules('babel-plugin-mobx-deep-action'),
       ...isReact && isProduction ? [
-        resolveBuildToolsModules('babel-plugin-transform-decorators-legacy'),
         resolveBuildToolsModules('babel-plugin-transform-react-constant-elements'),
         resolveBuildToolsModules('babel-plugin-transform-react-inline-elements'),
         resolveBuildToolsModules('babel-plugin-transform-react-remove-prop-types'),

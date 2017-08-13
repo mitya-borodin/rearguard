@@ -40,7 +40,6 @@ export default () => {
         noUnusedLocals: true,
         noImplicitReturns: true,
 
-
         moduleResolution: 'node',
         baseUrl: context,
         paths: {},
