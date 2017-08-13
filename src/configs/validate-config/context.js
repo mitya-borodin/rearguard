@@ -18,4 +18,4 @@ export default (context, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.context;
-}
+};

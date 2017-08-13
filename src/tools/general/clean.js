@@ -2,7 +2,7 @@ import path from 'path';
 import { isIsomorphic, output, outputServer } from '../../configs/prepare.build-tools.config';
 import { cleanDir } from '../lib/fs';
 
-function clean () {
+function clean() {
   return Promise.all([
     cleanDir(
       path.resolve(isIsomorphic ? outputServer : output.path, '*'),

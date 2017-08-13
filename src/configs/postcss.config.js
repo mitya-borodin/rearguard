@@ -3,7 +3,7 @@ import { browserslist, context, css } from './prepare.build-tools.config';
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
 
-module.exports = (loader) => ([
+module.exports = loader => ([
   // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
   // https://github.com/postcss/postcss-import
   require('postcss-import')({ path: context }),

@@ -11,6 +11,7 @@ import {
   isProduction,
   isVerbose,
   outputServer,
+  onlyServer,
 } from '../../prepare.build-tools.config';
 
 export const HMR = () => {
@@ -78,14 +79,13 @@ export const defineEnv = () => (
     'process.env.DEBUG': env.DEBUG,
     __DEV__: env.__DEV__,
     __PROD__: env.__PROD__,
-    __RHL__: env.__RHL__,
   })
 );
 
 // Emit a file with assets paths
 // https://github.com/sporto/assets-webpack-plugin#options
 export const getAssetsFile = () => {
-  if (isIsomorphic) {
+  if (isIsomorphic && !onlyServer) {
     return [
       new AssetsPlugin({
         path: outputServer,

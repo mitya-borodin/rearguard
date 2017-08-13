@@ -10,7 +10,7 @@ import {
 import { copyDir, makeDir, writeFile } from '../lib/fs';
 import makeServerConfig from './makeServerConfig';
 
-async function copy () {
+async function copy() {
   if (isIsomorphic) {
     await makeDir(outputServer);
     await writeFile(path.resolve(outputServer, 'package.json'), JSON.stringify({

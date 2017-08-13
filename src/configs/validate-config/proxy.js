@@ -9,7 +9,7 @@ export default (proxy, getDefaultValue = false) => {
     return defaultValue;
   }
 
-  for (let proxyName in proxy) {
+  for (const proxyName in proxy) {
     if (proxy.hasOwnProperty(proxyName)) {
       const { error: proxyNameError } = Joi.validate(proxyName, Joi.string().trim().min(3).required());
       const { error: proxyValueError } = Joi.validate(proxy[proxyName], Joi.string().trim().min(6).required());
@@ -29,4 +29,4 @@ export default (proxy, getDefaultValue = false) => {
   }
 
   return proxy;
-}
+};

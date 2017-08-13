@@ -38,8 +38,8 @@ export default ({
     },
     resolveLoader: {
       modules,
-      extensions: [".js", ".json"],
-      mainFields: ["loader", "main"]
+      extensions: ['.js', '.json'],
+      mainFields: ['loader', 'main'],
     },
     module: { rules },
     stats,
@@ -59,4 +59,4 @@ export default ({
       maxEntrypointSize: 1000000, // int (in bytes)
     },
   };
-}
+};

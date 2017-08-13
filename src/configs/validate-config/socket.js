@@ -25,4 +25,4 @@ export default (socket, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.socket;
-}
+};

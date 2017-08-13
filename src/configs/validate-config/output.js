@@ -25,4 +25,4 @@ export default (output, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.output;
-}
+};

@@ -1,14 +1,7 @@
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import {
-  babelEnvServer,
-  babelEnvSpa,
-  filenameServer,
-  isDevelopment,
-  isIsomorphic,
-  isProduction,
-  isRHL
-} from '../prepare.build-tools.config';
+import { filenameServer, isDevelopment, isIsomorphic, onlyServer } from '../prepare.build-tools.config';
+import resolveBuildToolsModules from '../utils/resolveBuildToolsModules';
 import generalWebpackConfig from './general.webpack.config';
 import { clientEntry, serverEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
@@ -16,64 +9,24 @@ import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './
 import compiler from './rules/compiler';
 import { externalCSS, internalCSS } from './rules/css';
 import { file } from './rules/files';
-import resolveBuildToolsModules from '../utils/resolveBuildToolsModules';
-
-const reactBabelPresets = [
-  // JSX, Flow
-  // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-  resolveBuildToolsModules('babel-preset-react'),
-
-  // Optimize React code for the production build
-  // https://github.com/thejameskyle/babel-react-optimize
-  // https://github.com/thejameskyle/babel-react-optimize#transform-react-inline-elements
-  // Note: You should use this with babel-runtime and babel-transform-runtime to avoid duplicating the helper code in every file.
-  ...isProduction ? [resolveBuildToolsModules('babel-preset-react-optimize')] : [],
-];
-
-const reactBabelPlugin = [
-  // https://www.npmjs.com/package/babel-plugin-transform-runtime
-  // Note: You should use this with babel-runtime and babel-transform-runtime to avoid duplicating the helper code in every file.
-  ...isProduction ? [resolveBuildToolsModules('babel-plugin-transform-runtime')] : [],
-
-  // http://gaearon.github.io/react-hot-loader/getstarted/
-  ...isDevelopment && isRHL ? [resolveBuildToolsModules('babel-plugin-react-hot-loader/babel')] : [],
-
-  // Adds component stack to warning messages
-  // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source
-  ...isDevelopment ? [resolveBuildToolsModules('babel-plugin-transform-react-jsx-source')] : [],
-
-  // Adds __self attribute to JSX which React will use for some warnings
-  // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-self
-  ...isDevelopment ? [resolveBuildToolsModules('babel-plugin-transform-react-jsx-self')] : [],
-];
-
-const RHL_patch = isRHL ? [resolveBuildToolsModules('react-hot-loader/patch')] : [];
 
 const spa = generalWebpackConfig({
-    entry: clientEntry([...RHL_patch]),
-    rules: [
-      ...compiler({
-        babel: {
-          presets: reactBabelPresets,
-          plugins: reactBabelPlugin,
-          envPreset: babelEnvSpa,
-        },
-        exclude: [/node_modules/, /mobx.js/],
-      }),
-      internalCSS(),
-      externalCSS(),
-      file(),
-    ],
-    plugins: [
-      extractVendors(),
-      ...extractCSS(),
-      ...HMR(),
-      ...uglify(),
-      ...getAssetsFile(),
-      ...getIndexHtmlFile()
-    ],
-  })
-;
+  entry: clientEntry(),
+  rules: [
+    ...compiler({}),
+    internalCSS(),
+    externalCSS(),
+    file(),
+  ],
+  plugins: [
+    extractVendors(),
+    ...extractCSS(),
+    ...HMR(),
+    ...getAssetsFile(),
+    ...getIndexHtmlFile(),
+    ...uglify(),
+  ],
+});
 
 const server = generalWebpackConfig({
   entry: serverEntry(),
@@ -84,20 +37,12 @@ const server = generalWebpackConfig({
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
-    ...compiler({
-      babel: {
-        presets: reactBabelPresets,
-        plugins: reactBabelPlugin,
-        envPreset: babelEnvServer,
-      },
-      exclude: [/node_modules/, /mobx.js/],
-    }),
+    ...compiler({}, true),
     internalCSS(),
     externalCSS(),
     file(),
   ],
   plugins: [
-
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
@@ -109,6 +54,7 @@ const server = generalWebpackConfig({
       raw: true,
       entryOnly: false,
     }),
+    // ...uglify(),
   ],
   externals: [
     /^\.\/assets\.json$/,
@@ -128,4 +74,14 @@ const server = generalWebpackConfig({
   },
 });
 
-export default isIsomorphic ? [spa, server] : spa;
+let config = [];
+
+if (isIsomorphic && !onlyServer) {
+  config = [spa, server];
+} else if (isIsomorphic && onlyServer) {
+  config = server;
+} else {
+  config = spa;
+}
+
+export default config;

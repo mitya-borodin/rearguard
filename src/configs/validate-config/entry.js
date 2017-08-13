@@ -18,4 +18,4 @@ export default (entry, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.entry;
-}
+};

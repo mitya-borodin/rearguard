@@ -4,10 +4,10 @@ import Joi from 'joi';
 const defaultValue = {
   isolation: true,
   reset: {
-    'all': 'initial',
-    'display': 'block',
+    all: 'initial',
+    display: 'block',
     'font-size': 'inherit',
-    'boxSizing': 'border-box',
+    boxSizing: 'border-box',
   },
   postCssPlugins: 'postCssPlugins.js',
 };
@@ -39,4 +39,4 @@ export default (css, getDefaultValue = false) => {
   }
 
   return value.css;
-}
+};

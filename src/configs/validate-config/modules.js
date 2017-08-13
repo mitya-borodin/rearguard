@@ -15,7 +15,6 @@ export default (modules, getDefaultValue = false) => {
   const { error, value } = Joi.validate({ modules }, propType);
 
   if (error !== null) {
-
     console.error(error.message);
     console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(modules, null, 2)}"`));
     console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
@@ -23,4 +22,4 @@ export default (modules, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.modules;
-}
+};

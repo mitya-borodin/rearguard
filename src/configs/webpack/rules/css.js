@@ -73,7 +73,7 @@ const use = (isExternal = false) => {
           plugins: postCssConfig,
         },
       },
-    ] : []
+    ] : [],
   ];
 };
 
@@ -92,11 +92,11 @@ const rules = (isExternal = false) => ({
 export const internalCSS = (test = /\.css/) => ({
   test,
   include: context,
-  ...rules(false)
+  ...rules(false),
 });
 
 export const externalCSS = (test = /\.css/) => ({
   test,
   exclude: context,
-  ...rules(true)
+  ...rules(true),
 });

@@ -9,18 +9,16 @@ let server;
 let pending = true;
 const serverPath = path.join(outputServer, entryServer);
 
-function turnOff () {
+function turnOff() {
   if (server) {
     server.kill('SIGTERM');
   }
 }
 
-function runServer (host) {
+function runServer(host) {
   if (isIsomorphic) {
     if (!fs.existsSync(serverPath)) {
-      const message = `
-		!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!
-		`;
+      const message = `\r\n!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!\r\n`;
 
       console.log(chalk.bold.yellow(message));
 
@@ -28,7 +26,7 @@ function runServer (host) {
     }
 
     return new Promise((resolve) => {
-      function onStdOut (data) {
+      function onStdOut(data) {
         const time = new Date().toTimeString();
         const wasRun = data.toString('utf8').indexOf(serverWasRunDetectString) !== -1;
 
@@ -63,15 +61,12 @@ function runServer (host) {
 
       return server;
     });
-  } else {
-    const message = `
-		!!! [WANTED][TRY][RUN_SERVER_IN_SPA_MODE][${chalk.bold.cyan(serverPath)}] !!!
-		`;
-
-    console.log(chalk.bold.red(message));
-
-    return Promise.reject(message);
   }
+  const message = `\r\n!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!\r\n`;
+
+  console.log(chalk.bold.red(message));
+
+  return Promise.reject(message);
 }
 
 process.on('exit', turnOff);

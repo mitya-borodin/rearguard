@@ -33,4 +33,4 @@ export default (typescript, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.typescript;
-}
+};

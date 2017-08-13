@@ -39,7 +39,7 @@ export default () => {
       const config = {};
       const __config__ = require(configPath);
 
-      for (let propName in propTypes) {
+      for (const propName in propTypes) {
         if (propTypes.hasOwnProperty(propName)) {
           config[propName] = propTypes[propName](__config__[propName]);
           __config__[propName] = null;
@@ -49,23 +49,22 @@ export default () => {
 
       if (Object.keys(__config__).length > 0) {
         console.log(chalk.bold.red(`This is configs not used: \n\r"${JSON.stringify(__config__, null, 2)}"`));
-        console.log(chalk.bold.red(`Please remove their from build-tools.config.json`));
+        console.log(chalk.bold.red('Please remove their from build-tools.config.json'));
       }
-
-      return config;
-    } else {
-      const config = {};
-
-      for (let propName in propTypes) {
-        if (propTypes.hasOwnProperty(propName)) {
-          config[propName] = propTypes[propName](null, true);
-        }
-      }
-
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
 
       return config;
     }
+    const config = {};
+
+    for (const propName in propTypes) {
+      if (propTypes.hasOwnProperty(propName)) {
+        config[propName] = propTypes[propName](null, true);
+      }
+    }
+
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+    return config;
   };
 
   if (fs.existsSync(pkgPath)) {
@@ -83,7 +82,6 @@ export default () => {
       engines,
       dependencies,
     };
-  } else {
-    throw new Error('Не найден файл package.json, rearguard предназначен для npm пакетов, пожалуйста выполните npm init.');
   }
-}
+  throw new Error('Не найден файл package.json, rearguard предназначен для npm пакетов, пожалуйста выполните npm init.');
+};

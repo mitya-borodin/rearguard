@@ -23,4 +23,4 @@ export default (browserslist, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.browserslist;
-}
+};

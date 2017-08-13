@@ -18,31 +18,47 @@ export default () => {
     const config = {
       version,
       compilerOptions: Object.assign({
-        baseUrl: context,
         target: 'es6',
         module: 'es6',
-        allowJs: false,
-        allowSyntheticDefaultImports: true,
-        preserveConstEnums: true,
-        sourceMap: true,
-        alwaysStrict: true,
-        moduleResolution: 'node',
         lib: [
           'es6',
           'es7',
           'dom',
         ],
+        allowJs: false,
+        sourceMap: true,
+        rootDir: './',
+        removeComments: true,
+        importHelpers: true,
+        downlevelIteration: false,
+        isolatedModules: false,
+
+        strict: true,
+        noImplicitAny: true,
+        strictNullChecks: true,
+        alwaysStrict: true,
+        noUnusedLocals: true,
+        noImplicitReturns: true,
+
+
+        moduleResolution: 'node',
+        baseUrl: context,
+        paths: {},
+        rootDirs: [],
+        typeRoots: ['node_modules/@types'],
+
         ...isInferno ? {
           types: [
+            'node',
             'inferno',
           ],
           jsx: 'preserve',
         } : {
           jsx: 'react',
         },
-        noUnusedLocals: true,
-        strictNullChecks: true,
-        removeComments: false,
+        allowSyntheticDefaultImports: true,
+        preserveConstEnums: true,
+
       }, compilerOptions),
       include: [
         `${context}/**/*`,
@@ -61,4 +77,4 @@ export default () => {
     mkdirp.sync(tmpTypescryptConfigDir);
     fs.writeFileSync(tmpTypescryptConfigPath, JSON.stringify(config, null, 2));
   }
-}
+};

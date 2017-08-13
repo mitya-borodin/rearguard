@@ -4,11 +4,11 @@ export const clientEntry = (entries = []) => {
   if (isDevelopment) {
     return [
       ...isIsomorphic ? [
-        `webpack-hot-middleware/client`,
+        'webpack-hot-middleware/client',
       ] : [
         // http://gaearon.github.io/react-hot-loader/getstarted/
         `webpack-dev-server/client?${socket}`,
-        'webpack/hot/dev-server'
+        'webpack/hot/dev-server',
       ],
       ...entries,
       entry,
@@ -18,9 +18,7 @@ export const clientEntry = (entries = []) => {
   return entry;
 };
 
-export const serverEntry = (entries = []) => {
-  return [
-    ...entries,
-    entryServer,
-  ];
-};
+export const serverEntry = (entries = []) => [
+  ...entries,
+  entryServer,
+];

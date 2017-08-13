@@ -25,4 +25,4 @@ export default (isomorphic, getDefaultValue = false) => {
     return defaultValue;
   }
   return value.isomorphic;
-}
+};

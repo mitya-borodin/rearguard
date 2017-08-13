@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import { babelEnvServer, babelEnvSpa, filenameServer, isIsomorphic } from '../prepare.build-tools.config';
+import { filenameServer, isDevelopment, isIsomorphic, onlyServer } from '../prepare.build-tools.config';
+import resolveBuildToolsModules from '../utils/resolveBuildToolsModules';
 import generalWebpackConfig from './general.webpack.config';
 import { clientEntry, serverEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
@@ -12,14 +13,7 @@ import { file } from './rules/files';
 const spa = generalWebpackConfig({
   entry: clientEntry(),
   rules: [
-    ...compiler({
-      babel: {
-        presets: [],
-        plugins: [['inferno', { 'imports': true }]],
-        envPreset: babelEnvSpa,
-      },
-      exclude: [/node_modules/, /mobx.js/],
-    }),
+    ...compiler({}),
     internalCSS(),
     externalCSS(),
     file(),
@@ -28,9 +22,9 @@ const spa = generalWebpackConfig({
     extractVendors(),
     ...extractCSS(),
     ...HMR(),
-    ...uglify(),
     ...getAssetsFile(),
-    ...getIndexHtmlFile()
+    ...getIndexHtmlFile(),
+    ...uglify(),
   ],
 });
 
@@ -43,14 +37,7 @@ const server = generalWebpackConfig({
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
-    ...compiler({
-      babel: {
-        presets: [],
-        plugins: ['inferno'],
-        envPreset: babelEnvServer,
-      },
-      exclude: [/node_modules/, /mobx.js/],
-    }),
+    ...compiler({}, true),
     internalCSS(),
     externalCSS(),
     file(),
@@ -63,17 +50,20 @@ const server = generalWebpackConfig({
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: 'require("source-map-support").install();',
+      banner: `require("${resolveBuildToolsModules('source-map-support')}").install();`,
       raw: true,
       entryOnly: false,
     }),
+    // ...uglify(),
   ],
   externals: [
     /^\.\/assets\.json$/,
     /^\.\/config\.json$/,
-    nodeExternals(),
+    nodeExternals({
+      whitelist: /\.css/,
+    }),
   ],
-  devtool: 'source-map',
+  devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
   node: {
     console: false,
     global: false,
@@ -84,4 +74,14 @@ const server = generalWebpackConfig({
   },
 });
 
-export default isIsomorphic ? [spa, server] : spa;
+let config = [];
+
+if (isIsomorphic && !onlyServer) {
+  config = [spa, server];
+} else if (isIsomorphic && onlyServer) {
+  config = server;
+} else {
+  config = spa;
+}
+
+export default config;
