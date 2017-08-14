@@ -1,2 +1,3 @@
+import getConfig from '../../config/getReact.webpack.config'
 
-console.log('start');
+console.log(getConfig());
