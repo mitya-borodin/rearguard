@@ -1,14 +1,13 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { IIsomorphic } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-interface Iisomorphic{
-  entry: string;
-  publicDirName: string;
-}
-
-const defaultValue = {
-  entry: 'server.js',
-  publicDirName: 'public',
+const defaultValue: IIsomorphic = {
+  isomorphic: {
+    entry: 'server.js',
+    publicDirName: 'public',
+  }
 };
 const propType = {
   isomorphic: Joi.object().keys({
@@ -17,17 +16,22 @@ const propType = {
   }).required(),
 };
 
-export default (isomorphic: Iisomorphic, getDefaultValue = false): Iisomorphic => {
-  if (getDefaultValue) {
-    return defaultValue;
-  }
-  const { error, value } = Joi.validate({ isomorphic }, propType);
+export default (fileName: string): IIsomorphic => {
+  const { exist, value: isomorphic } = detectConfig(fileName, 'isomorphic');
   
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(isomorphic, null, 2)}"`));
-    console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+  if (exist) {
+    
+    const { error } = Joi.validate(isomorphic, propType);
+    
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(isomorphic, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    return isomorphic;
+  } else {
+    
     return defaultValue;
   }
-  return value.isomorphic;
 };

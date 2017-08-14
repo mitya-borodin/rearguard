@@ -1,5 +1,5 @@
+import sourceConfig from './source';
+
 export default () => {
-  return {
-    data: 1111
-  }
+  return JSON.stringify(sourceConfig(), null, 2);
 }

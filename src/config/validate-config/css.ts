@@ -1,24 +1,21 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { ICSS } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-interface ICSS {
-  isolation: boolean;
-  reset: {
-    [key: string]: string;
+const defaultValue: ICSS = {
+  css: {
+    isolation: true,
+    reset: {
+      all: 'initial',
+      display: 'block',
+      'font-size': 'inherit',
+      boxSizing: 'border-box',
+    },
+    postCssPlugins: 'postCssPlugins.js',
   }
-  postCssPlugins: string;
-}
-
-const defaultValue = {
-  isolation: true,
-  reset: {
-    all: 'initial',
-    display: 'block',
-    'font-size': 'inherit',
-    boxSizing: 'border-box',
-  },
-  postCssPlugins: 'postCssPlugins.js',
 };
+
 const propType = {
   css: Joi.object()
     .keys({
@@ -32,19 +29,21 @@ const propType = {
     .required(),
 };
 
-export default (css: ICSS, getDefaultValue = false): ICSS => {
-  if (getDefaultValue) {
-    return defaultValue;
-  }
-  const { error, value } = Joi.validate({ css }, propType);
+export default (fileName: string): ICSS => {
+  const { exist, value: css } = detectConfig(fileName, 'css');
   
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(css, null, 2)}"`));
-    console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+  if (exist) {
+    const { error } = Joi.validate(css, propType);
     
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(css, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    
+    return css;
+  } else {
     return defaultValue;
   }
-  
-  return value.css;
 };

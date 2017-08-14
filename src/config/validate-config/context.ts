@@ -1,21 +1,31 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { IContext } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-const defaultValue = 'src';
+const defaultValue: IContext = {
+  context: 'src'
+};
+
 const propType = {
   context: Joi.string().trim().min(3).required(),
 };
 
-export default (context: string, getDefaultValue = false): string => {
-  if (getDefaultValue) {
+export default (fileName: string): IContext => {
+  const { exist, value: context } = detectConfig(fileName, 'context');
+  
+  if (exist) {
+    const { error } = Joi.validate(context, propType);
+    
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(context, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    
+    return context;
+  } else {
     return defaultValue;
   }
-  const { error, value } = Joi.validate({ context }, propType);
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${context}"`));
-    console.log(chalk.bold.cyan(`We are using: "${defaultValue}"`));
-    return defaultValue;
-  }
-  return value.context;
 };

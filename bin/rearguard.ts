@@ -52,7 +52,7 @@ if (
   
   if (existsSync(launch_file)) {
     const global_node_modules: string = execSync('npm root -g', { encoding: 'utf8' }).replace('\n', '');
-    const local_node_modules: string = resolve(process.cwd(), 'node_modules/rearguard/node_modules');
+    const local_node_modules: string = resolve(process.cwd(), 'node_modules');
     let node_modules_path = resolve(global_node_modules, 'rearguard/node_modules');
     
     process.env.NODE_ENV = !release ? 'development' : 'production';

@@ -1,25 +1,19 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { ITypescript } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-interface Itypescript {
-  configPath: string;
-  showConfigForIDE: boolean;
-  config: {
-    compilerOptions: {
-      [key: string]: any;
-    }
-    compileOnSave: boolean;
+const defaultValue: ITypescript = {
+  typescript: {
+    configPath: 'tsconfig.json',
+    showConfigForIDE: true,
+    config: {
+      compilerOptions: {},
+      compileOnSave: false,
+    },
   }
-}
-
-const defaultValue = {
-  configPath: 'tsconfig.json',
-  showConfigForIDE: true,
-  config: {
-    compilerOptions: {},
-    compileOnSave: false,
-  },
 };
+
 const propType = {
   typescript: Joi.object().keys({
     configPath: Joi.string().trim().min(0).required(),
@@ -31,17 +25,21 @@ const propType = {
   }).required(),
 };
 
-export default (typescript: Itypescript, getDefaultValue = false): Itypescript => {
-  if (getDefaultValue) {
-    return defaultValue;
-  }
-  const { error, value } = Joi.validate({ typescript }, propType);
+export default (fileName: string): ITypescript => {
+  const { exist, value: typescript } = detectConfig(fileName, 'typescript');
   
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(typescript, null, 2)}"`));
-    console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+  if (exist) {
+    const { error } = Joi.validate(typescript, propType);
+    
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(typescript, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    
+    return typescript;
+  } else {
     return defaultValue;
   }
-  return value.typescript;
 };

@@ -1,25 +1,32 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { IModules } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-const defaultValue = [
-  'src',
-];
+const defaultValue: IModules = {
+  modules: [
+    'src',
+  ]
+};
 const propType = {
   modules: Joi.array().items(Joi.string().trim().min(1).required()).min(1).required(),
 };
 
-export default (modules: string[], getDefaultValue = false): string[] => {
-  if (getDefaultValue) {
-    return defaultValue;
-  }
-  const { error, value } = Joi.validate({ modules }, propType);
+export default (fileName: string): IModules => {
+  const { exist, value: modules } = detectConfig(fileName, 'modules');
   
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(modules, null, 2)}"`));
-    console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+  if (exist) {
+    const { error } = Joi.validate(modules, propType);
     
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(modules, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    
+    return modules;
+  } else {
     return defaultValue;
   }
-  return value.modules;
 };

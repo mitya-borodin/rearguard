@@ -1,14 +1,13 @@
-import chalk from 'chalk';
-import Joi from 'joi';
+import * as chalk from 'chalk';
+import * as Joi from 'joi';
+import { IOutput } from '../../interfaces/IConfigs';
+import detectConfig from './common';
 
-interface IOutput{
-  path: string;
-  publicPath: string;
-}
-
-const defaultValue = {
-  path: 'dist',
-  publicPath: '/',
+const defaultValue: IOutput = {
+  output: {
+    path: 'dist',
+    publicPath: '/',
+  }
 };
 const propType = {
   output: Joi.object().keys({
@@ -17,17 +16,21 @@ const propType = {
   }).required(),
 };
 
-export default (output: IOutput, getDefaultValue = false): IOutput => {
-  if (getDefaultValue) {
-    return defaultValue;
-  }
-  const { error, value } = Joi.validate({ output }, propType);
+export default (fileName: string): IOutput => {
+  const { exist, value: output } = detectConfig(fileName, 'output');
   
-  if (error !== null) {
-    console.error(error.message);
-    console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
-    console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+  if (exist) {
+    
+    const { error } = Joi.validate(output, propType);
+    
+    if (error !== null) {
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      
+      return defaultValue;
+    }
+    return output;
+  } else {
     return defaultValue;
   }
-  return value.output;
 };
