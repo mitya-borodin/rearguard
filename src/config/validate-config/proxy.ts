@@ -24,7 +24,7 @@ export default (fileName: string): IProxy => {
           console.error(proxyValueError.message);
         }
         if (proxyNameError !== null || proxyValueError !== null) {
-          console.log(chalk.bold.yellow(`Current value: "${JSON.stringify({ proxy }, null, 2)}"`));
+          console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(proxy, null, 2)}"`));
           console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
           
           return defaultValue;

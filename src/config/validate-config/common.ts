@@ -5,10 +5,12 @@ export default (fileName: string, fieldName: string): { exist: boolean, value: a
   const configPath = path.resolve(process.cwd(), fileName);
   
   if (fs.existsSync(configPath)) {
+    const config: any = JSON.parse(fs.readFileSync(configPath, { encoding: 'utf8' }));
+    
     return {
       exist: true,
       value: {
-        [fieldName]: require(configPath)[fieldName]
+        [fieldName]: config[fieldName]
       }
     };
   }

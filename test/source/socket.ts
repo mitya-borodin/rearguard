@@ -34,6 +34,12 @@ describe('Source', () => {
       
       expect(host).to.equal('localhost');
     });
+  
+    it('File was created', () => {
+      socket();
+    
+      expect(fs.existsSync(configPath)).to.equal(true);
+    });
   });
   
   describe('Socket, success case and file socket.config.json exist.', () => {
