@@ -24,8 +24,10 @@ export default (fileName: string): IOutput => {
     const { error } = Joi.validate(output, propType);
     
     if (error !== null) {
-      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
-      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      if(process.env.REARGUARD_ERROR_LOG === 'true') {
+        console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
+        console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
+      }
       
       return defaultValue;
     }
