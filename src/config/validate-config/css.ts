@@ -9,8 +9,9 @@ const defaultValue: ICSS = {
     reset: {
       all: 'initial',
       display: 'block',
-      'font-size': 'inherit',
       boxSizing: 'border-box',
+      'font-family': 'Avenir Next, -apple-system, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+      'font-size': 'inherit',
     },
     postCssPlugins: 'postCssPlugins.js',
   }

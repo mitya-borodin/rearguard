@@ -8,7 +8,7 @@ export default (fileName = 'socket.config.json'): ISocket => {
   const configPath = path.resolve(CWD, fileName);
   
   if (fs.existsSync(configPath)) {
-    return socket(require(configPath));
+    return socket(JSON.parse(fs.readFileSync(configPath, { encoding: 'utf8' })));
   } else {
     fs.writeFileSync(configPath, JSON.stringify(defaultValue, null, 2));
     return defaultValue;

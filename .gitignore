@@ -3,3 +3,5 @@ node_modules
 yarn.lock
 tmp
 lib
+/.nyc_output/
+/coverage

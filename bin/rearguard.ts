@@ -63,6 +63,8 @@ if (
     process.env.REARGUARD_VERBOSE = verbose ? 'true' : 'false';
     process.env.REARGUARD_ANALYZE = analyze ? 'true' : 'false';
     process.env.REARGUARD_DEBUG = debug ? 'true' : 'false';
+  
+    process.env.REARGUARD_ERROR_LOG = 'true';
     
     if (existsSync(local_node_modules)) {
       node_modules_path = local_node_modules;

@@ -4,7 +4,7 @@ import env from '../../src/config/source/env.config';
 
 describe('Source', () => {
   describe('env', () => {
-    beforeEach(function () {
+    before(() => {
       process.env.NODE_ENV = 'development';
       process.env.REARGUARD_NODE_MODULE_PATH = '/node_module/path';
       process.env.REARGUARD_ISOMORPHIC = 'true';
