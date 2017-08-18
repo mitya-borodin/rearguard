@@ -54,7 +54,6 @@ const server = generalWebpackConfig({
       raw: true,
       entryOnly: false,
     }),
-    // ...uglify(),
   ],
   externals: [
     /^\.\/assets\.json$/,

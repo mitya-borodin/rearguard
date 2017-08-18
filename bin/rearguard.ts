@@ -48,7 +48,7 @@ if (
   (action === 'start' || action === 'build') &&
   (appType === 'react' || appType === 'infernojs')
 ) {
-  const launch_file: string = resolve(__dirname, '../src/launchers', appType, `${action}.js`);
+  const launch_file: string = resolve(__dirname, '../src/launchers', `${action}.js`);
   
   if (existsSync(launch_file)) {
     const global_node_modules: string = execSync('npm root -g', { encoding: 'utf8' }).replace('\n', '');
@@ -64,6 +64,9 @@ if (
     process.env.REARGUARD_ANALYZE = analyze ? 'true' : 'false';
     process.env.REARGUARD_DEBUG = debug ? 'true' : 'false';
   
+    process.env.REARGUARD_INFERNO_JS = appType === 'infernojs' ? 'true': 'false';
+    process.env.REARGUARD_REACT = appType === 'react' ? 'true': 'false';
+    
     process.env.REARGUARD_ERROR_LOG = 'true';
     
     if (existsSync(local_node_modules)) {

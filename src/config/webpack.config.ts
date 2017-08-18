@@ -1,56 +1,47 @@
-import webpack from 'webpack';
-import nodeExternals from 'webpack-node-externals';
-import { filenameServer, isDevelopment, isIsomorphic, onlyServer } from '../prepare.build-tools.config';
-import resolveBuildToolsModules from '../utils/resolveBuildToolsModules';
+import * as webpack from 'webpack';
+import * as nodeExternals from 'webpack-node-externals';
+import { serverFilename, isDevelopment, isIsomorphic, onlyServer, resolveNodeModules } from './target.config';
 import generalWebpackConfig from './general.webpack.config';
-import { clientEntry, serverEntry } from './general/entry';
+import { frontEntry, backEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
-import { extractVendors, getAssetsFile, getIndexHtmlFile, HMR, uglify } from './plugins/js';
+import { extractVendors, assetsPlugin, htmlWebpackPlugin, HMR, uglify } from './plugins/js';
 import compiler from './rules/compiler';
-import { externalCSS, internalCSS } from './rules/css';
-import { file } from './rules/files';
 
 const spa = generalWebpackConfig({
-  entry: clientEntry(),
+  entry: frontEntry(),
   rules: [
-    ...compiler({}),
-    internalCSS(),
-    externalCSS(),
-    file(),
+    ...compiler(),
   ],
   plugins: [
     extractVendors(),
     ...extractCSS(),
     ...HMR(),
-    ...getAssetsFile(),
-    ...getIndexHtmlFile(),
+    ...assetsPlugin(),
+    ...htmlWebpackPlugin(),
     ...uglify(),
   ],
 });
 
 const server = generalWebpackConfig({
-  entry: serverEntry(),
+  entry: backEntry(),
   target: 'node',
   output: {
-    filename: filenameServer,
+    filename: serverFilename,
     libraryTarget: 'commonjs2',
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
     ...compiler({}, true),
-    internalCSS(),
-    externalCSS(),
-    file(),
   ],
   plugins: [
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-
+    
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: `require("${resolveBuildToolsModules('source-map-support')}").install();`,
+      banner: `require("${resolveNodeModules('source-map-support')}").install();`,
       raw: true,
       entryOnly: false,
     }),
@@ -73,7 +64,7 @@ const server = generalWebpackConfig({
   },
 });
 
-let config = [];
+let config: any = [];
 
 if (isIsomorphic && !onlyServer) {
   config = [spa, server];

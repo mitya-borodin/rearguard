@@ -12,14 +12,19 @@ import {
 import { analyze, defineEnv } from './plugins/js';
 
 export default ({
-                  entry = defaultEntry, output = {}, target = 'web', rules = [], plugins = [], externals = [],
-                  node = {
-                    fs: 'empty',
-                    net: 'empty',
-                    tls: 'empty',
-                  },
-                  devtool = isDevelopment ? 'cheap-module-source-map' : false,
-                }) => {
+  entry = defaultEntry,
+  output = {},
+  target = 'web',
+  rules = [],
+  plugins = [],
+  externals = [],
+  node = {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+  },
+  devtool = isDevelopment ? 'cheap-module-source-map' : false,
+}) => {
   const _output = Object.assign({}, defaultOutput, output);
   let devTool = devtool;
 
@@ -44,7 +49,7 @@ export default ({
     module: { rules },
     stats,
     externals,
-    devtool: devTool,
+    devtool: isDebug ? (isDevelopment ? 'inline-source-map' : false) : devTool,
     plugins: [
       defineEnv(),
       ...plugins,

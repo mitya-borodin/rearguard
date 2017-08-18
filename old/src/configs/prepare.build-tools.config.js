@@ -93,6 +93,8 @@ export const babelEnvSpa = [
   },
 ];
 
+
+
 // For server build in isomorphic mode
 export const entryServer = config.isomorphic.entry;
 export const publicDirName = _publicDirName;
