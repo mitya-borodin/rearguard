@@ -1,4 +1,6 @@
-### Rearguard
+# Rearguard
+
+![david](https://david-dm.org/Techintouch/rearguard.svg)
 
 Это пакет объединяющий существующие инструменты для сборки SPA и isomorphic приложений основанных на react или infernojs
 библиотеках.
