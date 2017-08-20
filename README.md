@@ -2,7 +2,7 @@
 
 ![david](https://david-dm.org/Techintouch/rearguard.svg)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
-
+[![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
 Это пакет объединяющий существующие инструменты для сборки SPA и isomorphic приложений основанных на react или infernojs
 библиотеках.
 
