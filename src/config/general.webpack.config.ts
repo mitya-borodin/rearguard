@@ -43,7 +43,7 @@ export default (
   target,
   resolve: {
     modules,
-    extensions: ['.css', '.json', ...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx'],
+    extensions: [...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx', '.css', '.json'],
   },
   resolveLoader: {
     modules,

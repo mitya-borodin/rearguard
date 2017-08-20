@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-import { devServer } from '../config/target.config';
+import { stats as statsConfig } from '../config/target.config';
 import webpackConfig from '../config/webpack.config';
 
 async function bundle() {
@@ -9,7 +9,7 @@ async function bundle() {
         return reject(err);
       }
 
-      console.info(stats.toString(devServer.stats));
+      console.info(stats.toString(statsConfig));
       return resolve();
     });
   });

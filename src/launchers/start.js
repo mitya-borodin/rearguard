@@ -5,10 +5,9 @@ import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as WDS from 'webpack-dev-server';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as WriteFilePlugin from 'write-file-webpack-plugin';
-import { host, isDebug, isDevelopment, isIsomorphic, onlyServer, port, socket, } from '../config/target.config';
+import { host, isDebug, isDevelopment, isIsomorphic, onlyServer, port, socket, webpackMiddlewareConfig, WDSConfig } from '../config/target.config';
 import buildTypescriptConfig from '../config/typescript.config.builder';
 import webpackConfig from '../config/webpack.config';
-import webpackDevServerConfig from '../config/webpack.devserver.config';
 import clean from './clean';
 import copy from './copy';
 import runServer from './runServer';
@@ -28,8 +27,8 @@ if (isIsomorphic) {
       webpackConfig.plugins.push(new WriteFilePlugin({ log: isDebug }));
 
       const bundler = webpack(webpackConfig);
-      const wpMiddleware = webpackDevMiddleware(bundler, webpackDevServerConfig);
-      const hotMiddleware = webpackHotMiddleware(bundler, webpackDevServerConfig);
+      const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
+      const hotMiddleware = webpackHotMiddleware(bundler, webpackMiddlewareConfig);
 
       let handleBundleComplete = (stats) => {
         handleBundleComplete = stats => !stats.compilation.errors.length && runServer(target);
@@ -56,8 +55,8 @@ if (isIsomorphic) {
       serverConfig.plugins.push(new WriteFilePlugin({ log: isDebug }));
 
       const bundler = webpack(webpackConfig);
-      const wpMiddleware = webpackDevMiddleware(bundler, webpackDevServerConfig);
-      const hotMiddleware = webpackHotMiddleware(bundler.compilers[0], webpackDevServerConfig);
+      const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
+      const hotMiddleware = webpackHotMiddleware(bundler.compilers[0], webpackMiddlewareConfig);
 
       let handleBundleComplete = (stats) => {
         handleBundleComplete = (stats) => !stats.stats[1].compilation.errors.length && runServer(target);
@@ -81,7 +80,7 @@ if (isIsomorphic) {
     console.error(error);
   });
 } else {
-  const server = new WDS(webpack(webpackConfig), webpackDevServerConfig);
+  const server = new WDS(webpack(webpackConfig), WDSConfig);
 
   server.listen(port, host, () => console.log(`Launched on ${socket}`));
 }

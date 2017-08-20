@@ -1,8 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as webpack from 'webpack';
 import source from './source';
 
-export const resolveNodeModules = (packageName = '') => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH, packageName);
+export const resolveNodeModules = (packageName = '') => path.resolve(
+  process.env.REARGUARD_NODE_MODULE_PATH,
+  packageName
+);
 export const resolveTarget = (relPath = '') => path.resolve(CWD, relPath);
 
 const CWD = process.cwd();
@@ -29,7 +33,7 @@ export const onlyServer = config.onlyServer;
 export const publicDirName = config.isomorphic.publicDirName;
 export const isOldNode = config.nodeVersion <= 8;
 export const isVeryOldNode = config.nodeVersion < 6;
-const clientOutput = resolveTarget(isIsomorphic? `${config.output.path}/${publicDirName}`: config.output.path);
+const clientOutput = resolveTarget(isIsomorphic ? `${config.output.path}/${publicDirName}` : config.output.path);
 /**
  * End
  * */
@@ -63,8 +67,6 @@ export const modules = [
   resolveNodeModules()
 ];
 
-console.log(modules);
-
 export const stats = {
   colors: true,
   timings: true,
@@ -80,11 +82,23 @@ export const stats = {
   cachedAssets: isVerbose,
 };
 export const proxy = config.proxy;
-export const devServer = {
+export const webpackMiddlewareConfig = {
   publicPath: output.publicPath,
   contentBase: clientOutput,
   stats,
   proxy,
+  watchOptions: {
+    ignored: /node_modules/,
+  }
+};
+export const WDSConfig: {
+  publicPath: string;
+  contentBase: string;
+  stats: webpack.compiler.StatsOptions | webpack.compiler.StatsToStringOptions;
+  watchOptions: webpack.WatchOptions;
+  proxy: any;
+} = {
+  ...webpackMiddlewareConfig
 };
 /**
  * End
@@ -148,7 +162,6 @@ export const css = {
   reset: config.css.reset,
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
 };
-
 
 export const postCSSConfigPath = require(path.resolve(__dirname, 'postcss.config.js'));
 /**
