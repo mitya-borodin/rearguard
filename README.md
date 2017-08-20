@@ -1,4 +1,11 @@
-### Rearguard
+# Rearguard
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
+![david](https://david-dm.org/Techintouch/rearguard.svg)
+[![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
+[![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
+[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Techintouch/rearguard)
+[![Test Coverage](https://codeclimate.com/github/codeclimate/codeclimate/badges/coverage.svg)](https://codeclimate.com/github/Techintouch/rearguard/coverage)
 
 Это пакет объединяющий существующие инструменты для сборки SPA и isomorphic приложений основанных на react или infernojs
 библиотеках.
