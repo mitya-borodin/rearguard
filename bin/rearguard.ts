@@ -54,6 +54,10 @@ if (
     const global_node_modules: string = execSync('npm root -g', { encoding: 'utf8' }).replace('\n', '');
     const local_node_modules: string = resolve(process.cwd(), 'node_modules');
     let node_modules_path = resolve(global_node_modules, 'rearguard/node_modules');
+  
+    if (existsSync(resolve(local_node_modules, 'rearguard'))) {
+      node_modules_path = local_node_modules;
+    }
     
     process.env.NODE_ENV = !release ? 'development' : 'production';
     process.env.REARGUARD_NODE_MODULE_PATH = node_modules_path;
@@ -68,10 +72,6 @@ if (
     process.env.REARGUARD_REACT = appType === 'react' ? 'true': 'false';
     
     process.env.REARGUARD_ERROR_LOG = 'true';
-    
-    if (existsSync(local_node_modules)) {
-      node_modules_path = local_node_modules;
-    }
     
     const result = spawn.sync('node', [launch_file], { stdio: 'inherit' });
     

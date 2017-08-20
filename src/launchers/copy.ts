@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import { context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, } from '../config/target.config';
 import { copyDir, makeDir, writeFile } from '../lib/fs';
 import makeServerConfig from './makeServerConfig';

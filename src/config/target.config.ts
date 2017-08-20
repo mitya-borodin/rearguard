@@ -62,6 +62,9 @@ export const modules = [
   'node_modules',
   resolveNodeModules()
 ];
+
+console.log(modules);
+
 export const stats = {
   colors: true,
   timings: true,

@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import { isIsomorphic, output, servercOutput } from '../config/target.config';
 import { cleanDir } from '../lib/fs';
 

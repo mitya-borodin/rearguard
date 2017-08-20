@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import { host, port, proxy, serverWasRunDetectString } from '../config/target.config';
 import { writeFile } from '../lib/fs';
 
