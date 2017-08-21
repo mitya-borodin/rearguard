@@ -8,6 +8,11 @@ module.exports = (loader: any) => ([
   // https://github.com/postcss/postcss-import
   require('postcss-import')({ path: context }),
   
+  // PostCSS plugin to transform :not() W3C CSS leve 4 pseudo class to :not() CSS level 3 selectors
+  // http://dev.w3.org/csswg/selectors-4/#negation
+  // https://github.com/postcss/postcss-selector-not
+  require("postcss-selector-not")(),
+  
   ...css.isolation ? [
     // PostCSS plugin for automatic rules isolation
     // https://github.com/maximkoretskiy/postcss-autoreset
