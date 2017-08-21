@@ -5,7 +5,17 @@ import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as WDS from 'webpack-dev-server';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as WriteFilePlugin from 'write-file-webpack-plugin';
-import { host, isDebug, isDevelopment, isIsomorphic, onlyServer, port, socket, webpackMiddlewareConfig, WDSConfig } from '../config/target.config';
+import {
+  host,
+  isDebug,
+  isDevelopment,
+  isIsomorphic,
+  onlyServer,
+  port,
+  socket,
+  WDSConfig,
+  webpackMiddlewareConfig,
+} from '../config/target.config';
 import buildTypescriptConfig from '../config/typescript.config.builder';
 import webpackConfig from '../config/webpack.config';
 import clean from './clean';
@@ -17,7 +27,7 @@ const bs = browserSync.create();
 
 buildTypescriptConfig();
 
-if (isIsomorphic) {
+if (isIsomorphic || onlyServer) {
   clean()
   .then(() => copy())
   .then(() => {
@@ -47,7 +57,7 @@ if (isIsomorphic) {
       };
 
       bundler.plugin('done', stats => handleBundleComplete(stats));
-    } else {
+    } else if (isIsomorphic) {
       const [, serverConfig] = webpackConfig;
 
       // Save the server-side bundle files to the file system after compilation
@@ -75,6 +85,8 @@ if (isIsomorphic) {
       };
 
       bundler.plugin('done', stats => handleBundleComplete(stats));
+    } else {
+      console.error('Expected isomorphic more or only server mode.')
     }
   }, (error) => {
     console.error(error);

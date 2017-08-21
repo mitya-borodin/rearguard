@@ -1,11 +1,11 @@
 import * as webpack from 'webpack';
 import * as nodeExternals from 'webpack-node-externals';
-import { serverFilename, isDevelopment, isIsomorphic, onlyServer, resolveNodeModules } from './target.config';
 import generalWebpackConfig from './general.webpack.config';
-import { frontEntry, backEntry } from './general/entry';
+import { backEntry, frontEntry } from './general/entry';
 import { extractCSS } from './plugins/css';
-import { extractVendors, assetsPlugin, htmlWebpackPlugin, HMR, uglify } from './plugins/js';
+import { assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify } from './plugins/js';
 import compiler from './rules/compiler';
+import { isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFilename } from './target.config';
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
@@ -66,11 +66,11 @@ const server = generalWebpackConfig({
 
 let config: any = [];
 
-if (isIsomorphic && !onlyServer) {
-  config = [spa, server];
-} else if (isIsomorphic && onlyServer) {
+if (onlyServer) {
   config = server;
-} else {
+} else if (isIsomorphic) {
+  config = [spa, server];
+} else  {
   config = spa;
 }
 

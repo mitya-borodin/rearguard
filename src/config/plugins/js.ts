@@ -75,7 +75,7 @@ export const definePlugin = () => (
 // Emit a file with assets paths
 // https://github.com/sporto/assets-webpack-plugin#options
 export const assetsPlugin = () => {
-  if (isIsomorphic && !onlyServer) {
+  if (isIsomorphic || onlyServer) {
     return [
       new AssetsPlugin({
         path: servercOutput,
