@@ -46,18 +46,28 @@ export default (
       // Stage 2: draft
       // https://babeljs.io/docs/plugins/preset-stage-2/
       resolveNodeModules('babel-preset-stage-2'),
-      ...isReact ? [
-        // JSX, Flow
-        // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-        resolveNodeModules('babel-preset-react'),
-      ] : [],
+      
+      ...isReact
+        ? [
+          // JSX, Flow
+          // https://github.com/babel/babel/tree/master/packages/babel-preset-react
+          resolveNodeModules('babel-preset-react'),
+        ]
+        : [],
       
       ...presets,
     ],
     plugins: [
-      ...isOldNode ? [resolveNodeModules('babel-plugin-transform-regenerator')] : [],
       resolveNodeModules('babel-plugin-transform-decorators-legacy'),
-      ...isInferno && !isReact ? [resolveNodeModules('babel-plugin-inferno'), { imports: true }] : [],
+      
+      ...isOldNode ? [resolveNodeModules('babel-plugin-transform-regenerator')] : [],
+      
+      ...isInferno && !isReact
+        ? [
+          [resolveNodeModules('babel-plugin-inferno'), { imports: true }]
+        ]
+        : [],
+      
       ...isReact && !isInferno && !isDevelopment
         ? [
           resolveNodeModules('babel-plugin-transform-react-constant-elements'),
@@ -67,14 +77,22 @@ export default (
         ]
         : [],
       ...plugins,
+      
       [
         resolveNodeModules('babel-plugin-transform-runtime'),
-        {
-          helpers: isOldNode || true,
-          polyfill: isVeryOldNode,
-          regenerator: isOldNode,
-          moduleName: 'babel-runtime',
-        },
+        isServerSide
+          ? {
+            helpers: isOldNode || true,
+            polyfill: isVeryOldNode,
+            regenerator: isOldNode,
+            moduleName: 'babel-runtime',
+          }
+          : {
+            helpers: false,
+            polyfill: false,
+            regenerator: isOldNode,
+            moduleName: 'babel-runtime',
+          }
       ],
     ],
   };
