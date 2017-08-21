@@ -113,7 +113,7 @@
     "@types/rimraf": "2.0.1",
     "@types/webpack": "3.0.9",
     "@types/webpack-bundle-analyzer": "2.9.0",
-    "@types/webpack-dev-middleware": "1.9.2",
+    "@types/webpack-dev-middleware": "1.9.3",
     "@types/webpack-dev-server": "2.4.1",
     "@types/webpack-hot-middleware": "2.15.0",
     "chai": "4.1.1",
