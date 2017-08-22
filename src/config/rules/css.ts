@@ -1,41 +1,23 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import { context, isDevelopment, isInferno, isIsomorphic, output, postCSSConfigPath, } from '../target.config';
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { context, isDevelopment, isIsomorphic, output, postCSSConfigPath, } from '../target.config';
 
 const use = (isExternal = false) => {
   let styleLoader: any[] = [];
   
   if (isDevelopment) {
-    if (isIsomorphic) {
-      if (isInferno) {
-        // TODO isomorphic-style-loader - не подходит так как требует наличие контекста.
-        
-        styleLoader = [];
-      } else {
-        styleLoader = [
-          {
-            loader: 'isomorphic-style-loader',
-          },
-        ];
-      }
-    } else {
-      styleLoader = [
-        {
-          loader: 'style-loader',
-        },
-      ];
-    }
-  } else if (isIsomorphic) {
-    if (isInferno) {
-      // TODO isomorphic-style-loader - не подходит так как требует наличие контекста.
-      
-      styleLoader = [];
-    } else {
-      styleLoader = [
-        {
-          loader: 'isomorphic-style-loader',
-        },
-      ];
-    }
+    styleLoader = [
+      {
+        loader: 'style-loader',
+      },
+    ];
+  }
+  
+  if (isIsomorphic) {
+    styleLoader = [
+      {
+        loader: 'isomorphic-style-loader',
+      },
+    ];
   }
   
   return [

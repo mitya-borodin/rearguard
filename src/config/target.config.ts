@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as webpack from 'webpack';
+import * as WDS from 'webpack-dev-server';
+import * as WDM from 'webpack-dev-middleware';
+import * as WHM from 'webpack-hot-middleware';
 import source from './source';
 
 export const resolveNodeModules = (packageName = '') => path.resolve(
@@ -82,23 +84,23 @@ export const stats = {
   cachedAssets: isVerbose,
 };
 export const proxy = config.proxy;
-export const webpackMiddlewareConfig = {
+
+export const webpackMiddlewareConfig: WDM.Options | WHM.Options = {
   publicPath: output.publicPath,
-  contentBase: clientOutput,
   stats,
-  proxy,
   watchOptions: {
     ignored: /node_modules/,
   }
 };
-export const WDSConfig: {
-  publicPath: string;
-  contentBase: string;
-  stats: webpack.compiler.StatsOptions | webpack.compiler.StatsToStringOptions;
-  watchOptions: webpack.WatchOptions;
-  proxy: any;
-} = {
-  ...webpackMiddlewareConfig
+
+export const WDSConfig: WDS.Configuration = {
+  publicPath: output.publicPath,
+  contentBase: clientOutput,
+  stats,
+  proxy,
+  hot: true,
+  historyApiFallback: true,
+  compress: true,
 };
 /**
  * End
