@@ -4,6 +4,14 @@ import { context, isDevelopment, isIsomorphic, output, postCSSConfigPath, } from
 const use = (isExternal = false) => {
   let styleLoader: any[] = [];
   
+  if (isDevelopment) {
+    styleLoader = [
+      {
+        loader: 'style-loader',
+      },
+    ];
+  }
+  
   if (isIsomorphic) {
     styleLoader = [
       {
