@@ -2,7 +2,6 @@ import { analyze, definePlugin } from './plugins/js';
 import {
   context,
   entry as defaultEntry,
-  isDebug,
   isDevelopment,
   isTS,
   modules,
@@ -25,7 +24,7 @@ export default (
       net: 'empty',
       tls: 'empty',
     },
-    devtool = isDevelopment ? 'cheap-module-source-map' : false,
+    devtool = isDevelopment ? 'source-map' : false,
   }: {
     entry?: string[] | string | { [key: string]: string };
     output?: { [key: string]: string };
@@ -60,7 +59,7 @@ export default (
   },
   stats,
   externals,
-  devtool: isDebug ? (isDevelopment ? 'inline-source-map' : false) : devtool,
+  devtool,
   plugins: [
     definePlugin(),
     ...plugins,
