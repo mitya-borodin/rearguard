@@ -1,4 +1,4 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { isDevelopment, isIsomorphic } from '../target.config';
 
 export const extractCSS = () => {
