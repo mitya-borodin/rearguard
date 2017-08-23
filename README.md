@@ -53,7 +53,7 @@ rearguard react start
 ```
 Сборка в production режиме SPA приложения основанного на библиотеке [React](https://facebook.github.io/react/)
 ```sh
-rearguard react build release 
+rearguard react build --release 
 ```
 Запуск SPA приложения основанного на библиотеке [infernojs](https://infernojs.org/)
 ```sh
@@ -61,7 +61,7 @@ rearguard infernojs start
 ```
 Сборка в production режиме SPA приложения основанного на библиотеке [infernojs](https://infernojs.org/)
 ```sh
-rearguard infernojs build release 
+rearguard infernojs build --release 
 ```
 
 #### Конфигурация
