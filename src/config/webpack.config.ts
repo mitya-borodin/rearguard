@@ -1,11 +1,11 @@
-import * as webpack from 'webpack';
-import * as nodeExternals from 'webpack-node-externals';
-import generalWebpackConfig from './general.webpack.config';
-import { backEntry, frontEntry } from './general/entry';
-import { extractCSS } from './plugins/css';
-import { assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify } from './plugins/js';
-import compiler from './rules/compiler';
-import { isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFilename } from './target.config';
+import * as webpack from "webpack";
+import * as nodeExternals from "webpack-node-externals";
+import generalWebpackConfig from "./general.webpack.config";
+import { backEntry, frontEntry } from "./general/entry";
+import { extractCSS } from "./plugins/css";
+import { assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify } from "./plugins/js";
+import compiler from "./rules/compiler";
+import { isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFilename } from "./target.config";
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
@@ -24,10 +24,10 @@ const spa = generalWebpackConfig({
 
 const server = generalWebpackConfig({
   entry: backEntry(),
-  target: 'node',
+  target: "node",
   output: {
     filename: serverFilename,
-    libraryTarget: 'commonjs2',
+    libraryTarget: "commonjs2",
   },
   rules: [
     // Override babel-preset-env configuration for Node.js
@@ -37,11 +37,11 @@ const server = generalWebpackConfig({
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    
+
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: `require("${resolveNodeModules('source-map-support')}").install();`,
+      banner: `require("${resolveNodeModules("source-map-support")}").install();`,
       raw: true,
       entryOnly: false,
     }),
@@ -53,7 +53,7 @@ const server = generalWebpackConfig({
       whitelist: /\.css/,
     }),
   ],
-  devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
+  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
   node: {
     console: false,
     global: false,
