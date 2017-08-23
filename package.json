@@ -1,7 +1,7 @@
 {
   "name": "rearguard",
   "description": "The merging of existing tools for developing front-end projects.",
-  "version": "1.6.15",
+  "version": "1.6.17",
   "engines": {
     "node": ">=6",
     "npm": ">=3.10"
@@ -39,7 +39,7 @@
     "pretest": "npm run lint",
     "precommit": "npm test",
     "prepush": "npm test",
-    "prepublishOnly": "npm run lint && npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build && sh prepublish.sh"
   },
   "dependencies": {
     "assets-webpack-plugin": "3.5.1",
