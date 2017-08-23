@@ -7,6 +7,8 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
 
+## Готовый к использованию инструмент сборки фронтенд проектов основанных на React или InfernoJS.
+
 ### Мотивация
 - Версионирования конфигурации сборки.
 - Инкрементные обновления конфигурации сборки.
