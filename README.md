@@ -6,6 +6,8 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
 
+## Готовый к использованию инструмент сборки фронтенд проектов основанных на React или InfernoJS.
+
 ### Мотивация
 - Версионирования конфигурации сборки.
 - Инкрементные обновления конфигурации сборки.
@@ -254,24 +256,24 @@ import { Component3 } from 'components/Component4'
 - _**/auth**_/user -> http://localhost:9000 _**/auth**_/user
 
 #### Что внутри ?
-- webpack 3.5.5
-- uglifyjs-webpack-plugin
-- webpack-bundle-analyzer
-- babel 6
-- babel-preset-react
-- babel-preset-react-optimize
-- babel-plugin-inferno
-- babel-preset-env
-- transform-runtime
-- typescript 2
-- ts-loader
-- isomorphic-style-loader
-- postcss 6
-- postcss-import
-- postcss-selector-not
-- postcss-initial
-- postcss-color-function
-- postcss-custom-media
-- postcss-media-minmax
-- postcss-flexbugs-fixes
-- autoprefixer
+- [webpack](https://webpack.js.org) 3.5.5
+- [uglifyjs-webpack-plugin](https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#src/components/Sidebar/Sidebar.jsx)
+- [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer)
+- [babel](https://github.com/babel/babel) 6
+- [babel-preset-react](https://github.com/babel/babel/tree/master/packages/babel-preset-react)
+- [babel-preset-react-optimize](https://github.com/thejameskyle/babel-react-optimize)
+- [babel-plugin-inferno](https://github.com/infernojs/babel-plugin-inferno)
+- [babel-preset-env](https://github.com/babel/babel-preset-env)
+- [transform-runtime](https://babeljs.io/docs/plugins/transform-runtime/)
+- [typescript](https://www.typescriptlang.org/) 2
+- [ts-loader](https://github.com/TypeStrong/ts-loader)
+- [isomorphic-style-loader](https://github.com/kriasoft/isomorphic-style-loader)
+- [postcss 6](https://github.com/postcss/postcss)
+- [postcss-import](https://github.com/postcss/postcss-import)
+- [postcss-selector-not](https://github.com/postcss/postcss-selector-not)
+- [postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
+- [postcss-color-function](https://github.com/postcss/postcss-color-function)
+- [postcss-custom-media](https://github.com/postcss/postcss-custom-media)
+- [postcss-media-minmax](https://github.com/postcss/postcss-media-minmax)
+- [postcss-flexbugs-fixes](https://github.com/luisrudge/postcss-flexbugs-fixes)
+- [autoprefixer](https://github.com/postcss/autoprefixer)
