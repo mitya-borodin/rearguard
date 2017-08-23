@@ -1,1 +1,1 @@
-declare module 'webpack-node-externals';
+declare module "webpack-node-externals";

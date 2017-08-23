@@ -1,4 +1,6 @@
-import { analyze, definePlugin } from './plugins/js';
+import { analyze, definePlugin } from "./plugins/js";
+import { externalCSS, internalCSS } from "./rules/css";
+import { file } from "./rules/files";
 import {
   context,
   entry as defaultEntry,
@@ -6,25 +8,23 @@ import {
   isTS,
   modules,
   output as defaultOutput,
-  stats
-} from './target.config';
-import { externalCSS, internalCSS } from './rules/css';
-import { file } from './rules/files';
+  stats,
+} from "./target.config";
 
 export default (
   {
     entry = defaultEntry,
     output = {},
-    target = 'web',
+    target = "web",
     rules = [],
     plugins = [],
     externals = [],
     node = {
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty',
+      fs: "empty",
+      net: "empty",
+      tls: "empty",
     },
-    devtool = isDevelopment ? 'source-map' : false,
+    devtool = isDevelopment ? "source-map" : false,
   }: {
     entry?: string[] | string | { [key: string]: string };
     output?: { [key: string]: string };
@@ -34,43 +34,48 @@ export default (
     externals?: any[];
     node?: { [key: string]: string | boolean } | boolean;
     devtool?: string | boolean;
-  }
+  },
 ) => ({
+  bail: !isDevelopment,
+  cache: isDevelopment,
   context,
+  devtool,
   entry,
-  output: { ...defaultOutput, ...output },
-  target,
-  resolve: {
-    modules,
-    extensions: [...isTS ? ['.ts', '.tsx'] : [], '.js', '.jsx', '.css', '.json'],
-  },
-  resolveLoader: {
-    modules,
-    extensions: ['.js', '.json'],
-    mainFields: ['loader', 'main'],
-  },
+  externals,
   module: {
     rules: [
       ...rules,
       internalCSS(),
       externalCSS(),
       file(),
-    ]
+    ],
   },
-  stats,
-  externals,
-  devtool,
+  node,
+  output: { ...defaultOutput, ...output },
+  performance: {
+    hints: !isDevelopment ? "warning" : false, // enum
+    maxAssetSize: 1000000, // int (in bytes),
+    maxEntrypointSize: 1000000, // int (in bytes)
+  },
   plugins: [
     definePlugin(),
     ...plugins,
     ...analyze(),
   ],
-  bail: !isDevelopment,
-  cache: isDevelopment,
-  performance: {
-    hints: !isDevelopment ? 'warning' : false, // enum
-    maxAssetSize: 1000000, // int (in bytes),
-    maxEntrypointSize: 1000000, // int (in bytes)
+
+  resolve: {
+    extensions: [...isTS ? [".ts", ".tsx"] : [], ".js", ".jsx", ".css", ".json"],
+    modules,
   },
-  node
-})
+  resolveLoader: {
+    extensions: [".js", ".json"],
+    mainFields: ["loader", "main"],
+    modules,
+
+  },
+
+  stats,
+
+  target,
+
+});

@@ -1,6 +1,6 @@
-import * as webpack from 'webpack';
-import { stats as statsConfig } from '../config/target.config';
-import webpackConfig from '../config/webpack.config';
+import * as webpack from "webpack";
+import { stats as statsConfig } from "../config/target.config";
+import webpackConfig from "../config/webpack.config";
 
 async function bundle() {
   await new Promise((resolve, reject) => {
