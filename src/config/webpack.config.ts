@@ -9,9 +9,6 @@ import { isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFile
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
-  rules: [
-    ...compiler(),
-  ],
   plugins: [
     extractVendors(),
     ...extractCSS(),
@@ -20,19 +17,33 @@ const spa = generalWebpackConfig({
     ...htmlWebpackPlugin(),
     ...uglify(),
   ],
+  rules: [
+    ...compiler(),
+  ],
 });
 
 const server = generalWebpackConfig({
+  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
   entry: backEntry(),
-  target: "node",
+  externals: [
+    /^\.\/assets\.json$/,
+    /^\.\/config\.json$/,
+    nodeExternals({
+      whitelist: /\.css/,
+    }),
+  ],
+  node: {
+    Buffer: false,
+    __dirname: false,
+    __filename: false,
+    console: false,
+    global: false,
+    process: false,
+  },
   output: {
     filename: serverFilename,
     libraryTarget: "commonjs2",
   },
-  rules: [
-    // Override babel-preset-env configuration for Node.js
-    ...compiler({}, true),
-  ],
   plugins: [
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
@@ -42,26 +53,15 @@ const server = generalWebpackConfig({
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
       banner: `require("${resolveNodeModules("source-map-support")}").install();`,
-      raw: true,
       entryOnly: false,
+      raw: true,
     }),
   ],
-  externals: [
-    /^\.\/assets\.json$/,
-    /^\.\/config\.json$/,
-    nodeExternals({
-      whitelist: /\.css/,
-    }),
+  rules: [
+    // Override babel-preset-env configuration for Node.js
+    ...compiler({}, true),
   ],
-  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
-  node: {
-    console: false,
-    global: false,
-    process: false,
-    Buffer: false,
-    __filename: false,
-    __dirname: false,
-  },
+  target: "node",
 });
 
 let config: any = [];

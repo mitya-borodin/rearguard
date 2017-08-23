@@ -6,14 +6,14 @@ export const name = "socket";
 
 export const defaultValue: ISocket = {
   socket: {
-    port: "3000",
     host: "localhost",
+    port: "3000",
   },
 };
 const propType = {
   socket: Joi.object().keys({
-    port: Joi.string().trim().min(4).required(),
     host: Joi.string().trim().min(0).required(),
+    port: Joi.string().trim().min(4).required(),
   }).required(),
 };
 

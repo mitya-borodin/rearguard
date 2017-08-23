@@ -46,8 +46,8 @@ describe("Source", () => {
     beforeEach(() => {
       const config = {
         socket: {
-          port: "5000",
           host: "remote.server.ru",
+          port: "5000",
         },
       };
 
@@ -71,8 +71,8 @@ describe("Source", () => {
     beforeEach(() => {
       const config = {
         socket: {
-          tttt: 55555,
           host: 11111,
+          tttt: 55555,
         },
       };
 

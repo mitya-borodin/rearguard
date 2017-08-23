@@ -13,12 +13,12 @@ interface IBoolObj {
 const [, , appType, action, ...otherArguments] = process.argv;
 
 const alias: { [key: string]: string } = {
-  ts: "typescript",
-  i: "isomorphic",
-  v: "verbose",
-  r: "release",
-  d: "debug",
   a: "analyze",
+  d: "debug",
+  i: "isomorphic",
+  r: "release",
+  ts: "typescript",
+  v: "verbose",
 };
 
 const {
@@ -47,19 +47,19 @@ if (
   (action === "start" || action === "build") &&
   (appType === "react" || appType === "infernojs")
 ) {
-  const launch_file: string = resolve(__dirname, "../src/launchers", `${action}.js`);
+  const launchFile: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
-  if (existsSync(launch_file)) {
-    const global_node_modules: string = execSync("npm root -g", { encoding: "utf8" }).replace("\n", "");
-    const local_node_modules: string = resolve(process.cwd(), "node_modules");
-    let node_modules_path = resolve(global_node_modules, "rearguard/node_modules");
+  if (existsSync(launchFile)) {
+    const globalNodeModules: string = execSync("npm root -g", { encoding: "utf8" }).replace("\n", "");
+    const localModeModules: string = resolve(process.cwd(), "node_modules");
+    let nodeModulesPath = resolve(globalNodeModules, "rearguard/node_modules");
 
-    if (existsSync(resolve(local_node_modules, "rearguard"))) {
-      node_modules_path = local_node_modules;
+    if (existsSync(resolve(localModeModules, "rearguard"))) {
+      nodeModulesPath = localModeModules;
     }
 
     process.env.NODE_ENV = !release ? "development" : "production";
-    process.env.REARGUARD_NODE_MODULE_PATH = node_modules_path;
+    process.env.REARGUARD_NODE_MODULE_PATH = nodeModulesPath;
     process.env.REARGUARD_ISOMORPHIC = isomorphic ? "true" : "false";
     process.env.REARGUARD_TYPE_SCRIPT = typescript ? "true" : "false";
     process.env.REARGUARD_ONLY_SERVER = onlyServer ? "true" : "false";
@@ -72,7 +72,7 @@ if (
 
     process.env.REARGUARD_ERROR_LOG = "true";
 
-    const result = spawn.sync("node", [launch_file], { stdio: "inherit" });
+    const result = spawn.sync("node", [launchFile], { stdio: "inherit" });
 
     if (result.signal) {
       if (result.signal === "SIGKILL") {
@@ -108,7 +108,7 @@ if (
     console.log(
       chalk
         .bold
-        .red(`I am really sorry but file: ${launch_file}, not found, try check this throw command: ls -la ${launch_file}`),
+        .red(`I am really sorry but file: ${launchFile}, not found, try check this throw command: ls -la ${launchFile}`),
     );
   }
 } else {

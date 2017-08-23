@@ -5,23 +5,23 @@ import detectConfig from "./common";
 
 const defaultValue: ITypescript = {
   typescript: {
+    config: {
+      compileOnSave: false,
+      compilerOptions: {},
+    },
     configPath: "tsconfig.json",
     showConfigForIDE: true,
-    config: {
-      compilerOptions: {},
-      compileOnSave: false,
-    },
   },
 };
 
 const propType = {
   typescript: Joi.object().keys({
+    config: Joi.object().keys({
+      compileOnSave: Joi.boolean(),
+      compilerOptions: Joi.object(),
+    }),
     configPath: Joi.string().trim().min(0).required(),
     showConfigForIDE: Joi.boolean().required(),
-    config: Joi.object().keys({
-      compilerOptions: Joi.object(),
-      compileOnSave: Joi.boolean(),
-    }),
   }).required(),
 };
 

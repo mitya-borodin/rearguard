@@ -17,15 +17,15 @@ export default (): IBuildConfig => {
   const configPath = path.resolve(process.cwd(), fileName);
 
   const config: IBuildConfig = {
+    ...browserslist(fileName),
     ...context(fileName),
-    ...entry(fileName),
-    ...output(fileName),
-    ...modules(fileName),
     ...css(fileName),
+    ...entry(fileName),
     ...isomorphic(fileName),
+    ...modules(fileName),
+    ...output(fileName),
     ...proxy(fileName),
     ...typescript(fileName),
-    ...browserslist(fileName),
   };
 
   if (fs.existsSync(configPath)) {

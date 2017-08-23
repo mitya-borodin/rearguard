@@ -7,9 +7,9 @@ function clean() {
     cleanDir(
       path.resolve(isIsomorphic ? servercOutput : output.path, "*"),
       {
-        nosort: true,
         dot: true,
         ignore: [path.resolve(output.path, ".git")],
+        nosort: true,
       },
     ),
   ]);

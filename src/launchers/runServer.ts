@@ -2,7 +2,7 @@ import * as chalk from "chalk";
 import * as cp from "child_process";
 import * as fs from "fs";
 import * as path from "path";
-import { isIsomorphic, servercOutput, serverEntry, serverWasRunDetectString } from "../config/target.config";
+import {isIsomorphic, servercOutput, serverEntry, serverWasRunDetectString} from "../config/target.config";
 
 let server: any;
 let pending = true;
@@ -15,9 +15,10 @@ function turnOff() {
 }
 
 function runServer(host: string) {
+  const message: string = `\r\n!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!\r\n`;
+
   if (isIsomorphic) {
     if (!fs.existsSync(serverPath)) {
-      const message = `\r\n!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!\r\n`;
 
       console.log(chalk.bold.yellow(message));
 
@@ -44,7 +45,7 @@ function runServer(host: string) {
       turnOff();
 
       server = cp.spawn("node", [serverPath], {
-        env: Object.assign({ NODE_ENV: "development" }, process.env),
+        env: Object.assign({NODE_ENV: "development"}, process.env),
       });
 
       if (pending) {
@@ -61,7 +62,6 @@ function runServer(host: string) {
       return server;
     });
   }
-  const message = `\r\n!!! [WANTED][SERVER_FILE][NOT_FOUNT][${chalk.bold.cyan(serverPath)}] !!!\r\n`;
 
   console.log(chalk.bold.red(message));
 

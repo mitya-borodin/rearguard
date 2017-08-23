@@ -7,9 +7,9 @@ async function copy() {
   if (isIsomorphic) {
     await makeDir(servercOutput);
     await writeFile(path.resolve(servercOutput, "package.json"), JSON.stringify({
-      private: true,
-      engines,
       dependencies,
+      engines,
+      private: true,
       scripts: {
         start: "node server.js",
       },
