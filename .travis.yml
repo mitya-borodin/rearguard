@@ -5,6 +5,8 @@ node_js:
   - '6'
 sudo: false
 dist: trusty
+before_install:
+  - npm i -g npm@3.10
 install:
   - npm install
 script:

@@ -1,7 +1,7 @@
 {
   "name": "rearguard",
   "description": "The merging of existing tools for developing front-end projects.",
-  "version": "1.6.11",
+  "version": "1.6.14",
   "engines": {
     "node": ">=6",
     "npm": ">=3.10"

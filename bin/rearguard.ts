@@ -19,7 +19,6 @@ const alias: { [key: string]: string } = {
   r: 'release',
   d: 'debug',
   a: 'analyze',
-  h: 'help',
 };
 
 const {
@@ -35,12 +34,12 @@ const {
     return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
   } else if (value.indexOf('-') === 0) {
     const flag: string = value.slice(1, value.length);
-    
+
     if (alias.hasOwnProperty(flag)) {
       return Object.assign(prevValue, { [alias[flag]]: true });
     }
   }
-  
+
   return prevValue;
 }, {});
 
@@ -49,16 +48,16 @@ if (
   (appType === 'react' || appType === 'infernojs')
 ) {
   const launch_file: string = resolve(__dirname, '../src/launchers', `${action}.js`);
-  
+
   if (existsSync(launch_file)) {
     const global_node_modules: string = execSync('npm root -g', { encoding: 'utf8' }).replace('\n', '');
     const local_node_modules: string = resolve(process.cwd(), 'node_modules');
     let node_modules_path = resolve(global_node_modules, 'rearguard/node_modules');
-  
+
     if (existsSync(resolve(local_node_modules, 'rearguard'))) {
       node_modules_path = local_node_modules;
     }
-    
+
     process.env.NODE_ENV = !release ? 'development' : 'production';
     process.env.REARGUARD_NODE_MODULE_PATH = node_modules_path;
     process.env.REARGUARD_ISOMORPHIC = isomorphic ? 'true' : 'false';
@@ -67,14 +66,14 @@ if (
     process.env.REARGUARD_VERBOSE = verbose ? 'true' : 'false';
     process.env.REARGUARD_ANALYZE = analyze ? 'true' : 'false';
     process.env.REARGUARD_DEBUG = debug ? 'true' : 'false';
-  
+
     process.env.REARGUARD_INFERNO_JS = appType === 'infernojs' ? 'true': 'false';
     process.env.REARGUARD_REACT = appType === 'react' ? 'true': 'false';
-    
+
     process.env.REARGUARD_ERROR_LOG = 'true';
-    
+
     const result = spawn.sync('node', [launch_file], { stdio: 'inherit' });
-    
+
     if (result.signal) {
       if (result.signal === 'SIGKILL') {
         console.log(
@@ -97,13 +96,13 @@ if (
               'be shutting down.'
             ),
         );
-        
+
         process.exit(1);
       }
-      
+
       process.exit(0);
     }
-    
+
     process.exit(result.status);
   } else {
     console.log(
