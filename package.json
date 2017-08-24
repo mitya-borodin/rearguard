@@ -38,7 +38,6 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
     "pretest": "npm run lint",
     "precommit": "npm test",
-    "prepush": "npm test",
     "prepublishOnly": "npm test && npm run build && sh prepublish.sh"
   },
   "dependencies": {
