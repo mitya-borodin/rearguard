@@ -6,22 +6,36 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
 
-## Готовый к использованию инструмент сборки фронтенд проектов, основанных на React или InfernoJS.
+Содержание
+----------
+* [Мотивация](#motivation)
+* [Установка](#install)
+* [CLI](#cli)
+* [Использование](#using)
+* [Конфигурация](#config)
+* [Минимально необходимая структура проекта](#structure)
+* [Пример работы modules](#modules)
+* [Пример работы proxy](#proxy)
+* [Что внутри?](#including)
 
-### Мотивация
-- Версионирование конфигурации сборки.
-- Инкрементные обновления конфигурации сборки.
-- Легкость обновления конфигурации сборки на нескольких проектах (в целевом проекте необходимо поднять версию rearguard).
-- Не копировать код конфигурации от проекта к проекту.
-- Устанавливать зависимости для разработки глобально, уменьшить кол-во копий пакетов если на одном ПК несколько 
-проектов.
-- Единственная зависимость для разработки, если глобальная установка не подходит.
-- Старт проекта без необходимости настройки.
+<a name="motivation"></a>
+### Мотивация:
+- Версионирование конфигурации сборки;
+- Простота разворачивания конфигурации сборки определённой версии;
+- Инкрементные обновления rearguard;
+- Легкость обновления на нескольких проектах;
+- Устранение избыточности в виде копий сборки в каждом проекте;
+- Возможность устанавливать rearguard глобально;
+- Одна единственная зависимость в package.json для разработки;	
+- Быстрый старт проекта без необходимости настройки;
 - Тестирование конфигурации и корректной сборки проекта.
-- Получить минимально доступную гибкость (подключить плагины для PostCSS и Babel), минимальный конфигурационный файл.
-- Проверка конфигурации на избыточные, недостающие или некорректные свойства. Имеется в виду build.config.json, который содержит полный список полей доступных для конфигурации, ни больше и ни меньше. Если указать какие-то неизвестные поля для rearguard, то вы получите сообщение о существовании полей, которые не используются. Если забыть указать какое-то поле, то вы увидите предупреждение о нехватке полей, а также какие текущие настройки применились. Если указать 
-неправильный тип данных для поля то вы так же получите оповещение о том что указали неправильный тип данных в конкретном
-поле и какие текущие настройки используются в этом поле.
+- Получить минимально доступную гибкость (подключение плагинов для PostCSS и Babel);
+- Минималистичный конфигурационный файл;
+- Проверка конфигурации на избыточные, недостающие или некорректные свойства. Имеется в виду build.config.json.
+Он содержит полный список полей доступных для конфигурации. Если указать неизвестные для rearguard поля, вы получите 
+сообщение о том что они не используются. Если забыть указать необходимое поле, применится значение по умолчанию и 
+получите сообщение о произошедшем. Если указать неправильный тип данных для поля, то вы также получите оповещение о
+том какие настройки в него применились.
 
 #### Установка
 ```sh
@@ -31,6 +45,8 @@ npm install -g rearguard
 ```sh
 npm install -D rearguard
 ```
+
+<a name="cli"></a>
 #### CLI
 ```sh
 rearguard [react | infernojs] [start | build]
@@ -42,10 +58,11 @@ rearguard [react | infernojs] [start | build]
 шаблонизатор это React или Infernojs.
 - --release | -r - сборка будет работать в production режиме как для start так и для build.
 - --analyze | -a - запустит [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), позволяет 
-понять что участвует в сборке, нет ли лишнего или все ли необходимо подключилось.
+понять что участвует в сборке, нет ли лишнего или все ли необходимое подключилось.
 - --verbose | -v - делает вывод многословным.
 - --debug | -d - выведет дополнительную отладочную информацию.
 
+<a name="using"></a>
 #### Использование
 Запуск SPA приложения основанного на библиотеке [React](https://facebook.github.io/react/)
 ```sh
@@ -64,6 +81,7 @@ rearguard infernojs start
 rearguard infernojs build --release 
 ```
 
+<a name="config"></a>
 #### Конфигурация
 При первом запуске будет автоматически сгенерированно два файла в текущей директории
 
@@ -116,7 +134,7 @@ build.config.json:
     }
   }
 }
-```
+
 socket.config.json:
 ```json
 {
@@ -135,7 +153,6 @@ module.exports = [
   require('postcss-extend')()
 ]
 ```
-
 * **_context_** - директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
 * **_entry_** - точка входа в приложение, указывается относительно _context_.
 * **_output.path_** - директория куда будут выгружен результат сборки. 
@@ -156,7 +173,9 @@ module.exports = [
 * **_typescript.config_** - объект с настройками компиляции TS, значия в этом объекте будут Object.assign с базовой 
 конфигурацией, таким образом можно влиять на настройки TS. 
 
+<a name="structure"></a>
 #### Минимально необходимая структура проекта
+
 **SPA**
 ```
 my-app
@@ -177,6 +196,8 @@ my-app
     └── server.jsx - точка входа в серверную часть приложения, тут веб сервер рендерит SPA.
 ```
 Дальнейшее развитие проекта остается на усмотрение разработчика.
+
+<a name="modules"></a>
 #### Пример работы modules
 ```
 my-app
@@ -212,14 +233,15 @@ export {default as Component4} from 'components/Component4'
   ]
 }
 ```
-То чтобы получить export.jsx необходимо в файле Component2.jsx написать следующий импорт.
+То чтобы получить `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт.
 ```javascript 1.8
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
-А если мы хотим получить Component4.jsx то импорт будет следующий.  
+Или получить `Component4` без использования `export.jsx`  
 ```javascript 1.8
-import { Component3 } from 'outSideProjectFromGitSubmodule/src/components/Component4'
+import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
+
 Если добавить новую директорию для обнаружения компонентов
 ```json
 {
@@ -233,10 +255,27 @@ import { Component3 } from 'outSideProjectFromGitSubmodule/src/components/Compon
 ```javascript 1.8
 import { Component3 } from 'export'
 ```
-А если мы хотим получить Component4.jsx то импорт будет следующий.  
+Или получить `Component4` без использования `export.jsx`
 ```javascript 1.8
-import { Component3 } from 'components/Component4'
+import Component4  from 'components/Component4'
 ```
+
+Или даже так
+```json
+{
+  "modules": [
+    "src",
+    "src/outSideProjectFromGitSubmodule/src",
+    "src/outSideProjectFromGitSubmodule/src/components"
+  ]
+}
+```
+И получить `Component4` по одному только имени
+```javascript 1.8
+import Component4  from 'Component4'
+```
+
+<a name="proxy"></a>
 #### Пример работы proxy
 ```json
 {
@@ -254,6 +293,8 @@ import { Component3 } from 'components/Component4'
 - **_/auth_** -> http://localhost:9000 _**/auth**_
 - _**/auth**_/user -> http://localhost:9000 _**/auth**_/user
 
+
+<a name="including"></a>
 #### Что внутри ?
 - [webpack](https://webpack.js.org) 3.5.5
 - [uglifyjs-webpack-plugin](https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#src/components/Sidebar/Sidebar.jsx)
