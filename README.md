@@ -134,6 +134,7 @@ build.config.json:
     }
   }
 }
+```
 
 socket.config.json:
 ```json
