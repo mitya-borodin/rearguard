@@ -24,14 +24,14 @@ export interface IBrowserslist {
 export interface IProxy {
   proxy: {
     [key: string]: string;
-  }
+  };
 }
 
 export interface IIsomorphic {
   isomorphic: {
     entry: string;
     publicDirName: string;
-  }
+  };
 }
 
 export interface ICSS {
@@ -41,7 +41,7 @@ export interface ICSS {
       [key: string]: string;
     }
     postCssPlugins: string;
-  }
+  };
 }
 
 export interface ITypescript {
@@ -54,23 +54,23 @@ export interface ITypescript {
       }
       compileOnSave: boolean;
     }
-  }
+  };
 }
 
 export interface ISocket {
   socket: {
     port: string;
     host: string;
-  }
+  };
 }
 
 export interface Ipkg {
   nodeVersion: number;
   engines: {
-    [key: string]: string
+    [key: string]: string,
   };
   dependencies: {
-    [key: string]: string
+    [key: string]: string,
   };
 }
 
@@ -89,4 +89,3 @@ export interface IEnv {
 
 export interface IBuildConfig extends IContext, IEntry, IOutput, IModules, IBrowserslist, IProxy, IIsomorphic, ICSS, ITypescript {}
 export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {}
-

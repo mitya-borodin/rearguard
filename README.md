@@ -1,12 +1,10 @@
 # Rearguard 
-
 [![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
 ![david](https://david-dm.org/Techintouch/rearguard.svg)
 [![Test Coverage](https://codeclimate.com/github/codeclimate/codeclimate/badges/coverage.svg)](https://codeclimate.com/github/Techintouch/rearguard/coverage)
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Techintouch/rearguard)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
-
 
 Содержание
 ----------
@@ -20,29 +18,24 @@
 * [Пример работы proxy](#proxy)
 * [Что внутри?](#including)
 
-
 <a name="motivation"></a>
-
 ### Мотивация:
 - Версионирование конфигурации сборки;
 - Простота разворачивания конфигурации сборки определённой версии;
-- Обновление только изменившиейся части конфигурации инкрементно;
+- Инкрементные обновления rearguard;
 - Легкость обновления на нескольких проектах;
 - Устранение избыточности в виде копий сборки в каждом проекте;
-- Возможность устанавливать зависимости глобально;
+- Возможность устанавливать rearguard глобально;
 - Одна единственная зависимость в package.json для разработки;	
 - Быстрый старт проекта без необходимости настройки;
-- Тестирование конфигурации и результа работы;
+- Тестирование конфигурации и корректной сборки проекта.
 - Получить минимально доступную гибкость (подключение плагинов для PostCSS и Babel);
 - Минималистичный конфигурационный файл;
-- Проверка конфигурации на избыточные, недостающие или некорректные свойства. _Имеется в виду build.config.json.
-Он содержит полный список полей доступных для конфигурации. Если указать неизвестные 
-для rearguard поля, вы получите сообщение о том что они не используются. Если забыть указать
-необходимое поле, применится значение по умолчанию и получите сообщение о произошедшем. Если указать 
-неправильный тип данных для поля, то вы также получите оповещение о том какие настройки в него применились._
-
-
-<a name="install"></a>
+- Проверка конфигурации на избыточные, недостающие или некорректные свойства. Имеется в виду build.config.json.
+Он содержит полный список полей доступных для конфигурации. Если указать неизвестные для rearguard поля, вы получите 
+сообщение о том что они не используются. Если забыть указать необходимое поле, применится значение по умолчанию и 
+получите сообщение о произошедшем. Если указать неправильный тип данных для поля, то вы также получите оповещение о
+том какие настройки в него применились.
 
 #### Установка
 ```sh
@@ -54,7 +47,6 @@ npm install -D rearguard
 ```
 
 <a name="cli"></a>
-
 #### CLI
 ```sh
 rearguard [react | infernojs] [start | build]
@@ -62,6 +54,8 @@ rearguard [react | infernojs] [start | build]
 Доступные флаги: 
 - --typescript | -ts - включает поддержку typescript, ts, tsx файлов.
 - --isomorphic | -i - переводит сборку в изоморфный режим.
+- --onlyServer - работает только с серверной частью изоморфного приложения, фактически получается классический веб сервер где 
+шаблонизатор это React или Infernojs.
 - --release | -r - сборка будет работать в production режиме как для start так и для build.
 - --analyze | -a - запустит [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), позволяет 
 понять что участвует в сборке, нет ли лишнего или все ли необходимое подключилось.
@@ -69,7 +63,6 @@ rearguard [react | infernojs] [start | build]
 - --debug | -d - выведет дополнительную отладочную информацию.
 
 <a name="using"></a>
-
 #### Использование
 Запуск SPA приложения основанного на библиотеке [React](https://facebook.github.io/react/)
 ```sh
@@ -89,7 +82,6 @@ rearguard infernojs build --release
 ```
 
 <a name="config"></a>
-
 #### Конфигурация
 При первом запуске будет автоматически сгенерированно два файла в текущей директории
 
@@ -97,23 +89,23 @@ rearguard infernojs build --release
 - socket.config.json - не версионируется 
 
 build.config.json:
-```javascript 1.8 
+```json 
 {
-  "context": "src", // директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
-  "entry": "index.jsx", // точка входа в приложение, указывается относительно context.
+  "context": "src",
+  "entry": "index.jsx",
   "output": {
-    "path": "dist", // директория куда будут выгружен результат сборки. 
-    "publicPath": "/" // url для получения статики.
+    "path": "dist",
+    "publicPath": "/"
   },
-  "modules": [ // директории в которых webpack будет искать модули. Смотри раздел "Пример использования modules".
+  "modules": [
     "src"
   ],
-  "browserslist": [ // список который очерчивает круг поддерживаемых браузеров. Используется для env и autoprefixer.
+  "browserslist": [
     ">0.1%",
     "last 2 versions",
     "not ie <= 11"
   ],
-  "proxy": { // объект отписывает с какого path перенаправлять на какой host и path. Смотри раздел "Пример использования proxy".
+  "proxy": {
     "/graphql": "http://localhost:9000",
     "/auth": "http://localhost:9000"
   },
@@ -122,8 +114,8 @@ build.config.json:
     "publicDirName": "public"
   },
   "css": {
-    "isolation": true, // включает postcss-autoreset и postcss-initial.
-    "reset": { // настройки для postcss-autoreset и postcss-initial
+    "isolation": true,
+    "reset": {
       "all": "initial",
       "font-size": "inherit",
       "font-family": "Avenir Next, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
@@ -131,28 +123,17 @@ build.config.json:
       "boxSizing": "border-box",
       "cursor": "inherit"
     },
-    "postCssPlugins": "postCssPlugins.js" // путь к файлу postCssPlugins.js где подключаются плагины для PostCSS в целевом проекте.
+    "postCssPlugins": "postCssPlugins.js"
   },
   "typescript": {
-    "configPath": "tsconfig.json", // путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл !!!не версионируется!!!.
-    "showConfigForIDE": true, // флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если он не нужен то его можно и не генерировать. 
-    "config": { // объект с настройками компиляции TS. Значия в этом объекте будут объеденены через Object.assign с базовой конфигурацией. Таким образом можно влиять на настройки TS. 
+    "configPath": "tsconfig.json",
+    "showConfigForIDE": true,
+    "config": {
       "compilerOptions": {},
       "compileOnSave": false
     }
   }
 }
-```
-
-_* Комментарии здесь даны для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга._
-
-_*\* Ссылки: [browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11); 
-[env](https://github.com/babel/babel-preset-env);
-[autoprefixer](https://github.com/postcss/autoprefixer);
-[postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset);
-[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)._
-
-
 
 socket.config.json:
 ```json
@@ -172,12 +153,27 @@ module.exports = [
   require('postcss-extend')()
 ]
 ```
-
-
-
+* **_context_** - директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
+* **_entry_** - точка входа в приложение, указывается относительно _context_.
+* **_output.path_** - директория куда будут выгружен результат сборки. 
+* **_output.publicPath_** - это url по которому можно будет получить статику.
+* **_modules_** - это директории в которых webpack будет искать модули, пример будет ниже.
+* **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список который очерчивает 
+круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
+[autoprefixer](https://github.com/postcss/autoprefixer)
+* **_proxy_** - объект отписывает с кого path перенаправлять на какой host и path, примеры будут ниже.
+* **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
+[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
+* **_css.reset_** - настройки для postcss-autoreset и postcss-initial
+* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_** где подключаются плагины для PostCSS в целевом проекте.
+* **_typescript.configPath_** - путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации 
+генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл **не версионируется**.
+* **_typescript.showConfigForIDE_** - флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если 
+он не нужен то его можно и не генерировать. 
+* **_typescript.config_** - объект с настройками компиляции TS, значия в этом объекте будут Object.assign с базовой 
+конфигурацией, таким образом можно влиять на настройки TS. 
 
 <a name="structure"></a>
-
 #### Минимально необходимая структура проекта
 
 **SPA**
@@ -202,7 +198,6 @@ my-app
 Дальнейшее развитие проекта остается на усмотрение разработчика.
 
 <a name="modules"></a>
-
 #### Пример работы modules
 ```
 my-app
@@ -247,8 +242,6 @@ import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
 
-
-
 Если добавить новую директорию для обнаружения компонентов
 ```json
 {
@@ -282,14 +275,7 @@ import Component4  from 'components/Component4'
 import Component4  from 'Component4'
 ```
 
-
-
-
-
-
-
 <a name="proxy"></a>
-
 #### Пример работы proxy
 ```json
 {
@@ -309,8 +295,6 @@ import Component4  from 'Component4'
 
 
 <a name="including"></a>
-
-
 #### Что внутри ?
 - [webpack](https://webpack.js.org) 3.5.5
 - [uglifyjs-webpack-plugin](https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#src/components/Sidebar/Sidebar.jsx)
