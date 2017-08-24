@@ -238,14 +238,17 @@ export {default as Component4} from 'components/Component4'
   ]
 }
 ```
-То чтобы получить export.jsx необходимо в файле Component2.jsx написать следующий импорт.
+То чтобы получить `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт.
 ```javascript 1.8
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
-А если мы хотим получить Component4.jsx то импорт будет следующий.  
+Или без использования `export.jsx`  
 ```javascript 1.8
-import { Component3 } from 'outSideProjectFromGitSubmodule/src/components/Component4'
+import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
+
+
+
 Если добавить новую директорию для обнаружения компонентов
 ```json
 {
@@ -259,10 +262,11 @@ import { Component3 } from 'outSideProjectFromGitSubmodule/src/components/Compon
 ```javascript 1.8
 import { Component3 } from 'export'
 ```
-А если мы хотим получить Component4.jsx то импорт будет следующий.  
+Или бещ использования `export.jsx`
 ```javascript 1.8
-import { Component3 } from 'components/Component4'
+import  Component4  from 'components/Component4'
 ```
+
 
 <a name="proxy"></a>
 
