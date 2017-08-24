@@ -99,21 +99,21 @@ rearguard infernojs build --release
 build.config.json:
 ```javascript 1.8 
 {
-  "context": "src", // директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
-  "entry": "index.jsx", // точка входа в приложение, указывается относительно context.
+  "context": "src", 			// директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
+  "entry": "index.jsx", 		// точка входа в приложение, указывается относительно context.
   "output": {
-    "path": "dist", // директория куда будут выгружен результат сборки. 
-    "publicPath": "/"  // это url по которому можно будет получить статику.
+    "path": "dist", 			// директория куда будут выгружен результат сборки. 
+    "publicPath": "/"  			// url для получения статики.
   },
-  "modules": [ // директории в которых webpack будет искать модули, пример будет ниже.
+  "modules": [ 					// директории в которых webpack будет искать модули. Смотри раздел "Пример использования modules".
     "src"
   ],
-  "browserslist": [
+  "browserslist": [ 			// список который очерчивает круг поддерживаемых браузеров. Используется для env и autoprefixer.
     ">0.1%",
     "last 2 versions",
     "not ie <= 11"
   ],
-  "proxy": {
+  "proxy": { 					// объект отписывает с какого path перенаправлять на какой host и path. Смотри раздел "Пример использования proxy".
     "/graphql": "http://localhost:9000",
     "/auth": "http://localhost:9000"
   },
@@ -122,8 +122,8 @@ build.config.json:
     "publicDirName": "public"
   },
   "css": {
-    "isolation": true,
-    "reset": {
+    "isolation": true, 			// включает postcss-autoreset и postcss-initial.
+    "reset": { 					// настройки для postcss-autoreset и postcss-initial
       "all": "initial",
       "font-size": "inherit",
       "font-family": "Avenir Next, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
@@ -131,12 +131,12 @@ build.config.json:
       "boxSizing": "border-box",
       "cursor": "inherit"
     },
-    "postCssPlugins": "postCssPlugins.js"
+    "postCssPlugins": "postCssPlugins.js" // путь к файлу postCssPlugins.js где подключаются плагины для PostCSS в целевом проекте.
   },
   "typescript": {
-    "configPath": "tsconfig.json",
-    "showConfigForIDE": true,
-    "config": {
+    "configPath": "tsconfig.json", 	// путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл !!!не версионируется!!!.
+    "showConfigForIDE": true, /		// флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если он не нужен то его можно и не генерировать. 
+    "config": { 					// объект с настройками компиляции TS. Значия в этом объекте будут объеденены через Object.assign с базовой конфигурацией. Таким образом можно влиять на настройки TS. 
       "compilerOptions": {},
       "compileOnSave": false
     }
@@ -144,27 +144,12 @@ build.config.json:
 }
 ```
 
-\* комментарии здесь даны для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга.
-
-* **_context_** - 
-* **_entry_** - 
-* **_output.path_** - 
-* **_output.publicPath_** -
-* **_modules_** - 
-* **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список который очерчивает 
-круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
-[autoprefixer](https://github.com/postcss/autoprefixer)
-* **_proxy_** - объект отписывает с кого path перенаправлять на какой host и path, примеры будут ниже.
-* **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
-[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
-* **_css.reset_** - настройки для postcss-autoreset и postcss-initial
-* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_** где подключаются плагины для PostCSS в целевом проекте.
-* **_typescript.configPath_** - путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации 
-генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл **не версионируется**.
-* **_typescript.showConfigForIDE_** - флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если 
-он не нужен то его можно и не генерировать. 
-* **_typescript.config_** - объект с настройками компиляции TS, значия в этом объекте будут Object.assign с базовой 
-конфигурацией, таким образом можно влиять на настройки TS. 
+_* Комментарии здесь даны для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга._
+_** Ссылки: _[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_**; 
+[env](https://github.com/babel/babel-preset-env);
+[autoprefixer](https://github.com/postcss/autoprefixer);
+[postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset);
+[postcss-initial](https://github.com/maximkoretskiy/postcss-initial);
 
 
 
