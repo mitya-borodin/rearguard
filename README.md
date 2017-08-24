@@ -146,7 +146,7 @@ build.config.json:
 
 _* Комментарии здесь даны для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга._
 
-_** Ссылки: _[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_**; 
+_*\* Ссылки: [browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11); 
 [env](https://github.com/babel/babel-preset-env);
 [autoprefixer](https://github.com/postcss/autoprefixer);
 [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset);
