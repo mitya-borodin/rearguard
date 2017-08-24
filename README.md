@@ -242,7 +242,7 @@ export {default as Component4} from 'components/Component4'
 ```javascript 1.8
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
-Или без использования `export.jsx`  
+Или получить `Component4` без использования `export.jsx`  
 ```javascript 1.8
 import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
@@ -262,10 +262,30 @@ import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4
 ```javascript 1.8
 import { Component3 } from 'export'
 ```
-Или бещ использования `export.jsx`
+Или получить `Component4` без использования `export.jsx`
 ```javascript 1.8
-import  Component4  from 'components/Component4'
+import Component4  from 'components/Component4'
 ```
+
+Или даже так
+```json
+{
+  "modules": [
+    "src",
+    "src/outSideProjectFromGitSubmodule/src",
+    "src/outSideProjectFromGitSubmodule/src/components"
+  ]
+}
+```
+И получить `Component4` по одному только имени
+```javascript 1.8
+import Component4  from 'Component4'
+```
+
+
+
+
+
 
 
 <a name="proxy"></a>
