@@ -97,15 +97,15 @@ rearguard infernojs build --release
 - socket.config.json - не версионируется 
 
 build.config.json:
-```json 
+```javascript 1.8 
 {
   "context": "src", // директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
   "entry": "index.jsx", // точка входа в приложение, указывается относительно context.
   "output": {
     "path": "dist", // директория куда будут выгружен результат сборки. 
-    "publicPath": "/"  это url по которому можно будет получить статику.
+    "publicPath": "/"  // это url по которому можно будет получить статику.
   },
-  "modules": [
+  "modules": [ // директории в которых webpack будет искать модули, пример будет ниже.
     "src"
   ],
   "browserslist": [
@@ -142,13 +142,15 @@ build.config.json:
     }
   }
 }
-* комментарии здесь для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга.
+```
+
+\* комментарии здесь даны для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга.
 
 * **_context_** - 
 * **_entry_** - 
 * **_output.path_** - 
 * **_output.publicPath_** -
-* **_modules_** - это директории в которых webpack будет искать модули, пример будет ниже.
+* **_modules_** - 
 * **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список который очерчивает 
 круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
 [autoprefixer](https://github.com/postcss/autoprefixer)
@@ -166,7 +168,6 @@ build.config.json:
 
 
 
-```
 socket.config.json:
 ```json
 {
