@@ -37,9 +37,9 @@
 - Минималистичный конфигурационный файл;
 - Проверка конфигурации на избыточные, недостающие или некорректные свойства. _Имеется в виду build.config.json.
 Он содержит полный список полей доступных для конфигурации. Если указать неизвестные 
-для rearguard поля то вы получите сообщение о том что они не используются. Если забыть указать
+для rearguard поля, вы получите сообщение о том что они не используются. Если забыть указать
 необходимое поле, применится значение по умолчанию и получите сообщение о произошедшем. Если указать 
-неправильный тип данных для поля, то вы также получите об этом оповещение и какие настройки в него применились._
+неправильный тип данных для поля, то вы также получите оповещение о том какие настройки в него применились._
 
 
 <a name="install"></a>
@@ -64,9 +64,9 @@ rearguard [react | infernojs] [start | build]
 - --isomorphic | -i - переводит сборку в изоморфный режим.
 - --release | -r - сборка будет работать в production режиме как для start так и для build.
 - --analyze | -a - запустит [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), позволяет 
-понять что участвует в сборке, нет ли лишнего или все ли необходимо подключилось.
+понять что участвует в сборке, нет ли лишнего или все ли необходимое подключилось.
 - --verbose | -v - делает вывод многословным.
-- --debug | -d - выведет дополнительную отладочную инфрпмацию.
+- --debug | -d - выведет дополнительную отладочную информацию.
 
 <a name="using"></a>
 
@@ -99,11 +99,11 @@ rearguard infernojs build --release
 build.config.json:
 ```json 
 {
-  "context": "src",
-  "entry": "index.jsx",
+  "context": "src", // директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
+  "entry": "index.jsx", // точка входа в приложение, указывается относительно context.
   "output": {
-    "path": "dist",
-    "publicPath": "/"
+    "path": "dist", // директория куда будут выгружен результат сборки. 
+    "publicPath": "/"  это url по которому можно будет получить статику.
   },
   "modules": [
     "src"
@@ -142,6 +142,30 @@ build.config.json:
     }
   }
 }
+* комментарии здесь для наглядности, при попытке использовать этот пример в проекте (кстати зачем?) будет вызвана ошибка парсинга.
+
+* **_context_** - 
+* **_entry_** - 
+* **_output.path_** - 
+* **_output.publicPath_** -
+* **_modules_** - это директории в которых webpack будет искать модули, пример будет ниже.
+* **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список который очерчивает 
+круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
+[autoprefixer](https://github.com/postcss/autoprefixer)
+* **_proxy_** - объект отписывает с кого path перенаправлять на какой host и path, примеры будут ниже.
+* **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
+[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
+* **_css.reset_** - настройки для postcss-autoreset и postcss-initial
+* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_** где подключаются плагины для PostCSS в целевом проекте.
+* **_typescript.configPath_** - путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации 
+генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл **не версионируется**.
+* **_typescript.showConfigForIDE_** - флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если 
+он не нужен то его можно и не генерировать. 
+* **_typescript.config_** - объект с настройками компиляции TS, значия в этом объекте будут Object.assign с базовой 
+конфигурацией, таким образом можно влиять на настройки TS. 
+
+
+
 ```
 socket.config.json:
 ```json
@@ -162,25 +186,7 @@ module.exports = [
 ]
 ```
 
-* **_context_** - директория от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
-* **_entry_** - точка входа в приложение, указывается относительно _context_.
-* **_output.path_** - директория куда будут выгружен результат сборки. 
-* **_output.publicPath_** - это url по которому можно будет получить статику.
-* **_modules_** - это директории в которых webpack будет искать модули, пример будет ниже.
-* **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список который очерчивает 
-круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
-[autoprefixer](https://github.com/postcss/autoprefixer)
-* **_proxy_** - объект отписывает с кого path перенаправлять на какой host и path, примеры будут ниже.
-* **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
-[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
-* **_css.reset_** - настройки для postcss-autoreset и postcss-initial
-* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_** где подключаются плагины для PostCSS в целевом проекте.
-* **_typescript.configPath_** - путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации 
-генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл **не версионируется**.
-* **_typescript.showConfigForIDE_** - флаг необходимый для включения или выглючения генерации tsconfig.json файла. Если 
-он не нужен то его можно и не генерировать. 
-* **_typescript.config_** - объект с настройками компиляции TS, значия в этом объекте будут Object.assign с базовой 
-конфигурацией, таким образом можно влиять на настройки TS. 
+
 
 
 <a name="structure"></a>
