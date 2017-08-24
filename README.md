@@ -41,7 +41,7 @@
 ```sh
 npm install -g rearguard
 ```
-если глобальная установка неподходит
+если глобальная установка не подходит
 ```sh
 npm install -D rearguard
 ```
