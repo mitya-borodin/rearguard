@@ -1,7 +1,6 @@
 {
   "name": "rearguard",
-  "description": "The merging of existing tools for developing front-end projects.",
-  "version": "1.6.17",
+  "version": "1.6.19",
   "engines": {
     "node": ">=6",
     "npm": ">=3.10"
@@ -38,7 +37,6 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
     "pretest": "npm run lint",
     "precommit": "npm test",
-    "prepush": "npm test",
     "prepublishOnly": "npm test && npm run build && sh prepublish.sh"
   },
   "dependencies": {
@@ -99,7 +97,6 @@
     "webpack-node-externals": "1.6.0",
     "write-file-webpack-plugin": "4.1.0"
   },
-  "license": "MIT",
   "devDependencies": {
     "@types/assets-webpack-plugin": "3.5.0",
     "@types/browser-sync": "0.0.36",
@@ -126,5 +123,30 @@
     "nyc": "11.1.0",
     "tslint": "5.6.0",
     "typescript": "2.4.2"
-  }
+  },
+  "description": "The merging of existing tools for developing front-end projects.",
+  "keywords": [
+    "webpack",
+    "isomorphic",
+    "react",
+    "infernojs",
+    "css-modules",
+    "postcss",
+    "autoprefixer",
+    "postcss-initial",
+    "build react app",
+    "build infernojs app",
+    "babel",
+    "babel-preset-react",
+    "babel-preset-react-optimize",
+    "babel-plugin-inferno",
+    "babel-preset-env",
+    "typescript",
+    "ts-loader",
+    "isomorphic-style-loader",
+    "tools",
+    "dev tools",
+    "build tools"
+  ],
+  "license": "MIT"
 }
