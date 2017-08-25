@@ -53,31 +53,31 @@ npm install -D rearguard
 rearguard [react | infernojs] [start | build]
 ```
 Доступные флаги: 
-- --typescript | -ts - включает поддержку typescript, ts, tsx файлов.
-- --isomorphic | -i - переводит сборку в изоморфный режим.
-- --onlyServer - работает только с серверной частью изоморфного приложения, фактически получается классический веб-сервер, где 
-шаблонизатор это React или Infernojs.
-- --release | -r - сборка будет работать в production режиме как для start так и для build.
-- --analyze | -a - запустит [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), позволяет 
-понять что участвует в сборке, нет ли лишнего или всё ли необходимое подключилось.
-- --verbose | -v - делает вывод многословным.
-- --debug | -d - выведет дополнительную отладочную информацию.
+- --typescript | -ts - включение поддержки typescript, ts, tsx файлов.
+- --isomorphic | -i - перевод сборки в изоморфный режим.
+- --onlyServer - работа только с серверной частью изоморфного приложения (фактически, получается классический веб 
+сервер, где шаблонизатор это React или Infernojs).
+- --release | -r - работа сборки в production режиме, как для start, так и для build.
+- --analyze | -a - запуск [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), помогает
+проанализировать содержимое сборки.
+- --verbose | -v - многословный вывод.
+- --debug | -d - вывод дополнительной отладочной информации.
 
 <a name="using"></a>
 #### Использование
-Запуск SPA приложения основанного на библиотеке [React](https://facebook.github.io/react/)
+Запуск SPA приложения, основанного на библиотеке [React](https://facebook.github.io/react/)
 ```sh
 rearguard react start 
 ```
-Сборка в production режиме SPA приложения основанного на библиотеке [React](https://facebook.github.io/react/)
+Сборка в production режиме SPA приложения, основанного на библиотеке [React](https://facebook.github.io/react/)
 ```sh
 rearguard react build --release 
 ```
-Запуск SPA приложения основанного на библиотеке [infernojs](https://infernojs.org/)
+Запуск SPA приложения, основанного на библиотеке infernojs [infernojs](https://infernojs.org/)
 ```sh
 rearguard infernojs start 
 ```
-Сборка в production режиме SPA приложения основанного на библиотеке [infernojs](https://infernojs.org/)
+Сборка в production режиме SPA приложения, основанного на библиотеке infernojs [infernojs](https://infernojs.org/)
 ```sh
 rearguard infernojs build --release 
 ```
@@ -155,21 +155,23 @@ module.exports = [
   require('postcss-extend')()
 ]
 ```
-* **_context_** - директория, от которой будут расчитываться все остальные пути, можно указать путь внутри директории запуска. 
+* **_context_** - базовая директория проекта. 
 * **_entry_** - точка входа в приложение, указывается относительно _context_.
-* **_output.path_** - директория куда будет выгружен результат сборки. 
+* **_output.path_** - директория, куда будет выгружен результат сборки. 
 * **_output.publicPath_** - это url, по которому можно будет получить статику.
 * **_modules_** - это директории, в которых webpack будет искать модули, пример будет ниже.
 * **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список, который очерчивает 
 круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
 [autoprefixer](https://github.com/postcss/autoprefixer)
-* **_proxy_** - объект отписывает с кого path перенаправлять на какой host и path, примеры будут ниже.
+* **_proxy_** - объект отписывает с какого path перенаправлять на какой host и path, примеры будут ниже.
+* **_isomorphic.entry_** - точка входа в приложение веб-сервера.
+* **_isomorphic.publicDirName_** - имя директории, в которой содержатся файлы в основном используемые в `<meta>` тегах и поисковыми системами. Копируется в **_output.path_**. Эти файлы не импортируются в проект. 
 * **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
 [postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
 * **_css.reset_** - настройки для postcss-autoreset и postcss-initial
-* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_** где подключаются плагины для PostCSS в целевом проекте.
-* **_typescript.configPath_** - путь к файлу tsconfig.json где находится конфигурация для typescript, этот файл конфигурации 
-генерируется автоматически и нужен для того чтобы его читала IDE. Этот файл **не версионируется**.
+* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_**, где подключаются плагины для PostCSS в целевом проекте.
+* **_typescript.configPath_** - путь к файлу tsconfig.json, где находится конфигурация для typescript, этот файл конфигурации 
+генерируется автоматически и нужен для того, чтобы его читала IDE. Этот файл **не версионируется**.
 * **_typescript.showConfigForIDE_** - флаг необходимый для включения или выключения генерации tsconfig.json файла. 
 * **_typescript.config_** - объект с настройками компиляции TS, значения в этом объекте будут Object.assign с базовой 
 конфигурацией, таким образом, можно влиять на настройки TS. 
@@ -181,32 +183,37 @@ module.exports = [
 ```
 my-app
 ├── package.json
-├── public
+├── public - isomorphic.publicDirName
 │   └── favicon.ico
-└── src
-    └── index.jsx - точка входа в SPA приложение
+└── src - context
+    └── index.jsx - entry
 ```
 **Isomorphic**
 ```
 my-app
 ├── package.json
-├── public
+├── public - isomorphic.publicDirName
 │   └── favicon.ico
-└── src
-    └── index.jsx - точка входа в SPA приложение
-    └── server.jsx - точка входа в серверную часть приложения, тут веб-сервер рендерит SPA.
+└── src - context
+    └── index.jsx - entry
+    └── server.jsx - isomorphic.entry
 ```
 Дальнейшее развитие проекта остаётся на усмотрение разработчика.
 
 <a name="modules"></a>
 #### Пример работы modules
+**outSideProjectFromGitSubmodule** - этот проект разрабатывается отдельно, например это проект с версткой. 
+
+**my-app** - этот проект нуждается в компонентах которые разрабатываются в проекте `outSideProjectFromGitSubmodule`.
+
+Одним из вариантов доставки компонентов из `outSideProjectFromGitSubmodule` в `my-app`, является подключение `outSideProjectFromGitSubmodule` как git submodule в `my-app`.
 ```
 my-app
 ├── package.json
-├── public
+├── public - isomorphic.publicDirName
 │   └── favicon.ico
-└── src
-    ├── outSideProjectFromGitSubmodule
+└── src - context
+    ├── outSideProjectFromGitSubmodule (git submodule)
     │   ├── package.json
     │   ├── public
     │   │   └── favicon.ico
@@ -219,14 +226,14 @@ my-app
     ├── components
     │   ├── Component1.jsx    
     │   └── Component2.jsx      
-    └── index.jsx
+    └── index.jsx - entry
 ```
 export.jsx
 ```javascript 1.8
 export {default as Component3} from 'components/Component3'
 export {default as Component4} from 'components/Component4'
 ```
-Если использовать так:
+Добавим `src` как директорию в которой webpack будер искать модули:
 ```json
 {
   "modules": [
@@ -234,7 +241,7 @@ export {default as Component4} from 'components/Component4'
   ]
 }
 ```
-То, чтобы получить `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
+Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
 ```javascript 1.8
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
@@ -243,7 +250,7 @@ import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
 
-Если добавить новую директорию для обнаружения компонентов:
+Добавим ещё одну директорию `src/outSideProjectFromGitSubmodule/src` из (git submodule) в котором имеются интересующие нас компоненты.
 ```json
 {
   "modules": [
@@ -252,7 +259,7 @@ import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4
   ]
 }
 ```
-То, чтобы получить export.jsx необходимо в файле Component2.jsx написать следующий импорт:
+Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
 ```javascript 1.8
 import { Component3 } from 'export'
 ```
@@ -294,7 +301,8 @@ import Component4  from 'Component4'
 - **_/auth_** -> http://localhost:9000 _**/auth**_
 - _**/auth**_/user -> http://localhost:9000 _**/auth**_/user
 
-
+В режиме SPA используется webpack-dev-server который в свою очередь использует [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#core-concept) для работы proxy. 
+В режиме Isomorphic или onlyServer используется веб-сервер который находится 
 <a name="including"></a>
 #### Что внутри ?
 - [webpack](https://webpack.js.org) 3.5.5
