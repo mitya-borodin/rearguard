@@ -1,11 +1,8 @@
 # Rearguard 
 [![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
 ![david](https://david-dm.org/Techintouch/rearguard.svg)
-
 [![Test Coverage](https://codeclimate.com/github/Techintouch/rearguard/badges/coverage.svg)](https://codeclimate.com/github/Techintouch/rearguard/coverage)
-
 [![Code Climate](https://codeclimate.com/github/Techintouch/rearguard/badges/gpa.svg)](https://codeclimate.com/github/Techintouch/rearguard)
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 [![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
 
