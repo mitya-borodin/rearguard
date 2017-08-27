@@ -70,7 +70,7 @@
     "joi": "10.6.0",
     "mkdirp": "0.5.1",
     "pleeease-filters": "4.0.0",
-    "postcss-autoreset": "2.0.0",
+    "postcss-autoreset": "2.0.1",
     "postcss-color-function": "4.0.0",
     "postcss-custom-media": "6.0.0",
     "postcss-custom-properties": "6.1.0",
