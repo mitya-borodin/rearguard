@@ -1,5 +1,6 @@
 # Rearguard 
 [![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
+[![Coverage Status](https://coveralls.io/repos/github/Techintouch/rearguard/badge.svg?branch=master)](https://coveralls.io/github/Techintouch/rearguard?branch=master)
 ![david](https://david-dm.org/Techintouch/rearguard.svg)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
 
