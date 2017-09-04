@@ -1,10 +1,7 @@
 # Rearguard 
 [![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
 ![david](https://david-dm.org/Techintouch/rearguard.svg)
-[![Test Coverage](https://codeclimate.com/github/codeclimate/codeclimate/badges/coverage.svg)](https://codeclimate.com/github/Techintouch/rearguard/coverage)
-[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Techintouch/rearguard)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
-[![NSP Status](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726/badge)](https://nodesecurity.io/orgs/knowledge-director/projects/cf203f22-265b-40e3-8a54-1b34506b7726)
 
 Содержание
 ----------
@@ -25,11 +22,11 @@
 - Простота разворачивания конфигурации сборки определённой версии;
 - Инкрементные обновления rearguard;
 - Легкость обновления на нескольких проектах;
-- Устранение избыточности в виде копий пакетов зависимостей которые нужны для работы сборки, в каждом проекте;
+- Устранение избыточности в виде копий пакетов зависимостей, которые нужны для работы сборки, в каждом проекте;
 - Возможность устанавливать rearguard глобально;
 - Единственная зависимость в package.json для разработки;	
 - Быстрый старт проекта без необходимости настройки;
-- Тестирование rearguard и ключевых особенностей в целевом проекте который был собран через rearguard;
+- Тестирование rearguard и ключевых особенностей в целевом проекте, который был собран через rearguard;
 - Получить минимально доступную гибкость (подключение плагинов для PostCSS и Babel);
 - Минималистичный конфигурационный файл;
 - Проверка конфигурации на избыточные, недостающие или некорректные свойства. 
@@ -160,7 +157,7 @@ module.exports = [
 ]
 ```
 * **_context_** - базовая директория проекта. 
-* **_entry_** - точка входа в приложение, указывается относительно _context_.
+* **_entry_** - точка входа в приложение указывается относительно _context_.
 * **_output.path_** - директория, куда будет выгружен результат сборки. 
 * **_output.publicPath_** - это url, по которому можно будет получить статику.
 * **_modules_** - это директории, в которых webpack будет искать модули, пример будет ниже.
@@ -330,3 +327,5 @@ import Component4  from 'Component4'
 - [postcss-media-minmax](https://github.com/postcss/postcss-media-minmax)
 - [postcss-flexbugs-fixes](https://github.com/luisrudge/postcss-flexbugs-fixes)
 - [autoprefixer](https://github.com/postcss/autoprefixer)
+
+This is my consolidation of tools for building front-end apps base on react or infernojs, 
