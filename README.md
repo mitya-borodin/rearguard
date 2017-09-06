@@ -45,7 +45,7 @@ npm install -D rearguard
 ```
 Глобально для использования сразу в нескольких проектах.
 ```sh
-npm install -D rearguard
+npm install -g rearguard
 ```
 
 <a name="cli"></a>
