@@ -1,6 +1,6 @@
-import fs from "fs";
-import mkdirp from "mkdirp";
-import path from "path";
+import * as fs from "fs";
+import * as mkdirp from "mkdirp";
+import * as path from "path";
 import {
   context,
   isInferno,
@@ -14,7 +14,8 @@ import {
 export default () => {
   if (isTS) {
     const { configPath, showConfigForIDE, config: { compilerOptions, compileOnSave } } = typescript;
-    const { dependencies: { typescript: version } } = require(path.resolve(__dirname, "../../package.json"));
+    const { devDependencies: { typescript: version } } = require(path.resolve(__dirname, "../../../package.json"));
+
     const config = {
       compileOnSave,
       compilerOptions: Object.assign({
