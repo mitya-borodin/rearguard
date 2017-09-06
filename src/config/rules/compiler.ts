@@ -43,15 +43,12 @@ export default (
     cacheDirectory: isDevelopment,
     plugins: [
       resolveNodeModules("babel-plugin-transform-decorators-legacy"),
-
       ...isOldNode ? [resolveNodeModules("babel-plugin-transform-regenerator")] : [],
-
       ...isInferno && !isReact
         ? [
           [resolveNodeModules("babel-plugin-inferno"), { imports: true }],
         ]
         : [],
-
       ...isReact && !isInferno && !isDevelopment
         ? [
           resolveNodeModules("babel-plugin-transform-react-constant-elements"),
@@ -61,20 +58,19 @@ export default (
         ]
         : [],
       ...plugins,
-
       [
         resolveNodeModules("babel-plugin-transform-runtime"),
         isServerSide
           ? {
-            helpers: isOldNode || true,
+            helpers: isOldNode,
             moduleName: "babel-runtime",
             polyfill: isVeryOldNode,
             regenerator: isOldNode,
           }
           : {
-            helpers: false,
+            helpers: isOldNode,
             moduleName: "babel-runtime",
-            polyfill: false,
+            polyfill: isVeryOldNode,
             regenerator: isOldNode,
           },
       ],
