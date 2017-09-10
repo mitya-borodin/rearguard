@@ -121,7 +121,7 @@
     "@types/webpack-hot-middleware": "2.16.0",
     "chai": "4.1.2",
     "husky": "0.14.3",
-    "mocha": "3.5.0",
+    "mocha": "3.5.1",
     "nyc": "11.1.0"
   },
   "description": "The merging of existing tools for developing front-end projects.",
