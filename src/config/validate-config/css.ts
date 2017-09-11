@@ -5,26 +5,14 @@ import detectConfig from "./common";
 
 const defaultValue: ICSS = {
   css: {
-    isolation: true,
     postCssPlugins: "postCssPlugins.js",
-    reset: {
-      "all": "initial",
-      "boxSizing": "border-box",
-      "display": "block",
-      "font-family": "Avenir Next, -apple-system, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
-      "font-size": "inherit",
-    },
   },
 };
 
 const propType = {
   css: Joi.object()
     .keys({
-      isolation: Joi.boolean()
-        .required(),
       postCssPlugins: Joi.string()
-        .required(),
-      reset: Joi.object()
         .required(),
     })
     .required(),

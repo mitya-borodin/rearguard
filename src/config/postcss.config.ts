@@ -1,4 +1,4 @@
-import { browserslist, context, css } from "./target.config";
+import {browserslist, context, css} from "./target.config";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
@@ -6,20 +6,16 @@ import { browserslist, context, css } from "./target.config";
 module.exports = (loader: any) => ([
   // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
   // https://github.com/postcss/postcss-import
-  require("postcss-import")({ path: context }),
+  require("postcss-import")({path: context}),
+
+  // https://github.com/maximkoretskiy/postcss-initial
+  // This is polyfill for css rule: "all: initial".
+  require("postcss-initial")({reset: "inherited"}),
 
   // PostCSS plugin to transform :not() W3C CSS leve 4 pseudo class to :not() CSS level 3 selectors
   // http://dev.w3.org/csswg/selectors-4/#negation
   // https://github.com/postcss/postcss-selector-not
   require("postcss-selector-not")(),
-
-  ...css.isolation ? [
-    // PostCSS plugin for automatic rules isolation
-    // https://github.com/maximkoretskiy/postcss-autoreset
-    require("postcss-autoreset")({ reset: css.reset }),
-    // https://github.com/maximkoretskiy/postcss-initial
-    require("postcss-initial")({ reset: css.reset }),
-  ] : [],
 
   // W3C color() function, e.g. div { background: color(red alpha(90%)); }
   // https://github.com/postcss/postcss-color-function

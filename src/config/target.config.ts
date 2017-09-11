@@ -131,9 +131,7 @@ const postCssPluginsFile = resolveTarget(config.css.postCssPlugins);
 const postCssPlugins = fs.existsSync(postCssPluginsFile) ? require(postCssPluginsFile) : [];
 
 export const css = {
-  isolation: config.css.isolation,
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
-  reset: config.css.reset,
 };
 
 export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config.js"));

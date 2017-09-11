@@ -36,10 +36,6 @@ export interface IIsomorphic {
 
 export interface ICSS {
   css: {
-    isolation: boolean;
-    reset: {
-      [key: string]: string;
-    }
     postCssPlugins: string;
   };
 }

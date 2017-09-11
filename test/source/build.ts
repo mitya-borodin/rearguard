@@ -14,15 +14,7 @@ const essentialConfig = {
   ],
   context: "src",
   css: {
-    isolation: true,
     postCssPlugins: "postCssPlugins.js",
-    reset: {
-      "all": "initial",
-      "boxSizing": "border-box",
-      "display": "block",
-      "font-family": "Avenir Next, -apple-system, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
-      "font-size": "inherit",
-    },
   },
   entry: "main.js",
   isomorphic: {
@@ -97,13 +89,6 @@ describe("Source", () => {
         ],
         css: {
           postCssPlugins: false,
-          reset: {
-            "all": "initial",
-            "boxSizing": "border-box",
-            "display": "block",
-            "font-family": 34,
-            "font-size": 234234,
-          },
         },
         entry: false,
         isomorphic: {
@@ -154,11 +139,8 @@ describe("Source", () => {
     it("CSS must be correct", () => {
       const config = build();
 
-      expect(config.css.isolation).to.equal(true);
       expect(config.css.postCssPlugins).to.equal("postCssPlugins.js");
-      expect(config.css.reset["font-family"]).to.equal(
-        "Avenir Next, -apple-system, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif");
-      expect(config.css.reset["font-size"]).to.equal("inherit");
+
     });
     it("Isomorphic must be correct", () => {
       const config = build();
