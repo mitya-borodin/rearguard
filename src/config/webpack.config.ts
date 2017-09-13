@@ -1,11 +1,11 @@
 import * as webpack from "webpack";
 import * as nodeExternals from "webpack-node-externals";
 import generalWebpackConfig from "./general.webpack.config";
-import { backEntry, frontEntry } from "./general/entry";
-import { extractCSS } from "./plugins/css";
-import { assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify } from "./plugins/js";
+import {backEntry, frontEntry} from "./general/entry";
+import {extractCSS} from "./plugins/css";
+import {assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
 import compiler from "./rules/compiler";
-import { isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFilename } from "./target.config";
+import {isDevelopment, isIsomorphic, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
@@ -47,12 +47,12 @@ const server = generalWebpackConfig({
   plugins: [
     // Do not create separate chunks of the server bundle
     // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
-    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
 
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: `require("${resolveNodeModules("source-map-support")}").install();`,
+      banner: `require("${isDevelopment ? resolveNodeModules("source-map-support") : "source-map-support"}").install();`,
       entryOnly: false,
       raw: true,
     }),
@@ -70,7 +70,7 @@ if (onlyServer) {
   config = server;
 } else if (isIsomorphic) {
   config = [spa, server];
-} else  {
+} else {
   config = spa;
 }
 

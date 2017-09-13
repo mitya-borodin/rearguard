@@ -1,13 +1,16 @@
 import * as path from "path";
-import { context, dependencies, engines, isIsomorphic, publicDirName, servercOutput } from "../config/target.config";
-import { copyDir, makeDir, writeFile } from "../lib/fs";
+import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput} from "../config/target.config";
+import {copyDir, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
 async function copy() {
   if (isIsomorphic) {
     await makeDir(servercOutput);
     await writeFile(path.resolve(servercOutput, "package.json"), JSON.stringify({
-      dependencies,
+      dependencies: {
+        ...dependencies,
+        ["source-map-support"]: "0.4.18",
+      },
       engines,
       private: true,
       scripts: {
