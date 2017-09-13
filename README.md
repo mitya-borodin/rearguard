@@ -116,15 +116,6 @@ build.config.json:
     "publicDirName": "public"
   },
   "css": {
-    "isolation": true,
-    "reset": {
-      "all": "initial",
-      "font-size": "inherit",
-      "font-family": "Avenir Next, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
-      "display": "block",
-      "boxSizing": "border-box",
-      "cursor": "inherit"
-    },
     "postCssPlugins": "postCssPlugins.js"
   },
   "typescript": {
@@ -167,9 +158,6 @@ module.exports = [
 * **_proxy_** - объект отписывает с какого path перенаправлять на какой host и path, примеры будут ниже.
 * **_isomorphic.entry_** - точка входа в приложение веб-сервера.
 * **_isomorphic.publicDirName_** - имя директории, в которой содержатся файлы в основном используемые в `<meta>` тегах и поисковыми системами. Копируется в **_output.path_**. Эти файлы не импортируются в проект. 
-* **_css.isolation_** - включают [postcss-autoreset](https://github.com/maximkoretskiy/postcss-autoreset) и 
-[postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
-* **_css.reset_** - настройки для postcss-autoreset и postcss-initial
 * **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_**, где подключаются плагины для PostCSS в целевом проекте.
 * **_typescript.configPath_** - путь к файлу tsconfig.json, где находится конфигурация для typescript, этот файл конфигурации 
 генерируется автоматически и нужен для того, чтобы его читала IDE. Этот файл **не версионируется**.
