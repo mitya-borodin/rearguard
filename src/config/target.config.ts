@@ -36,6 +36,8 @@ const clientOutput = resolveTarget(isIsomorphic ? `${config.output.path}/${publi
 // Socket
 export const host = config.socket.host;
 export const port = config.socket.port;
+process.env.HOST = host;
+process.env.PORT = port;
 export const protocol = "http";
 export const socket = `${protocol}://${host}:${port}`;
 // END
@@ -123,7 +125,7 @@ export const engines = config.engines;
 export const serverEntry = config.isomorphic.entry;
 export const servercOutput = resolveTarget(config.output.path);
 export const serverFilename = `../${serverEntry}`;
-export const serverWasRunDetectString = `The server is running at ${socket}`;
+process.env.SERVER_LAUNCH_MESSAGE = `The server is running at ${socket}`;
 // END
 
 // CSS

@@ -1,5 +1,5 @@
 import * as path from "path";
-import { proxy, serverWasRunDetectString } from "../config/target.config";
+import { proxy } from "../config/target.config";
 import { writeFile } from "../lib/fs";
 
 async function makeServerConfig(output: string) {
@@ -8,7 +8,6 @@ async function makeServerConfig(output: string) {
       route: key,
       target: proxy[key],
     })),
-    serverWasRunDetectString,
   }, null, 2));
 }
 

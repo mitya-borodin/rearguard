@@ -5,11 +5,13 @@ import makeServerConfig from "./makeServerConfig";
 
 async function copy() {
   if (isIsomorphic) {
+    const {dependencies: rearguardDep} = require(path.resolve(__dirname, "../../../package.json"));
+
     await makeDir(servercOutput);
     await writeFile(path.resolve(servercOutput, "package.json"), JSON.stringify({
       dependencies: {
         ...dependencies,
-        ["source-map-support"]: "0.4.18",
+        ["source-map-support"]: rearguardDep["source-map-support"],
       },
       engines,
       private: true,

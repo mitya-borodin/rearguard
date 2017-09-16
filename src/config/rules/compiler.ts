@@ -112,7 +112,7 @@ export default (
           {
             loader: "ts-loader",
             options: {
-              configFileName: typescriptConfigFilePath,
+              configFile: typescriptConfigFilePath,
             },
           },
         ],
