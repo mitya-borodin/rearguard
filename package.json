@@ -76,7 +76,7 @@
     "postcss-custom-properties": "6.1.0",
     "postcss-custom-selectors": "4.0.1",
     "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-import": "10.0.0",
+    "postcss-import": "11.0.0",
     "postcss-initial": "2.0.0",
     "postcss-loader": "2.0.6",
     "postcss-media-minmax": "3.0.0",
