@@ -79,6 +79,7 @@ export interface IEnv {
   isInferno: boolean;
   isReact: boolean;
   isTS: boolean;
+  isStart: boolean;
   onlyServer: boolean;
   nodeModulePath: string;
 }

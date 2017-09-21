@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "1.6.27",
+  "version": "1.6.28",
   "engines": {
     "node": ">=6",
     "npm": ">=3.10"
