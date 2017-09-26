@@ -109,22 +109,18 @@ build.config.json:
   ],
   "proxy": {
     "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000"
+    "/auth": "http://localhost:9000",
+    "/ws": {
+      "changeOrigin": true,
+      "target": "http://localhost:5000",
+      "ws": true
+    }
   },
   "isomorphic": {
     "entry": "server.jsx",
     "publicDirName": "public"
   },
   "css": {
-    "isolation": true,
-    "reset": {
-      "all": "initial",
-      "font-size": "inherit",
-      "font-family": "Avenir Next, BlinkMacSystemFonts, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
-      "display": "block",
-      "boxSizing": "border-box",
-      "cursor": "inherit"
-    },
     "postCssPlugins": "postCssPlugins.js"
   },
   "typescript": {
@@ -290,7 +286,12 @@ import Component4  from 'Component4'
 {
   "proxy": {
     "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000"
+    "/auth": "http://localhost:9000",
+    "/ws": {
+      "changeOrigin": true,
+      "target": "http://localhost:5000",
+      "ws": true
+    }
   }
 }
 ```
