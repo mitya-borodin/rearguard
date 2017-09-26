@@ -1,5 +1,5 @@
 import * as path from "path";
-import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput} from "../config/target.config";
+import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry} from "../config/target.config";
 import {copyDir, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
@@ -12,11 +12,12 @@ async function copy() {
       dependencies: {
         ...dependencies,
         ["source-map-support"]: rearguardDep["source-map-support"],
+        ["http-proxy-middleware"]: rearguardDep["http-proxy-middleware"],
       },
       engines,
       private: true,
       scripts: {
-        start: "node server.js",
+        start: `node ${serverEntry}`,
       },
     }, null, 2));
     await makeServerConfig(servercOutput);

@@ -1,21 +1,44 @@
 import * as chalk from "chalk";
 import * as Joi from "joi";
-import { IProxy } from "../../interfaces/IConfigs";
+import {IProxy} from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
 const defaultValue: IProxy = {
   proxy: {
     "/api": "http://localhost:5000",
+    "/ws": {
+      changeOrigin: true,
+      target: "http://localhost:5000",
+      ws: true,
+    },
   },
 };
 export default (fileName: string): IProxy => {
-  const { exist, value: { proxy } } = detectConfig(fileName, "proxy");
+  const {exist, value: {proxy}} = detectConfig(fileName, "proxy");
 
   if (exist) {
     for (const proxyName in proxy) {
       if (proxy.hasOwnProperty(proxyName)) {
-        const { error: proxyNameError } = Joi.validate(proxyName, Joi.string().trim().min(3).required());
-        const { error: proxyValueError } = Joi.validate(proxy[proxyName], Joi.string().trim().min(6).required());
+        const {error: proxyNameError} = Joi.validate(proxyName, Joi.string().trim().required());
+        let proxyValueError = null;
+
+        if (Object.prototype.toString.call(proxy[proxyName]) === "[object Object]") {
+          proxyValueError = Joi.validate(
+            proxy[proxyName],
+            Joi
+              .object()
+              .keys(
+                {
+                  changeOrigin: Joi.boolean(),
+                  logLevel: Joi.string(),
+                  target: Joi.string().required().min(10, "utf-8"),
+                  ws: Joi.boolean(),
+                },
+              ),
+          ).error;
+        } else {
+          proxyValueError = Joi.validate(proxy[proxyName], Joi.string().trim().min(6).required()).error;
+        }
 
         if (proxyNameError !== null) {
           console.error(proxyNameError.message);
@@ -35,7 +58,7 @@ export default (fileName: string): IProxy => {
       }
     }
 
-    return { proxy };
+    return {proxy};
   } else {
     return defaultValue;
   }

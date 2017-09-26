@@ -30,6 +30,11 @@ const essentialConfig = {
   },
   proxy: {
     "/api": "http://localhost:5000",
+    "/ws": {
+      changeOrigin: true,
+      target: "http://localhost:5000",
+      ws: true,
+    },
   },
   typescript: {
     config: {

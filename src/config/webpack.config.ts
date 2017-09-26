@@ -28,6 +28,7 @@ const server = generalWebpackConfig({
   externals: [
     /^\.\/assets\.json$/,
     /^\.\/config\.json$/,
+    /^\.\/config\.js$/,
     nodeExternals({
       whitelist: /\.css/,
     }),

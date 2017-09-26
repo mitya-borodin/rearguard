@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import * as webpack from "webpack";
 import * as WDM from "webpack-dev-middleware";
 import * as WDS from "webpack-dev-server";
 import * as WHM from "webpack-hot-middleware";
@@ -59,15 +60,13 @@ export const modules = [
   resolveNodeModules(),
 ];
 
-export const stats = {
+export const stats: webpack.Options.Stats = {
   cached: isVerbose,
-  cachedAssets: isVerbose,
   chunkModules: isVerbose,
   chunks: isVerbose,
   colors: true,
   context,
   hash: isVerbose,
-  maxModules: isDebug ? 100000 : 10,
   modules: isVerbose,
   reasons: isVerbose,
   timings: true,

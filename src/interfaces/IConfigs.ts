@@ -23,7 +23,7 @@ export interface IBrowserslist {
 
 export interface IProxy {
   proxy: {
-    [key: string]: string;
+    [key: string]: string | object;
   };
 }
 
