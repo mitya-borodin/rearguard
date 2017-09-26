@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import * as webpack from "webpack";
 import * as WDM from "webpack-dev-middleware";
 import * as WDS from "webpack-dev-server";
 import * as WHM from "webpack-hot-middleware";
@@ -23,6 +24,7 @@ export const isIsomorphic = config.isIsomorphic;
 export const isInferno = config.isInferno;
 export const isReact = config.isReact;
 export const isTS = config.isTS;
+export const isStart = config.isStart;
 export const onlyServer = config.onlyServer;
 // END
 
@@ -36,6 +38,8 @@ const clientOutput = resolveTarget(isIsomorphic ? `${config.output.path}/${publi
 // Socket
 export const host = config.socket.host;
 export const port = config.socket.port;
+process.env.HOST = host;
+process.env.PORT = port;
 export const protocol = "http";
 export const socket = `${protocol}://${host}:${port}`;
 // END
@@ -56,15 +60,13 @@ export const modules = [
   resolveNodeModules(),
 ];
 
-export const stats = {
+export const stats: webpack.Options.Stats = {
   cached: isVerbose,
-  cachedAssets: isVerbose,
   chunkModules: isVerbose,
   chunks: isVerbose,
   colors: true,
   context,
   hash: isVerbose,
-  maxModules: isDebug ? 100000 : 10,
   modules: isVerbose,
   reasons: isVerbose,
   timings: true,
@@ -123,7 +125,7 @@ export const engines = config.engines;
 export const serverEntry = config.isomorphic.entry;
 export const servercOutput = resolveTarget(config.output.path);
 export const serverFilename = `../${serverEntry}`;
-export const serverWasRunDetectString = `The server is running at ${socket}`;
+process.env.SERVER_LAUNCH_MESSAGE = `The server is running at ${socket}`;
 // END
 
 // CSS
@@ -131,9 +133,7 @@ const postCssPluginsFile = resolveTarget(config.css.postCssPlugins);
 const postCssPlugins = fs.existsSync(postCssPluginsFile) ? require(postCssPluginsFile) : [];
 
 export const css = {
-  isolation: config.css.isolation,
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
-  reset: config.css.reset,
 };
 
 export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config.js"));

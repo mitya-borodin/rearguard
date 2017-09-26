@@ -2,7 +2,7 @@ import * as chalk from "chalk";
 import * as cp from "child_process";
 import * as fs from "fs";
 import * as path from "path";
-import {isIsomorphic, servercOutput, serverEntry, serverWasRunDetectString} from "../config/target.config";
+import {isIsomorphic, servercOutput, serverEntry} from "../config/target.config";
 
 let server: any;
 let pending = true;
@@ -28,7 +28,7 @@ function runServer(host: string) {
     return new Promise((resolve) => {
       function onStdOut(data: Buffer) {
         const time = new Date().toTimeString();
-        const wasRun = data.toString("utf8").indexOf(serverWasRunDetectString) !== -1;
+        const wasRun = data.toString("utf8").indexOf(process.env.SERVER_LAUNCH_MESSAGE || "") !== -1;
 
         process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, "[$1] "));
         process.stdout.write(data);

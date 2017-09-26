@@ -1,17 +1,23 @@
 import * as path from "path";
-import { context, dependencies, engines, isIsomorphic, publicDirName, servercOutput } from "../config/target.config";
-import { copyDir, makeDir, writeFile } from "../lib/fs";
+import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry} from "../config/target.config";
+import {copyDir, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
 async function copy() {
   if (isIsomorphic) {
+    const {dependencies: rearguardDep} = require(path.resolve(__dirname, "../../../package.json"));
+
     await makeDir(servercOutput);
     await writeFile(path.resolve(servercOutput, "package.json"), JSON.stringify({
-      dependencies,
+      dependencies: {
+        ...dependencies,
+        ["source-map-support"]: rearguardDep["source-map-support"],
+        ["http-proxy-middleware"]: rearguardDep["http-proxy-middleware"],
+      },
       engines,
       private: true,
       scripts: {
-        start: "node server.js",
+        start: `node ${serverEntry}`,
       },
     }, null, 2));
     await makeServerConfig(servercOutput);

@@ -109,7 +109,12 @@ build.config.json:
   ],
   "proxy": {
     "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000"
+    "/auth": "http://localhost:9000",
+    "/ws": {
+      "changeOrigin": true,
+      "target": "http://localhost:5000",
+      "ws": true
+    }
   },
   "isomorphic": {
     "entry": "server.jsx",
@@ -278,7 +283,12 @@ import Component4  from 'Component4'
 {
   "proxy": {
     "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000"
+    "/auth": "http://localhost:9000",
+    "/ws": {
+      "changeOrigin": true,
+      "target": "http://localhost:5000",
+      "ws": true
+    }
   }
 }
 ```

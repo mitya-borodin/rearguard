@@ -23,7 +23,7 @@ export interface IBrowserslist {
 
 export interface IProxy {
   proxy: {
-    [key: string]: string;
+    [key: string]: string | object;
   };
 }
 
@@ -36,10 +36,6 @@ export interface IIsomorphic {
 
 export interface ICSS {
   css: {
-    isolation: boolean;
-    reset: {
-      [key: string]: string;
-    }
     postCssPlugins: string;
   };
 }
@@ -83,6 +79,7 @@ export interface IEnv {
   isInferno: boolean;
   isReact: boolean;
   isTS: boolean;
+  isStart: boolean;
   onlyServer: boolean;
   nodeModulePath: string;
 }

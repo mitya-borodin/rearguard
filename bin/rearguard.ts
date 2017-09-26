@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import * as chalk from "chalk";
-import { execSync } from "child_process";
+import {execSync} from "child_process";
 import * as spawn from "cross-spawn";
-import { existsSync } from "fs";
-import { resolve } from "path";
+import {existsSync} from "fs";
+import {resolve} from "path";
 
 interface IBoolObj {
   [key: string]: boolean;
@@ -31,12 +31,12 @@ const {
   verbose = false,
 }: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
   if (value.indexOf("--") === 0) {
-    return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
+    return Object.assign(prevValue, {[value.slice(2, value.length)]: true});
   } else if (value.indexOf("-") === 0) {
     const flag: string = value.slice(1, value.length);
 
     if (alias.hasOwnProperty(flag)) {
-      return Object.assign(prevValue, { [alias[flag]]: true });
+      return Object.assign(prevValue, {[alias[flag]]: true});
     }
   }
 
@@ -50,7 +50,7 @@ if (
   const launchFile: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
   if (existsSync(launchFile)) {
-    const globalNodeModules: string = execSync("npm root -g", { encoding: "utf8" }).replace("\n", "");
+    const globalNodeModules: string = execSync("npm root -g", {encoding: "utf8"}).replace("\n", "");
     const localModeModules: string = resolve(process.cwd(), "node_modules");
     let nodeModulesPath = resolve(globalNodeModules, "rearguard/node_modules");
 
@@ -59,6 +59,7 @@ if (
     }
 
     process.env.NODE_ENV = !release ? "development" : "production";
+    process.env.REARGUARD_LAUNCH_IS_START = action === "start" ? "true" : "false";
     process.env.REARGUARD_NODE_MODULE_PATH = nodeModulesPath;
     process.env.REARGUARD_ISOMORPHIC = isomorphic ? "true" : "false";
     process.env.REARGUARD_TYPE_SCRIPT = typescript ? "true" : "false";
@@ -72,7 +73,7 @@ if (
 
     process.env.REARGUARD_ERROR_LOG = "true";
 
-    const result = spawn.sync("node", [launchFile], { stdio: "inherit" });
+    const result = spawn.sync("node", [launchFile], {stdio: "inherit"});
 
     if (result.signal) {
       if (result.signal === "SIGKILL") {
