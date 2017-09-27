@@ -2,6 +2,7 @@ import { IEnv } from "../../interfaces/IConfigs";
 
 export default (): IEnv => ({
   isAnalyze: process.env.REARGUARD_ANALYZE === "true",
+  isBuild:  process.env.REARGUARD_LAUNCH_IS_BUILD === "true",
   isDebug: process.env.REARGUARD_DEBUG === "true",
   isDevelopment: process.env.NODE_ENV === "development",
   isInferno: process.env.REARGUARD_INFERNO_JS === "true",

@@ -60,6 +60,7 @@ if (
 
     process.env.NODE_ENV = !release ? "development" : "production";
     process.env.REARGUARD_LAUNCH_IS_START = action === "start" ? "true" : "false";
+    process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
     process.env.REARGUARD_NODE_MODULE_PATH = nodeModulesPath;
     process.env.REARGUARD_ISOMORPHIC = isomorphic ? "true" : "false";
     process.env.REARGUARD_TYPE_SCRIPT = typescript ? "true" : "false";

@@ -5,7 +5,7 @@ import {backEntry, frontEntry} from "./general/entry";
 import {extractCSS} from "./plugins/css";
 import {assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
 import compiler from "./rules/compiler";
-import {isDevelopment, isIsomorphic, isStart, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
+import {isBuild, isDevelopment, isIsomorphic, isStart, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
@@ -53,7 +53,7 @@ const server = generalWebpackConfig({
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin({
-      banner: `require("${isDevelopment || isStart ? resolveNodeModules("source-map-support") : "source-map-support"}").install();`,
+      banner: `require("${(isDevelopment || isStart) && !isBuild ? resolveNodeModules("source-map-support") : "source-map-support"}").install();`,
       entryOnly: false,
       raw: true,
     }),

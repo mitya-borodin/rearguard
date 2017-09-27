@@ -16,6 +16,7 @@ describe("Source", () => {
       process.env.REARGUARD_INFERNO_JS = "true";
       process.env.REARGUARD_REACT = "true";
       process.env.REARGUARD_LAUNCH_IS_START = "true";
+      process.env.REARGUARD_LAUNCH_IS_BUILD = "true";
     });
 
     it("isDevelopment must be true", () => {
@@ -62,6 +63,11 @@ describe("Source", () => {
       const {isStart} = env();
 
       expect(isStart).to.equal(true);
+    });
+    it("isBuild must be true", () => {
+      const {isBuild} = env();
+
+      expect(isBuild).to.equal(true);
     });
     it("onlyServer must be true", () => {
       const {onlyServer} = env();

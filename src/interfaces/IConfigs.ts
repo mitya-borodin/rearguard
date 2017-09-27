@@ -72,6 +72,7 @@ export interface Ipkg {
 
 export interface IEnv {
   isDevelopment: boolean;
+  isBuild: boolean;
   isDebug: boolean;
   isVerbose: boolean;
   isAnalyze: boolean;

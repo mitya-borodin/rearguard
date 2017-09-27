@@ -25,6 +25,7 @@ export const isInferno = config.isInferno;
 export const isReact = config.isReact;
 export const isTS = config.isTS;
 export const isStart = config.isStart;
+export const isBuild = config.isBuild;
 export const onlyServer = config.onlyServer;
 // END
 
