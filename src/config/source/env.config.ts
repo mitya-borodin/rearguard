@@ -13,4 +13,5 @@ export default (): IEnv => ({
   isVerbose: process.env.REARGUARD_VERBOSE === "true",
   nodeModulePath: process.env.REARGUARD_NODE_MODULE_PATH || "",
   onlyServer: process.env.REARGUARD_ONLY_SERVER === "true",
+  staticServer: process.env.REARGUARD_STATIC_SERVER === "true",
 });

@@ -1,10 +1,22 @@
 import * as path from "path";
-import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry} from "../config/target.config";
-import {copyDir, makeDir, writeFile} from "../lib/fs";
+import {
+  context,
+  dependencies,
+  engines,
+  isIsomorphic,
+  publicDirName,
+  servercOutput,
+  serverEntry,
+  staticServer,
+} from "../config/target.config";
+import {copyDir, copyFile, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
 async function copy() {
-  if (isIsomorphic) {
+  if (staticServer) {
+    await copyFile(path.resolve(__dirname, "./staticServerOrigin.js"), path.resolve(servercOutput, serverEntry));
+  }
+  if (isIsomorphic || staticServer) {
     const {dependencies: rearguardDep} = require(path.resolve(__dirname, "../../../package.json"));
 
     await makeDir(servercOutput);

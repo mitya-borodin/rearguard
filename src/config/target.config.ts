@@ -1,9 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as webpack from "webpack";
-import * as WDM from "webpack-dev-middleware";
 import * as WDS from "webpack-dev-server";
-import * as WHM from "webpack-hot-middleware";
 import source from "./source";
 
 export const resolveNodeModules = (packageName = "") => path.resolve(
@@ -27,13 +25,14 @@ export const isTS = config.isTS;
 export const isStart = config.isStart;
 export const isBuild = config.isBuild;
 export const onlyServer = config.onlyServer;
+export const staticServer = config.staticServer;
 // END
 
 // General
 export const publicDirName = config.isomorphic.publicDirName;
 export const isOldNode = config.nodeVersion < 8;
 export const isVeryOldNode = config.nodeVersion < 6;
-const clientOutput = resolveTarget(isIsomorphic ? `${config.output.path}/${publicDirName}` : config.output.path);
+const clientOutput = resolveTarget(isIsomorphic || staticServer ? `${config.output.path}/${publicDirName}` : config.output.path);
 // END
 
 // Socket
@@ -73,9 +72,9 @@ export const stats: webpack.Options.Stats = {
   timings: true,
   version: isVerbose,
 };
-export const proxy = config.proxy;
+export const proxy: { [key: string]: any } = config.proxy;
 
-export const webpackMiddlewareConfig: WDM.Options | WHM.Options = {
+export const webpackMiddlewareConfig: any = {
   publicPath: output.publicPath,
   stats,
   watchOptions: {

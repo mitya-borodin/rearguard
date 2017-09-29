@@ -17,6 +17,7 @@ describe("Source", () => {
       process.env.REARGUARD_REACT = "true";
       process.env.REARGUARD_LAUNCH_IS_START = "true";
       process.env.REARGUARD_LAUNCH_IS_BUILD = "true";
+      process.env.REARGUARD_STATIC_SERVER = "true";
     });
 
     it("isDevelopment must be true", () => {
@@ -78,6 +79,11 @@ describe("Source", () => {
       const {nodeModulePath} = env();
 
       expect(nodeModulePath).to.equal("/node_module/path");
+    });
+    it("staticServer must be true", () => {
+      const {staticServer} = env();
+
+      expect(staticServer).to.equal(true);
     });
   });
 });

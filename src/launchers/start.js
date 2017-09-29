@@ -5,7 +5,6 @@ import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as WDS from 'webpack-dev-server';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as WriteFilePlugin from 'write-file-webpack-plugin';
-import * as proxy from 'http-proxy-middleware';
 import {
   host,
   isDebug,
@@ -13,7 +12,6 @@ import {
   isIsomorphic,
   onlyServer,
   port,
-  proxy as proxyConfigs,
   socket,
   WDSConfig,
   webpackMiddlewareConfig
@@ -23,6 +21,7 @@ import webpackConfig from '../config/webpack.config';
 import clean from './clean';
 import copy from './copy';
 import runServer from './runServer';
+import makeProxies from './makeProxies';
 
 const target = `${host}:${port}`;
 const bs = browserSync.create();
@@ -30,80 +29,71 @@ const bs = browserSync.create();
 buildTypescriptConfig();
 
 if (isIsomorphic || onlyServer) {
-  const proxies = [];
-
-  Object.keys(proxyConfigs).forEach((route) => {
-    if (Object.prototype.toString.call(proxyConfigs[route]) === '[object Object]') {
-      proxies.push(proxy(route, proxyConfigs[route]));
-    }
-    if (Object.prototype.toString.call(proxyConfigs[route]) === '[object String]') {
-      proxies.push(proxy(route, {target: proxyConfigs[route], changeOrigin: true}));
-    }
-  });
-
   clean()
     .then(() => copy())
     .then(() => {
-      if (onlyServer) {
-        // Save the server-side bundle files to the file system after compilation
-        // https://github.com/webpack/webpack-dev-server/issues/62
-        webpackConfig.plugins.push(new WriteFilePlugin({log: isDebug}));
+        if (onlyServer) {
+          // Save the server-side bundle files to the file system after compilation
+          // https://github.com/webpack/webpack-dev-server/issues/62
+          webpackConfig.plugins.push(new WriteFilePlugin({log: isDebug}));
 
-        const bundler = webpack(webpackConfig);
-        const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
-        const hotMiddleware = webpackHotMiddleware(bundler, webpackMiddlewareConfig);
+          const bundler = webpack(webpackConfig);
+          const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
+          const hotMiddleware = webpackHotMiddleware(bundler, webpackMiddlewareConfig);
 
-        let handleBundleComplete = (stats) => {
-          handleBundleComplete = stats => !stats.compilation.errors.length && runServer(target);
+          let handleBundleComplete = (stats) => {
+            handleBundleComplete = stats => !stats.compilation.errors.length && runServer(target);
 
-          runServer(target)
-            .then(() => {
-              bs.init({
-                ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
-                proxy: {
-                  target,
-                  middleware: [compress(), ...proxies, wpMiddleware, hotMiddleware],
-                },
-              });
-            })
-            .catch(error => console.error(error));
-        };
+            runServer(target)
+              .then(() => {
+                bs.init({
+                  ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
+                  proxy: {
+                    target,
+                    middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                  },
+                });
+              })
+              .catch(error => console.error(error));
+          };
 
-        bundler.plugin('done', stats => handleBundleComplete(stats));
-      } else if (isIsomorphic) {
-        const [, serverConfig] = webpackConfig;
+          bundler.plugin('done', stats => handleBundleComplete(stats));
+        } else if (isIsomorphic) {
+          const [, serverConfig] = webpackConfig;
 
-        // Save the server-side bundle files to the file system after compilation
-        // https://github.com/webpack/webpack-dev-server/issues/62
-        serverConfig.plugins.push(new WriteFilePlugin({log: isDebug}));
+          // Save the server-side bundle files to the file system after compilation
+          // https://github.com/webpack/webpack-dev-server/issues/62
+          serverConfig.plugins.push(new WriteFilePlugin({log: isDebug}));
 
-        const bundler = webpack(webpackConfig);
-        const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
-        const hotMiddleware = webpackHotMiddleware(bundler.compilers[0], webpackMiddlewareConfig);
+          const bundler = webpack(webpackConfig);
+          const wpMiddleware = webpackDevMiddleware(bundler, webpackMiddlewareConfig);
+          const hotMiddleware = webpackHotMiddleware(bundler.compilers[0], webpackMiddlewareConfig);
 
-        let handleBundleComplete = (stats) => {
-          handleBundleComplete = (stats) => !stats.stats[1].compilation.errors.length && runServer(target);
+          let handleBundleComplete = (stats) => {
+            handleBundleComplete = (stats) => !stats.stats[1].compilation.errors.length && runServer(target);
 
-          runServer(target)
-            .then(() => {
-              bs.init({
-                ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
-                proxy: {
-                  target,
-                  middleware: [compress(), ...proxies, wpMiddleware, hotMiddleware],
-                },
-              });
-            })
-            .catch(error => console.error(error));
-        };
+            runServer(target)
+              .then(() => {
+                bs.init({
+                  ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
+                  proxy: {
+                    target,
+                    middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                  },
+                });
+              })
+              .catch(error => console.error(error));
+          };
 
-        bundler.plugin('done', stats => handleBundleComplete(stats));
-      } else {
-        console.error('Expected isomorphic more or only server mode.')
+          bundler.plugin("done", stats => handleBundleComplete(stats));
+        } else {
+          console.error("Expected isomorphic more or only server mode.");
+        }
+      },
+      (error) => {
+        console.error(error);
       }
-    }, (error) => {
-      console.error(error);
-    });
+    );
 } else {
   const server = new WDS(webpack(webpackConfig), WDSConfig);
 

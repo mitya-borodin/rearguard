@@ -82,6 +82,7 @@ export interface IEnv {
   isTS: boolean;
   isStart: boolean;
   onlyServer: boolean;
+  staticServer: boolean;
   nodeModulePath: string;
 }
 

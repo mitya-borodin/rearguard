@@ -2,6 +2,7 @@
 node_modules
 yarn.lock
 tmp
-lib
+/lib
 /.nyc_output/
 /coverage
+!/src/lib/

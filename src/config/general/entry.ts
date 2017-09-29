@@ -1,7 +1,15 @@
-import { entry, isDevelopment, isIsomorphic, resolveNodeModules, serverEntry, socket } from "../target.config";
+import {
+  entry,
+  isBuild,
+  isDevelopment,
+  isIsomorphic,
+  resolveNodeModules,
+  serverEntry,
+  socket,
+} from "../target.config";
 
 export const frontEntry = (entries = []): string[] | string | { [key: string]: string } => {
-  if (isDevelopment) {
+  if (isDevelopment && !isBuild) {
     return [
       ...isIsomorphic ? [
         `${resolveNodeModules("webpack-hot-middleware")}/client`,

@@ -5,7 +5,15 @@ import {backEntry, frontEntry} from "./general/entry";
 import {extractCSS} from "./plugins/css";
 import {assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
 import compiler from "./rules/compiler";
-import {isBuild, isDevelopment, isIsomorphic, isStart, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
+import {
+  isBuild,
+  isDevelopment,
+  isIsomorphic,
+  isStart,
+  onlyServer,
+  resolveNodeModules,
+  serverFilename,
+} from "./target.config";
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
