@@ -14,6 +14,7 @@ import makeServerConfig from "./makeServerConfig";
 
 async function copy() {
   if (staticServer) {
+    await makeDir(servercOutput);
     await copyFile(path.resolve(__dirname, "./staticServerOrigin.js"), path.resolve(servercOutput, serverEntry));
   }
   if (isIsomorphic || staticServer) {
