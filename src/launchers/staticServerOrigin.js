@@ -11,12 +11,11 @@ app.use(compress());
 // Register Node.js HTTP and web socket proxy middleware.
 // -----------------------------------------------------------------------------
 config.applyProxies(app);
-
+app.use(history());
 //
 // Register Node.js resolve static files middleware
 // -----------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(history());
 
 const port = parseInt(process.env.PORT) || parseInt(config.port) || 80;
 
