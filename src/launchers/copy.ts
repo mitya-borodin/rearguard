@@ -1,5 +1,5 @@
 import * as path from "path";
-import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry, staticServer,} from "../config/target.config";
+import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry, staticServer} from "../config/target.config";
 import {copyDir, copyFile, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
