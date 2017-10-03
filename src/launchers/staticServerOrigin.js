@@ -2,7 +2,7 @@ const compress = require('compression');
 const express = require('express');
 const config = require('./config.js');
 const path = require('path');
-
+const history = require('connect-history-api-fallback');
 const app = express();
 
 app.use(compress());
@@ -16,6 +16,7 @@ config.applyProxies(app);
 // Register Node.js resolve static files middleware
 // -----------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(history());
 
 const port = parseInt(process.env.PORT) || parseInt(config.port) || 80;
 

@@ -1,14 +1,5 @@
 import * as path from "path";
-import {
-  context,
-  dependencies,
-  engines,
-  isIsomorphic,
-  publicDirName,
-  servercOutput,
-  serverEntry,
-  staticServer,
-} from "../config/target.config";
+import {context, dependencies, engines, isIsomorphic, publicDirName, servercOutput, serverEntry, staticServer,} from "../config/target.config";
 import {copyDir, copyFile, makeDir, writeFile} from "../lib/fs";
 import makeServerConfig from "./makeServerConfig";
 
@@ -26,6 +17,7 @@ async function copy() {
         ...dependencies,
         ["source-map-support"]: rearguardDep["source-map-support"],
         ["http-proxy-middleware"]: rearguardDep["http-proxy-middleware"],
+        ["connect-history-api-fallback"]: rearguardDep["connect-history-api-fallback"],
       },
       engines,
       private: true,

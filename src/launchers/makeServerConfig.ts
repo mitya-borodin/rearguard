@@ -8,7 +8,7 @@ async function makeServerConfig(output: string) {
     `const proxy = require('http-proxy-middleware');
 
 const config = {
-  port: ${port},
+  port: parseInt(process.env.PORT) || parseInt(config.port) || ${port},
   proxy: ${
     JSON.stringify(Object.keys(proxy).map((key) => ({
       route: key,
