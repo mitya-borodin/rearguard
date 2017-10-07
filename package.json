@@ -113,7 +113,7 @@
     "@types/joi": "10.4.3",
     "@types/mkdirp": "0.5.1",
     "@types/mocha": "2.2.43",
-    "@types/node": "8.0.29",
+    "@types/node": "8.0.32",
     "@types/rimraf": "2.0.2",
     "@types/webpack": "3.0.13",
     "@types/webpack-bundle-analyzer": "2.9.0",
