@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as chalk from "chalk";
+import chalk from "chalk";
 import {execSync} from "child_process";
 import * as spawn from "cross-spawn";
 import {existsSync} from "fs";
@@ -83,7 +83,6 @@ if (
       if (result.signal === "SIGKILL") {
         console.log(
           chalk
-            .bold
             .red(
               "The build failed because the process exited too early. " +
               "This probably means the system ran out of memory or someone called " +

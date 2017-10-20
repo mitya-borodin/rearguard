@@ -1,4 +1,4 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
 import * as Joi from "joi";
 import { IModules } from "../../interfaces/IConfigs";
 import detectConfig from "./common";

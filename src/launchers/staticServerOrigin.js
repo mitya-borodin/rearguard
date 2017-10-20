@@ -20,4 +20,3 @@ app.use(express.static(path.join(__dirname, 'public')));
 const port = parseInt(process.env.PORT) || parseInt(config.port) || 80;
 
 app.listen(port, () => console.log(`[STATIC_SERVER] was launched on: http://localhost:${port}`));
-
