@@ -12,21 +12,34 @@ async function copy() {
     const {dependencies: rearguardDep} = require(path.resolve(__dirname, "../../../package.json"));
 
     await makeDir(servercOutput);
-    await writeFile(path.resolve(servercOutput, "package.json"), JSON.stringify({
-      dependencies: {
-        ...dependencies,
-        ["source-map-support"]: rearguardDep["source-map-support"],
-        ["http-proxy-middleware"]: rearguardDep["http-proxy-middleware"],
-        ["connect-history-api-fallback"]: rearguardDep["connect-history-api-fallback"],
-      },
-      engines,
-      private: true,
-      scripts: {
-        start: `node ${serverEntry}`,
-      },
-    }, null, 2));
-    await makeServerConfig(servercOutput);
     await copyDir(path.resolve(context, `../${publicDirName}`), path.resolve(servercOutput, publicDirName));
+    await makeServerConfig(servercOutput);
+    await writeFile(
+      path.resolve(servercOutput, "package.json"),
+      JSON.stringify(
+        {
+          dependencies: {
+            ...staticServer
+              ? {}
+              : {
+                ...dependencies,
+                ["source-map-support"]: rearguardDep["source-map-support"],
+              },
+            ["http-proxy-middleware"]: rearguardDep["http-proxy-middleware"],
+            ["connect-history-api-fallback"]: rearguardDep["connect-history-api-fallback"],
+            compression: rearguardDep.compression,
+            express: rearguardDep.express,
+          },
+          engines,
+          private: true,
+          scripts: {
+            start: `node ${serverEntry}`,
+          },
+        },
+        null,
+        2,
+      ),
+    );
   } else {
     await copyDir(path.resolve(context, `../${publicDirName}`), path.resolve(servercOutput));
   }
