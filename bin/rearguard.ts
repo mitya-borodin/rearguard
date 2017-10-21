@@ -53,6 +53,17 @@ if (
 
   if (existsSync(launchFile)) {
     const globalNodeModules: string = execSync("npm root -g", {encoding: "utf8"}).replace("\n", "");
+
+    if (!existsSync(resolve(globalNodeModules, "rearguard"))) {
+      const npm = resolve(globalNodeModules, "../../bin/npm");
+
+      console.log(chalk.bold.cyan(`[REARGUARD][START][INSTALL]: ${npm} i -g rearguard`));
+      console.log(chalk.bold.yellowBright("[REARGUARD][INFO]: pending may be continue around" +
+        " 60 - 200 seconds, it is normal because npm will be install rearguard."));
+      execSync(`${npm} i -g rearguard`, {stdio: "inherit"});
+      console.log(chalk.bold.cyan(`[REARGUARD][FINISH][INSTALL]: rearguard was installed here ${npm}/rearguard`));
+    }
+
     const localModeModules: string = resolve(process.cwd(), "node_modules");
     let nodeModulesPath = resolve(globalNodeModules, "rearguard/node_modules");
 
@@ -60,54 +71,63 @@ if (
       nodeModulesPath = localModeModules;
     }
 
-    process.env.NODE_ENV = !release ? "development" : "production";
-    process.env.REARGUARD_LAUNCH_IS_START = action === "start" ? "true" : "false";
-    process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
-    process.env.REARGUARD_NODE_MODULE_PATH = nodeModulesPath;
-    process.env.REARGUARD_ISOMORPHIC = isomorphic ? "true" : "false";
-    process.env.REARGUARD_TYPE_SCRIPT = typescript ? "true" : "false";
-    process.env.REARGUARD_ONLY_SERVER = onlyServer ? "true" : "false";
-    process.env.REARGUARD_STATIC_SERVER = staticServer ? "true" : "false";
-    process.env.REARGUARD_VERBOSE = verbose ? "true" : "false";
-    process.env.REARGUARD_ANALYZE = analyze ? "true" : "false";
-    process.env.REARGUARD_DEBUG = debug ? "true" : "false";
+    if (existsSync(nodeModulesPath)) {
+      console.log(chalk.bold.green(`[REARGUARD][NODE_MODULES][FOUND]: ${nodeModulesPath}`));
 
-    process.env.REARGUARD_INFERNO_JS = appType === "infernojs" ? "true" : "false";
-    process.env.REARGUARD_REACT = appType === "react" ? "true" : "false";
+      process.env.NODE_ENV = !release ? "development" : "production";
+      process.env.REARGUARD_LAUNCH_IS_START = action === "start" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
+      process.env.REARGUARD_NODE_MODULE_PATH = nodeModulesPath;
+      process.env.REARGUARD_ISOMORPHIC = isomorphic ? "true" : "false";
+      process.env.REARGUARD_TYPE_SCRIPT = typescript ? "true" : "false";
+      process.env.REARGUARD_ONLY_SERVER = onlyServer ? "true" : "false";
+      process.env.REARGUARD_STATIC_SERVER = staticServer ? "true" : "false";
+      process.env.REARGUARD_VERBOSE = verbose ? "true" : "false";
+      process.env.REARGUARD_ANALYZE = analyze ? "true" : "false";
+      process.env.REARGUARD_DEBUG = debug ? "true" : "false";
 
-    process.env.REARGUARD_ERROR_LOG = "true";
+      process.env.REARGUARD_INFERNO_JS = appType === "infernojs" ? "true" : "false";
+      process.env.REARGUARD_REACT = appType === "react" ? "true" : "false";
 
-    const result = spawn.sync("node", [launchFile], {stdio: "inherit"});
+      process.env.REARGUARD_ERROR_LOG = "true";
 
-    if (result.signal) {
-      if (result.signal === "SIGKILL") {
-        console.log(
-          chalk
-            .red(
-              "The build failed because the process exited too early. " +
-              "This probably means the system ran out of memory or someone called " +
-              "`kill -9` on the process.",
-            ),
-        );
-        process.exit(1);
-      } else if (result.signal === "SIGTERM") {
-        console.log(
-          chalk
-            .bold
-            .red(
-              "The build failed because the process exited too early. " +
-              "Someone might have called `kill` or `killall`, or the system could " +
-              "be shutting down.",
-            ),
-        );
+      console.log(chalk.bold.green(`[REARGUARD][LAUNCH]: node ${launchFile}`));
 
-        process.exit(1);
+      const result = spawn.sync("node", [launchFile], {stdio: "inherit"});
+
+      if (result.signal) {
+        if (result.signal === "SIGKILL") {
+          console.log(
+            chalk
+              .red(
+                "The build failed because the process exited too early. " +
+                "This probably means the system ran out of memory or someone called " +
+                "`kill -9` on the process.",
+              ),
+          );
+          process.exit(1);
+        } else if (result.signal === "SIGTERM") {
+          console.log(
+            chalk
+              .bold
+              .red(
+                "The build failed because the process exited too early. " +
+                "Someone might have called `kill` or `killall`, or the system could " +
+                "be shutting down.",
+              ),
+          );
+
+          process.exit(1);
+        }
+
+        process.exit(0);
       }
 
-      process.exit(0);
+      process.exit(result.status);
+    } else {
+      console.log(chalk.bold.red(`[REARGUARD][NODE_MODULES][NOT_FOUND]: ${nodeModulesPath}`));
+      process.exit(1);
     }
-
-    process.exit(result.status);
   } else {
     console.log(
       chalk
