@@ -2,8 +2,8 @@ import * as AssetsPlugin from "assets-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
 import * as webpack from "webpack";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import { env, isAnalyze, isDevelopment, isIsomorphic, isVerbose, onlyServer, servercOutput } from "../target.config";
+import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
+import {env, isAnalyze, isDevelopment, isIsomorphic, onlyServer, servercOutput} from "../target.config";
 
 export const HMR = () => {
   if (isDevelopment) {
@@ -31,23 +31,12 @@ export const uglify = () => {
   if (!isDevelopment) {
     return [
       // https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
-      new UglifyJSPlugin({
-        compress: {
-          dead_code: true,
-          screw_ie8: true, // React doesn't support IE8
-          unused: true,
-          warnings: isVerbose,
+      new UglifyJSPlugin(
+        {
+          cache: true,
+          parallel: true,
         },
-        mangle: {
-          screw_ie8: true,
-        },
-        output: {
-          comments: false,
-          screw_ie8: true,
-        },
-
-        sourceMap: true,
-      }),
+      ),
     ];
   }
 
@@ -56,9 +45,11 @@ export const uglify = () => {
 
 // Webpack Bundle Analyzer
 // https://github.com/th0r/webpack-bundle-analyzer
-export const analyze = () => {
+export const analyze = (port: number) => {
   if (isAnalyze) {
-    return [new BundleAnalyzerPlugin()];
+    return [new BundleAnalyzerPlugin({
+      analyzerPort: port,
+    })];
   }
 
   return [];

@@ -114,6 +114,8 @@ const babelEnv = (targets: any) => ([
 
 export const babelEnvSpa = babelEnv({browsers: browserslist});
 export const babelEnvServer = babelEnv({node: config.nodeVersion >= 6 ? 6 : config.nodeVersion});
+export const analyzeClientPort: number = config.analyze.client;
+export const analyzeServerPort: number = config.analyze.server;
 // END
 
 // Package.json

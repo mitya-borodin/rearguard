@@ -1,4 +1,4 @@
-import { analyze, definePlugin } from "./plugins/js";
+import { definePlugin } from "./plugins/js";
 import { externalCSS, internalCSS } from "./rules/css";
 import { file } from "./rules/files";
 import {
@@ -60,7 +60,6 @@ export default (
   plugins: [
     definePlugin(),
     ...plugins,
-    ...analyze(),
   ],
 
   resolve: {
@@ -73,9 +72,6 @@ export default (
     modules,
 
   },
-
   stats,
-
   target,
-
 });

@@ -4,7 +4,7 @@ import webpackConfig from "../config/webpack.config";
 
 async function bundle() {
   await new Promise((resolve, reject) => {
-    webpack(webpackConfig).run((err, stats) => {
+    webpack(webpackConfig).run((err: any, stats: any) => {
       if (err) {
         return reject(err);
       }

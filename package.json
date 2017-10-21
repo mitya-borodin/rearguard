@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "engines": {
     "node": ">=6",
     "npm": ">=3.10"
@@ -31,8 +31,8 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "mocha -R spec -G -r ts-node/register test/**/*.ts",
-    "test:watch": "mocha -R spec -G -w --watch-extensions ts -r ts-node/register test/**/*.ts",
+    "test": "mocha -R spec -r ts-node/register test/**/*.ts",
+    "test:watch": "mocha -R spec -w --watch-extensions ts -r ts-node/register test/**/*.ts",
     "test:coverage": "nyc --reporter=html --extension .ts npm test",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
     "pretest": "npm run lint",

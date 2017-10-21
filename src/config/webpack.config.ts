@@ -3,8 +3,9 @@ import * as nodeExternals from "webpack-node-externals";
 import generalWebpackConfig from "./general.webpack.config";
 import {backEntry, frontEntry} from "./general/entry";
 import {extractCSS} from "./plugins/css";
-import {assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
+import {analyze, assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
 import compiler from "./rules/compiler";
+import {analyzeClientPort, analyzeServerPort} from "./target.config";
 import {
   isBuild,
   isDevelopment,
@@ -24,6 +25,7 @@ const spa = generalWebpackConfig({
     ...assetsPlugin(),
     ...htmlWebpackPlugin(),
     ...uglify(),
+    ...analyze(analyzeClientPort),
   ],
   rules: [
     ...compiler(),
@@ -65,6 +67,7 @@ const server = generalWebpackConfig({
       entryOnly: false,
       raw: true,
     }),
+    ...analyze(analyzeServerPort),
   ],
   rules: [
     // Override babel-preset-env configuration for Node.js

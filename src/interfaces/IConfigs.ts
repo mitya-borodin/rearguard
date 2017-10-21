@@ -54,6 +54,13 @@ export interface ITypescript {
 }
 
 export interface ISocket {
+  analyze: {
+    client: number;
+    server: number;
+  };
+  proxy: {
+    [key: string]: string | object;
+  };
   socket: {
     port: string;
     host: string;
@@ -86,5 +93,8 @@ export interface IEnv {
   nodeModulePath: string;
 }
 
-export interface IBuildConfig extends IContext, IEntry, IOutput, IModules, IBrowserslist, IProxy, IIsomorphic, ICSS, ITypescript {}
-export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {}
+export interface IBuildConfig extends IContext, IEntry, IOutput, IModules, IBrowserslist, IProxy, IIsomorphic, ICSS, ITypescript {
+}
+
+export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {
+}

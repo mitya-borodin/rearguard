@@ -45,6 +45,11 @@ describe("Source", () => {
   describe("Socket, success case and file socket.config.json exist.", () => {
     beforeEach(() => {
       const config = {
+        analyze: {
+          client: 10000,
+          server: 10001,
+        },
+        proxy: {},
         socket: {
           host: "remote.server.ru",
           port: "5000",
