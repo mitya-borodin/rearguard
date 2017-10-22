@@ -1,4 +1,4 @@
-import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isOldNode, isReact, isTS, resolveNodeModules, typescriptConfigFilePath} from "../target.config";
+import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isReact, isTS, resolveNodeModules, typescriptConfigFilePath} from "../target.config";
 
 export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
   const babelEnvPreset = !isServerSide ? babelEnvSpa : babelEnvServer;
@@ -11,7 +11,6 @@ export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
     cacheDirectory: isDevelopment,
     plugins: [
       resolveNodeModules("babel-plugin-transform-decorators-legacy"),
-      ...isOldNode ? [resolveNodeModules("babel-plugin-transform-regenerator")] : [],
       ...isInferno && !isReact ? [[resolveNodeModules("babel-plugin-inferno"), {imports: true}]] : [],
       ...isReact && !isInferno && !isDevelopment
         ? [

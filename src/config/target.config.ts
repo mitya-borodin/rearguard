@@ -30,7 +30,6 @@ export const staticServer = config.staticServer;
 
 // General
 export const publicDirName = config.isomorphic.publicDirName;
-export const isOldNode = config.nodeVersion < 8;
 const clientOutput = resolveTarget(isIsomorphic || staticServer ? `${config.output.path}/${publicDirName}` : config.output.path);
 // END
 
