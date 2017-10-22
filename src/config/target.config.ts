@@ -31,7 +31,6 @@ export const staticServer = config.staticServer;
 // General
 export const publicDirName = config.isomorphic.publicDirName;
 export const isOldNode = config.nodeVersion < 8;
-export const isVeryOldNode = config.nodeVersion < 6;
 const clientOutput = resolveTarget(isIsomorphic || staticServer ? `${config.output.path}/${publicDirName}` : config.output.path);
 // END
 
@@ -113,7 +112,7 @@ const babelEnv = (targets: any) => ([
 ]);
 
 export const babelEnvSpa = babelEnv({browsers: browserslist});
-export const babelEnvServer = babelEnv({node: config.nodeVersion >= 6 ? 6 : config.nodeVersion});
+export const babelEnvServer = babelEnv({node: config.nodeVersion});
 export const analyzeClientPort: number = config.analyze.client;
 export const analyzeServerPort: number = config.analyze.server;
 // END

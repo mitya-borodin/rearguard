@@ -5,16 +5,7 @@ import {backEntry, frontEntry} from "./general/entry";
 import {extractCSS} from "./plugins/css";
 import {analyze, assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
 import compiler from "./rules/compiler";
-import {analyzeClientPort, analyzeServerPort} from "./target.config";
-import {
-  isBuild,
-  isDevelopment,
-  isIsomorphic,
-  isStart,
-  onlyServer,
-  resolveNodeModules,
-  serverFilename,
-} from "./target.config";
+import {analyzeClientPort, analyzeServerPort, isBuild, isDevelopment, isIsomorphic, isStart, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
 
 const spa = generalWebpackConfig({
   entry: frontEntry(),
@@ -27,21 +18,17 @@ const spa = generalWebpackConfig({
     ...uglify(),
     ...analyze(analyzeClientPort),
   ],
-  rules: [
-    ...compiler(),
-  ],
+  rules: compiler(false),
 });
 
 const server = generalWebpackConfig({
-  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
+  devtool: isDevelopment ? "cheap-module-source-map" : false,
   entry: backEntry(),
   externals: [
     /^\.\/assets\.json$/,
     /^\.\/config\.json$/,
     /^\.\/config\.js$/,
-    nodeExternals({
-      whitelist: /\.css/,
-    }),
+    nodeExternals({whitelist: /\.css/}),
   ],
   node: {
     Buffer: false,
@@ -69,10 +56,7 @@ const server = generalWebpackConfig({
     }),
     ...analyze(analyzeServerPort),
   ],
-  rules: [
-    // Override babel-preset-env configuration for Node.js
-    ...compiler({}, true),
-  ],
+  rules: compiler(true),
   target: "node",
 });
 

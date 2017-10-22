@@ -1,40 +1,8 @@
-import {
-  babelEnvServer,
-  babelEnvSpa,
-  context,
-  isDevelopment,
-  isInferno,
-  isOldNode,
-  isReact,
-  isTS,
-  isVeryOldNode,
-  resolveNodeModules,
-  typescriptConfigFilePath,
-} from "../target.config";
+import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isOldNode, isReact, isTS, resolveNodeModules, typescriptConfigFilePath,} from "../target.config";
 
-export default (
-  {
-    babel: {
-      presets = [],
-      plugins = [],
-      envPreset = [],
-    } = {},
-    exclude = [/node_modules/],
-  } = {},
-  isServerSide = false,
-): any[] => {
-  let babelEnvPreset = [];
-
-  if (envPreset.length > 0) {
-    babelEnvPreset = envPreset;
-  } else {
-    babelEnvPreset = !isServerSide ? babelEnvSpa : babelEnvServer;
-  }
-
-  const common = {
-    exclude,
-    include: [context],
-  };
+export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
+  const babelEnvPreset = !isServerSide ? babelEnvSpa : babelEnvServer;
+  const include = [context];
   const query = {
     // https://babeljs.io/docs/usage/options/
     babelrc: false,
@@ -44,11 +12,7 @@ export default (
     plugins: [
       resolveNodeModules("babel-plugin-transform-decorators-legacy"),
       ...isOldNode ? [resolveNodeModules("babel-plugin-transform-regenerator")] : [],
-      ...isInferno && !isReact
-        ? [
-          [resolveNodeModules("babel-plugin-inferno"), { imports: true }],
-        ]
-        : [],
+      ...isInferno && !isReact ? [[resolveNodeModules("babel-plugin-inferno"), {imports: true}]] : [],
       ...isReact && !isInferno && !isDevelopment
         ? [
           resolveNodeModules("babel-plugin-transform-react-constant-elements"),
@@ -57,58 +21,33 @@ export default (
           resolveNodeModules("babel-plugin-transform-react-pure-class-to-function"),
         ]
         : [],
-      ...plugins,
-      [
-        resolveNodeModules("babel-plugin-transform-runtime"),
-        isServerSide
-          ? {
-            helpers: isOldNode,
-            moduleName: "babel-runtime",
-            polyfill: isVeryOldNode,
-            regenerator: isOldNode,
-          }
-          : {
-            helpers: isOldNode,
-            moduleName: "babel-runtime",
-            polyfill: isVeryOldNode,
-            regenerator: isOldNode,
-          },
-      ],
+      [resolveNodeModules("babel-plugin-transform-runtime")],
     ],
     presets: [
       babelEnvPreset,
       // Stage 2: draft
       // https://babeljs.io/docs/plugins/preset-stage-2/
       resolveNodeModules("babel-preset-stage-2"),
-
-      ...isReact
-        ? [
-          // JSX, Flow
-          // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-          resolveNodeModules("babel-preset-react"),
-        ]
-        : [],
-
-      ...presets,
+      // JSX, Flow
+      // https://github.com/babel/babel/tree/master/packages/babel-preset-react
+      ...isReact ? [resolveNodeModules("babel-preset-react")] : [],
     ],
   };
 
   if (isTS) {
     return [
       {
-        test: /\.js$/,
-        ...common,
         enforce: "pre",
+        exclude,
+        include,
         loader: "source-map-loader",
+        test: /\.js$/,
       },
       {
+        exclude,
+        include,
         test: /\.(ts|tsx)?$/,
-        ...common,
         use: [
-          {
-            loader: "babel-loader",
-            query,
-          },
           {
             loader: "ts-loader",
             options: {
@@ -118,19 +57,21 @@ export default (
         ],
       },
       {
-        test: /\.(js|jsx)?$/,
-        ...common,
+        exclude,
+        include,
         loader: "babel-loader",
         query,
+        test: /\.(js|jsx)?$/,
       },
     ];
   }
   return [
     {
-      test: /\.(js|jsx)?$/,
-      ...common,
+      exclude,
+      include,
       loader: "babel-loader",
       query,
+      test: /\.(js|jsx)?$/,
     },
   ];
 };
