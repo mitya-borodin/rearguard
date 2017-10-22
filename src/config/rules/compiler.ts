@@ -1,4 +1,4 @@
-import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isOldNode, isReact, isTS, resolveNodeModules, typescriptConfigFilePath,} from "../target.config";
+import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isOldNode, isReact, isTS, resolveNodeModules, typescriptConfigFilePath} from "../target.config";
 
 export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
   const babelEnvPreset = !isServerSide ? babelEnvSpa : babelEnvServer;
