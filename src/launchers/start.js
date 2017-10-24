@@ -5,6 +5,7 @@ import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as WDS from 'webpack-dev-server';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as WriteFilePlugin from 'write-file-webpack-plugin';
+import * as chalk from 'chalk';
 import {
   host,
   isDebug,
@@ -22,6 +23,7 @@ import clean from './clean';
 import copy from './copy';
 import runServer from './runServer';
 import makeProxies from './makeProxies';
+import typedCSS from './typedCSS';
 
 const target = `${host}:${port}`;
 const bs = browserSync.create();
@@ -31,6 +33,7 @@ buildTypescriptConfig();
 if (isIsomorphic || onlyServer) {
   clean()
     .then(() => copy())
+    .then(() => typedCSS(true))
     .then(() => {
         if (onlyServer) {
           // Save the server-side bundle files to the file system after compilation
@@ -46,13 +49,16 @@ if (isIsomorphic || onlyServer) {
 
             runServer(target)
               .then(() => {
-                bs.init({
-                  ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
-                  proxy: {
-                    target,
-                    middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                bs.init(
+                  {
+                    ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
+                    proxy: {
+                      target,
+                      middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                    },
                   },
-                });
+                  () => typedCSS()
+                );
               })
               .catch(error => console.error(error));
           };
@@ -74,13 +80,16 @@ if (isIsomorphic || onlyServer) {
 
             runServer(target)
               .then(() => {
-                bs.init({
-                  ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
-                  proxy: {
-                    target,
-                    middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                bs.init(
+                  {
+                    ...isDevelopment ? {} : {notify: isDebug, ui: isDebug},
+                    proxy: {
+                      target,
+                      middleware: [compress(), ...makeProxies(), wpMiddleware, hotMiddleware],
+                    },
                   },
-                });
+                  () => typedCSS()
+                );
               })
               .catch(error => console.error(error));
           };
@@ -97,5 +106,9 @@ if (isIsomorphic || onlyServer) {
 } else {
   const server = new WDS(webpack(webpackConfig), WDSConfig);
 
-  server.listen(port, host, () => console.log(`Launched on ${socket}`));
+  server.listen(port, host, () => {
+    console.log(chalk.bold.blue(`[REARGUARD][WDS][LAUNCHED][ON][${socket}]`));
+
+    typedCSS();
+  });
 }

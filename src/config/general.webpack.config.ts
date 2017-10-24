@@ -1,15 +1,8 @@
-import { definePlugin } from "./plugins/js";
-import { externalCSS, internalCSS } from "./rules/css";
-import { file } from "./rules/files";
-import {
-  context,
-  entry as defaultEntry,
-  isDevelopment,
-  isTS,
-  modules,
-  output as defaultOutput,
-  stats,
-} from "./target.config";
+import * as webpack from "webpack";
+import {definePlugin} from "./plugins/js";
+import {externalCSS, internalCSS} from "./rules/css";
+import {file} from "./rules/files";
+import {context, entry as defaultEntry, isDevelopment, isTS, modules, output as defaultOutput, stats} from "./target.config";
 
 export default (
   {
@@ -51,7 +44,7 @@ export default (
     ],
   },
   node,
-  output: { ...defaultOutput, ...output },
+  output: {...defaultOutput, ...output},
   performance: {
     hints: !isDevelopment ? "warning" : false, // enum
     maxAssetSize: 1000000, // int (in bytes),
@@ -59,6 +52,7 @@ export default (
   },
   plugins: [
     definePlugin(),
+    ...isTS ? [new webpack.WatchIgnorePlugin([/css\.d\.ts$/])] : [],
     ...plugins,
   ],
 
