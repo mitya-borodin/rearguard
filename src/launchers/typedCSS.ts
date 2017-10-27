@@ -3,11 +3,11 @@ import {execSync} from "child_process";
 import * as chokidar from "chokidar";
 import * as fs from "fs";
 import * as DtsCreator from "typed-css-modules";
-import {context, isTS} from "../config/target.config";
+import {context, isTS, nodeModulePath} from "../config/target.config";
 
 export default async function typedCSS(forceBuild = false) {
   if (forceBuild && isTS) {
-    execSync(`tcm ${context} -c`, {encoding: "utf8"});
+    execSync(`node ${nodeModulePath}/typed-css-modules/lib/cli.js ${context} -c`, {encoding: "utf8"});
   } else if (isTS) {
     const creator = new DtsCreator({
       camelCase: true,

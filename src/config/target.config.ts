@@ -26,6 +26,7 @@ export const isStart = config.isStart;
 export const isBuild = config.isBuild;
 export const onlyServer = config.onlyServer;
 export const staticServer = config.staticServer;
+export const nodeModulePath = config.nodeModulePath;
 // END
 
 // General
