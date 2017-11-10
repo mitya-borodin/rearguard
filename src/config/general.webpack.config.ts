@@ -1,6 +1,6 @@
 import * as webpack from "webpack";
 import {definePlugin} from "./plugins/js";
-import {externalCSS, internalCSS} from "./rules/css";
+import {externalCSS, globalCSS, internalCSS} from "./rules/css";
 import {file} from "./rules/files";
 import {context, entry as defaultEntry, isDevelopment, isTS, modules, output as defaultOutput, stats} from "./target.config";
 
@@ -39,6 +39,7 @@ export default (
     rules: [
       ...rules,
       internalCSS(),
+      globalCSS(),
       externalCSS(),
       file(),
     ],
@@ -55,7 +56,6 @@ export default (
     ...isTS ? [new webpack.WatchIgnorePlugin([/css\.d\.ts$/])] : [],
     ...plugins,
   ],
-
   resolve: {
     extensions: [...isTS ? [".ts", ".tsx"] : [], ".js", ".jsx", ".css", ".json"],
     modules,
@@ -64,7 +64,6 @@ export default (
     extensions: [".js", ".json"],
     mainFields: ["loader", "main"],
     modules,
-
   },
   stats,
   target,

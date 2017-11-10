@@ -1,7 +1,7 @@
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
-import { context, isDevelopment, isIsomorphic, output, postCSSConfigPath } from "../target.config";
+import {context, isDevelopment, isIsomorphic, output, postCSSConfigPath} from "../target.config";
 
-const use = (isExternal = false) => {
+const use = (isExternal = false, isModules = false) => {
   let styleLoader: any[] = [];
 
   if (isDevelopment) {
@@ -25,21 +25,15 @@ const use = (isExternal = false) => {
     {
       loader: "css-loader",
       options: {
-        ...!isExternal
-          ? {
-            // CSS Loader https://webpack.js.org/loaders/css-loader/
-            importLoaders: 1,
-            localIdentName: isDevelopment ? "[name]-[local]-[hash:base64:5]" : "[hash:base64:32]",
-          }
-          : {},
         discardComments: {
           removeAll: true,
         },
+        importLoaders: !isExternal ? 1 : 0,
+        localIdentName: isDevelopment ? "[path][name]__[local]--[hash:base64:5]" : "[hash:base64:32]",
         // CSS Nano http://cssnano.co/options/
         minimize: !isDevelopment,
         // CSS Modules https://github.com/css-modules/css-modules
-        modules: !isExternal,
-
+        modules: isModules,
         sourceMap: isDevelopment,
       },
     },
@@ -56,28 +50,35 @@ const use = (isExternal = false) => {
   ];
 };
 
-const rules = (isExternal = false) => ({
+const rules = (isExternal = false, isModules = true) => ({
   ...!isIsomorphic && !isDevelopment
     ? {
       use: ExtractTextPlugin.extract({
         fallback: "style-loader",
         publicPath: output.publicPath,
-        use: use(isExternal),
+        use: use(isExternal, isModules),
       }),
     }
     : {
-      use: use(isExternal),
+      use: use(isExternal, isModules),
     },
 });
 
 export const internalCSS = (test = /\.css/) => ({
+  exclude: [/\.global\.css/],
   include: context,
   test,
-  ...rules(false),
+  ...rules(),
 });
 
 export const externalCSS = (test = /\.css/) => ({
-  exclude: context,
+  exclude: [context, /\.global\.css/],
   test,
-  ...rules(true),
+  ...rules(true, false),
+});
+
+export const globalCSS = (test = /\.global\.css/) => ({
+  include: context,
+  test,
+  ...rules(true, false),
 });
