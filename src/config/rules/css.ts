@@ -29,7 +29,7 @@ const use = (isExternal = false, isModules = false) => {
           removeAll: true,
         },
         importLoaders: !isExternal ? 1 : 0,
-        localIdentName: isDevelopment ? "[path][name]__[local]--[hash:base64:5]" : "[hash:base64:32]",
+        localIdentName: isDevelopment ? "[path][local]--[hash:base64:5]" : "[hash:base64:32]",
         // CSS Nano http://cssnano.co/options/
         minimize: !isDevelopment,
         // CSS Modules https://github.com/css-modules/css-modules
