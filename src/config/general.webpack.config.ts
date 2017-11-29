@@ -1,8 +1,8 @@
 import * as webpack from "webpack";
-import {definePlugin} from "./plugins/js";
+import {definePlugin/*, TS*/} from "./plugins/js";
 import {externalCSS, globalCSS, internalCSS} from "./rules/css";
 import {file} from "./rules/files";
-import {context, entry as defaultEntry, isDevelopment, isTS, modules, output as defaultOutput, stats} from "./target.config";
+import {context, entry as defaultEntry, isDevelopment, isSourceMap, isTS, modules, output as defaultOutput, stats} from "./target.config";
 
 export default (
   {
@@ -17,7 +17,7 @@ export default (
       net: "empty",
       tls: "empty",
     },
-    devtool = isDevelopment ? "source-map" : false,
+    devtool = isDevelopment && isSourceMap ? "source-map" : false,
   }: {
     entry?: string[] | string | { [key: string]: string };
     output?: { [key: string]: string };
@@ -52,6 +52,7 @@ export default (
     maxEntrypointSize: 1000000, // int (in bytes)
   },
   plugins: [
+    // ...TS(),
     definePlugin(),
     ...isTS ? [new webpack.WatchIgnorePlugin([/css\.d\.ts$/])] : [],
     ...plugins,

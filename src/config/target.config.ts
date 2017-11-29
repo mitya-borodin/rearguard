@@ -143,5 +143,10 @@ export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config
 // Typescript
 export const typescriptTMP = path.resolve(__dirname, "../../tmp");
 export const typescriptConfigFilePath = path.resolve(__dirname, "../../tmp/tsconfig.json");
+export const tsLintConfigFilePath = path.resolve(__dirname, "../../tmp/tslint.json");
 export const typescript = config.typescript;
+// END
+
+// Source Map
+export const isSourceMap = config.isSourceMap;
 // END

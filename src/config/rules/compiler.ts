@@ -1,4 +1,4 @@
-import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isReact, isTS, resolveNodeModules, typescriptConfigFilePath} from "../target.config";
+import {babelEnvServer, babelEnvSpa, context, isDevelopment, isInferno, isReact, isSourceMap, isTS, resolveNodeModules, tsLintConfigFilePath, typescriptConfigFilePath} from "../target.config";
 
 export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
   const babelEnvPreset = !isServerSide ? babelEnvSpa : babelEnvServer;
@@ -35,12 +35,24 @@ export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
 
   if (isTS) {
     return [
+      ...isSourceMap
+        ? [
+          {
+            enforce: "pre",
+            exclude,
+            include,
+            loader: "source-map-loader",
+            test: /\.js$/,
+          },
+        ]
+        : [],
       {
         enforce: "pre",
-        exclude,
-        include,
-        loader: "source-map-loader",
-        test: /\.js$/,
+        loader: "tslint-loader",
+        options: {
+          configFile: tsLintConfigFilePath,
+        },
+        test: /\.(ts|tsx)?$/,
       },
       {
         exclude,
@@ -51,6 +63,9 @@ export default (isServerSide = false, exclude = [/node_modules/]): any[] => {
             loader: "ts-loader",
             options: {
               configFile: typescriptConfigFilePath,
+              // happyPackMode: true,
+              // disable type checker - we will use it in fork plugin
+              // transpileOnly: true,
             },
           },
         ],

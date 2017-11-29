@@ -81,6 +81,7 @@ export interface IEnv {
   isDevelopment: boolean;
   isBuild: boolean;
   isDebug: boolean;
+  isSourceMap: boolean;
   isVerbose: boolean;
   isAnalyze: boolean;
   isIsomorphic: boolean;

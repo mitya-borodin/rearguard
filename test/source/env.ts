@@ -13,6 +13,7 @@ describe("Source", () => {
       process.env.REARGUARD_VERBOSE = "true";
       process.env.REARGUARD_ANALYZE = "true";
       process.env.REARGUARD_DEBUG = "true";
+      process.env.REARGUARD_SOURCE_MAP = "true";
       process.env.REARGUARD_INFERNO_JS = "true";
       process.env.REARGUARD_REACT = "true";
       process.env.REARGUARD_LAUNCH_IS_START = "true";
@@ -84,6 +85,11 @@ describe("Source", () => {
       const {staticServer} = env();
 
       expect(staticServer).to.equal(true);
+    });
+    it("isSourceMap must be true", () => {
+      const {isSourceMap} = env();
+
+      expect(isSourceMap).to.equal(true);
     });
   });
 });

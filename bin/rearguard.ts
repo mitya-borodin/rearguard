@@ -16,6 +16,7 @@ const alias: { [key: string]: string } = {
   a: "analyze",
   d: "debug",
   i: "isomorphic",
+  m: "sourceMap",
   r: "release",
   ss: "staticServer",
   ts: "typescript",
@@ -31,6 +32,7 @@ const {
   debug = false,
   analyze = false,
   verbose = false,
+  sourceMap = false,
 }: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
   if (value.indexOf("--") === 0) {
     return Object.assign(prevValue, {[value.slice(2, value.length)]: true});
@@ -85,6 +87,7 @@ if (
       process.env.REARGUARD_VERBOSE = verbose ? "true" : "false";
       process.env.REARGUARD_ANALYZE = analyze ? "true" : "false";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
+      process.env.REARGUARD_SOURCE_MAP = sourceMap ? "true" : "false";
 
       process.env.REARGUARD_INFERNO_JS = appType === "infernojs" ? "true" : "false";
       process.env.REARGUARD_REACT = appType === "react" ? "true" : "false";
