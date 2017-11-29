@@ -118,7 +118,7 @@
     "@types/mocha": "2.2.44",
     "@types/node": "8.0.34",
     "@types/rimraf": "2.0.2",
-    "@types/webpack": "3.0.13",
+    "@types/webpack": "3.0.14",
     "@types/webpack-bundle-analyzer": "2.9.0",
     "@types/webpack-dev-middleware": "1.9.4",
     "@types/webpack-dev-server": "2.9.0",
