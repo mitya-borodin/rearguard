@@ -104,6 +104,8 @@ if (isIsomorphic || onlyServer) {
       }
     );
 } else {
+  typedCSS(true);
+
   const server = new WDS(webpack(webpackConfig), WDSConfig);
 
   server.listen(port, host, () => {
@@ -111,4 +113,5 @@ if (isIsomorphic || onlyServer) {
 
     typedCSS();
   });
+
 }
