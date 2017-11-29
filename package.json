@@ -115,7 +115,7 @@
     "@types/http-proxy-middleware": "0.17.2",
     "@types/joi": "10.6.0",
     "@types/mkdirp": "0.5.1",
-    "@types/mocha": "2.2.43",
+    "@types/mocha": "2.2.44",
     "@types/node": "8.0.34",
     "@types/rimraf": "2.0.2",
     "@types/webpack": "3.0.13",
