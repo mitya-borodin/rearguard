@@ -46,6 +46,7 @@ export default (
   },
   node,
   output: {...defaultOutput, ...output},
+  parallelism: 4,
   performance: {
     hints: !isDevelopment ? "warning" : false, // enum
     maxAssetSize: 1000000, // int (in bytes),

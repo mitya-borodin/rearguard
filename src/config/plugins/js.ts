@@ -1,19 +1,19 @@
 import * as AssetsPlugin from "assets-webpack-plugin";
+import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
 import * as webpack from "webpack";
 import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
-import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import {context, env, isAnalyze, isDevelopment, isIsomorphic, isTS, onlyServer, servercOutput, tsLintConfigFilePath, typescriptConfigFilePath} from "../target.config";
 
 export const HMR = () => {
   if (isDevelopment) {
     return [
-      new webpack.HotModuleReplacementPlugin(),
-      // enable HMR globally
-
       new webpack.NamedModulesPlugin(),
       // prints more readable module names in the browser console on HMR updates
+
+      new webpack.HotModuleReplacementPlugin(),
+      // enable HMR globally
     ];
   }
 
@@ -21,12 +21,17 @@ export const HMR = () => {
 };
 
 // https://webpack.js.org/plugins/commons-chunk-plugin/
-export const extractVendors = () => (
+export const extractVendors = () => ([
   new webpack.optimize.CommonsChunkPlugin({
-    minChunks: (module: { resource: string }) => /node_modules/.test(module.resource),
+    minChunks(module) {
+      return module.context && module.context.indexOf("node_modules") !== -1;
+    },
     name: "vendor",
-  })
-);
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: "manifest",
+  }),
+]);
 
 export const uglify = () => {
   if (!isDevelopment) {

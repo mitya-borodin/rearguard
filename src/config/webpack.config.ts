@@ -10,7 +10,7 @@ import {analyzeClientPort, analyzeServerPort, isBuild, isDevelopment, isIsomorph
 const spa = generalWebpackConfig({
   entry: frontEntry(),
   plugins: [
-    extractVendors(),
+    ...extractVendors(),
     ...extractCSS(),
     ...HMR(),
     ...assetsPlugin(),

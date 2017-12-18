@@ -47,8 +47,8 @@ export const socket = `${protocol}://${host}:${port}`;
 export const context = resolveTarget(config.context);
 export const entry = config.entry;
 export const output = {
-  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:4]" : "[chunkhash:32].chunk.js",
-  filename: isDevelopment ? "[name].js?[hash:4]" : "[chunkhash:32].js",
+  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
+  filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
   path: clientOutput,
   pathinfo: isVerbose || isDebug,
   publicPath: config.output.publicPath,
