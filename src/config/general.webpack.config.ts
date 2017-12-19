@@ -1,5 +1,4 @@
-import * as webpack from "webpack";
-import {definePlugin/*, TS*/} from "./plugins/js";
+import {definePlugin} from "./plugins/js";
 import {externalCSS, globalCSS, internalCSS} from "./rules/css";
 import {file} from "./rules/files";
 import {context, entry as defaultEntry, isDevelopment, isSourceMap, modules, output as defaultOutput, stats} from "./target.config";
@@ -49,7 +48,6 @@ export default (
   performance: false,
   plugins: [
     definePlugin(),
-    new webpack.WatchIgnorePlugin([/css\.d\.ts$/]),
     ...plugins,
   ],
   resolve: {

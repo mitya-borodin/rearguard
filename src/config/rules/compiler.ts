@@ -1,7 +1,7 @@
 import {context, isSourceMap, tsLintConfigFilePath, typescriptConfigFilePath} from "../target.config";
 
 export default (): any[] => {
-  const exclude = [/node_modules/];
+  const exclude = [/node_modules/, /\.d\.ts$/];
   const include = [context];
   const test = /\.(ts|tsx)?$/;
 
@@ -19,6 +19,8 @@ export default (): any[] => {
       : [],
     {
       enforce: "pre",
+      exclude,
+      include,
       loader: "tslint-loader",
       options: {
         configFile: tsLintConfigFilePath,
@@ -26,6 +28,7 @@ export default (): any[] => {
       test,
     },
     {
+      exclude,
       include,
       test,
       use: [

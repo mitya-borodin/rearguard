@@ -11,7 +11,7 @@ export default () => {
     compileOnSave,
     compilerOptions: Object.assign(
       {
-        allowJs: true,
+        allowJs: false,
         allowSyntheticDefaultImports: true,
         alwaysStrict: true,
         baseUrl: context,
