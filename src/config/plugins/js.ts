@@ -1,10 +1,9 @@
 import * as AssetsPlugin from "assets-webpack-plugin";
-import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
 import * as webpack from "webpack";
 import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
-import {context, env, isAnalyze, isDevelopment, isIsomorphic, isTS, onlyServer, servercOutput, tsLintConfigFilePath, typescriptConfigFilePath} from "../target.config";
+import {env, isAnalyze, isDevelopment, isIsomorphic, onlyServer, servercOutput} from "../target.config";
 
 export const HMR = () => {
   if (isDevelopment) {
@@ -53,9 +52,11 @@ export const uglify = () => {
 // https://github.com/th0r/webpack-bundle-analyzer
 export const analyze = (port: number) => {
   if (isAnalyze) {
-    return [new BundleAnalyzerPlugin({
-      analyzerPort: port,
-    })];
+    return [
+      new BundleAnalyzerPlugin({
+        analyzerPort: port,
+      }),
+    ];
   }
 
   return [];
@@ -64,7 +65,7 @@ export const analyze = (port: number) => {
 // https://webpack.js.org/plugins/define-plugin/
 export const definePlugin = () => (
   new webpack.DefinePlugin({
-    "___DEV__": env.__DEV__,
+    "__DEV__": env.__DEV__,
     "process.env.DEBUG": env.DEBUG,
     "process.env.NODE_ENV": env.NODE_ENV,
 
@@ -94,25 +95,6 @@ export const htmlWebpackPlugin = () => {
         filename: "index.html",
         inject: "head",
       }),
-    ];
-  }
-
-  return [];
-};
-
-export const TS = () => {
-  if (isTS) {
-    return [
-      new ForkTsCheckerWebpackPlugin(
-        {
-          async: false,
-          memoryLimit: 2000,
-          tsconfig: typescriptConfigFilePath,
-          tslint: tsLintConfigFilePath,
-          watch: [`${context}/*.ts`, `${context}/*.tsx`],
-          workers: 4,
-        },
-      ),
     ];
   }
 

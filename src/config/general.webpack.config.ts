@@ -2,7 +2,7 @@ import * as webpack from "webpack";
 import {definePlugin/*, TS*/} from "./plugins/js";
 import {externalCSS, globalCSS, internalCSS} from "./rules/css";
 import {file} from "./rules/files";
-import {context, entry as defaultEntry, isDevelopment, isSourceMap, isTS, modules, output as defaultOutput, stats} from "./target.config";
+import {context, entry as defaultEntry, isDevelopment, isSourceMap, modules, output as defaultOutput, stats} from "./target.config";
 
 export default (
   {
@@ -46,20 +46,14 @@ export default (
   },
   node,
   output: {...defaultOutput, ...output},
-  parallelism: 4,
-  performance: {
-    hints: !isDevelopment ? "warning" : false, // enum
-    maxAssetSize: 1000000, // int (in bytes),
-    maxEntrypointSize: 1000000, // int (in bytes)
-  },
+  performance: false,
   plugins: [
-    // ...TS(),
     definePlugin(),
-    ...isTS ? [new webpack.WatchIgnorePlugin([/css\.d\.ts$/])] : [],
+    new webpack.WatchIgnorePlugin([/css\.d\.ts$/]),
     ...plugins,
   ],
   resolve: {
-    extensions: [...isTS ? [".ts", ".tsx"] : [], ".js", ".jsx", ".css", ".json"],
+    extensions: [".js", ".ts", ".tsx", ".css", ".json"],
     modules,
   },
   resolveLoader: {

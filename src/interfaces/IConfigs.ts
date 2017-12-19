@@ -85,9 +85,6 @@ export interface IEnv {
   isVerbose: boolean;
   isAnalyze: boolean;
   isIsomorphic: boolean;
-  isInferno: boolean;
-  isReact: boolean;
-  isTS: boolean;
   isStart: boolean;
   onlyServer: boolean;
   staticServer: boolean;

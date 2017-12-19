@@ -1,23 +1,16 @@
-import {
-  entry,
-  isBuild,
-  isDevelopment,
-  isIsomorphic,
-  resolveNodeModules,
-  serverEntry,
-  socket,
-} from "../target.config";
+import {entry, isBuild, isDevelopment, isIsomorphic, resolveNodeModules, serverEntry, socket } from "../target.config";
 
 export const frontEntry = (entries = []): string[] | string | { [key: string]: string } => {
   if (isDevelopment && !isBuild) {
     return [
-      ...isIsomorphic ? [
-        `${resolveNodeModules("webpack-hot-middleware")}/client`,
-      ] : [
-        // http://gaearon.github.io/react-hot-loader/getstarted/
-        `${resolveNodeModules("webpack-dev-server")}/client?${socket}`,
-        `${resolveNodeModules("webpack")}/hot/dev-server`,
-      ],
+      ...isIsomorphic
+        ? [
+          `${resolveNodeModules("webpack-hot-middleware")}/client`,
+        ]
+        : [
+          `${resolveNodeModules("webpack-dev-server")}/client?${socket}`,
+          `${resolveNodeModules("webpack")}/hot/dev-server`,
+        ],
       ...entries,
       entry,
     ];

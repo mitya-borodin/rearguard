@@ -18,11 +18,10 @@ const spa = generalWebpackConfig({
     ...uglify(),
     ...analyze(analyzeClientPort),
   ],
-  rules: compiler(false),
+  rules: compiler(),
 });
 
 const server = generalWebpackConfig({
-  devtool: isDevelopment ? "cheap-module-source-map" : false,
   entry: backEntry(),
   externals: [
     /^\.\/assets\.json$/,
@@ -56,7 +55,7 @@ const server = generalWebpackConfig({
     }),
     ...analyze(analyzeServerPort),
   ],
-  rules: compiler(true),
+  rules: compiler(),
   target: "node",
 });
 

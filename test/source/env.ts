@@ -8,14 +8,11 @@ describe("Source", () => {
       process.env.NODE_ENV = "development";
       process.env.REARGUARD_NODE_MODULE_PATH = "/node_module/path";
       process.env.REARGUARD_ISOMORPHIC = "true";
-      process.env.REARGUARD_TYPE_SCRIPT = "true";
       process.env.REARGUARD_ONLY_SERVER = "true";
       process.env.REARGUARD_VERBOSE = "true";
       process.env.REARGUARD_ANALYZE = "true";
       process.env.REARGUARD_DEBUG = "true";
       process.env.REARGUARD_SOURCE_MAP = "true";
-      process.env.REARGUARD_INFERNO_JS = "true";
-      process.env.REARGUARD_REACT = "true";
       process.env.REARGUARD_LAUNCH_IS_START = "true";
       process.env.REARGUARD_LAUNCH_IS_BUILD = "true";
       process.env.REARGUARD_STATIC_SERVER = "true";
@@ -45,21 +42,6 @@ describe("Source", () => {
       const {isIsomorphic} = env();
 
       expect(isIsomorphic).to.equal(true);
-    });
-    it("isInferno must be true", () => {
-      const {isInferno} = env();
-
-      expect(isInferno).to.equal(true);
-    });
-    it("isReact must be true", () => {
-      const {isReact} = env();
-
-      expect(isReact).to.equal(true);
-    });
-    it("isTS must be true", () => {
-      const {isTS} = env();
-
-      expect(isTS).to.equal(true);
     });
     it("isStart must be true", () => {
       const {isStart} = env();

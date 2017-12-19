@@ -19,9 +19,6 @@ export const isDebug = config.isDebug;
 export const isVerbose = config.isVerbose;
 export const isAnalyze = config.isAnalyze;
 export const isIsomorphic = config.isIsomorphic;
-export const isInferno = config.isInferno;
-export const isReact = config.isReact;
-export const isTS = config.isTS;
 export const isStart = config.isStart;
 export const isBuild = config.isBuild;
 export const onlyServer = config.onlyServer;
@@ -65,11 +62,11 @@ export const stats: webpack.Options.Stats = {
   chunks: isVerbose,
   colors: true,
   context,
-  hash: isVerbose,
+  hash: true,
   modules: isVerbose,
   reasons: isVerbose,
   timings: true,
-  version: isVerbose,
+  version: true,
 };
 export const proxy: { [key: string]: any } = config.proxy;
 
@@ -99,20 +96,6 @@ export const env = {
   NODE_ENV: isDevelopment ? '"development"' : '"production"',
   __DEV__: isDevelopment,
 };
-// A Babel preset that can automatically determine the Babel plugins and polyfills
-// https://github.com/babel/babel-preset-env
-const babelEnv = (targets: any) => ([
-  resolveNodeModules("babel-preset-env"),
-  {
-    debug: isDebug,
-    modules: false,
-    targets,
-    useBuiltIns: false,
-  },
-]);
-
-export const babelEnvSpa = babelEnv({browsers: browserslist});
-export const babelEnvServer = babelEnv({node: config.nodeVersion});
 export const analyzeClientPort: number = config.analyze.client;
 export const analyzeServerPort: number = config.analyze.server;
 // END
@@ -132,11 +115,9 @@ process.env.SERVER_LAUNCH_MESSAGE = `The server is running at ${socket}`;
 // CSS
 const postCssPluginsFile = resolveTarget(config.css.postCssPlugins);
 const postCssPlugins = fs.existsSync(postCssPluginsFile) ? require(postCssPluginsFile) : [];
-
 export const css = {
   postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
 };
-
 export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config.js"));
 // END
 
