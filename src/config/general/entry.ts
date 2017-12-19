@@ -1,16 +1,11 @@
-import {entry, isBuild, isDevelopment, isIsomorphic, resolveNodeModules, serverEntry, socket } from "../target.config";
+import { Entry, EntryFunc } from "webpack";
+import { entry, isBuild, isDevelopment, resolveNodeModules, socket } from "../target.config";
 
-export const frontEntry = (entries = []): string[] | string | { [key: string]: string } => {
+export default (entries = []): string | string[] | Entry | EntryFunc => {
   if (isDevelopment && !isBuild) {
     return [
-      ...isIsomorphic
-        ? [
-          `${resolveNodeModules("webpack-hot-middleware")}/client`,
-        ]
-        : [
-          `${resolveNodeModules("webpack-dev-server")}/client?${socket}`,
-          `${resolveNodeModules("webpack")}/hot/dev-server`,
-        ],
+      `${resolveNodeModules("webpack-dev-server")}/client?${socket}`,
+      `${resolveNodeModules("webpack")}/hot/dev-server`,
       ...entries,
       entry,
     ];
@@ -18,8 +13,3 @@ export const frontEntry = (entries = []): string[] | string | { [key: string]: s
 
   return entry;
 };
-
-export const backEntry = (entries = []): string[] | string | { [key: string]: string } => [
-  ...entries,
-  serverEntry,
-];

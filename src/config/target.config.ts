@@ -4,85 +4,50 @@ import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import source from "./source";
 
-export const resolveNodeModules = (packageName = "") => path.resolve(
-  process.env.REARGUARD_NODE_MODULE_PATH,
-  packageName,
-);
-export const resolveTarget = (relPath = "") => path.resolve(CWD, relPath);
-
 const CWD = process.cwd();
 const config = source();
+
+export const resolveNodeModules = (name = "") => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH, name);
+export const resolveTarget = (relPath = "") => path.resolve(CWD, relPath);
 
 // ENV
 export const isDevelopment = config.isDevelopment;
 export const isDebug = config.isDebug;
-export const isVerbose = config.isVerbose;
-export const isAnalyze = config.isAnalyze;
-export const isIsomorphic = config.isIsomorphic;
 export const isStart = config.isStart;
 export const isBuild = config.isBuild;
-export const onlyServer = config.onlyServer;
-export const staticServer = config.staticServer;
 export const nodeModulePath = config.nodeModulePath;
 // END
 
-// General
-export const publicDirName = config.isomorphic.publicDirName;
-const clientOutput = resolveTarget(isIsomorphic || staticServer ? `${config.output.path}/${publicDirName}` : config.output.path);
-// END
-
 // Socket
-export const host = config.socket.host;
-export const port = config.socket.port;
-process.env.HOST = host;
-process.env.PORT = port;
-export const protocol = "http";
-export const socket = `${protocol}://${host}:${port}`;
+export const socket = config.socket;
 // END
 
 // Webpack
-export const context = resolveTarget(config.context);
-export const entry = config.entry;
-export const output = {
+export const root: string = resolveTarget(`../${config.context}`);
+export const context: string = resolveTarget(config.context);
+export const entry: string = config.entry;
+export const output: webpack.Output = {
   chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
   filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
-  path: clientOutput,
-  pathinfo: isVerbose || isDebug,
+  path: resolveTarget(config.output.path),
+  pathinfo: isDebug,
   publicPath: config.output.publicPath,
 };
-export const modules = [
+export const modules: string[] = [
   ...config.modules.map((relPath) => resolveTarget(relPath)),
   "node_modules",
   resolveNodeModules(),
 ];
-
-export const stats: webpack.Options.Stats = {
-  cached: isVerbose,
-  chunkModules: isVerbose,
-  chunks: isVerbose,
-  colors: true,
-  context,
-  hash: true,
-  modules: isVerbose,
-  reasons: isVerbose,
-  timings: true,
-  version: true,
-};
-export const proxy: { [key: string]: any } = config.proxy;
-
-export const webpackMiddlewareConfig: any = {
-  publicPath: output.publicPath,
-  stats,
-  watchOptions: {
-    ignored: /node_modules/,
-  },
-};
-
+export const stats: webpack.Options.Stats = isDebug ? "verbose" : "normal";
+export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   compress: true,
-  contentBase: clientOutput,
+  contentBase: resolveTarget(config.output.path),
   historyApiFallback: true,
   hot: true,
+  https: false,
+  open: true,
+  overlay: true,
   proxy,
   publicPath: output.publicPath,
   stats,
@@ -90,44 +55,38 @@ export const WDSConfig: WDS.Configuration = {
 // END
 
 // Plugins
-export const browserslist = config.browserslist;
 export const env = {
-  DEBUG: isDebug,
   NODE_ENV: isDevelopment ? '"development"' : '"production"',
-  __DEV__: isDevelopment,
 };
-export const analyzeClientPort: number = config.analyze.client;
-export const analyzeServerPort: number = config.analyze.server;
-// END
-
-// Package.json
-export const dependencies = config.dependencies;
-export const engines = config.engines;
-// END
-
-// Isomorphic
-export const serverEntry = config.isomorphic.entry;
-export const servercOutput = resolveTarget(config.output.path);
-export const serverFilename = `../${serverEntry}`;
-process.env.SERVER_LAUNCH_MESSAGE = `The server is running at ${socket}`;
-// END
-
-// CSS
-const postCssPluginsFile = resolveTarget(config.css.postCssPlugins);
-const postCssPlugins = fs.existsSync(postCssPluginsFile) ? require(postCssPluginsFile) : [];
-export const css = {
-  postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
+export const analyze = {
+  port: config.analyze.port,
 };
-export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config.js"));
 // END
 
 // Typescript
-export const typescriptTMP = path.resolve(__dirname, "../../tmp");
-export const typescriptConfigFilePath = path.resolve(__dirname, "../../tmp/tsconfig.json");
-export const tsLintConfigFilePath = path.resolve(__dirname, "../../tmp/tslint.json");
-export const typescript = config.typescript;
+export const ts = {
+  lint: path.resolve(__dirname, "../../tmp/tslint.json"),
+  path: path.resolve(__dirname, "../../tmp/tsconfig.json"),
+  props: config.typescript,
+  tmp: path.resolve(__dirname, "../../tmp"),
+};
 // END
 
-// Source Map
-export const isSourceMap = config.isSourceMap;
+// CSS
+const externalPluginsPath = resolveTarget(config.postCSS.plugins);
+export const postCSS = {
+  config: require(path.resolve(__dirname, "postcss.config.js")),
+  plugins: {
+    list: fs.existsSync(externalPluginsPath) ? require(externalPluginsPath) : [],
+    path: externalPluginsPath,
+  },
+};
+// END
+
+// Package.json
+export const pkg = {
+  dependencies: config.dependencies,
+  engines: config.engines,
+  nodeVersion: config.nodeVersion,
+};
 // END

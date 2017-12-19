@@ -4,18 +4,13 @@ import { ICSS } from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
 const defaultValue: ICSS = {
-  css: {
-    postCssPlugins: "postCssPlugins.js",
+  postCSS: {
+    plugins: "postCssPlugins.js",
   },
 };
 
 const propType = {
-  css: Joi.object()
-    .keys({
-      postCssPlugins: Joi.string()
-        .required(),
-    })
-    .required(),
+  postCSS: Joi.object().keys({ plugins: Joi.string().required() }).required(),
 };
 
 export default (fileName: string): ICSS => {

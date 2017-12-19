@@ -4,10 +4,10 @@ import { IEntry } from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
 const defaultValue: IEntry = {
-  entry: "main.js",
+  entry: "index.tsx",
 };
 const propType = {
-  entry: Joi.string().trim().min(6).required(),
+  entry: Joi.string().trim().min(9).required(),
 };
 
 export default (fileName: string): IEntry => {
@@ -18,10 +18,8 @@ export default (fileName: string): IEntry => {
     const { error } = Joi.validate(entry, propType);
 
     if (error !== null) {
-      if (process.env.REARGUARD_ERROR_LOG === "true") {
-        console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(entry, null, 2)}"`));
-        console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
-      }
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(entry, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
 
       return defaultValue;
     }

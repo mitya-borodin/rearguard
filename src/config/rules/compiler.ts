@@ -1,4 +1,4 @@
-import {context, isSourceMap, tsLintConfigFilePath, typescriptConfigFilePath} from "../target.config";
+import { context, isDebug, ts } from "../target.config";
 
 export default (): any[] => {
   const exclude = [/node_modules/, /\.d\.ts$/];
@@ -6,7 +6,7 @@ export default (): any[] => {
   const test = /\.(ts|tsx)?$/;
 
   return [
-    ...isSourceMap
+    ...isDebug
       ? [
         {
           enforce: "pre",
@@ -23,7 +23,7 @@ export default (): any[] => {
       include,
       loader: "tslint-loader",
       options: {
-        configFile: tsLintConfigFilePath,
+        configFile: ts.lint,
       },
       test,
     },
@@ -35,7 +35,7 @@ export default (): any[] => {
         {
           loader: "ts-loader",
           options: {
-            configFile: typescriptConfigFilePath,
+            configFile: ts.path,
             // happyPackMode: true,
             // disable type checker - we will use it in fork plugin
             // transpileOnly: true,

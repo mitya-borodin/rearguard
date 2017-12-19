@@ -1,50 +1,26 @@
-import {definePlugin} from "./plugins/js";
-import {externalCSS, globalCSS, internalCSS} from "./rules/css";
-import {file} from "./rules/files";
-import {context, entry as defaultEntry, isDevelopment, isSourceMap, modules, output as defaultOutput, stats} from "./target.config";
+import * as webpack from "webpack";
+import { Entry, EntryFunc } from "webpack";
+import { definePlugin } from "./plugins/js";
+import CSS from "./rules/css";
+import { file } from "./rules/files";
+import { context, isDebug, isDevelopment, modules, stats } from "./target.config";
 
 export default (
-  {
-    entry = defaultEntry,
-    output = {},
-    target = "web",
-    rules = [],
-    plugins = [],
-    externals = [],
-    node = {
-      fs: "empty",
-      net: "empty",
-      tls: "empty",
-    },
-    devtool = isDevelopment && isSourceMap ? "source-map" : false,
-  }: {
-    entry?: string[] | string | { [key: string]: string };
-    output?: { [key: string]: string };
-    target?: string;
-    rules?: any[];
-    plugins?: any[];
-    externals?: any[];
-    node?: { [key: string]: string | boolean } | boolean;
-    devtool?: string | boolean;
-  },
+  entry: string | string[] | Entry | EntryFunc,
+  output: webpack.Output,
+  rules: webpack.Rule[],
+  plugins: webpack.Plugin[],
+  externals: webpack.ExternalsElement,
 ) => ({
   bail: !isDevelopment,
-  cache: isDevelopment,
   context,
-  devtool,
+  devtool: isDevelopment && isDebug ? "source-map" : false,
   entry,
   externals,
   module: {
-    rules: [
-      ...rules,
-      internalCSS(),
-      globalCSS(),
-      externalCSS(),
-      file(),
-    ],
+    rules: [...rules, CSS(), file()],
   },
-  node,
-  output: {...defaultOutput, ...output},
+  output,
   performance: false,
   plugins: [
     definePlugin(),
@@ -60,5 +36,4 @@ export default (
     modules,
   },
   stats,
-  target,
 });

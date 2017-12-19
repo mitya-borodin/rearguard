@@ -26,7 +26,7 @@ describe("Source", () => {
     it("Port must be 3000", () => {
       const { socket: { port } } = socket();
 
-      expect(port).to.equal("3000");
+      expect(port).to.equal(3000);
     });
 
     it("Host must be localhost", () => {
@@ -87,7 +87,7 @@ describe("Source", () => {
     it("Port must be 3000", () => {
       const { socket: { port } } = socket();
 
-      expect(port).to.equal("3000");
+      expect(port).to.equal(3000);
     });
 
     it("Host must be localhost", () => {
