@@ -41,11 +41,12 @@ export const modules: string[] = [
 export const stats: webpack.Options.Stats = isDebug ? "verbose" : "normal";
 export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
+  bonjour: true,
   compress: true,
   contentBase: resolveTarget(config.output.path),
   historyApiFallback: true,
   hot: true,
-  https: false,
+  https: true,
   open: true,
   overlay: true,
   proxy,

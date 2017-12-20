@@ -11,17 +11,19 @@ export default (
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
   externals: webpack.ExternalsElement,
-) => ({
+): webpack.Configuration => ({
   bail: !isDevelopment,
   context,
-  devtool: isDevelopment && isDebug ? "source-map" : false,
+  devtool: isDebug ? "source-map" : false,
   entry,
   externals,
   module: {
-    rules: [...rules, CSS(), file()],
+    rules: [...rules, ...CSS(), file()],
   },
   output,
-  performance: false,
+  performance: {
+    hints: false,
+  },
   plugins: [
     definePlugin(),
     ...plugins,

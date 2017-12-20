@@ -1,22 +1,12 @@
-import { context, isDebug, ts } from "../target.config";
+import * as webpack from "webpack";
+import { context, ts } from "../target.config";
 
-export default (): any[] => {
+export default (): webpack.Rule[] => {
   const exclude = [/node_modules/, /\.d\.ts$/];
   const include = [context];
   const test = /\.(ts|tsx)?$/;
 
   return [
-    ...isDebug
-      ? [
-        {
-          enforce: "pre",
-          exclude,
-          include,
-          loader: "source-map-loader",
-          test: /\.(ts|tsx|js|jsx)?$/,
-        },
-      ]
-      : [],
     {
       enforce: "pre",
       exclude,

@@ -1,7 +1,7 @@
 import generalWebpackConfig from "./general.webpack.config";
 import entry from "./general/entry";
 import { extractCSS } from "./plugins/css";
-import { analyze, assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify } from "./plugins/js";
+import { analyze, extractVendors, HMR, htmlWebpackPlugin, uglify } from "./plugins/js";
 import compiler from "./rules/compiler";
 import { output } from "./target.config";
 
@@ -10,12 +10,11 @@ const config = generalWebpackConfig(
   output,
   compiler(),
   [
-    ...extractVendors(),
-    ...extractCSS(),
     ...HMR(),
-    ...assetsPlugin(),
-    ...htmlWebpackPlugin(),
+    ...extractVendors(),
     ...uglify(),
+    ...extractCSS(),
+    ...htmlWebpackPlugin(),
     ...analyze(),
   ],
   "",

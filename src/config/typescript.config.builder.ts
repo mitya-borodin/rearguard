@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
 import * as path from "path";
-import {context, resolveTarget, tsLintConfigFilePath, typescript, typescriptConfigFilePath, typescriptTMP} from "./target.config";
+import { context, resolveTarget, ts } from "./target.config";
 
 export default () => {
-  const {configPath, showConfigForIDE, config: {compilerOptions, compileOnSave}} = typescript;
-  const {devDependencies: {typescript: version}} = require(path.resolve(__dirname, "../../../package.json"));
+  const { configPath, showConfigForIDE, config: { compilerOptions, compileOnSave } } = ts.props;
+  const { devDependencies: { typescript: version } } = require(path.resolve(__dirname, "../../../package.json"));
 
   const config = {
     compileOnSave,
@@ -90,8 +90,8 @@ export default () => {
     fs.unlinkSync(resolveTarget("tslint.json"));
   }
 
-  mkdirp.sync(typescriptTMP);
+  mkdirp.sync(ts.tmp);
 
-  fs.writeFileSync(typescriptConfigFilePath, JSON.stringify(config, null, 2));
-  fs.writeFileSync(tsLintConfigFilePath, JSON.stringify(tsLint, null, 2));
+  fs.writeFileSync(ts.path, JSON.stringify(config, null, 2));
+  fs.writeFileSync(ts.lint, JSON.stringify(tsLint, null, 2));
 };

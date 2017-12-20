@@ -1,4 +1,4 @@
-import {browserslist, context, css} from "./target.config";
+import { context, postCSS } from "./target.config";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
@@ -6,11 +6,11 @@ import {browserslist, context, css} from "./target.config";
 module.exports = (loader: any) => ([
   // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
   // https://github.com/postcss/postcss-import
-  require("postcss-import")({path: context}),
+  require("postcss-import")({ path: context }),
 
   // https://github.com/maximkoretskiy/postcss-initial
   // This is polyfill for css rule: "all: initial".
-  require("postcss-initial")({reset: "inherited"}),
+  require("postcss-initial")({ reset: "inherited" }),
 
   // PostCSS plugin to transform :not() W3C CSS leve 4 pseudo class to :not() CSS level 3 selectors
   // http://dev.w3.org/csswg/selectors-4/#negation
@@ -35,7 +35,7 @@ module.exports = (loader: any) => ([
 
   // Add vendor prefixes to CSS rules using values from caniuse.com
   // https://github.com/postcss/autoprefixer
-  require("autoprefixer")(browserslist),
+  require("autoprefixer")([">0.1%"]),
 
-  ...css.postCssPlugins,
+  ...postCSS.plugins.list,
 ]);
