@@ -28,7 +28,7 @@ const { release = false, debug = false }: IBoolObj = otherArguments.reduce((prev
   return prevValue;
 }, {});
 
-if (action === "start" || action === "build") {
+if (action === "start" || action === "build" || action === "dll") {
   const launchFile: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
   if (existsSync(launchFile)) {
@@ -42,7 +42,7 @@ if (action === "start" || action === "build") {
       console.log(chalk.bold.cyan(`LAUNCH: ${npm} i -g rearguard`));
       console.log(chalk.bold.cyan(`INFO: pending may be continue around 60 - 200 seconds, it is normal because npm will be install rearguard.`));
 
-      execSync(`${npm} i -g rearguard`, { stdio: "inherit" });
+      execSync(`${npm} i -g rearguard`, { encoding: "utf8", stdio: "inherit" });
 
       console.log(chalk.bold.cyan(`RESULT: rearguard was installed here ${npm}/rearguard`));
       console.log(chalk.bold.cyan(`==========================================`));
@@ -71,7 +71,7 @@ if (action === "start" || action === "build") {
       console.log(chalk.bold.green(`LAUNCH: node ${launchFile}`));
       console.log(chalk.bold.green(`=======================================`));
 
-      const result = spawn.sync("node", [launchFile], { stdio: "inherit" });
+      const result = spawn.sync("node", [launchFile], { encoding: "utf8", stdio: "inherit" });
 
       if (result.signal) {
         if (result.signal === "SIGKILL") {
@@ -93,5 +93,5 @@ if (action === "start" || action === "build") {
     console.log(chalk.bold.red(`I am really sorry but file: ${launchFile}, not found, try check this throw command: ls -la ${launchFile}`));
   }
 } else {
-  console.log(chalk.bold.red("You should use: rearguard [ start | build ] [ -r | -d ]"));
+  console.log(chalk.bold.red("You should use: rearguard [ start | build ] [ -r | -d ] | dll"));
 }

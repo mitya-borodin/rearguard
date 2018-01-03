@@ -1,16 +1,16 @@
+// import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as webpack from "webpack";
 import { Entry, EntryFunc } from "webpack";
-import { definePlugin } from "./plugins/js";
 import CSS from "./rules/css";
 import { file } from "./rules/files";
-import { context, isDebug, isDevelopment, modules, stats } from "./target.config";
+import { context, isDebug, isDevelopment, modules, /*root,*/ stats } from "./target.config";
 
 export default (
   entry: string | string[] | Entry | EntryFunc,
   output: webpack.Output,
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
-  externals: webpack.ExternalsElement,
+  externals: webpack.ExternalsFunctionElement | webpack.ExternalsObjectElement | webpack.ExternalsElement,
 ): webpack.Configuration => ({
   bail: !isDevelopment,
   context,
@@ -25,7 +25,7 @@ export default (
     hints: false,
   },
   plugins: [
-    definePlugin(),
+    // ...!isDevelopment ? [new CleanWebpackPlugin([output.path || "dist"], { root, verbose: isDebug })] : [],
     ...plugins,
   ],
   resolve: {

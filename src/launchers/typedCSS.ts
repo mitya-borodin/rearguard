@@ -7,7 +7,7 @@ import { context, nodeModulePath } from "../config/target.config";
 
 export function typedCSS(forceBuild = false) {
   if (forceBuild) {
-    execSync(`node ${nodeModulePath}/typed-css-modules/lib/cli.js ${context} -c`, { encoding: "utf8" });
+    execSync(`node ${nodeModulePath}/typed-css-modules/lib/cli.js ${context} -c`, { encoding: "utf8", stdio: "inherit" });
   } else {
     const creator = new DtsCreator({
       camelCase: true,

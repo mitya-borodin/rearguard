@@ -18,17 +18,19 @@ export const HMR = (): webpack.Plugin[] => {
   return [];
 };
 
+export const scopeHoisting = () => {
+  return [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+  ];
+};
+
 // https://webpack.js.org/plugins/commons-chunk-plugin/
-export const extractVendors = (): webpack.Plugin[] => ([
+export const extractVendors = (dll: boolean = false): webpack.Plugin[] => ([
   new webpack.optimize.CommonsChunkPlugin({
-    minChunks(module) {
-      return module.context && module.context.indexOf("node_modules") !== -1;
-    },
+    minChunks: (module) => module.context && module.context.indexOf("node_modules") !== -1,
     name: "vendor",
   }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: "manifest",
-  }),
+  ...!dll ? [ new webpack.optimize.CommonsChunkPlugin({ name: "manifest" }) ] : [],
 ]);
 
 export const uglify = (): webpack.Plugin[] => {
@@ -62,8 +64,9 @@ export const analyze = (): webpack.Plugin[] => {
 };
 
 // https://webpack.js.org/plugins/define-plugin/
-export const definePlugin = (): webpack.Plugin => (
-  new webpack.DefinePlugin({ "process.env.NODE_ENV": env.NODE_ENV })
+export const definePlugin = (): webpack.Plugin[] => ([
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": env.NODE_ENV }),
+  ]
 );
 
 export const htmlWebpackPlugin = (): webpack.Plugin[] => {

@@ -23,7 +23,7 @@ export const socket = config.socket;
 // END
 
 // Webpack
-export const root: string = resolveTarget(`../${config.context}`);
+export const root: string = resolveTarget();
 export const context: string = resolveTarget(config.context);
 export const entry: string = config.entry;
 export const output: webpack.Output = {
