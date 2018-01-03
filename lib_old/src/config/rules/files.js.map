@@ -1,1 +1,0 @@
-{"version":3,"file":"files.js","sourceRoot":"","sources":["../../../../src/config/rules/files.ts"],"names":[],"mappings":";;AACA,oDAAiD;AAEpC,QAAA,IAAI,GAAG,GAAiB,EAAE,CAAC,CAAC;IACvC,MAAM,EAAE,aAAa;IACrB,KAAK,EAAE;QACL,IAAI,EAAE,6BAAa,CAAC,CAAC,CAAC,6BAA6B,CAAC,CAAC,CAAC,iBAAiB;KACxE;IACD,IAAI,EAAE,kEAAkE;CACzE,CAAC,CAAC"}
