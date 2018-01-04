@@ -71,7 +71,7 @@
     "html-webpack-plugin": "2.30.1",
     "http-proxy-middleware": "0.17.4",
     "isomorphic-style-loader": "4.0.0",
-    "joi": "13.0.2",
+    "joi": "13.1.0",
     "mkdirp": "0.5.1",
     "pleeease-filters": "4.0.0",
     "postcss-color-function": "4.0.1",
