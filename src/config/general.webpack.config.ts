@@ -1,9 +1,9 @@
-// import * as CleanWebpackPlugin from "clean-webpack-plugin";
+import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as webpack from "webpack";
 import { Entry, EntryFunc } from "webpack";
 import CSS from "./rules/css";
 import { file } from "./rules/files";
-import { context, isDebug, isDevelopment, modules, /*root,*/ stats } from "./target.config";
+import { context, isDebug, isDevelopment, modules, root, stats } from "./target.config";
 
 export default (
   entry: string | string[] | Entry | EntryFunc,
@@ -25,7 +25,7 @@ export default (
     hints: false,
   },
   plugins: [
-    // ...!isDevelopment ? [new CleanWebpackPlugin([output.path || "dist"], { root, verbose: isDebug })] : [],
+    ...!isDevelopment ? [new CleanWebpackPlugin([output.path || "dist"], { root, verbose: isDebug })] : [],
     ...plugins,
   ],
   resolve: {

@@ -1,6 +1,6 @@
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as webpack from "webpack";
-import { context, isDevelopment, output, postCSS } from "../target.config";
+import { context, isDebug, isDevelopment, output, postCSS } from "../target.config";
 
 const use = (isExternal = false, isModules = false) => ([
   ...isDevelopment ? [{ loader: "style-loader" }] : [],
@@ -16,7 +16,7 @@ const use = (isExternal = false, isModules = false) => ([
       minimize: !isDevelopment,
       // CSS Modules https://github.com/css-modules/css-modules
       modules: isModules,
-      sourceMap: isDevelopment,
+      sourceMap: isDebug,
     },
   },
   ...!isExternal ? [{ loader: "postcss-loader", options: { plugins: postCSS.config } }] : [],

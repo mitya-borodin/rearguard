@@ -28,7 +28,7 @@ const { release = false, debug = false }: IBoolObj = otherArguments.reduce((prev
   return prevValue;
 }, {});
 
-if (action === "start" || action === "build" || action === "dll") {
+if (action === "start" || action === "build") {
   const launchFile: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
   if (existsSync(launchFile)) {
@@ -93,5 +93,5 @@ if (action === "start" || action === "build" || action === "dll") {
     console.log(chalk.bold.red(`I am really sorry but file: ${launchFile}, not found, try check this throw command: ls -la ${launchFile}`));
   }
 } else {
-  console.log(chalk.bold.red("You should use: rearguard [ start | build ] [ -r | -d ] | dll"));
+  console.log(chalk.bold.red("You should use: rearguard [ start | build ] [ -r | -d ]|"));
 }

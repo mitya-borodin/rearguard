@@ -25,12 +25,12 @@ export const scopeHoisting = () => {
 };
 
 // https://webpack.js.org/plugins/commons-chunk-plugin/
-export const extractVendors = (dll: boolean = false): webpack.Plugin[] => ([
+export const extractVendors = (): webpack.Plugin[] => ([
   new webpack.optimize.CommonsChunkPlugin({
     minChunks: (module) => module.context && module.context.indexOf("node_modules") !== -1,
     name: "vendor",
   }),
-  ...!dll ? [ new webpack.optimize.CommonsChunkPlugin({ name: "manifest" }) ] : [],
+  new webpack.optimize.CommonsChunkPlugin({ name: "manifest" }),
 ]);
 
 export const uglify = (): webpack.Plugin[] => {
