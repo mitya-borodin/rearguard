@@ -1,1 +1,1 @@
-declare module "typed-css-modules";
+declare module "workbox-webpack-plugin";

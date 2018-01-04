@@ -2,6 +2,7 @@ import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
 import * as webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import * as WorkboxPlugin from "workbox-webpack-plugin";
 import { analyze as configAnalyze, env, isDebug, isDevelopment } from "../target.config";
 
 export const HMR = (): webpack.Plugin[] => {
@@ -77,4 +78,19 @@ export const htmlWebpackPlugin = (): webpack.Plugin[] => {
       inject: "head",
     }),
   ];
+};
+
+export const workboxPlugin = (): webpack.Plugin[] => {
+  if (!isDevelopment) {
+    return [
+      new WorkboxPlugin({
+        // these options encourage the ServiceWorkers to get in there fast
+        // and not allow any straggling "old" SWs to hang around
+        clientsClaim: true,
+        skipWaiting: true,
+      }),
+    ];
+  }
+
+  return [];
 };
