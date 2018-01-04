@@ -109,10 +109,10 @@ export default () => {
   if (showConfigForIDE) {
     fs.writeFileSync(resolveTarget(configPath), JSON.stringify(config, null, 2));
     fs.writeFileSync(resolveTarget("tslint.json"), JSON.stringify(tsLint, null, 2));
-    console.log(chalk.bold.yellowBright(`=======Build typescript config========`));
-    console.log(chalk.bold.yellowBright(`TSConfig: ${resolveTarget(configPath)}`));
-    console.log(chalk.bold.yellowBright(`TSLint: ${resolveTarget("tslint.json")}`));
-    console.log(chalk.bold.yellowBright(`================END===================`));
+    console.log(chalk.cyanBright(`========Build typescript config=========`));
+    console.log(chalk.cyan(`TSConfig: ${resolveTarget(configPath)}`));
+    console.log(chalk.cyan(`TSLint: ${resolveTarget("tslint.json")}`));
+    console.log(``);
   } else {
     fs.unlinkSync(resolveTarget(configPath));
     fs.unlinkSync(resolveTarget("tslint.json"));

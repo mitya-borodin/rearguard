@@ -25,6 +25,9 @@ export default (
     hints: false,
   },
   plugins: [
+    new webpack.WatchIgnorePlugin([
+      /css\.d\.ts$/,
+    ]),
     ...!isDevelopment ? [new CleanWebpackPlugin([output.path || "dist"], { root, verbose: isDebug })] : [],
     ...plugins,
   ],

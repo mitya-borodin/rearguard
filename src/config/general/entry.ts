@@ -6,7 +6,7 @@ export default (entries: string[] = []): string | string[] | Entry | EntryFunc =
 
     return [
       `${resolveNodeModules("webpack-dev-server")}/client?https://${socket.host}:${socket.port}`,
-      `${resolveNodeModules("webpack")}/hot/dev-server`,
+      `${resolveNodeModules("webpack")}/hot/only-dev-server`,
       ...entries,
       entry,
     ];

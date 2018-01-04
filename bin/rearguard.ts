@@ -37,10 +37,10 @@ if (action === "start" || action === "build") {
     if (!existsSync(resolve(GLOBAL_NODE_MODULES, "rearguard"))) {
       const npm = resolve(GLOBAL_NODE_MODULES, "../../bin/npm");
 
-      console.log(chalk.bold.cyan(`=================Rearguard================`));
+      console.log(chalk.bold.cyanBright(`=================Rearguard================`));
       console.log(chalk.bold.cyan(`==================Install=================`));
-      console.log(chalk.bold.cyan(`LAUNCH: ${npm} i -g rearguard`));
-      console.log(chalk.bold.cyan(`INFO: pending may be continue around 60 - 200 seconds, it is normal because npm will be install rearguard.`));
+      console.log(chalk.cyan(`LAUNCH: ${npm} i -g rearguard`));
+      console.log(chalk.cyan(`INFO: pending may be continue around 60 - 200 seconds, it is normal because npm will be install rearguard.`));
 
       execSync(`${npm} i -g rearguard`, { encoding: "utf8", stdio: "inherit" });
 
@@ -62,14 +62,15 @@ if (action === "start" || action === "build") {
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.NODE_ENV = !release ? "development" : "production";
 
-      console.log(chalk.bold.green(`================Rearguard==============`));
-      console.log(chalk.bold.green(`==================Info=================`));
-      console.log(chalk.bold.green(`TYPE: ${action}`));
-      console.log(chalk.bold.green(`NODE_ENV: ${process.env.NODE_ENV}`));
-      console.log(chalk.bold.green(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
-      console.log(chalk.bold.green(`NODE_MODULES: ${NODE_MODULE_PATH}`));
-      console.log(chalk.bold.green(`LAUNCH: node ${launchFile}`));
-      console.log(chalk.bold.green(`=======================================`));
+      console.log(chalk.bold.blue(`================Rearguard==============`));
+      console.log(chalk.green(`==================Info=================`));
+      console.log(chalk.green(`TYPE: ${action}`));
+      console.log(chalk.green(`NODE_ENV: ${process.env.NODE_ENV}`));
+      console.log(chalk.green(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
+      console.log(chalk.green(`NODE_MODULES: ${NODE_MODULE_PATH}`));
+      console.log(chalk.green(`LAUNCH: node ${launchFile}`));
+      console.log(chalk.green(`=======================================`));
+      console.log(``);
 
       const result = spawn.sync("node", [launchFile], { encoding: "utf8", stdio: "inherit" });
 
