@@ -38,12 +38,12 @@ export const modules: string[] = [
   "node_modules",
   resolveNodeModules(),
 ];
-export const stats: webpack.Options.Stats = isDebug ? "verbose" : {colors: true, env: true};
+export const stats: webpack.Options.Stats = isDebug ? "verbose" : { colors: true, env: true };
 export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   bonjour: true,
   compress: true,
-  contentBase: resolveTarget(config.output.path),
+  contentBase: resolveTarget(path.resolve(root, "dll", isDevelopment ? "dev" : "prod")),
   historyApiFallback: true,
   hot: true,
   https: true,
@@ -90,4 +90,18 @@ export const pkg = {
   engines: config.engines,
   nodeVersion: config.nodeVersion,
 };
+// END
+
+// DLL
+/* tslint:disable */
+export const dll_path = path.resolve(path.join(root, "dll", isDevelopment ? "dev" : "prod"));
+export const dll_manifest_name = "vendor-manifest.json";
+export const dll_assets_name = "vendor-hash.json";
+export const dll_manifest_path = path.resolve(dll_path, dll_manifest_name);
+export const dll_assets_path = path.join(dll_path, dll_assets_name);
+export const dll_lib_name = "dll_vendor";
+export const dll_lib_file_name = "dll.vendor.[hash].js";
+export const dll_lib_output_path = path.join(root, "dll", isDevelopment ? "dev" : "prod");
+export const dll_entry_name = "vendors";
+/* tslint:enable */
 // END

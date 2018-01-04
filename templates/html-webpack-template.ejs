@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Application</title>
+  <% if (htmlWebpackPlugin.options.dllConfig.vendor.css) { %>
+  <link href="/<%= htmlWebpackPlugin.options.dllConfig.vendor.css %>" rel="stylesheet">
+  <% } %>
+  <% for (key in htmlWebpackPlugin.files.css) { %>
+  <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet">
+  <% } %>
+</head>
+<body>
+<% if (htmlWebpackPlugin.options.dllConfig.vendor.js) { %>
+<script src="/<%= htmlWebpackPlugin.options.dllConfig.vendor.js %>" type="text/javascript"></script>
+<% } %>
+<% for (key in htmlWebpackPlugin.files.js) { %>
+<script src="<%= htmlWebpackPlugin.files.js[key] %>" type="text/javascript"></script>
+<% } %>
+</body>
+</html>

@@ -28,7 +28,7 @@ const { release = false, debug = false }: IBoolObj = otherArguments.reduce((prev
   return prevValue;
 }, {});
 
-if (action === "start" || action === "build") {
+if (action === "start" || action === "build" || action === "dll") {
   const launchFile: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
   if (existsSync(launchFile)) {

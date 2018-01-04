@@ -1,15 +1,17 @@
+import * as path from "path";
 import entry from "./entry";
 import generalWebpackConfig from "./general.webpack.config";
 import { extractCSS } from "./plugins/css";
-import { analyze, definePlugin, extractVendors, HMR, htmlWebpackPlugin, scopeHoisting, uglify, workboxPlugin } from "./plugins/js";
+import { analyze, clean, definePlugin, DllPlugin, DllReferencePlugin, extractVendors, HMR, htmlWebpackPlugin, scopeHoisting, uglify, workboxPlugin } from "./plugins/js";
 import compiler from "./rules/compiler";
-import { output } from "./target.config";
+import { context, dll_entry_name, dll_lib_file_name, dll_lib_name, dll_lib_output_path, isDevelopment, output } from "./target.config";
 
 export const dev = generalWebpackConfig(
   entry(),
   output,
   compiler(),
   [
+    ...DllReferencePlugin(),
     ...definePlugin(),
     ...scopeHoisting(),
     ...HMR(),
@@ -19,6 +21,27 @@ export const dev = generalWebpackConfig(
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),
+  ],
+  {},
+);
+
+export const dll = generalWebpackConfig(
+  {
+    [dll_entry_name]: [path.resolve(context, "vendors.ts")],
+  },
+  {
+    ...output,
+    filename: dll_lib_file_name,
+    library: dll_lib_name,
+    path: dll_lib_output_path,
+  },
+  compiler(),
+  [
+    ...clean([isDevelopment ? "dll/dev" : "dll/prod"], true),
+    ...definePlugin(),
+    ...extractCSS(true),
+    ...uglify(),
+    ...DllPlugin(),
   ],
   {},
 );
