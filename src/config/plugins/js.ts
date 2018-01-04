@@ -7,7 +7,7 @@ import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
 import * as webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import * as WorkboxPlugin from "workbox-webpack-plugin";
-import { analyze as configAnalyze, context, dll_assets_name, dll_assets_path, dll_entry_name, dll_lib_name, dll_manifest_path, dll_path, env, isBuild, isDebug, isDevelopment, root } from "../target.config";
+import { analyze as configAnalyze, context, dll_assets_name, dll_assets_path, dll_entry_name, dll_lib_name, dll_manifest_path, dll_path, env, isBuild, isDebug, isDevelopment, isStart, root } from "../target.config";
 
 export const HMR = (): webpack.Plugin[] => {
   if (isDevelopment) {
@@ -73,7 +73,7 @@ export const definePlugin = (): webpack.Plugin[] => ([
 ]);
 
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
-  let dllConfig = { vendor: {} };
+  let dllConfig = { [dll_entry_name]: {} };
 
   if (dll && fs.existsSync(dll_assets_path)) {
     dllConfig = require(dll_assets_path);
@@ -121,7 +121,7 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
 };
 
 export const workboxPlugin = (): webpack.Plugin[] => {
-  if (!isDevelopment || isBuild) {
+  if ((!isDevelopment || isBuild) && !isStart) {
     return [
       new WorkboxPlugin({
         // these options encourage the ServiceWorkers to get in there fast

@@ -4,6 +4,7 @@ import * as del from "del";
 import * as path from "path";
 import * as webpack from "webpack";
 import { dll_path, output, root, stats as statsConfig } from "../config/target.config";
+import buildConfigs from "../config/typescript.config.builder";
 import { dev } from "../config/webpack.config";
 
 del([output.path || path.resolve(root, "dist")]).then(() => {
@@ -17,6 +18,8 @@ del([output.path || path.resolve(root, "dist")]).then(() => {
     console.log(chalk.bold.cyan(`CSS: ${dll_path}/*.css`));
     console.log(chalk.bold.cyan(`TO: ${output.path}`));
     console.log(``);
+
+    buildConfigs();
 
     console.log(chalk.bold.cyan(`=================Build================`));
     webpack(dev).run((err: any, stats: any) => {
