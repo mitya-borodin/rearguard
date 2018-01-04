@@ -1,5 +1,5 @@
 import generalWebpackConfig from "./general.webpack.config";
-import entry from "./general/entry";
+import entry from "./entry";
 import { extractCSS } from "./plugins/css";
 import { analyze, definePlugin, extractVendors, HMR, htmlWebpackPlugin, scopeHoisting, uglify } from "./plugins/js";
 import compiler from "./rules/compiler";
@@ -11,10 +11,10 @@ export const dev = generalWebpackConfig(
   compiler(),
   [
     ...definePlugin(),
-    ...HMR(),
-    ...extractCSS(),
     ...scopeHoisting(),
+    ...HMR(),
     ...extractVendors(),
+    ...extractCSS(),
     ...uglify(),
     ...htmlWebpackPlugin(),
     ...analyze(),
