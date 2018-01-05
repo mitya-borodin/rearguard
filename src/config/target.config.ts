@@ -65,12 +65,9 @@ export const analyze = {
 // END
 
 // Typescript
-export const ts = {
-  lint: path.resolve(__dirname, "../../tmp/tslint.json"),
-  path: path.resolve(__dirname, "../../tmp/tsconfig.json"),
-  props: config.typescript,
-  tmp: path.resolve(__dirname, "../../tmp"),
-};
+export const ts = config.typescript.config;
+export const tsConfigPath = resolveTarget(config.typescript.configPath);
+export const tsLintConfigPath = resolveTarget("tslint.json");
 // END
 
 // CSS

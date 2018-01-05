@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import { context, ts } from "../target.config";
+import { context, tsConfigPath, tsLintConfigPath } from "../target.config";
 
 export default (): webpack.Rule[] => {
   const exclude = [/node_modules/, /\.d\.ts$/];
@@ -13,7 +13,7 @@ export default (): webpack.Rule[] => {
       include,
       loader: "tslint-loader",
       options: {
-        configFile: ts.lint,
+        configFile: tsLintConfigPath,
       },
       test,
     },
@@ -25,7 +25,7 @@ export default (): webpack.Rule[] => {
         {
           loader: "ts-loader",
           options: {
-            configFile: ts.path,
+            configFile: tsConfigPath,
             // happyPackMode: true,
             // disable type checker - we will use it in fork plugin
             // transpileOnly: true,

@@ -33,7 +33,6 @@ const essentialConfig = {
       compilerOptions: {},
     },
     configPath: "tsconfig.json",
-    showConfigForIDE: true,
   },
 };
 
@@ -102,8 +101,6 @@ describe("Source", () => {
 
           config: {
             compilerOptions: {},
-            showConfigForIDE: 345345,
-
           },
         },
       };
@@ -152,7 +149,6 @@ describe("Source", () => {
           compilerOptions: {},
         },
         configPath: "tsconfig.json",
-        showConfigForIDE: true,
       }));
     });
   });

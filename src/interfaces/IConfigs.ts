@@ -32,7 +32,6 @@ export interface ICSS {
 export interface ITypescript {
   typescript: {
     configPath: string;
-    showConfigForIDE: boolean;
     config: {
       compilerOptions: {
         [key: string]: any;

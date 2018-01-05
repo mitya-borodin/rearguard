@@ -46,8 +46,7 @@ describe("Source", () => {
     beforeEach(() => {
       const config = {
         analyze: {
-          client: 10000,
-          server: 10001,
+          port: 10000,
         },
         proxy: {},
         socket: {

@@ -10,7 +10,6 @@ const defaultValue: ITypescript = {
       compilerOptions: {},
     },
     configPath: "tsconfig.json",
-    showConfigForIDE: true,
   },
 };
 
@@ -21,7 +20,6 @@ const propType = {
       compilerOptions: Joi.object(),
     }),
     configPath: Joi.string().trim().min(0).required(),
-    showConfigForIDE: Joi.boolean().required(),
   }).required(),
 };
 

@@ -1,8 +1,5 @@
 .idea
 node_modules
-yarn.lock
-tmp
-/lib
-/.nyc_output/
-/coverage
-!/src/lib/
+lib
+.nyc_output
+coverage

@@ -17,15 +17,14 @@ export const defaultValue: ISocket = {
 const propType = {
   analyze: Joi.object()
               .keys({
-                client: Joi.number().min(4),
-                server: Joi.number().min(4),
+                port: Joi.number().min(4).required(),
               })
               .required(),
   proxy: Joi.object().required(),
   socket: Joi.object()
              .keys({
                host: Joi.string().trim().min(0).required(),
-               port: Joi.string().trim().min(4).required(),
+               port: Joi.number().min(4).required(),
              })
              .required(),
 };
@@ -39,6 +38,7 @@ export default (socket: any): ISocket => {
 
     return defaultValue;
   }
+
   return {
     ...socket,
     ...proxyCheck({ proxy: socket.proxy }, { proxy: {} }),
