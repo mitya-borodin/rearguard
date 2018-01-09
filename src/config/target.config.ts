@@ -48,7 +48,7 @@ export const WDSConfig: WDS.Configuration = {
   hot: true,
   https: true,
   open: true,
-  overlay: true,
+  overlay: false,
   proxy,
   publicPath: output.publicPath,
   stats,
