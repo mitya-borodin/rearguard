@@ -62,14 +62,14 @@ if (action === "start" || action === "build" || action === "dll") {
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.NODE_ENV = !release ? "development" : "production";
 
-      console.log(chalk.bold.blue(`================Rearguard==============`));
-      console.log(chalk.green(`==================Info=================`));
-      console.log(chalk.green(`TYPE: ${action}`));
-      console.log(chalk.green(`NODE_ENV: ${process.env.NODE_ENV}`));
-      console.log(chalk.green(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
-      console.log(chalk.green(`NODE_MODULES: ${NODE_MODULE_PATH}`));
-      console.log(chalk.green(`LAUNCH: node ${launchFile}`));
-      console.log(chalk.green(`=======================================`));
+      console.log(chalk.bold.blueBright(`================Rearguard==============`));
+      console.log(chalk.greenBright(`==================Info=================`));
+      console.log(chalk.greenBright(`TYPE: ${action}`));
+      console.log(chalk.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
+      console.log(chalk.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
+      console.log(chalk.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
+      console.log(chalk.greenBright(`LAUNCH: node ${launchFile}`));
+      console.log(chalk.greenBright(`=======================================`));
       console.log(``);
 
       const result = spawn.sync("node", [launchFile], { encoding: "utf8", stdio: "inherit" });

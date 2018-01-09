@@ -6,12 +6,12 @@ import { dll } from "../config/webpack.config";
 
 buildConfigs();
 
-console.log(chalk.bold.cyan(`=================Build DLL================`));
+console.log(chalk.bold.cyanBright(`[Build DLL]`.toUpperCase()));
 webpack(dll).run((err: any, stats: any) => {
   if (err) {
     throw new Error(err);
   }
 
   console.info(stats.toString(statsConfig));
-  console.log(chalk.bold.cyan(`=============End================`));
+  console.log(chalk.bold.cyanBright(`[Build DLL End]`.toUpperCase()));
 });

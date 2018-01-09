@@ -22,7 +22,7 @@ export const dev = generalWebpackConfig(
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),
-    new HardSourceWebpackPlugin({
+/*    new HardSourceWebpackPlugin({
       cacheDirectory: path.resolve(root, "node_modules/.cache/hard-source/[confighash]"),
       configHash: (webpackConfig: any) => {
         return require("node-object-hash")({ sort: false }).hash(webpackConfig);
@@ -34,7 +34,7 @@ export const dev = generalWebpackConfig(
       },
       // Sets webpack"s recordsPath if not already set.
       recordsPath: path.resolve(root, "node_modules/.cache/hard-source/[confighash]/records.json"),
-    }),
+    }),*/
   ],
   {},
 );
