@@ -63,18 +63,17 @@ const rules = (isExternal = false, isModules = true) => {
 
 export default (): webpack.Rule[] => ([
   {
-    exclude: [/\.global\.css/, /\.css\.d\.ts/],
+    exclude: [/\.global\.css/],
     include: context,
     test: /\.css/,
     ...rules(),
   },
   {
-    exclude: [context, /\.global\.css/, /\.css\.d\.ts/],
+    exclude: [context, /\.global\.css/],
     test: /\.css/,
     ...rules(true, false),
   },
   {
-    exclude: [/\.css\.d\.ts/],
     include: context,
     test: /\.global\.css/,
     ...rules(true, false),

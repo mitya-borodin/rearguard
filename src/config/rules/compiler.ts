@@ -2,7 +2,7 @@ import * as webpack from "webpack";
 import { context, tsConfigPath, tsLintConfigPath } from "../target.config";
 
 export default (): webpack.Rule[] => {
-  const exclude = [/node_modules/, /\.d\.ts$/];
+  const exclude = [/node_modules/];
   const include = [context];
   const test = /\.(ts|tsx)?$/;
 
