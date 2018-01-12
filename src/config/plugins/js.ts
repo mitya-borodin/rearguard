@@ -25,7 +25,7 @@ export const HMR = (): webpack.Plugin[] => {
 
 export const scopeHoisting = () => {
   return [
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    // new webpack.optimize.ModuleConcatenationPlugin(),
   ];
 };
 
