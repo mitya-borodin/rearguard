@@ -38,7 +38,19 @@ export const modules: string[] = [
   "node_modules",
   resolveNodeModules(),
 ];
-export const stats: webpack.Options.Stats = isDebug ? "verbose" : { colors: true, env: true };
+export const stats: webpack.Options.Stats = isDebug
+  ? "verbose"
+  : {
+    assets: true,
+    colors: true,
+    context,
+    hash: true,
+    modules: false,
+    performance: false,
+    publicPath: true,
+    timings: true,
+    version: true,
+  };
 export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   bonjour: true,

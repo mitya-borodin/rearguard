@@ -14,6 +14,7 @@ const use = (isExternal = false, isModules = false) => ([
           discardComments: {
             removeAll: true,
           },
+          ident: "typings-for-css-modules",
           importLoaders: 1,
           localIdentName: isDevelopment ? "[path][local]" : "[hash:base64:32]",
           // CSS Nano http://cssnano.co/options/
@@ -32,6 +33,7 @@ const use = (isExternal = false, isModules = false) => ([
           discardComments: {
             removeAll: true,
           },
+          ident: "css",
           importLoaders: !isExternal ? 1 : 0,
           localIdentName: isDevelopment ? "[path][local]" : "[hash:base64:32]",
           // CSS Nano http://cssnano.co/options/
@@ -42,7 +44,17 @@ const use = (isExternal = false, isModules = false) => ([
         },
       },
     ],
-  ...!isExternal ? [{ loader: "postcss-loader", options: { plugins: postCSS.config } }] : [],
+  ...!isExternal
+    ? [
+      {
+        loader: "postcss-loader",
+        options: {
+          ident: "postcss",
+          plugins: postCSS.config,
+        },
+      },
+    ]
+    : [],
 ]);
 
 const rules = (isExternal = false, isModules = true) => {

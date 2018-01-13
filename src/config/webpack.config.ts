@@ -22,19 +22,6 @@ export const dev = generalWebpackConfig(
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),
-/*    new HardSourceWebpackPlugin({
-      cacheDirectory: path.resolve(root, "node_modules/.cache/hard-source/[confighash]"),
-      configHash: (webpackConfig: any) => {
-        return require("node-object-hash")({ sort: false }).hash(webpackConfig);
-      },
-      environmentHash: {
-        directories: [],
-        files: ["package-lock.json"],
-        root: process.cwd(),
-      },
-      // Sets webpack"s recordsPath if not already set.
-      recordsPath: path.resolve(root, "node_modules/.cache/hard-source/[confighash]/records.json"),
-    }),*/
   ],
   {},
 );
