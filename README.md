@@ -304,26 +304,17 @@ import Component4  from 'Component4'
 В режиме Isomorphic или onlyServer используется веб-сервер который находится 
 <a name="including"></a>
 #### Что внутри ?
-- [webpack](https://webpack.js.org) 3.5.5
+- [webpack](https://webpack.js.org)
+- [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+- [DLLPlugin](https://webpack.js.org/plugins/dll-plugin/#src/components/Sidebar/Sidebar.jsx)
+- [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)
+- [workbox-webpack-plugin](https://developers.google.com/web/tools/workbox/get-started/webpack)
 - [uglifyjs-webpack-plugin](https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#src/components/Sidebar/Sidebar.jsx)
 - [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer)
-- [babel](https://github.com/babel/babel) 6
-- [babel-preset-react](https://github.com/babel/babel/tree/master/packages/babel-preset-react)
-- [babel-preset-react-optimize](https://github.com/thejameskyle/babel-react-optimize)
-- [babel-plugin-inferno](https://github.com/infernojs/babel-plugin-inferno)
-- [babel-preset-env](https://github.com/babel/babel-preset-env)
-- [transform-runtime](https://babeljs.io/docs/plugins/transform-runtime/)
-- [typescript](https://www.typescriptlang.org/) 2
+- [typescript](https://www.typescriptlang.org/)
+- [tsLint](https://palantir.github.io/tslint/)
 - [ts-loader](https://github.com/TypeStrong/ts-loader)
-- [isomorphic-style-loader](https://github.com/kriasoft/isomorphic-style-loader)
-- [postcss 6](https://github.com/postcss/postcss)
-- [postcss-import](https://github.com/postcss/postcss-import)
-- [postcss-selector-not](https://github.com/postcss/postcss-selector-not)
-- [postcss-initial](https://github.com/maximkoretskiy/postcss-initial)
-- [postcss-color-function](https://github.com/postcss/postcss-color-function)
-- [postcss-custom-media](https://github.com/postcss/postcss-custom-media)
-- [postcss-media-minmax](https://github.com/postcss/postcss-media-minmax)
-- [postcss-flexbugs-fixes](https://github.com/luisrudge/postcss-flexbugs-fixes)
-- [autoprefixer](https://github.com/postcss/autoprefixer)
+- [postcss](https://github.com/postcss/postcss)
+- postcss plugins: "import", "selector-not", "initial", "color-function", "custom-media", "media-minmax",
+                   "flexbugs-fixes", "autoprefixer".
 
-This is my consolidation of tools for building front-end apps base on react or infernojs, 

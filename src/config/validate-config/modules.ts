@@ -9,7 +9,9 @@ const defaultValue: IModules = {
   ],
 };
 const propType = {
-  modules: Joi.array().items(Joi.string().trim().min(1).required()).min(1).required(),
+  modules: Joi.array()
+              .items(Joi.string().trim().min(3).required())
+              .min(1).required(),
 };
 
 export default (fileName: string): IModules => {
@@ -19,10 +21,8 @@ export default (fileName: string): IModules => {
     const { error } = Joi.validate(modules, propType);
 
     if (error !== null) {
-      if (process.env.REARGUARD_ERROR_LOG === "true") {
-        console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(modules, null, 2)}"`));
-        console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
-      }
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(modules, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
 
       return defaultValue;
     }

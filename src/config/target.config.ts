@@ -4,88 +4,51 @@ import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import source from "./source";
 
-export const resolveNodeModules = (packageName = "") => path.resolve(
-  process.env.REARGUARD_NODE_MODULE_PATH,
-  packageName,
-);
-export const resolveTarget = (relPath = "") => path.resolve(CWD, relPath);
-
 const CWD = process.cwd();
 const config = source();
+
+export const resolveNodeModules = (name = "") => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH, name);
+export const resolveTarget = (relPath = "") => path.resolve(CWD, relPath);
 
 // ENV
 export const isDevelopment = config.isDevelopment;
 export const isDebug = config.isDebug;
-export const isVerbose = config.isVerbose;
-export const isAnalyze = config.isAnalyze;
-export const isIsomorphic = config.isIsomorphic;
-export const isInferno = config.isInferno;
-export const isReact = config.isReact;
-export const isTS = config.isTS;
 export const isStart = config.isStart;
 export const isBuild = config.isBuild;
-export const onlyServer = config.onlyServer;
-export const staticServer = config.staticServer;
 export const nodeModulePath = config.nodeModulePath;
 // END
 
-// General
-export const publicDirName = config.isomorphic.publicDirName;
-const clientOutput = resolveTarget(isIsomorphic || staticServer ? `${config.output.path}/${publicDirName}` : config.output.path);
-// END
-
 // Socket
-export const host = config.socket.host;
-export const port = config.socket.port;
-process.env.HOST = host;
-process.env.PORT = port;
-export const protocol = "http";
-export const socket = `${protocol}://${host}:${port}`;
+export const socket = config.socket;
 // END
 
 // Webpack
-export const context = resolveTarget(config.context);
-export const entry = config.entry;
-export const output = {
-  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:4]" : "[chunkhash:32].chunk.js",
-  filename: isDevelopment ? "[name].js?[hash:4]" : "[chunkhash:32].js",
-  path: clientOutput,
-  pathinfo: isVerbose || isDebug,
+export const root: string = resolveTarget();
+export const context: string = resolveTarget(config.context);
+export const entry: string = config.entry;
+export const output: webpack.Output = {
+  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
+  filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
+  path: resolveTarget(config.output.path),
+  pathinfo: isDebug,
   publicPath: config.output.publicPath,
 };
-export const modules = [
+export const modules: string[] = [
   ...config.modules.map((relPath) => resolveTarget(relPath)),
   "node_modules",
   resolveNodeModules(),
 ];
-
-export const stats: webpack.Options.Stats = {
-  cached: isVerbose,
-  chunkModules: isVerbose,
-  chunks: isVerbose,
-  colors: true,
-  context,
-  hash: isVerbose,
-  modules: isVerbose,
-  reasons: isVerbose,
-  timings: true,
-  version: isVerbose,
-};
-export const proxy: { [key: string]: any } = config.proxy;
-
-export const webpackMiddlewareConfig: any = {
-  publicPath: output.publicPath,
-  stats,
-  watchOptions: {
-    ignored: /node_modules/,
-  },
-};
-
+export const stats: webpack.Options.Stats = isDebug ? "verbose" : { colors: true, env: true };
+export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
+  bonjour: true,
   compress: true,
-  contentBase: clientOutput,
+  contentBase: resolveTarget(path.resolve(root, "dll", isDevelopment ? "dev" : "prod")),
   historyApiFallback: true,
   hot: true,
+  https: true,
+  open: true,
+  overlay: false,
   proxy,
   publicPath: output.publicPath,
   stats,
@@ -93,55 +56,49 @@ export const WDSConfig: WDS.Configuration = {
 // END
 
 // Plugins
-export const browserslist = config.browserslist;
 export const env = {
-  DEBUG: isDebug,
   NODE_ENV: isDevelopment ? '"development"' : '"production"',
-  __DEV__: isDevelopment,
 };
-// A Babel preset that can automatically determine the Babel plugins and polyfills
-// https://github.com/babel/babel-preset-env
-const babelEnv = (targets: any) => ([
-  resolveNodeModules("babel-preset-env"),
-  {
-    debug: isDebug,
-    modules: false,
-    targets,
-    useBuiltIns: false,
-  },
-]);
-
-export const babelEnvSpa = babelEnv({browsers: browserslist});
-export const babelEnvServer = babelEnv({node: config.nodeVersion});
-export const analyzeClientPort: number = config.analyze.client;
-export const analyzeServerPort: number = config.analyze.server;
-// END
-
-// Package.json
-export const dependencies = config.dependencies;
-export const engines = config.engines;
-// END
-
-// Isomorphic
-export const serverEntry = config.isomorphic.entry;
-export const servercOutput = resolveTarget(config.output.path);
-export const serverFilename = `../${serverEntry}`;
-process.env.SERVER_LAUNCH_MESSAGE = `The server is running at ${socket}`;
-// END
-
-// CSS
-const postCssPluginsFile = resolveTarget(config.css.postCssPlugins);
-const postCssPlugins = fs.existsSync(postCssPluginsFile) ? require(postCssPluginsFile) : [];
-
-export const css = {
-  postCssPlugins: Array.isArray(postCssPlugins) ? postCssPlugins : [],
+export const analyze = {
+  port: config.analyze.port,
 };
-
-export const postCSSConfigPath = require(path.resolve(__dirname, "postcss.config.js"));
 // END
 
 // Typescript
-export const typescriptTMP = path.resolve(__dirname, "../../tmp");
-export const typescriptConfigFilePath = path.resolve(__dirname, "../../tmp/tsconfig.json");
-export const typescript = config.typescript;
+export const ts = config.typescript.config;
+export const tsConfigPath = resolveTarget(config.typescript.configPath);
+export const tsLintConfigPath = resolveTarget("tslint.json");
+// END
+
+// CSS
+const externalPluginsPath = resolveTarget(config.postCSS.plugins);
+export const postCSS = {
+  config: require(path.resolve(__dirname, "postcss.config.js")),
+  plugins: {
+    list: fs.existsSync(externalPluginsPath) ? require(externalPluginsPath) : [],
+    path: externalPluginsPath,
+  },
+};
+// END
+
+// Package.json
+export const pkg = {
+  dependencies: config.dependencies,
+  engines: config.engines,
+  nodeVersion: config.nodeVersion,
+};
+// END
+
+// DLL
+/* tslint:disable */
+export const dll_path = path.resolve(path.join(root, "dll", isDevelopment ? "dev" : "prod"));
+export const dll_manifest_name = "vendor-manifest.json";
+export const dll_assets_name = "vendor-hash.json";
+export const dll_manifest_path = path.resolve(dll_path, dll_manifest_name);
+export const dll_assets_path = path.join(dll_path, dll_assets_name);
+export const dll_lib_name = "dll_vendor";
+export const dll_lib_file_name = "dll.vendor.[hash].js";
+export const dll_lib_output_path = path.join(root, "dll", isDevelopment ? "dev" : "prod");
+export const dll_entry_name = "vendors";
+/* tslint:enable */
 // END
