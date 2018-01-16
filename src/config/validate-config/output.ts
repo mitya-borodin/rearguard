@@ -10,10 +10,12 @@ const defaultValue: IOutput = {
   },
 };
 const propType = {
-  output: Joi.object().keys({
-    path: Joi.string().trim().min(0).required(),
-    publicPath: Joi.string().trim().min(0).required(),
-  }).required(),
+  output: Joi.object()
+             .keys({
+               path: Joi.string().trim().min(0).required(),
+               publicPath: Joi.string().trim().min(0).required(),
+             })
+             .required(),
 };
 
 export default (fileName: string): IOutput => {
@@ -24,10 +26,8 @@ export default (fileName: string): IOutput => {
     const { error } = Joi.validate(output, propType);
 
     if (error !== null) {
-      if (process.env.REARGUARD_ERROR_LOG === "true") {
-        console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
-        console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
-      }
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(output, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
 
       return defaultValue;
     }

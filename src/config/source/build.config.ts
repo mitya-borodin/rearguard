@@ -2,11 +2,9 @@ import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
 import { IBuildConfig } from "../../interfaces/IConfigs";
-import browserslist from "../validate-config/browserslist";
 import context from "../validate-config/context";
 import css from "../validate-config/css";
 import entry from "../validate-config/entry";
-import isomorphic from "../validate-config/isomorphic";
 import modules from "../validate-config/modules";
 import output from "../validate-config/output";
 import proxy from "../validate-config/proxy";
@@ -17,13 +15,11 @@ export default (): IBuildConfig => {
   const configPath = path.resolve(process.cwd(), fileName);
 
   const config: IBuildConfig = {
-    ...browserslist(fileName),
     ...context(fileName),
-    ...css(fileName),
     ...entry(fileName),
-    ...isomorphic(fileName),
     ...modules(fileName),
     ...output(fileName),
+    ...css(fileName),
     ...proxy(fileName),
     ...typescript(fileName),
   };

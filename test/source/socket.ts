@@ -26,7 +26,7 @@ describe("Source", () => {
     it("Port must be 3000", () => {
       const { socket: { port } } = socket();
 
-      expect(port).to.equal("3000");
+      expect(port).to.equal(3000);
     });
 
     it("Host must be localhost", () => {
@@ -46,8 +46,7 @@ describe("Source", () => {
     beforeEach(() => {
       const config = {
         analyze: {
-          client: 10000,
-          server: 10001,
+          port: 10000,
         },
         proxy: {},
         socket: {
@@ -87,7 +86,7 @@ describe("Source", () => {
     it("Port must be 3000", () => {
       const { socket: { port } } = socket();
 
-      expect(port).to.equal("3000");
+      expect(port).to.equal(3000);
     });
 
     it("Host must be localhost", () => {

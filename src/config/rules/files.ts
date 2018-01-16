@@ -1,6 +1,7 @@
+import * as webpack from "webpack";
 import { isDevelopment } from "../target.config";
 
-export const file = () => ({
+export const file = (): webpack.Rule => ({
   loader: "file-loader",
   query: {
     name: isDevelopment ? "[path][name].[ext]?[hash:8]" : "[hash:32].[ext]",

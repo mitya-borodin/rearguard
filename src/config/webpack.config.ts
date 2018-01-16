@@ -1,73 +1,74 @@
-import * as webpack from "webpack";
-import * as nodeExternals from "webpack-node-externals";
+import * as HardSourceWebpackPlugin from "hard-source-webpack-plugin";
+import * as path from "path";
+import entry from "./entry";
 import generalWebpackConfig from "./general.webpack.config";
-import {backEntry, frontEntry} from "./general/entry";
-import {extractCSS} from "./plugins/css";
-import {analyze, assetsPlugin, extractVendors, HMR, htmlWebpackPlugin, uglify} from "./plugins/js";
+import { extractCSS } from "./plugins/css";
+import { analyze, clean, definePlugin, DllPlugin, DllReferencePlugin, extractVendors, HMR, htmlWebpackPlugin, scopeHoisting, uglify, workboxPlugin } from "./plugins/js";
 import compiler from "./rules/compiler";
-import {analyzeClientPort, analyzeServerPort, isBuild, isDevelopment, isIsomorphic, isStart, onlyServer, resolveNodeModules, serverFilename} from "./target.config";
+import { context, dll_entry_name, dll_lib_file_name, dll_lib_name, dll_lib_output_path, isDevelopment, output, root } from "./target.config";
 
-const spa = generalWebpackConfig({
-  entry: frontEntry(),
-  plugins: [
-    extractVendors(),
-    ...extractCSS(),
+export const dev = generalWebpackConfig(
+  entry(),
+  output,
+  compiler(),
+  [
+    ...DllReferencePlugin(),
+    ...definePlugin(),
+    ...scopeHoisting(),
     ...HMR(),
-    ...assetsPlugin(),
-    ...htmlWebpackPlugin(),
+    ...extractVendors(),
+    ...extractCSS(),
     ...uglify(),
-    ...analyze(analyzeClientPort),
+    ...workboxPlugin(),
+    ...htmlWebpackPlugin(),
+    ...analyze(),
+/*    new HardSourceWebpackPlugin({
+      cacheDirectory: path.resolve(root, "node_modules/.cache/hard-source/[confighash]"),
+      configHash: (webpackConfig: any) => {
+        return require("node-object-hash")({ sort: false }).hash(webpackConfig);
+      },
+      environmentHash: {
+        directories: [],
+        files: ["package-lock.json"],
+        root: process.cwd(),
+      },
+      // Sets webpack"s recordsPath if not already set.
+      recordsPath: path.resolve(root, "node_modules/.cache/hard-source/[confighash]/records.json"),
+    }),*/
   ],
-  rules: compiler(false),
-});
+  {},
+);
 
-const server = generalWebpackConfig({
-  devtool: isDevelopment ? "cheap-module-source-map" : false,
-  entry: backEntry(),
-  externals: [
-    /^\.\/assets\.json$/,
-    /^\.\/config\.json$/,
-    /^\.\/config\.js$/,
-    nodeExternals({whitelist: /\.css/}),
-  ],
-  node: {
-    Buffer: false,
-    __dirname: false,
-    __filename: false,
-    console: false,
-    global: false,
-    process: false,
+export const dll = generalWebpackConfig(
+  {
+    [dll_entry_name]: [path.resolve(context, "vendors.ts")],
   },
-  output: {
-    filename: serverFilename,
-    libraryTarget: "commonjs2",
+  {
+    ...output,
+    filename: dll_lib_file_name,
+    library: dll_lib_name,
+    path: dll_lib_output_path,
   },
-  plugins: [
-    // Do not create separate chunks of the server bundle
-    // https://webpack.github.io/docs/list-of-plugins.html#limitchunkcountplugin
-    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
-
-    // Adds a banner to the top of each generated chunk
-    // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
-    new webpack.BannerPlugin({
-      banner: `require("${(isDevelopment || isStart) && !isBuild ? resolveNodeModules("source-map-support") : "source-map-support"}").install();`,
-      entryOnly: false,
-      raw: true,
+  compiler(),
+  [
+    ...clean([isDevelopment ? "dll/dev" : "dll/prod"], true),
+    ...definePlugin(),
+    ...extractCSS(true),
+    ...uglify(),
+    ...DllPlugin(),
+    new HardSourceWebpackPlugin({
+      cacheDirectory: path.resolve(root, "node_modules/.cache/dll-hard-source/[confighash]"),
+      configHash: (webpackConfig: any) => {
+        return require("node-object-hash")({ sort: false }).hash(webpackConfig);
+      },
+      environmentHash: {
+        directories: [],
+        files: ["package-lock.json"],
+        root: process.cwd(),
+      },
+      // Sets webpack"s recordsPath if not already set.
+      recordsPath: path.resolve(root, "node_modules/.cache/dll-hard-source/[confighash]/records.json"),
     }),
-    ...analyze(analyzeServerPort),
   ],
-  rules: compiler(true),
-  target: "node",
-});
-
-let config: any = [];
-
-if (onlyServer) {
-  config = server;
-} else if (isIsomorphic) {
-  config = [spa, server];
-} else {
-  config = spa;
-}
-
-export default config;
+  {},
+);

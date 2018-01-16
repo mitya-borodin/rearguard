@@ -7,26 +7,17 @@ import build from "../../src/config/source/build.config";
 const CWD = process.cwd();
 const configPath = path.resolve(CWD, "build.config.json");
 const essentialConfig = {
-  browserslist: [
-    ">0.1%",
-    "last 2 versions",
-    "not ie <= 11",
-  ],
   context: "src",
-  css: {
-    postCssPlugins: "postCssPlugins.js",
-  },
-  entry: "main.js",
-  isomorphic: {
-    entry: "server.js",
-    publicDirName: "public",
-  },
+  entry: "index.tsx",
   modules: [
     "src",
   ],
   output: {
     path: "dist",
     publicPath: "/",
+  },
+  postCSS: {
+    plugins: "postCssPlugins.js",
   },
   proxy: {
     "/api": "http://localhost:5000",
@@ -42,7 +33,6 @@ const essentialConfig = {
       compilerOptions: {},
     },
     configPath: "tsconfig.json",
-    showConfigForIDE: true,
   },
 };
 
@@ -111,8 +101,6 @@ describe("Source", () => {
 
           config: {
             compilerOptions: {},
-            showConfigForIDE: 345345,
-
           },
         },
       };
@@ -125,10 +113,10 @@ describe("Source", () => {
 
       expect(context).to.equal("src");
     });
-    it('Entry must be "main.js"', () => {
+    it('Entry must be "index.tsx"', () => {
       const {entry} = build();
 
-      expect(entry).to.equal("main.js");
+      expect(entry).to.equal("index.tsx");
     });
     it('Output, path must be "dist", publicPath must be "/"', () => {
       const {output: {path: PATH, publicPath}} = build();
@@ -144,14 +132,8 @@ describe("Source", () => {
     it("CSS must be correct", () => {
       const config = build();
 
-      expect(config.css.postCssPlugins).to.equal("postCssPlugins.js");
+      expect(config.postCSS.plugins).to.equal("postCssPlugins.js");
 
-    });
-    it("Isomorphic must be correct", () => {
-      const config = build();
-
-      expect(config.isomorphic.entry).to.equal("server.js");
-      expect(config.isomorphic.publicDirName).to.equal("public");
     });
     it("Proxy must be correct", () => {
       const config = build();
@@ -167,17 +149,7 @@ describe("Source", () => {
           compilerOptions: {},
         },
         configPath: "tsconfig.json",
-        showConfigForIDE: true,
       }));
-    });
-    it("BrowserList must be correct", () => {
-      const config = build();
-
-      expect(JSON.stringify(config.browserslist)).to.equal(JSON.stringify([
-        ">0.1%",
-        "last 2 versions",
-        "not ie <= 11",
-      ]));
     });
   });
 });
