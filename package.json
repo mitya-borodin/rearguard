@@ -94,7 +94,7 @@
     "@types/compression": "0.0.35",
     "@types/del": "3.0.0",
     "@types/extract-text-webpack-plugin": "3.0.0",
-    "@types/glob": "5.0.34",
+    "@types/glob": "5.0.35",
     "@types/html-webpack-plugin": "2.30.1",
     "@types/joi": "13.0.5",
     "@types/mkdirp": "0.5.2",
