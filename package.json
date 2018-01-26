@@ -100,7 +100,7 @@
     "@types/mkdirp": "0.5.2",
     "@types/mocha": "2.2.45",
     "@types/node": "8.5.3",
-    "@types/webpack": "3.8.3",
+    "@types/webpack": "3.8.4",
     "@types/webpack-bundle-analyzer": "2.9.0",
     "@types/webpack-dev-server": "2.9.2",
     "chai": "4.1.2",
