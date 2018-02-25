@@ -71,7 +71,7 @@
     "postcss-media-minmax": "3.0.0",
     "postcss-selector-matches": "3.0.1",
     "postcss-selector-not": "3.0.1",
-    "style-loader": "0.19.1",
+    "style-loader": "0.20.0",
     "ts-loader": "3.3.1",
     "ts-node": "4.1.0",
     "tslib": "1.9.0",
