@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { IProxy } from "../../interfaces/IConfigs";
+import {IProxy} from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
 const defaultValue: IProxy = {
@@ -14,12 +14,12 @@ const defaultValue: IProxy = {
   },
 };
 
-export const proxyCheck = ({ proxy }: IProxy, { proxy: DEFAULT_VALUE }: IProxy): IProxy => {
+export const proxyCheck = ({proxy}: IProxy, {proxy: DEFAULT_VALUE}: IProxy): IProxy => {
   let wasError = false;
 
   for (const proxyName in proxy) {
     if (proxy.hasOwnProperty(proxyName)) {
-      const { error: proxyNameError } = Joi.validate(proxyName, Joi.string().trim().required());
+      const {error: proxyNameError} = Joi.validate(proxyName, Joi.string().trim().required());
       let proxyValueError = null;
 
       if (Object.prototype.toString.call(proxy[proxyName]) === "[object Object]") {
@@ -57,18 +57,18 @@ export const proxyCheck = ({ proxy }: IProxy, { proxy: DEFAULT_VALUE }: IProxy):
   }
 
   if (wasError) {
-    return { proxy: DEFAULT_VALUE };
+    return {proxy: DEFAULT_VALUE};
   }
 
-  return { proxy };
+  return {proxy};
 };
 
 export default (fileName: string): IProxy => {
-  const { exist, value: { proxy } } = detectConfig(fileName, "proxy");
+  const {exist, value: {proxy}} = detectConfig(fileName, "proxy");
 
   if (exist) {
 
-    return proxyCheck({ proxy }, defaultValue);
+    return proxyCheck({proxy}, defaultValue);
   } else {
     return defaultValue;
   }

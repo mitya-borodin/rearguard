@@ -1,5 +1,5 @@
-import { Entry, EntryFunc } from "webpack";
-import { entry, isBuild, isDevelopment, resolveNodeModules, socket } from "./target.config";
+import {Entry, EntryFunc} from "webpack";
+import {entry, isBuild, isDevelopment, resolveNodeModules, socket} from "./target.config";
 
 export default (entries: string[] = []): string | string[] | Entry | EntryFunc => {
   if (isDevelopment && !isBuild) {

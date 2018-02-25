@@ -1,9 +1,9 @@
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as webpack from "webpack";
-import { context, isDebug, isDevelopment, output, postCSS } from "../target.config";
+import {context, isDebug, isDevelopment, output, postCSS} from "../target.config";
 
 const use = (isExternal = false, isModules = false) => ([
-  ...isDevelopment ? [{ loader: "style-loader" }] : [],
+  ...isDevelopment ? [{loader: "style-loader"}] : [],
   ...!isExternal && isModules
     ? [
       {
@@ -65,11 +65,13 @@ const rules = (isExternal = false, isModules = true) => {
   }
 
   return {
-    use: ExtractTextPlugin.extract({
-      fallback: "style-loader",
-      publicPath: output.publicPath,
-      use: use(isExternal, isModules),
-    }),
+    use: ExtractTextPlugin.extract(
+      {
+        fallback: "style-loader",
+        publicPath: output.publicPath,
+        use: use(isExternal, isModules),
+      },
+    ),
   };
 };
 

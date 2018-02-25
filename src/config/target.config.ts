@@ -69,7 +69,7 @@ export const WDSConfig: WDS.Configuration = {
 
 // Plugins
 export const env = {
-  NODE_ENV: isDevelopment ? '"development"' : '"production"',
+  NODE_ENV: JSON.stringify(isDevelopment ? "development" : "production"),
 };
 export const analyze = {
   port: config.analyze.port,

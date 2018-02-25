@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { IContext } from "../../interfaces/IConfigs";
+import {IContext} from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
 const defaultValue: IContext = {
@@ -12,10 +12,10 @@ const propType = {
 };
 
 export default (fileName: string): IContext => {
-  const { exist, value: context } = detectConfig(fileName, "context");
+  const {exist, value: context} = detectConfig(fileName, "context");
 
   if (exist) {
-    const { error } = Joi.validate(context, propType);
+    const {error} = Joi.validate(context, propType);
 
     if (error !== null) {
       console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(context, null, 2)}"`));
