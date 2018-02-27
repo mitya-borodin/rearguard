@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import { context, isDebug, ts, tsConfigPath, tsLintConfigPath } from "./target.config";
+import {context, isDebug, ts, tsConfigPath, tsLintConfigPath} from "./target.config";
 
 export default () => {
-  const { compilerOptions, compileOnSave } = ts;
-  const { devDependencies: { typescript: version } } = require(path.resolve(__dirname, "../../../package.json"));
+  const {compilerOptions, compileOnSave} = ts;
+  const {devDependencies: {typescript: version}} = require(path.resolve(__dirname, "../../../package.json"));
 
   const config = {
     compileOnSave,

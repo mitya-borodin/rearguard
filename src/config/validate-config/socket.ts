@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { ISocket } from "../../interfaces/IConfigs";
-import { proxyCheck } from "./proxy";
+import {ISocket} from "../../interfaces/IConfigs";
+import {proxyCheck} from "./proxy";
 
 export const name = "socket";
 export const defaultValue: ISocket = {
@@ -16,21 +16,25 @@ export const defaultValue: ISocket = {
 };
 const propType = {
   analyze: Joi.object()
-              .keys({
-                port: Joi.number().min(4).required(),
-              })
-              .required(),
+    .keys(
+      {
+        port: Joi.number().min(4).required(),
+      },
+    )
+    .required(),
   proxy: Joi.object().required(),
   socket: Joi.object()
-             .keys({
-               host: Joi.string().trim().min(0).required(),
-               port: Joi.number().min(4).required(),
-             })
-             .required(),
+    .keys(
+      {
+        host: Joi.string().trim().min(0).required(),
+        port: Joi.number().min(4).required(),
+      },
+    )
+    .required(),
 };
 
 export default (socket: any): ISocket => {
-  const { error } = Joi.validate(socket, propType);
+  const {error} = Joi.validate(socket, propType);
 
   if (error !== null) {
     console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(socket, null, 2)}"`));
@@ -41,6 +45,6 @@ export default (socket: any): ISocket => {
 
   return {
     ...socket,
-    ...proxyCheck({ proxy: socket.proxy }, { proxy: {} }),
+    ...proxyCheck({proxy: socket.proxy}, {proxy: {}}),
   };
 };

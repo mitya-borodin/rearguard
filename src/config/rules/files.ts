@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import { isDevelopment } from "../target.config";
+import {isDevelopment} from "../target.config";
 
 export const file = (): webpack.Rule => ({
   loader: "file-loader",

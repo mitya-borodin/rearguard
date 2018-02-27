@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import * as webpack from "webpack";
-import { stats as statsConfig } from "../config/target.config";
+import {stats as statsConfig} from "../config/target.config";
 import buildConfigs from "../config/typescript.config.builder";
-import { dll } from "../config/webpack.config";
+import {dll} from "../config/webpack.config";
 
 buildConfigs();
 

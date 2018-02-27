@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
-import { socket, WDSConfig } from "../config/target.config";
+import {socket, WDSConfig} from "../config/target.config";
 import buildConfigs from "../config/typescript.config.builder";
-import { dev } from "../config/webpack.config";
+import {dev} from "../config/webpack.config";
 import typedCSS from "./typedCSS";
 
 console.log(chalk.bold.cyanBright(`[Start]`.toUpperCase()));

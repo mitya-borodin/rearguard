@@ -7,8 +7,8 @@ import source from "./source";
 const CWD = process.cwd();
 const config = source();
 
-export const resolveNodeModules = (name = "") => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH, name);
-export const resolveTarget = (relPath = "") => path.resolve(CWD, relPath);
+export const resolveNodeModules = (name: string = "") => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
+export const resolveTarget = (relPath: string = "") => path.resolve(CWD, relPath);
 
 // ENV
 export const isDevelopment = config.isDevelopment;
@@ -38,7 +38,19 @@ export const modules: string[] = [
   "node_modules",
   resolveNodeModules(),
 ];
-export const stats: webpack.Options.Stats = isDebug ? "verbose" : { colors: true, env: true };
+export const stats: webpack.Options.Stats = isDebug
+  ? "verbose"
+  : {
+    assets: true,
+    colors: true,
+    context,
+    hash: true,
+    modules: false,
+    performance: false,
+    publicPath: true,
+    timings: true,
+    version: true,
+  };
 export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   bonjour: true,
@@ -57,7 +69,7 @@ export const WDSConfig: WDS.Configuration = {
 
 // Plugins
 export const env = {
-  NODE_ENV: isDevelopment ? '"development"' : '"production"',
+  NODE_ENV: JSON.stringify(isDevelopment ? "development" : "production"),
 };
 export const analyze = {
   port: config.analyze.port,

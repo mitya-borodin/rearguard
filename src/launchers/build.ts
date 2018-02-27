@@ -3,9 +3,9 @@ import * as copy from "copy";
 import * as del from "del";
 import * as path from "path";
 import * as webpack from "webpack";
-import { dll_path, output, root, stats as statsConfig } from "../config/target.config";
+import {dll_path, output, root, stats as statsConfig} from "../config/target.config";
 import buildConfigs from "../config/typescript.config.builder";
-import { dev } from "../config/webpack.config";
+import {dev} from "../config/webpack.config";
 import typedCSS from "./typedCSS";
 
 del([output.path || path.resolve(root, "dist")]).then(() => {

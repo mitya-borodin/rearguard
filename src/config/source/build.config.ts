@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import { IBuildConfig } from "../../interfaces/IConfigs";
+import {IBuildConfig} from "../../interfaces/IConfigs";
 import context from "../validate-config/context";
 import css from "../validate-config/css";
 import entry from "../validate-config/entry";
