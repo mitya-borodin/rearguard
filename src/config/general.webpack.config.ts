@@ -65,6 +65,7 @@ export default (
   resolve: {
     extensions: [".js", ".ts", ".tsx", ".css", ".json"],
     modules,
+
   },
   resolveLoader: {
     extensions: [".js", ".json"],
