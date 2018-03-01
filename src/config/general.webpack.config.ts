@@ -1,9 +1,9 @@
-import {uglify} from "./components/js.plugins";
+import * as path from "path";
 import * as webpack from "webpack";
 import {Entry, EntryFunc} from "webpack";
-import {definePlugin} from "../config/components/js.plugins";
 import cssLoaders from "./components/css.loders";
-import {context, isDebug, isDevelopment, modules, stats} from "./components/target.config";
+import {uglify} from "./components/js.plugins";
+import {context, isDebug, isDevelopment, modules, root, stats} from "./components/target.config";
 
 export default (
   entry: string | string[] | Entry | EntryFunc,
@@ -11,13 +11,14 @@ export default (
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
   externals: webpack.ExternalsFunctionElement | webpack.ExternalsObjectElement | webpack.ExternalsElement,
-): webpack.Configuration => ({
+): any => ({
   bail: !isDevelopment,
   cache: true,
   context,
   devtool: isDebug ? "source-map" : false,
   entry,
   externals,
+  mode: isDevelopment ? "development" : "production",
   module: {
     rules: [
       {
@@ -31,19 +32,22 @@ export default (
       ...rules,
     ],
   },
+  optimization: {
+    minimize: false,
+  },
   output,
   performance: {
     hints: false,
   },
   plugins: [
-    ...definePlugin(),
     ...plugins,
     ...uglify(),
   ],
+  profile: true,
+  recordsPath: path.resolve(root, "node_modules/.cache/webpack/[confighash]/records.json"),
   resolve: {
     extensions: [".js", ".ts", ".tsx", ".css", ".json"],
     modules,
-
   },
   resolveLoader: {
     extensions: [".js", ".json"],

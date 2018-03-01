@@ -16,7 +16,6 @@ import {
   dll_lib_name,
   dll_manifest_path,
   dll_path,
-  env,
   isBuild,
   isDebug,
   isDevelopment,
@@ -40,12 +39,12 @@ export const HMR = (): webpack.Plugin[] => {
 
 // https://webpack.js.org/plugins/commons-chunk-plugin/
 export const extractVendors = (): webpack.Plugin[] => ([
-  new webpack.optimize.CommonsChunkPlugin(
-    {
-      minChunks: (module) => module.context && module.context.includes("node_modules"),
-      name: "vendor",
-    },
-  ),
+  /*  new webpack.optimize.CommonsChunkPlugin(
+      {
+        minChunks: (module) => module.context && module.context.includes("node_modules"),
+        name: "vendor",
+      },
+    ),*/
 ]);
 
 export const uglify = (): webpack.Plugin[] => {
@@ -54,9 +53,16 @@ export const uglify = (): webpack.Plugin[] => {
       // https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
       new UglifyJSPlugin(
         {
-          cache: true,
-          parallel: true,
-          sourceMap: !isDevelopment,
+          sourceMap: isDebug,
+          uglifyOptions: {
+            cache: true,
+            compress: {
+              sequences: true,
+              unused: true,
+            },
+            ecma: 8,
+            parallel: 4,
+          },
         },
       ),
     ];
@@ -80,11 +86,6 @@ export const analyze = (): webpack.Plugin[] => {
 
   return [];
 };
-
-// https://webpack.js.org/plugins/define-plugin/
-export const definePlugin = (): webpack.Plugin[] => ([
-  new webpack.DefinePlugin({"process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)}),
-]);
 
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
   let dllConfig = {[dll_entry_name]: {}};
