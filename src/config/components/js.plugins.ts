@@ -22,7 +22,7 @@ import {
   isDevelopment,
   isStart,
   root,
-} from "../target.config";
+} from "./target.config";
 
 export const HMR = (): webpack.Plugin[] => {
   if (isDevelopment) {
@@ -38,18 +38,11 @@ export const HMR = (): webpack.Plugin[] => {
   return [];
 };
 
-export const scopeHoisting = () => {
-  return [
-    // new webpack.optimize.ModuleConcatenationPlugin(),
-  ];
-};
-
 // https://webpack.js.org/plugins/commons-chunk-plugin/
 export const extractVendors = (): webpack.Plugin[] => ([
   new webpack.optimize.CommonsChunkPlugin(
     {
-      minChunks: (module) => module.context && module.context.includes(
-        "node_modules"),
+      minChunks: (module) => module.context && module.context.includes("node_modules"),
       name: "vendor",
     },
   ),
@@ -63,6 +56,7 @@ export const uglify = (): webpack.Plugin[] => {
         {
           cache: true,
           parallel: true,
+          sourceMap: !isDevelopment,
         },
       ),
     ];
@@ -89,7 +83,7 @@ export const analyze = (): webpack.Plugin[] => {
 
 // https://webpack.js.org/plugins/define-plugin/
 export const definePlugin = (): webpack.Plugin[] => ([
-  new webpack.DefinePlugin({"process.env.NODE_ENV": env.NODE_ENV}),
+  new webpack.DefinePlugin({"process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)}),
 ]);
 
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {

@@ -5,7 +5,7 @@ import {context, isDebug, ts, tsConfigPath, tsLintConfigPath} from "./target.con
 
 export default () => {
   const {compilerOptions, compileOnSave} = ts;
-  const {devDependencies: {typescript: version}} = require(path.resolve(__dirname, "../../../package.json"));
+  const {devDependencies: {typescript: version}} = require(path.resolve(__dirname, "../../../../package.json"));
 
   const config = {
     compileOnSave,

@@ -1,22 +1,16 @@
 import * as HardSourceWebpackPlugin from "hard-source-webpack-plugin";
 import * as path from "path";
-import entry from "./entry";
-import generalWebpackConfig from "./general.webpack.config";
-import {extractCSS} from "./plugins/css";
+import entry from "./components/entry";
 import {
   analyze,
   clean,
-  definePlugin,
   DllPlugin,
   DllReferencePlugin,
   extractVendors,
   HMR,
   htmlWebpackPlugin,
-  scopeHoisting,
-  uglify,
   workboxPlugin,
-} from "./plugins/js";
-import compiler from "./rules/compiler";
+} from "./components/js.plugins";
 import {
   context,
   dll_entry_name,
@@ -26,20 +20,18 @@ import {
   isDevelopment,
   output,
   root,
-} from "./target.config";
+} from "./components/target.config";
+import tsLoader from "./components/ts.loaders";
+import generalWebpackConfig from "./general.webpack.config";
 
 export const dev = generalWebpackConfig(
   entry(),
   output,
-  compiler(),
+  tsLoader(),
   [
     ...DllReferencePlugin(),
-    ...definePlugin(),
-    ...scopeHoisting(),
     ...HMR(),
     ...extractVendors(),
-    ...extractCSS(),
-    ...uglify(),
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),
@@ -57,12 +49,9 @@ export const dll = generalWebpackConfig(
     library: dll_lib_name,
     path: dll_lib_output_path,
   },
-  compiler(),
+  tsLoader(),
   [
     ...clean([isDevelopment ? "dll/dev" : "dll/prod"], true),
-    ...definePlugin(),
-    ...extractCSS(true),
-    ...uglify(),
     ...DllPlugin(),
     new HardSourceWebpackPlugin(
       {

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
-import source from "./source";
+import source from "../source/index";
 
 const CWD = process.cwd();
 const config = source();
