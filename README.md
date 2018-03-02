@@ -5,96 +5,68 @@
 
 Содержание
 ----------
-* [Мотивация](#motivation)
-* [Проверка конфигурации](#chekConfiguration)
+* [Что такое rearguard?](#whatIsIt)
+* [Под капотом](#underTheHood)
+* [Конфигурация](#configuration)
+* [DLL](#dll)
 * [Установка](#install)
 * [CLI](#cli)
-* [Использование](#using)
-* [Конфигурация](#config)
-* [Минимально необходимая структура проекта](#structure)
+* [Структура проекта](#structure)
 * [Пример работы modules](#modules)
-* [Пример работы proxy](#proxy)
-* [Что внутри?](#including)
 
-<a name="motivation"></a>
-### Мотивация:
-- Версионирование конфигурации сборки;
-- Простота разворачивания конфигурации сборки определённой версии;
-- Инкрементные обновления rearguard;
-- Легкость обновления на нескольких проектах;
-- Устранение избыточности в виде копий пакетов зависимостей, которые нужны для работы сборки, в каждом проекте;
-- Возможность устанавливать rearguard глобально;
-- Единственная зависимость в package.json для разработки;	
-- Быстрый старт проекта без необходимости настройки;
-- Тестирование rearguard и ключевых особенностей в целевом проекте, который был собран через rearguard;
-- Получить минимально доступную гибкость (подключение плагинов для PostCSS и Babel);
-- Минималистичный конфигурационный файл;
-- Проверка конфигурации на избыточные, недостающие или некорректные свойства. 
+<a name="whatIsIt"></a>
+#### Что такое rearguard?:
+Rearguard - это консольная утилита включающая комплект настроек для разработки SPA приложения основанного на технологиях
+Typescript, React, CSS-Modules, Webpack, PostCSS.
 
-<a name="chekConfiguration"></a>
-#### Проверка конфигурации build.config.json
-- Содержит ли полный список полей доступных для конфигурации.
-- Не содержит ли лишних полей которые не используются.
-- Верные ли введенные типы данных.
+<a name="underTheHood"></a>
+#### Под капотом:
+- webpack
+- webpack-dev-server
+- ts-loader
+- tslint-loader
+- postCSS
+- css-modules
+- isomorphic-style-loader
+- DLLPlugin
+- hard-source-webpack-plugin
+- workbox-webpack-plugin
 
-<a name="install"></a>
-#### Установка
-Локально в проект и сохранением точной версии.
-```sh
-npm install -D rearguard
-```
-Глобально для использования сразу в нескольких проектах.
-```sh
-npm install -g rearguard
-```
+<a name="configuration"></a>
+#### Конфигурация:
+Для начала работы ничего конфигурировать не нужно. Все необходимые файлы будут добавлены в проект автоматически.
 
-<a name="cli"></a>
-#### CLI
-```sh
-rearguard [react | infernojs] [start | build]
-```
-Доступные флаги: 
-- --typescript | -ts - включение поддержки typescript, ts, tsx файлов.
-- --isomorphic | -i - перевод сборки в изоморфный режим.
-- --onlyServer - работа только с серверной частью изоморфного приложения (фактически, получается классический веб 
-сервер, где шаблонизатор это React или Infernojs).
-- --release | -r - работа сборки в production режиме, как для start, так и для build.
-- --analyze | -a - запуск [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer), помогает
-проанализировать содержимое сборки.
-- --verbose | -v - многословный вывод.
-- --debug | -d - вывод дополнительной отладочной информации.
+Rearguard ожидает, что имеется package.json и src/index.tsx.
 
-<a name="using"></a>
-#### Использование
-Запуск SPA приложения, основанного на библиотеке [React](https://facebook.github.io/react/)
-```sh
-rearguard react start 
-```
-Сборка в production режиме SPA приложения, основанного на библиотеке [React](https://facebook.github.io/react/)
-```sh
-rearguard react build --release 
-```
-Запуск SPA приложения, основанного на библиотеке infernojs [infernojs](https://infernojs.org/)
-```sh
-rearguard infernojs start 
-```
-Сборка в production режиме SPA приложения, основанного на библиотеке infernojs [infernojs](https://infernojs.org/)
-```sh
-rearguard infernojs build --release 
-```
+Файл конфигурации называется `build.config.json` и он будет создан автоматически если его нет, также этот файл **ДОЛЖЕН 
+находиться под версионированием.**
 
-<a name="config"></a>
-#### Конфигурация
-При первом запуске будет автоматически сгенерировано два файла в текущей директории
+Файлы `tsconfig.json` и `tslint.json` генерируются автоматически и при каждом запуске перезаписываются. Эти файлы **НЕ 
+ДОЛЖНЫ** находиться под версионированием.
 
-- build.config.json - версионируется 
-- socket.config.json - не версионируется 
+Файл `socket.config.json` генерируется автоматически и **НЕ перезаписывается при каждом запуске**. Описывает три
+сущности:
+- Порт сервера который обслуживает аналитику по сборке (webpack-bundle-analyzer).
+- Настройки для всех прокси (webpack-dev-server).
+- Хост и порт для webpack-dev-server.
 
-build.config.json:
-```json 
+Файл `src/typings.d.ts` генерируется автоматически и при каждом запуске перезаписывается. 
+
+Декларирует модули для css и других файлов ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2.
+
+Этот файл необходим для того, чтобы не решать задачу с генерацией d.ts файлов для css и прочих файлов.
+
+Файлы `build.config.json`, `socket.config.json` - проходят валидацию на:
+- наличие необходимых полей;
+- отсутствие полей которые не участвуют в конфигурации;
+- типы значений которые содержат поля;
+
+##### build.config.json:
+Полное содержание этого файла:
+```json
 {
   "context": "src",
-  "entry": "index.jsx",
+  "entry": "index.tsx",
   "output": {
     "path": "dist",
     "publicPath": "/"
@@ -102,101 +74,176 @@ build.config.json:
   "modules": [
     "src"
   ],
-  "browserslist": [
-    ">0.1%",
-    "last 2 versions",
-    "not ie <= 11"
-  ],
+  "typescript": {
+    "configPath": "tsconfig.json",
+    "config": {
+      "compilerOptions": {
+        "importHelpers": true,
+        "noImplicitAny": false,
+        "noUnusedParameters": false,
+        "strictPropertyInitialization": false,
+        "types": [
+          "node"
+        ]
+      },
+      "compileOnSave": false
+    }
+  },
+  "postCSS": {
+    "plugins" : "postCssPlugins.js"
+  }
+}
+```
+- context - директория в которой находится исходный код.
+- entry - точка входа в приложение, так как этот набор настроек для SPA приложения, то и точка входа может быть только
+одна.
+- output.path - путь до директории в которую будет выгружен результат сборки, рассчитывается от места запуска консольной 
+утилиты.
+- output.publicPath - описывает по какому URL буду загрузаться файлы. Например: если указать /assets, то URL всех файлов 
+будут начинаться с /assets.
+- modules - описывает директории в которых webpack будет искать модули. Необходимо для того чтобы не описывать полные
+или относительные пути, ниже я приведу примеры использования.
+- typescript.configPath - путь до конфигурационного файла, относительно директории запуска консольной утилиты.
+- typescript.config.compilerOptions - настройки которые будут добавлены в файл `tsconfig.json` и использованы в
+ts-loader.
+- typescript.config.compileOnSave - смотреть [тут](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+- postCSS.plugins - указывает на файл с плагинами для postCSS которые будут подключены к webpack + к тем которые
+втроенные.
+
+Пример `postCssPlugins.js`: 
+```js
+  module.exports = [
+    require('postcss-nesting')(),
+    require('postcss-nested')(),
+    require('postcss-calc')(),
+    require('postcss-extend')()
+  ]
+```
+
+##### socket.config.json:
+Полное содержание этого файла:
+```json
+{
+  "analyze": {
+    "port": 20000
+  },
   "proxy": {
-    "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000",
+    "/graphql": "http://localhost:9900",
+    "/auth": "http://localhost:9900",
     "/ws": {
-      "changeOrigin": true,
-      "target": "http://localhost:5000",
+      "target": "ws://localhost:9900",
       "ws": true
     }
   },
-  "isomorphic": {
-    "entry": "server.jsx",
-    "publicDirName": "public"
-  },
-  "css": {
-    "postCssPlugins": "postCssPlugins.js"
-  },
-  "typescript": {
-    "configPath": "tsconfig.json",
-    "showConfigForIDE": true,
-    "config": {
-      "compilerOptions": {},
-      "compileOnSave": false
-    }
+  "socket": {
+    "host": "localhost",
+    "port": 5500
   }
 }
 ```
+- analyze.port - порт для webpack-bundle-analyzer.
+- proxy - описывает все необходимые вам проксирования.
+- socket - описывает хост и порт для webpack-dev-server.
 
-socket.config.json:
+<a name="dll"></a>
+#### DLL:
+DLL - динамическая загрузка библиотек.
+Для работы этой возможности необходим файл `src/vendors.ts`.
+Следующего содержания **внимание это ПРИМЕР не для копирования**:
+```ecmascript 6
+import "antd";
+import "antd/dist/antd.css";
+import "antd/lib/locale-provider/en_US";
+import "crew";
+import "hoist-non-react-statics";
+import "isomorphic-style-loader/lib/withStyles";
+import "mobx";
+import "mobx-react";
+import "mobx-react-devtools";
+import "mobx-utils";
+import "normalize.css";
+import "prop-types";
+import "react";
+import "react-dom";
+import "react-router";
+import "react-router-dom";
+import "twix";
+import "validatorjs";
+```
+То что будет импортированно в этом файле будет собрано в отдельный JS файл который позже подключится в браузер отдельным
+линком.
+И будет создан специальный JSON файл с описанием того что есть в этом dll.js файле. И когда вы будите в проекте импортировать 
+например `mobx-react` то webpack посмотрит в JSON файл и если там найдет описание того, что этот `mobx-react` уже
+имеется в dll.js добавит в сборку только функцию получения объекта из dll.js файла. Таким образом скорость разработки
+увеличивается и _**меньше тратится электричество.**_
+
+<a name="install"></a>
+#### Установка
+Пакет можно установить как локально так и глобально. Это зависит от ваших предпочтений. Установка глобально экономит 
+место на диске, но у вас будет одна версия на все проекты, что в общем то не плохо. Но и у локальной установки есть
+плюсы, она позволят вам использовать конкретную версию для проекта.
+
+Глобально для использования сразу в нескольких проектах.
+```sh
+npm install -g rearguard
+```
+Локально в проект и сохранением точной версии.
+```sh
+npm install -D rearguard
+```
+Лично я ставлю глобально ```:-)``` 
+
+
+<a name="cli"></a>
+#### CLI
+Команды:
+- rearguard start - запускает dev режим с прослушиванием файлов и пересборкой, но **БЕЗ sourcemap**. Sourcemap это очень
+долго и не всегда необходимо.
+- rearguard start -d - запуск dev режима со всевозможными отладочными средствами и sourcemap.
+- rearguard start -r - запуск prod режима, необходим чтобы протестировать результующую сборку.
+- rearguard build [-d | -r] - аналогично команде start только на выходе будут файлы.
+- rearguard dll [-d | -r] - запускает сбору dll для dev или prod режимов, и также имеет возможность включить отладочную
+информацию. На выходе будет сгенерирован файл внешних библиотек который будет подключен в index.html.
 ```json
 {
-  "socket": {
-    "port": "5000",
-    "host": "localhost"
+  "scripts": {
+    "start": "rearguard start",
+    "start:debug": "rearguard start -d",
+    "start:release": "rearguard start -r",
+    "build": "rearguard build",
+    "build:debug": "rearguard build -d",
+    "build:release": "rearguard build -r",
+    "dll": "rearguard dll",
+    "dll:debug": "rearguard dll -d",
+    "dll:release": "rearguard dll -r"
   }
 }
 ```
-postCssPlugins.js
-```javascript 1.8
-module.exports = [
-  require('postcss-nesting')(),
-  require('postcss-nested')(),
-  require('postcss-calc')(),
-  require('postcss-extend')()
-]
-```
-* **_context_** - базовая директория проекта. 
-* **_entry_** - точка входа в приложение указывается относительно _context_.
-* **_output.path_** - директория, куда будет выгружен результат сборки. 
-* **_output.publicPath_** - это url, по которому можно будет получить статику.
-* **_modules_** - это директории, в которых webpack будет искать модули, пример будет ниже.
-* **_[browserslist](http://browserl.ist/?q=%3E0.1%25%2C+last+2+versions%2C+not+ie+%3C%3D+11)_** - список, который очерчивает 
-круг поддерживаемых браузеров, используется для [env](https://github.com/babel/babel-preset-env) и 
-[autoprefixer](https://github.com/postcss/autoprefixer)
-* **_proxy_** - объект отписывает с какого path перенаправлять на какой host и path, примеры будут ниже.
-* **_isomorphic.entry_** - точка входа в приложение веб-сервера.
-* **_isomorphic.publicDirName_** - имя директории, в которой содержатся файлы в основном используемые в `<meta>` тегах и поисковыми системами. Копируется в **_output.path_**. Эти файлы не импортируются в проект. 
-* **_css.postCssPlugins_** - путь к файлу **_postCssPlugins.js_**, где подключаются плагины для PostCSS в целевом проекте.
-* **_typescript.configPath_** - путь к файлу tsconfig.json, где находится конфигурация для typescript, этот файл конфигурации 
-генерируется автоматически и нужен для того, чтобы его читала IDE. Этот файл **не версионируется**.
-* **_typescript.showConfigForIDE_** - флаг необходимый для включения или выключения генерации tsconfig.json файла. 
-* **_typescript.config_** - объект с настройками компиляции TS, значения в этом объекте будут Object.assign с базовой 
-конфигурацией, таким образом, можно влиять на настройки TS. 
 
 <a name="structure"></a>
-#### Минимально необходимая структура проекта
-
-**SPA**
+#### Структура проекта:
 ```
 my-app
 ├── package.json
-├── public - isomorphic.publicDirName
-│   └── favicon.ico
 └── src - context
-    └── index.jsx - entry
+    ├── decorators - Декораторы и HOC компоненты.
+    ├── interfaces - TS интерфейсы.
+    ├── pages - Каталог страниц.
+    ├── services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
+    ├── smartComponents - Компонеты которы содержат логику работы с данными и не содержат верстки и CSS.
+    ├── static - статические файлы (fonts, images)
+    ├── stores - Каталог хранилищ приложения, тут описывается бизнес логика работы приложения ("мозги приложения").
+    ├── stubComponents - верстка (UI пакеты такие как [Ant](https://ant.design/)).
+    ├── utils - Униферсальные классы и функции.
+    ├── vars - CSS переменные и JS переменные.
+    ├── vendors.ts - Описывает внешние зависимости пакета, могут быть как из node_modules так и из других мест.
+    ├── typings.d.ts - Генерируется автоматически, декларируются css модули и модули для статических файлов.
+    └── index.tsx - Точка входа в приложение.
 ```
-**Isomorphic**
-```
-my-app
-├── package.json
-├── public - isomorphic.publicDirName
-│   └── favicon.ico
-└── src - context
-    └── index.jsx - entry
-    └── server.jsx - isomorphic.entry
-```
-Дальнейшее развитие проекта остаётся на усмотрение разработчика.
 
 <a name="modules"></a>
 #### Пример работы modules
-**outSideProjectFromGitSubmodule** - этот проект разрабатывается отдельно, например это проект с версткой. 
+**outSideProjectFromGitSubmodule** - этот проект разрабатывается отдельно, например это проект с версткой.
 
 **my-app** - этот проект нуждается в компонентах которые разрабатываются в проекте `outSideProjectFromGitSubmodule`.
 
@@ -223,7 +270,7 @@ my-app
     └── index.jsx - entry
 ```
 export.jsx
-```javascript 1.8
+```ecmascript 6
 export {default as Component3} from 'components/Component3'
 export {default as Component4} from 'components/Component4'
 ```
@@ -236,11 +283,11 @@ export {default as Component4} from 'components/Component4'
 }
 ```
 Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
-```javascript 1.8
+```ecmascript 6
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
 Или получить `Component4` без использования `export.jsx`  
-```javascript 1.8
+```ecmascript 6
 import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
 
@@ -254,11 +301,11 @@ import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4
 }
 ```
 Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
-```javascript 1.8
+```ecmascript 6
 import { Component3 } from 'export'
 ```
 Или получить `Component4` без использования `export.jsx`
-```javascript 1.8
+```ecmascript 6
 import Component4  from 'components/Component4'
 ```
 
@@ -273,48 +320,8 @@ import Component4  from 'components/Component4'
 }
 ```
 И получить `Component4` по одному только имени
-```javascript 1.8
+```ecmascript 6
 import Component4  from 'Component4'
 ```
 
-<a name="proxy"></a>
-#### Пример работы proxy
-```json
-{
-  "proxy": {
-    "/graphql": "http://localhost:9000",
-    "/auth": "http://localhost:9000",
-    "/ws": {
-      "changeOrigin": true,
-      "target": "http://localhost:5000",
-      "ws": true
-    }
-  }
-}
-```
-Все запросы начинающиеся на **_/graphql_** будут перенаправлены на:
-- _**/graphql**_ -> http://localhost:9000 **_/graphql_**
-- _**/graphql**_/data -> http://localhost:9000 **_/graphql_**/data
-
-Все запросы начинающиеся на _**/auth**_ будут перенаправлены на:
-- **_/auth_** -> http://localhost:9000 _**/auth**_
-- _**/auth**_/user -> http://localhost:9000 _**/auth**_/user
-
-В режиме SPA используется webpack-dev-server который в свою очередь использует [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#core-concept) для работы proxy. 
-В режиме Isomorphic или onlyServer используется веб-сервер который находится 
-<a name="including"></a>
-#### Что внутри ?
-- [webpack](https://webpack.js.org)
-- [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-- [DLLPlugin](https://webpack.js.org/plugins/dll-plugin/#src/components/Sidebar/Sidebar.jsx)
-- [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)
-- [workbox-webpack-plugin](https://developers.google.com/web/tools/workbox/get-started/webpack)
-- [uglifyjs-webpack-plugin](https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#src/components/Sidebar/Sidebar.jsx)
-- [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer)
-- [typescript](https://www.typescriptlang.org/)
-- [tsLint](https://palantir.github.io/tslint/)
-- [ts-loader](https://github.com/TypeStrong/ts-loader)
-- [postcss](https://github.com/postcss/postcss)
-- postcss plugins: "import", "selector-not", "initial", "color-function", "custom-media", "media-minmax",
-                   "flexbugs-fixes", "autoprefixer".
-
+Вопросы и предложения можно написать в issue или непосредственно мне, контакты: [Dmitriy Borodin](http://borodin.site)
