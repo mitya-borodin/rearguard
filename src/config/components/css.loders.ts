@@ -56,7 +56,7 @@ export default (): webpack.Rule[] => {
     {
       exclude: [context],
       test: /\.css/,
-      use: [...style, ...css, ...postCss],
+      use: [...style, ...css],
     },
   ];
 };

@@ -13,14 +13,15 @@
 * [CLI](#cli)
 * [Структура проекта](#structure)
 * [Пример работы modules](#modules)
+* [Пример работы c CSS](#css)
 
 <a name="whatIsIt"></a>
-#### Что такое rearguard?:
+### Что такое rearguard?
 Rearguard - это консольная утилита, включающая комплект настроек для разработки SPA, приложения основанного на технологиях
 Typescript, React, CSS-Modules, Webpack, PostCSS.
 
 <a name="underTheHood"></a>
-#### Под капотом:
+#### Под капотом
 - webpack
 - webpack-dev-server
 - ts-loader
@@ -33,7 +34,7 @@ Typescript, React, CSS-Modules, Webpack, PostCSS.
 - workbox-webpack-plugin
 
 <a name="configuration"></a>
-#### Конфигурация:
+### Конфигурация
 Для начала работы ничего конфигурировать не нужно. Все необходимые файлы будут добавлены в проект автоматически.
 
 Rearguard ожидает, что имеется package.json и src/index.tsx.
@@ -61,7 +62,7 @@ Rearguard ожидает, что имеется package.json и src/index.tsx.
 - отсутствие полей, которые не участвуют в конфигурации;
 - типы значений, которые содержат поля;
 
-##### build.config.json:
+##### build.config.json
 Полное содержание этого файла:
 ```json
 {
@@ -120,7 +121,7 @@ ts-loader.
   ]
 ```
 
-##### socket.config.json:
+##### socket.config.json
 Полное содержание этого файла:
 ```json
 {
@@ -146,7 +147,7 @@ ts-loader.
 - socket - описывает хост и порт для webpack-dev-server.
 
 <a name="dll"></a>
-#### DLL:
+#### DLL
 DLL - динамическая загрузка библиотек.
 Для работы этой возможности необходим файл `src/vendors.ts`.
 Следующего содержания **внимание - это ПРИМЕР не для копирования**:
@@ -178,7 +179,7 @@ import "validatorjs";
 увеличивается и _**меньше тратится электричество.**_
 
 <a name="install"></a>
-#### Установка
+### Установка
 Пакет можно установить как локально так и глобально. Это зависит от ваших предпочтений. Установка глобально экономит 
 место на диске, но у вас будет одна версия на все проекты, что в общем не плохо. Но и у локальной установки есть
 плюсы: она позволят вам использовать конкретную версию для проекта.
@@ -195,7 +196,7 @@ npm install -D rearguard
 
 
 <a name="cli"></a>
-#### CLI
+### CLI
 Команды:
 - rearguard start - запускает dev режим с прослушиванием файлов и пересборкой, но **БЕЗ sourcemap**. Sourcemap это очень
 долго и не всегда необходимо.
@@ -221,7 +222,7 @@ npm install -D rearguard
 ```
 
 <a name="structure"></a>
-#### Структура проекта:
+### Структура проекта
 ```
 my-app
 ├── package.json
@@ -242,7 +243,7 @@ my-app
 ```
 
 <a name="modules"></a>
-#### Пример работы modules
+### Пример работы modules
 **outSideProjectFromGitSubmodule** - этот проект разрабатывается отдельно, например, это проект с версткой.
 
 **my-app** - этот проект нуждается в компонентах, которые разрабатываются в проекте `outSideProjectFromGitSubmodule`.
@@ -324,4 +325,213 @@ import Component4  from 'components/Component4'
 import Component4  from 'Component4'
 ```
 
-Вопросы и предложения можно написать в issue или непосредственно мне, контакты: [Dmitriy Borodin](http://borodin.site)
+<a name="css"></a>
+### Работа с CSS
+
+#### Внешние стили
+Все стили котрые не находятся внутри директории **context** будут загружены без изменений используя:
+- isomorphic-style-loader
+- css-loader
+
+#### Модульные стили
+Для стилей находящихся внутри **context** будут обработаны через плагины PostCSS и будут загруженны как модули. Список 
+загрузчиков:
+- isomorphic-style-loader
+- css-loader
+- postcss-loader
+
+#### isomorphic-style-loader
+Таким образом импортируются стили.
+
+HOC withStyles - необходим для того чтобы при componentWillMount стили оказались на странице, а при componentWillUnmount
+они были удалены со страницы. 
+
+Файл `MyComponent.css`
+```css
+.root {
+  width: 100%
+}
+```
+
+Файл `MyComponent.tsx`
+```typescript jsx
+import React, {Component} from "react";
+import withStyles from "isomorphic-style-loader/lib/withStyles";
+import style  from './MyComponent.css'
+
+@withStyles(style)
+class MyComponent extends Component<any, any> {
+  render() {
+    return (
+      <div className={style.root}>Example</div>
+    );
+  }
+}
+
+export default MyComponent;
+
+```
+Объект style сожержит:
+- Имена CSS классов
+- Метод _getCss(), который возвращает текст CSS который вставлен на страницу.
+- Метод _insertCss() -  Который добавляет CSS на страницу и возвращает метод который может удалить CSS со страницы.
+- Метод _getContent() -  Который возвращает объект где ключи это имена классов, а значения это измененные имена классов.
+
+Внутри withStyles используются эти методы для добавления и удаления CSS из head.
+
+#### Подключение стилей из node_modules
+Файл `index.tsx`
+```typescript jsx
+import s from "antd/dist/antd.css"; // Эти стили находятся вне context и они будут добавлены как есть.
+import App from "pages/App";
+import React from "react";
+import ReactDOM from "react-dom";
+
+let container;
+
+const render = (Component) => {
+  ReactDOM.render(<Component/>, container);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+
+  style.antd._insertCss(); // Тут мы добавляем CSS на страницу.
+
+  render(App);
+});
+
+// Возможно вам понадобится текст CSS от подключенных внешних стилей и я рекомендую экспортировать этот объект стилей.
+export const style: { antd: any } = {
+  antd: s,
+};
+```
+
+#### Создание HTML отчета в браузере
+Ниже я приведу пример того как можно использовать isomorphic-style-loader для получения css текста и создания html файла
+отчета о чем то.
+
+файл `ReportTable.css`
+```css
+.root :global(.ant-table-body) {
+  overflow: auto;
+}
+
+.row  {
+  padding: 0 !important;
+  display: block;
+  float: left;
+  width: 80px;
+  height: 100%;
+  text-align: center;
+  line-height: 54px;
+  border-right: 1px solid #e8e8e8;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.row:last-child {
+  border-right: 0;
+}
+```
+
+Файл `ReportTable.tsx`
+```typescript jsx
+import React, {PureComponent} from "react";
+import s from "./ReportTable.css";
+
+
+class ReportTable extends PureComponent<any, any> {
+  private style: any;
+  private removeCSS: () => void;
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.style = s;
+  }
+
+  componentWillMount() {
+    this.removeCSS = this.style._insertCss();
+  }
+
+  componentWillUnmount() {
+    this.removeCSS();
+  }
+
+  render() {
+    return (
+      <table className={s.root}>
+        <tbody>
+          <tr>
+            <td className={s.row}>DATA_1</td>
+            <td className={s.row}>DATA_2</td>
+            <td className={s.row}>DATA_3</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+}
+
+export const style: any = s;
+
+export default ReportTable;
+
+```
+Файл `ReportSmart.tsx`
+```typescript jsx
+import * as root from "index"; // Файл из предидущего примера (index.tsx).
+import React, {Component} from "react";
+import ReactDOM from "react-dom/server";
+import Control from "stubComponents/ReportControl";
+import ReportTable, {style} from "./ReportTable";
+
+class ReportSmart extends Component<any, any> {
+  reportToHTML(): void {
+    const body = ReactDOM.renderToStaticMarkup(<ReportTable/>);
+    const html = `
+      <!DOCTYPE html>
+        <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <title>Report</title>
+              <style type="text/css">${root.style.antd._getCss()}</style>
+              <style type="text/css">${style._getCss()}</style>
+          </head>
+          <body>${body}</body>
+        </html>
+      `;
+    const blob = new Blob([html], {type: "text/html"});
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download = "report.html";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
+  render() {
+    return [
+      <Control key={1} uploadReport={this.reportToHTML}/>,
+      <ReportTable key={2}/>,
+    ];
+  }
+}
+
+export default ReportSmart;
+
+```
+
+И в итоге мы порлучаем HTML файл `report.html` который содержит HTML полученый в результате рендера компонента
+ReportTable и необходимый для него css текст, из внешнего пакета "antd/dist/antd.css" и модульного css самого компонента.
+
+Вопросы и предложения можно написать в issue или непосредственно мне: [Dmitriy Borodin](http://borodin.site)
