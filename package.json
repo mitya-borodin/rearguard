@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "2.3.16",
+  "version": "2.3.17",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -16,13 +16,13 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "homepage": "https://github.com/Techintouch/rearguard",
+  "homepage": "https://github.com/mitya-borodin/rearguard.git",
   "bugs": {
-    "url": "https://github.com/Techintouch/rearguard/issues"
+    "url": "https://github.com/mitya-borodin/rearguard/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Techintouch/rearguard.git"
+    "url": "git@github.com:mitya-borodin/rearguard.git"
   },
   "author": {
     "name": "Dmitriy Borodin",
