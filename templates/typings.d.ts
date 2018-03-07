@@ -1,4 +1,5 @@
 /* tslint:disable: max-classes-per-file */
+
 declare module "*.css" {
   interface IClassNames {
     [className: string]: string;
@@ -11,12 +12,20 @@ declare module "*.css" {
 // For more information you need to go here:
 // https://github.com/webpack-contrib/worker-loader#integrating-with-typescript
 
-declare module "worker-loader!*" {
-  export = Worker;
+declare module "*.worker" {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  export = WebpackWorker;
 }
 
 declare module "*.worker.ts" {
-  export = Worker;
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  export = WebpackWorker;
 }
 
 declare module "*.jpg" {

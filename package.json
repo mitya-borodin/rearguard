@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "2.3.18",
+  "version": "2.3.19",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -114,7 +114,9 @@
     "tslint",
     "hard-source-webpack-plugin",
     "dll",
-    "dll-webpack-plugin"
+    "dll-webpack-plugin",
+    "webWorker",
+    "worker-loader"
   ],
   "license": "MIT"
 }
