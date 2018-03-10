@@ -1,54 +1,27 @@
 import * as webpack from "webpack";
-import {context, output, tsConfigPath, tsLintConfigPath} from "./target.config";
-
-const tsLint = (exclude: Array<string | RegExp>, include: string[], test: RegExp): webpack.Rule => ({
-  enforce: "pre",
-  exclude,
-  include,
-  loader: "tslint-loader",
-  options: {
-    configFile: tsLintConfigPath,
-  },
-  test,
-});
+import {context, tsConfigPath, tsLintConfigPath} from "./target.config";
 
 export default (): webpack.Rule[] => {
   const exclude = [/node_modules/];
   const include = [context];
-  const TS = /\.(ts|tsx)?$/;
-  const webWorkerTS = /\.worker\.ts?$/;
+  const test = /\.(ts|tsx)?$/;
 
   return [
-    tsLint(exclude, include, TS),
     {
+      enforce: "pre",
       exclude,
       include,
-      test: TS,
-      use: [
-        {
-          loader: "ts-loader",
-          options: {
-            configFile: tsConfigPath,
-            // happyPackMode: true,
-            // disable type checker - we will use it in fork plugin
-            // transpileOnly: true,
-          },
-        },
-      ],
+      loader: "tslint-loader",
+      options: {
+        configFile: tsLintConfigPath,
+      },
+      test,
     },
-    tsLint(exclude, include, webWorkerTS),
     {
       exclude,
       include,
-      test: webWorkerTS,
+      test,
       use: [
-        {
-          loader: "worker-loader",
-          options: {
-            name: "[name].[hash].js",
-            publicPath: output.publicPath,
-          },
-        },
         {
           loader: "ts-loader",
           options: {
