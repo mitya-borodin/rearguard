@@ -26,9 +26,10 @@ export const socket = config.socket;
 export const root: string = resolveTarget();
 export const context: string = resolveTarget(config.context);
 export const entry: string = config.entry;
-export const output: webpack.Output = {
+export const output: webpack.Output & { globalObject: string } = {
   chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
   filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
+  globalObject: "this",
   path: resolveTarget(config.output.path),
   pathinfo: isDebug,
   publicPath: config.output.publicPath,

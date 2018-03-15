@@ -5,6 +5,7 @@
     "module": "commonjs",
     "lib": [
       "es6",
+      "webworker",
       "es7"
     ],
     "allowJs": true,

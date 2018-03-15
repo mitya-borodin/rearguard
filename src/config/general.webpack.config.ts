@@ -7,7 +7,7 @@ import {context, isDebug, isDevelopment, modules, root, stats} from "./component
 
 export default (
   entry: string | string[] | Entry | EntryFunc,
-  output: webpack.Output,
+  output: webpack.Output & { globalObject: string },
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
   externals: webpack.ExternalsFunctionElement | webpack.ExternalsObjectElement | webpack.ExternalsElement,
