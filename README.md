@@ -1,6 +1,6 @@
 # Rearguard 
 [![Build Status](https://travis-ci.org/mitya-borodin/rearguard.svg?branch=master)](https://travis-ci.org/mitya-borodin/rearguard)
-![david](https://david-dm.org/mitya-borodin/rearguard.svg)
+[![david](https://david-dm.org/mitya-borodin/rearguard.svg)](https://david-dm.org/mitya-borodin/rearguard)
 [![Greenkeeper badge](https://badges.greenkeeper.io/mitya-borodin/rearguard.svg)](https://greenkeeper.io/)
 
 Содержание
