@@ -1,6 +1,7 @@
 # Rearguard 
 [![Build Status](https://travis-ci.org/mitya-borodin/rearguard.svg?branch=master)](https://travis-ci.org/mitya-borodin/rearguard)
-[![david](https://david-dm.org/mitya-borodin/rearguard.svg)](https://david-dm.org/mitya-borodin/rearguard)
+[![dependencies Status](https://david-dm.org/mitya-borodin/rearguard/status.svg)](https://david-dm.org/mitya-borodin/rearguard)
+[![devDependencies Status](https://david-dm.org/mitya-borodin/rearguard/dev-status.svg)](https://david-dm.org/mitya-borodin/rearguard?type=dev)
 [![Greenkeeper badge](https://badges.greenkeeper.io/mitya-borodin/rearguard.svg)](https://greenkeeper.io/)
 
 Содержание
