@@ -30,6 +30,7 @@ Typescript, React, CSS-Modules, Webpack, PostCSS.
 - postCSS
 - css-modules
 - isomorphic-style-loader
+- worker-loader
 - DLLPlugin
 - hard-source-webpack-plugin
 - workbox-webpack-plugin
