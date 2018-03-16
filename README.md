@@ -3,7 +3,6 @@
 [![dependencies Status](https://david-dm.org/mitya-borodin/rearguard/status.svg)](https://david-dm.org/mitya-borodin/rearguard)
 [![devDependencies Status](https://david-dm.org/mitya-borodin/rearguard/dev-status.svg)](https://david-dm.org/mitya-borodin/rearguard?type=dev)
 [![Greenkeeper badge](https://badges.greenkeeper.io/mitya-borodin/rearguard.svg)](https://greenkeeper.io/)
-[![Known Vulnerabilities](https://snyk.io/test/github/mitya-borodin/rearguard/badge.svg)](https://snyk.io/test/github/mitya-borodin/rearguard)
 
 Содержание
 ----------
