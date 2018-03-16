@@ -47,7 +47,7 @@
     "clean-webpack-plugin": "0.1.19",
     "copy": "0.3.1",
     "cross-spawn": "6.0.5",
-    "css-loader": "0.28.10",
+    "css-loader": "0.28.11",
     "del": "3.0.0",
     "file-loader": "1.1.11",
     "glob": "7.1.2",
