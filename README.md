@@ -1,7 +1,8 @@
 # Rearguard 
-[![Build Status](https://travis-ci.org/Techintouch/rearguard.svg?branch=master)](https://travis-ci.org/Techintouch/rearguard)
-![david](https://david-dm.org/Techintouch/rearguard.svg)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Techintouch/rearguard.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/mitya-borodin/rearguard.svg?branch=master)](https://travis-ci.org/mitya-borodin/rearguard)
+[![dependencies Status](https://david-dm.org/mitya-borodin/rearguard/status.svg)](https://david-dm.org/mitya-borodin/rearguard)
+[![devDependencies Status](https://david-dm.org/mitya-borodin/rearguard/dev-status.svg)](https://david-dm.org/mitya-borodin/rearguard?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/mitya-borodin/rearguard.svg)](https://greenkeeper.io/)
 
 Содержание
 ----------
@@ -29,6 +30,7 @@ Typescript, React, CSS-Modules, Webpack, PostCSS.
 - postCSS
 - css-modules
 - isomorphic-style-loader
+- worker-loader
 - DLLPlugin
 - hard-source-webpack-plugin
 - workbox-webpack-plugin
