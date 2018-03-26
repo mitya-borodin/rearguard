@@ -146,7 +146,7 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
 export const workboxPlugin = (): webpack.Plugin[] => {
   if ((!isDevelopment || isBuild) && !isStart) {
     return [
-      new WorkboxPlugin(
+      new WorkboxPlugin.GenerateSW(
         {
           // these options encourage the ServiceWorkers to get in there fast
           // and not allow any straggling "old" SWs to hang around
