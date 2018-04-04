@@ -14,7 +14,9 @@ export default () => {
       {
         /* Basic Options */
         preserveConstEnums: true,
-
+        diagnostics: isDebug,
+        pretty: true, // Stylize errors and messages using color and context.
+        noErrorTruncation: true, // Do not truncate error messages.
         target: "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
         module: "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
         lib: ["es6", "es7", "dom"], /* Specify library files to be included in the compilation:  */
@@ -63,16 +65,17 @@ export default () => {
 
         /* Experimental Options */
         experimentalDecorators: true, /* Enables experimental support for ES7 decorators. */
-        // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
+        // emitDecoratorMetadata: true,  /* Enables experimental support for emitting type metadata for decorators. */
       },
       /* tslint:enable */
       compilerOptions,
     ),
     exclude: [
       "node_modules",
+      "node_modules/.cache",
     ],
     include: [
-      `${context}/**/*`,
+      context,
     ],
     version,
   };

@@ -2,7 +2,7 @@
 
 declare module "*.css" {
   interface IClassNames {
-    [className: string]: string;
+    [ className: string  ]: any;
   }
 
   const classNames: IClassNames;
