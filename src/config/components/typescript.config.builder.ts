@@ -13,49 +13,55 @@ export default () => {
     compilerOptions: Object.assign(
       {
         /* Basic Options */
-        preserveConstEnums: true,
-        diagnostics: isDebug,
-        pretty: true, // Stylize errors and messages using color and context.
-        noErrorTruncation: true, // Do not truncate error messages.
-        target: "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-        module: "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
-        lib: ["es6", "es7", "dom"], /* Specify library files to be included in the compilation:  */
         allowJs: false, /* Allow javascript files to be compiled. */
         checkJs: false, /* Report errors in .js files. */
+        target: "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+        module: "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
+        pretty: true, // Stylize errors and messages using color and context.
+        lib: ["es6", "es7", "dom"], /* Specify library files to be included in the compilation:  */
         jsx: "react", /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
         declaration: false, /* Generates corresponding '.d.ts' file. */
-        sourceMap: isDebug, /* Generates corresponding '.map' file. */
-        // "outFile": "./",                       /* Concatenate and emit output to single file. */
-        // "outDir": "./",                        /* Redirect output structure to the directory. */
-        rootDir: "./", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-        removeComments: true, /* Do not emit comments to output. */
-        noEmit: false, /* Do not emit outputs. */
         importHelpers: true, /* Import emit helpers from 'tslib'. */
         downlevelIteration: false, /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
         isolatedModules: false, /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+        allowSyntheticDefaultImports: true, /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+        removeComments: true, /* Do not emit comments to output. */
+        preserveConstEnums: true,
+        /* Emit Options */
+        noEmit: false, /* Do not emit outputs. */
+        rootDir: "./", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+        // "outDir": "./",                        /* Redirect output structure to the directory. */
+        // "outFile": "./",                       /* Concatenate and emit output to single file. */
+        charset: "utf8", /* The character set of the input files. */
+
+        /* Debug Options */
+        noErrorTruncation: true, // Do not truncate error messages.
+        diagnostics: isDebug,
+        sourceMap: isDebug, /* Generates corresponding '.map' file. */
 
         /* Strict Type-Checking Options */
         strict: true, /* Enable all strict type-checking options. */
-        noImplicitAny: true, /* Raise error on expressions and declarations with an implied 'any' type. */
-        strictNullChecks: true, /* Enable strict null checks. */
-        noImplicitThis: true, /* Raise error on 'this' expressions with an implied 'any' type. */
         alwaysStrict: true, /* Parse in strict mode and emit "use strict" for each source file. */
-        strictFunctionTypes: true,
+        strictNullChecks: true, /* Enable strict null checks. */
+        strictFunctionTypes: true, /* Disable bivariant parameter checking for function types. */
+        strictPropertyInitialization: true, /* Ensure non-undefined class properties are initialized in the constructor. */
 
         /* Additional Checks */
+        noFallthroughCasesInSwitch: true, /* Report errors for fallthrough cases in switch statement. */
+        noImplicitAny: true, /* Raise error on expressions and declarations with an implied 'any' type. */
+        noImplicitReturns: true, /* Report error when not all code paths in function return a value. */
+        noImplicitThis: true, /* Raise error on 'this' expressions with an implied 'any' type. */
         noUnusedLocals: true, /* Report errors on unused locals. */
         noUnusedParameters: true, /* Report errors on unused parameters. */
-        noImplicitReturns: true, /* Report error when not all code paths in function return a value. */
-        noFallthroughCasesInSwitch: true, /* Report errors for fallthrough cases in switch statement. */
 
         /* Module Resolution Options */
         moduleResolution: "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
         baseUrl: context, /* Base directory to resolve non-absolute module names. */
-        paths: {}, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
         rootDirs: [], /* List of root folders whose combined content represents the structure of the project at runtime. */
+        paths: {}, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
         typeRoots: ["node_modules/@types"], /* List of folders to include type definitions from. */
         types: [], /* Type declaration files to be included in compilation. */
-        allowSyntheticDefaultImports: true, /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+        forceConsistentCasingInFileNames: true, /* Disallow inconsistently-cased references to the same file. */
 
         /* Source Map Options */
         // sourceRoot: context,                   /* Specify the location where debugger should locate TypeScript files instead of source locations. */
