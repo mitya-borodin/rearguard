@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import {context, isDebug, ts, tsConfigPath, tsLintConfigPath} from "./target.config";
+import { context, isDebug, ts, tsConfigPath, tsLintConfigPath } from "./target.config";
 
 export default () => {
-  const {compilerOptions, compileOnSave} = ts;
-  const {devDependencies: {typescript: version}} = require(path.resolve(__dirname, "../../../../package.json"));
+  const { compilerOptions, compileOnSave } = ts;
+  const { devDependencies: { typescript: version } } = require( path.resolve( __dirname, "../../../../package.json" ) );
 
   const config = {
     compileOnSave,
@@ -18,7 +18,7 @@ export default () => {
         target: "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
         module: "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
         pretty: true, // Stylize errors and messages using color and context.
-        lib: ["es6", "es7", "dom"], /* Specify library files to be included in the compilation:  */
+        lib: [ "es6", "es7", "dom" ], /* Specify library files to be included in the compilation:  */
         jsx: "react", /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
         declaration: false, /* Generates corresponding '.d.ts' file. */
         importHelpers: true, /* Import emit helpers from 'tslib'. */
@@ -59,7 +59,7 @@ export default () => {
         baseUrl: context, /* Base directory to resolve non-absolute module names. */
         rootDirs: [], /* List of root folders whose combined content represents the structure of the project at runtime. */
         paths: {}, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
-        typeRoots: ["node_modules/@types"], /* List of folders to include type definitions from. */
+        typeRoots: [ "node_modules/@types" ], /* List of folders to include type definitions from. */
         types: [], /* Type declaration files to be included in compilation. */
         forceConsistentCasingInFileNames: true, /* Disallow inconsistently-cased references to the same file. */
 
@@ -90,34 +90,23 @@ export default () => {
     defaultSeverity: "error",
     extends: [
       "tslint:recommended",
+      "tslint-no-circular-imports",
     ],
     jsRules: {},
     rules: {
-      "max-classes-per-file": false,
-      "member-access": [true, "no-public"],
-      "no-console": [
-        false,
-        "log",
-        "error",
-      ],
+      "max-classes-per-file": [false],
+      "member-access": true,
+      "no-console": false,
       "no-var-requires": false,
-      "variable-name": [
-        true,
-        "check-format",
-        "allow-leading-underscore",
-        "allow-trailing-underscore",
-        "allow-pascal-case",
-        "allow-snake-case",
-        "ban-keywords",
-      ],
+      "variable-name": false,
     },
     rulesDirectory: [],
   };
 
-  fs.writeFileSync(tsConfigPath, JSON.stringify(config, null, 2));
-  fs.writeFileSync(tsLintConfigPath, JSON.stringify(tsLint, null, 2));
-  console.log(chalk.bold.cyanBright(`[Build typescript and tslint config]`.toUpperCase()));
-  console.log(chalk.cyan(`TSConfig: ${tsConfigPath}`));
-  console.log(chalk.cyan(`TSLint: ${tsLintConfigPath}`));
-  console.log(``);
+  fs.writeFileSync( tsConfigPath, JSON.stringify( config, null, 2 ) );
+  fs.writeFileSync( tsLintConfigPath, JSON.stringify( tsLint, null, 2 ) );
+  console.log( chalk.bold.cyanBright( `[Build typescript and tslint config]`.toUpperCase() ) );
+  console.log( chalk.cyan( `TSConfig: ${tsConfigPath}` ) );
+  console.log( chalk.cyan( `TSLint: ${tsLintConfigPath}` ) );
+  console.log( `` );
 };
