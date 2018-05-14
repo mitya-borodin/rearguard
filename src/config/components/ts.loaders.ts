@@ -26,9 +26,6 @@ export default (): webpack.Rule[] => {
           loader: "ts-loader",
           options: {
             configFile: tsConfigPath,
-            // happyPackMode: true,
-            // disable type checker - we will use it in fork plugin
-            // transpileOnly: true,
           },
         },
       ],

@@ -35,6 +35,22 @@ export const dev = generalWebpackConfig(
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),
+    new HardSourceWebpackPlugin(
+      {
+        cacheDirectory: path.resolve(
+          root,
+          "node_modules/.cache/dll-hard-source/dev/[confighash]",
+        ),
+        configHash: ( webpackConfig: any ) => {
+          return require( "node-object-hash" )( { sort: false } ).hash( webpackConfig );
+        },
+        environmentHash: {
+          directories: [],
+          files: [ "package-lock.json" ],
+          root: process.cwd(),
+        },
+      },
+    ),
   ],
   {},
 );
@@ -57,7 +73,7 @@ export const dll = generalWebpackConfig(
       {
         cacheDirectory: path.resolve(
           root,
-          "node_modules/.cache/dll-hard-source/[confighash]",
+          "node_modules/.cache/dll-hard-source/dll/[confighash]",
         ),
         configHash: ( webpackConfig: any ) => {
           return require( "node-object-hash" )( { sort: false } ).hash( webpackConfig );
