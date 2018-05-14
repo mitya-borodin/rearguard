@@ -1,9 +1,9 @@
 import * as webpack from "webpack";
-import {context, tsConfigPath, tsLintConfigPath} from "./target.config";
+import { context, tsConfigPath, tsLintConfigPath } from "./target.config";
 
 export default (): webpack.Rule[] => {
-  const exclude = [/node_modules/];
-  const include = [context];
+  const exclude = [ /node_modules/ ];
+  const include = [ context ];
   const test = /\.(ts|tsx)?$/;
 
   return [
@@ -28,7 +28,7 @@ export default (): webpack.Rule[] => {
             configFile: tsConfigPath,
             // happyPackMode: true,
             // disable type checker - we will use it in fork plugin
-            transpileOnly: true,
+            // transpileOnly: true,
           },
         },
       ],

@@ -41,7 +41,7 @@ export const dev = generalWebpackConfig(
 
 export const dll = generalWebpackConfig(
   {
-    [dll_entry_name]: [path.resolve(context, "vendors.ts")],
+    [ dll_entry_name ]: [ path.resolve( context, "vendors.ts" ) ],
   },
   {
     ...output,
@@ -51,7 +51,7 @@ export const dll = generalWebpackConfig(
   },
   tsLoader(),
   [
-    ...clean([isDevelopment ? "dll/dev" : "dll/prod"], true),
+    ...clean( [ isDevelopment ? "dll/dev" : "dll/prod" ], true ),
     ...DllPlugin(),
     new HardSourceWebpackPlugin(
       {
@@ -59,12 +59,12 @@ export const dll = generalWebpackConfig(
           root,
           "node_modules/.cache/dll-hard-source/[confighash]",
         ),
-        configHash: (webpackConfig: any) => {
-          return require("node-object-hash")({sort: false}).hash(webpackConfig);
+        configHash: ( webpackConfig: any ) => {
+          return require( "node-object-hash" )( { sort: false } ).hash( webpackConfig );
         },
         environmentHash: {
           directories: [],
-          files: ["package-lock.json"],
+          files: [ "package-lock.json" ],
           root: process.cwd(),
         },
       },
