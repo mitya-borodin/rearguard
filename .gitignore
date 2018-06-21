@@ -3,3 +3,4 @@ lib
 .nyc_output
 coverage
 .idea
+.DS_Store
