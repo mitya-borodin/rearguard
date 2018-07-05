@@ -1,16 +1,26 @@
 import * as path from "path";
 import * as webpack from "webpack";
-import {Entry, EntryFunc} from "webpack";
+import { Entry, EntryFunc } from "webpack";
 import cssLoaders from "./components/css.loders";
-import {uglify} from "./components/js.plugins";
-import {context, isDebug, isDevelopment, modules, root, stats} from "./components/target.config";
+import { uglify } from "./components/js.plugins";
+import {
+  context,
+  isDebug,
+  isDevelopment,
+  modules,
+  root,
+  stats,
+} from "./components/target.config";
 
 export default (
   entry: string | string[] | Entry | EntryFunc,
   output: webpack.Output & { globalObject: string },
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
-  externals: webpack.ExternalsFunctionElement | webpack.ExternalsObjectElement | webpack.ExternalsElement,
+  externals:
+    | webpack.ExternalsFunctionElement
+    | webpack.ExternalsObjectElement
+    | webpack.ExternalsElement,
 ): any => ({
   bail: !isDevelopment,
   cache: true,
@@ -24,7 +34,9 @@ export default (
       {
         loader: "file-loader",
         query: {
-          name: isDevelopment ? "[path][name].[ext]?[hash:8]" : "[hash:32].[ext]",
+          name: isDevelopment
+            ? "[path][name].[ext]?[hash:8]"
+            : "[hash:32].[ext]",
         },
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
       },
@@ -39,12 +51,12 @@ export default (
   performance: {
     hints: false,
   },
-  plugins: [
-    ...plugins,
-    ...uglify(),
-  ],
+  plugins: [...plugins, ...uglify()],
   profile: true,
-  recordsPath: path.resolve(root, "node_modules/.cache/webpack/[confighash]/records.json"),
+  recordsPath: path.resolve(
+    root,
+    "node_modules/.cache/webpack/[confighash]/records.json",
+  ),
   resolve: {
     extensions: [".js", ".ts", ".tsx", ".css", ".json"],
     modules,

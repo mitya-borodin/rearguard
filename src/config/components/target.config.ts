@@ -7,8 +7,10 @@ import source from "../source/index";
 const CWD = process.cwd();
 const config = source();
 
-export const resolveNodeModules = (name: string = "") => path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
-export const resolveTarget = (relPath: string = "") => path.resolve(CWD, relPath);
+export const resolveNodeModules = (name: string = "") =>
+  path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
+export const resolveTarget = (relPath: string = "") =>
+  path.resolve(CWD, relPath);
 
 // ENV
 export const isDevelopment = config.isDevelopment;
@@ -27,7 +29,9 @@ export const root: string = resolveTarget();
 export const context: string = resolveTarget(config.context);
 export const entry: string = config.entry;
 export const output: webpack.Output & { globalObject: string } = {
-  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
+  chunkFilename: isDevelopment
+    ? "[name].chunk.js?[hash:8]"
+    : "[chunkhash:32].chunk.js",
   filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
   globalObject: "this",
   path: resolveTarget(config.output.path),
@@ -36,27 +40,30 @@ export const output: webpack.Output & { globalObject: string } = {
 };
 export const modules: string[] = [
   ...config.modules.map((relPath) => resolveTarget(relPath)),
-  "node_modules",
+  resolveTarget("node_modules"),
   resolveNodeModules(),
 ];
+
 export const stats: webpack.Options.Stats = isDebug
   ? "verbose"
   : {
-    assets: true,
-    colors: true,
-    context,
-    hash: true,
-    modules: false,
-    performance: false,
-    publicPath: true,
-    timings: true,
-    version: true,
-  };
+      assets: true,
+      colors: true,
+      context,
+      hash: true,
+      modules: false,
+      performance: false,
+      publicPath: true,
+      timings: true,
+      version: true,
+    };
 export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   bonjour: true,
   compress: true,
-  contentBase: resolveTarget(path.resolve(root, "dll", isDevelopment ? "dev" : "prod")),
+  contentBase: resolveTarget(
+    path.resolve(root, "dll", isDevelopment ? "dev" : "prod"),
+  ),
   historyApiFallback: true,
   hot: true,
   https: true,
@@ -88,7 +95,9 @@ const externalPluginsPath = resolveTarget(config.postCSS.plugins);
 export const postCSS = {
   config: require(path.resolve(__dirname, "postcss.config.js")),
   plugins: {
-    list: fs.existsSync(externalPluginsPath) ? require(externalPluginsPath) : [],
+    list: fs.existsSync(externalPluginsPath)
+      ? require(externalPluginsPath)
+      : [],
     path: externalPluginsPath,
   },
 };
@@ -104,14 +113,20 @@ export const pkg = {
 
 // DLL
 /* tslint:disable */
-export const dll_path = path.resolve(path.join(root, "dll", isDevelopment ? "dev" : "prod"));
+export const dll_path = path.resolve(
+  path.join(root, "dll", isDevelopment ? "dev" : "prod"),
+);
 export const dll_manifest_name = "vendor-manifest.json";
 export const dll_assets_name = "vendor-hash.json";
 export const dll_manifest_path = path.resolve(dll_path, dll_manifest_name);
 export const dll_assets_path = path.join(dll_path, dll_assets_name);
 export const dll_lib_name = "dll_vendor";
 export const dll_lib_file_name = "dll.vendor.[hash].js";
-export const dll_lib_output_path = path.join(root, "dll", isDevelopment ? "dev" : "prod");
+export const dll_lib_output_path = path.join(
+  root,
+  "dll",
+  isDevelopment ? "dev" : "prod",
+);
 export const dll_entry_name = "vendors";
 /* tslint:enable */
 // END
