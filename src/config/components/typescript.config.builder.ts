@@ -11,6 +11,8 @@ import {
 } from "./target.config";
 
 export default () => {
+  console.log("");
+
   const { compilerOptions, compileOnSave } = ts;
   const {
     devDependencies: { typescript: version },

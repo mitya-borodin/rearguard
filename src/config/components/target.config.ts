@@ -7,6 +7,8 @@ import source from "../source/index";
 const CWD = process.cwd();
 const config = source();
 
+export const resolveGlobalNodeModules = (name: string = "") =>
+  path.resolve(process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH || "", name);
 export const resolveNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
 export const resolveTarget = (relPath: string = "") =>
@@ -130,3 +132,6 @@ export const dll_lib_output_path = path.join(
 export const dll_entry_name = "vendors";
 /* tslint:enable */
 // END
+
+// NPM_HARD_SYNC_TARGET
+export const npmHardSyncLinks = config.npmHardSync;

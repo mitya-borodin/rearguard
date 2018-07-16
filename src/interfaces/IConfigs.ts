@@ -13,6 +13,10 @@ export interface IOutput {
   };
 }
 
+export interface INpmHardSync {
+  npmHardSync: string[];
+}
+
 export interface IModules {
   modules: string[];
 }
@@ -35,9 +39,9 @@ export interface ITypescript {
     config: {
       compilerOptions: {
         [key: string]: any;
-      }
+      };
       compileOnSave: boolean;
-    }
+    };
   };
 }
 
@@ -57,10 +61,10 @@ export interface ISocket {
 export interface Ipkg {
   nodeVersion: number;
   engines: {
-    [key: string]: string,
+    [key: string]: string;
   };
   dependencies: {
-    [key: string]: string,
+    [key: string]: string;
   };
 }
 
@@ -72,8 +76,14 @@ export interface IEnv {
   nodeModulePath: string;
 }
 
-export interface IBuildConfig extends IContext, IEntry, IOutput, IModules, IProxy, ICSS, ITypescript {
-}
+export interface IBuildConfig
+  extends IContext,
+    IEntry,
+    IOutput,
+    INpmHardSync,
+    IModules,
+    IProxy,
+    ICSS,
+    ITypescript {}
 
-export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {
-}
+export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {}

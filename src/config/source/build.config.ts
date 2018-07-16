@@ -1,11 +1,12 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import {IBuildConfig} from "../../interfaces/IConfigs";
+import { IBuildConfig } from "../../interfaces/IConfigs";
 import context from "../validate-config/context";
 import css from "../validate-config/css";
 import entry from "../validate-config/entry";
 import modules from "../validate-config/modules";
+import npmHardSync from "../validate-config/npmHardSync";
 import output from "../validate-config/output";
 import proxy from "../validate-config/proxy";
 import typescript from "../validate-config/typescript";
@@ -19,6 +20,7 @@ export default (): IBuildConfig => {
     ...entry(fileName),
     ...modules(fileName),
     ...output(fileName),
+    ...npmHardSync(fileName),
     ...css(fileName),
     ...proxy(fileName),
     ...typescript(fileName),
@@ -34,7 +36,11 @@ export default (): IBuildConfig => {
     }
 
     if (Object.keys(CONFIG).length > 0) {
-      console.log(chalk.bold.red(`This is configs not used: \n\r"${JSON.stringify(CONFIG, null, 2)}"`));
+      console.log(
+        chalk.bold.red(
+          `This is configs not used: \n\r"${JSON.stringify(CONFIG, null, 2)}"`,
+        ),
+      );
       console.log(chalk.bold.red("Please remove their from build.config.json"));
     }
   } else {
