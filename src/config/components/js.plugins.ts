@@ -3,7 +3,7 @@ import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as fs from "fs";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as path from "path";
-import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
+import * as TerserPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import * as WorkboxPlugin from "workbox-webpack-plugin";
@@ -51,17 +51,16 @@ export const extractVendors = (): webpack.Plugin[] => [
 export const uglify = (): webpack.Plugin[] => {
   if (!isDevelopment) {
     return [
-      // https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
-      new UglifyJSPlugin({
-        sourceMap: isDebug,
-        uglifyOptions: {
-          cache: true,
+      // https://github.com/webpack-contrib/terser-webpack-plugin
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        terserOptions: {
           compress: {
             sequences: true,
             unused: true,
           },
           ecma: 8,
-          parallel: 4,
         },
       }),
     ];

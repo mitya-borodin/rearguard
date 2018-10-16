@@ -3,7 +3,7 @@ import * as copy from "copy";
 import * as del from "del";
 import * as path from "path";
 import * as webpack from "webpack";
-import { npmHardSyncStart } from "../config/components/npmHardSync";
+import { syncNPM } from "../config/components/syncNPM";
 import {
   dll_path,
   output,
@@ -28,7 +28,7 @@ del([output.path || path.resolve(root, "dist")]).then(() => {
     console.log(chalk.cyan(`CSS: ${dll_path}/*.css`));
     console.log(chalk.cyan(`TO: ${output.path}`));
 
-    await npmHardSyncStart(false);
+    await syncNPM(false);
     await setTypingForAllCSSandFiles();
     await buildConfigs();
 

@@ -1,19 +1,19 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { INpmHardSync } from "../../interfaces/IConfigs";
+import { ISyncNPM } from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
-const defaultValue: INpmHardSync = {
-  npmHardSync: [],
+const defaultValue: ISyncNPM = {
+  syncNPM: [],
 };
 const propType = {
-  npmHardSync: Joi.array()
+  syncNPM: Joi.array()
     .items(Joi.string())
     .required(),
 };
 
-export default (fileName: string): INpmHardSync => {
-  const { exist, value: output } = detectConfig(fileName, "npmHardSync");
+export default (fileName: string): ISyncNPM => {
+  const { exist, value: output } = detectConfig(fileName, "syncNPM");
 
   if (exist) {
     const { error } = Joi.validate(output, propType);
@@ -32,6 +32,7 @@ export default (fileName: string): INpmHardSync => {
 
       return defaultValue;
     }
+
     return output;
   } else {
     return defaultValue;

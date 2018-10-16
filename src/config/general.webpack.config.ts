@@ -45,13 +45,14 @@ export default (
     ],
   },
   optimization: {
-    minimize: false,
+    minimize: !isDevelopment,
+    minimizer: uglify(),
   },
   output,
   performance: {
     hints: false,
   },
-  plugins: [...plugins, ...uglify()],
+  plugins: [...plugins],
   profile: true,
   recordsPath: path.resolve(
     root,

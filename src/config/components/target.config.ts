@@ -134,4 +134,4 @@ export const dll_entry_name = "vendors";
 // END
 
 // NPM_HARD_SYNC_TARGET
-export const npmHardSyncLinks = config.npmHardSync;
+export const npmSyncLinks = config.syncNPM;

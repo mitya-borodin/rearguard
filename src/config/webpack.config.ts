@@ -6,7 +6,6 @@ import {
   clean,
   DllPlugin,
   DllReferencePlugin,
-  extractVendors,
   HMR,
   htmlWebpackPlugin,
   workboxPlugin,
@@ -31,7 +30,6 @@ export const dev = generalWebpackConfig(
   [
     ...DllReferencePlugin(),
     ...HMR(),
-    ...extractVendors(),
     ...workboxPlugin(),
     ...htmlWebpackPlugin(),
     ...analyze(),

@@ -1,13 +1,13 @@
 import chalk from "chalk";
 import * as webpack from "webpack";
-import { npmHardSyncStart } from "../config/components/npmHardSync";
+import { syncNPM } from "../config/components/syncNPM";
 import { stats as statsConfig } from "../config/components/target.config";
 import buildConfigs from "../config/components/typescript.config.builder";
 import { dll } from "../config/webpack.config";
 import setTypingForAllCSSandFiles from "./setTypingForAllCSSandFiles";
 
 async function dllRun() {
-  await npmHardSyncStart(false);
+  await syncNPM(false);
   await setTypingForAllCSSandFiles();
   await buildConfigs();
 

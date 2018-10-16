@@ -13,8 +13,8 @@ export interface IOutput {
   };
 }
 
-export interface INpmHardSync {
-  npmHardSync: string[];
+export interface ISyncNPM {
+  syncNPM: string[];
 }
 
 export interface IModules {
@@ -80,7 +80,7 @@ export interface IBuildConfig
   extends IContext,
     IEntry,
     IOutput,
-    INpmHardSync,
+    ISyncNPM,
     IModules,
     IProxy,
     ICSS,

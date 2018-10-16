@@ -1,7 +1,7 @@
-import { npmHardSyncStart } from "../config/components/npmHardSync";
+import { syncNPM } from "../config/components/syncNPM";
 
 async function npmHardSync() {
-  await npmHardSyncStart();
+  await syncNPM();
 }
 
 npmHardSync();

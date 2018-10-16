@@ -1,3 +1,4 @@
+import { isBoolean } from "@borodindmitriy/base-code/lib/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
@@ -5,6 +6,7 @@ import {
   context,
   isDebug,
   resolveTarget,
+  root,
   ts,
   tsConfigPath,
   tsLintConfigPath,
@@ -17,17 +19,21 @@ export default () => {
   const {
     devDependencies: { typescript: version },
   } = require(path.resolve(__dirname, "../../../../package.json"));
-  const pathKeys = Object.keys(compilerOptions.paths);
+
+  // Обработка полей.
   const paths: { [key: string]: string[] } = {};
 
-  for (const pathKey of pathKeys) {
-    paths[pathKey] = compilerOptions.paths[pathKey].map((P: string) =>
-      resolveTarget(P),
-    );
+  if (compilerOptions.paths) {
+    const pathKeys = Object.keys(compilerOptions.paths);
+
+    for (const pathKey of pathKeys) {
+      paths[pathKey] = compilerOptions.paths[pathKey].map(resolveTarget);
+    }
   }
 
+  // Составление конфигурации.
   const config = {
-    compileOnSave,
+    compileOnSave: isBoolean(compileOnSave) ? compileOnSave : false,
     /* tslint:disable */
     compilerOptions: Object.assign(
       {
@@ -55,8 +61,7 @@ export default () => {
         preserveConstEnums: true,
         /* Emit Options */
         noEmit: false /* Do not emit outputs. */,
-        rootDir:
-          "./" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+        rootDir: root /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
         // "outDir": "./",                        /* Redirect output structure to the directory. */
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         charset: "utf8" /* The character set of the input files. */,
@@ -86,7 +91,7 @@ export default () => {
           "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
         baseUrl: context /* Base directory to resolve non-absolute module names. */,
         rootDirs: [] /* List of root folders whose combined content represents the structure of the project at runtime. */,
-        paths: {} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
+        paths /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
         typeRoots: [
           "node_modules/@types",
         ] /* List of folders to include type definitions from. */,
@@ -105,7 +110,6 @@ export default () => {
       },
       /* tslint:enable */
       compilerOptions,
-      { paths },
     ),
     exclude: ["node_modules", "node_modules/.cache"],
     include: [context],

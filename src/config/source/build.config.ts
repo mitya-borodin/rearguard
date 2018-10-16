@@ -6,9 +6,9 @@ import context from "../validate-config/context";
 import css from "../validate-config/css";
 import entry from "../validate-config/entry";
 import modules from "../validate-config/modules";
-import npmHardSync from "../validate-config/npmHardSync";
 import output from "../validate-config/output";
 import proxy from "../validate-config/proxy";
+import syncNPM from "../validate-config/syncNPM";
 import typescript from "../validate-config/typescript";
 
 export default (): IBuildConfig => {
@@ -20,7 +20,7 @@ export default (): IBuildConfig => {
     ...entry(fileName),
     ...modules(fileName),
     ...output(fileName),
-    ...npmHardSync(fileName),
+    ...syncNPM(fileName),
     ...css(fileName),
     ...proxy(fileName),
     ...typescript(fileName),

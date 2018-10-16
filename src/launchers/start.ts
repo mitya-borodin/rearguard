@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
-import { npmHardSyncStart } from "../config/components/npmHardSync";
+import { syncNPM } from "../config/components/syncNPM";
 import { socket, WDSConfig } from "../config/components/target.config";
 import buildConfigs from "../config/components/typescript.config.builder";
 import { dev } from "../config/webpack.config";
@@ -9,7 +9,7 @@ import setTypingForAllCSSandFiles from "./setTypingForAllCSSandFiles";
 
 async function start() {
   console.log(chalk.bold.cyanBright(`[START]`));
-  await npmHardSyncStart();
+  await syncNPM();
   await setTypingForAllCSSandFiles();
   await buildConfigs();
 
