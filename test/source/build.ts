@@ -15,7 +15,8 @@ const essentialConfig = {
     publicPath: "/",
   },
   // tslint:disable-next-line:object-literal-sort-keys
-  npmHardSync: [],
+  syncNPM: [],
+  // tslint:disable-next-line:object-literal-sort-keys
   postCSS: {
     plugins: "postCssPlugins.js",
   },
