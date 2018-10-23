@@ -2,9 +2,9 @@ import chalk from "chalk";
 import * as copy from "copy";
 import * as del from "del";
 import * as path from "path";
-import { context } from "../config/components/target.config";
+import { context } from "./target.config";
 
-export default async function setTypingForAllCSSandFiles() {
+export async function css_typing_builder() {
   await new Promise((resolve, reject) => {
     const tmpTypings = path.resolve(__dirname, "../../../templates");
 

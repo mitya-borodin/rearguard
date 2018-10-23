@@ -9,22 +9,25 @@ import * as path from "path";
 import * as semver from "semver";
 import {
   isDebug,
-  npmSyncLinks,
   resolveGlobalNodeModules,
   root,
+  sync_npm_deps as dep_list,
 } from "./target.config";
 
 const watchers: FSWatcher[] = [];
 
-export async function syncNPM(watch: boolean = true) {
+export async function sync_npm_deps(watch: boolean = true) {
+  if (dep_list.length === 0) {
+    console.log(chalk.bold.gray("[ SYNC_NPM ][ LIST IS EMPTY ]"));
+    return;
+  }
+
   console.log("");
   console.log(chalk.bold.yellow("[ SYNC_NPM ]"));
-  console.log(
-    chalk.bold.magenta(`[ SYNC_LIST ][ ${npmSyncLinks.join(", ")} ]`),
-  );
+  console.log(chalk.bold.magenta(`[ SYNC_LIST ][ ${dep_list.join(", ")} ]`));
   const localPkgPath = path.resolve(root, "package.json");
   const localPkg = require(localPkgPath);
-  const npmHardSyncTarget = npmSyncLinks.map(resolveGlobalNodeModules);
+  const npmHardSyncTarget = dep_list.map(resolveGlobalNodeModules);
 
   for (const npmLink of npmHardSyncTarget) {
     if (!fs.existsSync(npmLink)) {
@@ -53,7 +56,7 @@ export async function syncNPM(watch: boolean = true) {
         paths: string[];
         pkg: string;
       } = {
-        moduleName: npmSyncLinks[index],
+        moduleName: dep_list[index],
         paths: [],
         pkg: "",
       };
@@ -69,8 +72,7 @@ export async function syncNPM(watch: boolean = true) {
           const filePath = path.resolve(modulePath, file);
 
           if (fs.existsSync(filePath)) {
-            copiesTarget.paths.push(`${filePath}/**/*.d.ts`);
-            copiesTarget.paths.push(`${filePath}/**/*.js`);
+            copiesTarget.paths.push(`${filePath}/**`);
           }
         }
       }
@@ -79,7 +81,7 @@ export async function syncNPM(watch: boolean = true) {
     },
   );
   const LOCAL_NODE_MODULES = path.resolve(root, "node_modules");
-  const localCopies = npmSyncLinks.map((link: string) => {
+  const localCopies = dep_list.map((link: string) => {
     return path.resolve(LOCAL_NODE_MODULES, link);
   });
 
@@ -207,12 +209,13 @@ export async function syncNPM(watch: boolean = true) {
       }
     }
   } catch (error) {
+    console.log("");
     console.error(error);
     console.log(
       chalk.bold.red(`[ SYNC_NPM ][ ERROR_MESSAGE: ${error.message} ]`),
     );
     console.log(chalk.yellow(`[ SYNC_NPM ][ WILL_RESTARTED_TROUGHT 1000ms; ]`));
 
-    setTimeout(syncNPM, 1000);
+    setTimeout(sync_npm_deps, 1000);
   }
 }

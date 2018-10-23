@@ -1,16 +1,17 @@
-import {context, postCSS} from "./target.config";
+import { context, postCSS } from "./target.config";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
 
-module.exports = (loader: any) => ([
+module.exports = (loader: any) => [
   // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
   // https://github.com/postcss/postcss-import
-  require("postcss-import")({path: context}),
+  require("postcss-import")({ path: context }),
 
   // https://github.com/maximkoretskiy/postcss-initial
   // This is polyfill for css rule: "all: initial".
-  require("postcss-initial")({reset: "inherited"}),
+  // Указываем .className { all: initial } и вместо all: initial будут вставлены значения по-молчанию для настедуемых свойств.
+  require("postcss-initial")({ reset: "inherited" }),
 
   // PostCSS plugin to transform :not() W3C CSS leve 4 pseudo class to :not() CSS level 3 selectors
   // http://dev.w3.org/csswg/selectors-4/#negation
@@ -38,4 +39,4 @@ module.exports = (loader: any) => ([
   require("autoprefixer")([">0.1%"]),
 
   ...postCSS.plugins.list,
-]);
+];

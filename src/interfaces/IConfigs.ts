@@ -2,6 +2,10 @@ export interface IContext {
   context: string;
 }
 
+export interface IDllEntries {
+  dll_entry: string;
+}
+
 export interface IEntry {
   entry: string;
 }
@@ -13,8 +17,8 @@ export interface IOutput {
   };
 }
 
-export interface ISyncNPM {
-  syncNPM: string[];
+export interface ISyncNpmDeps {
+  sync_npm_deps: string[];
 }
 
 export interface IModules {
@@ -59,6 +63,7 @@ export interface ISocket {
 }
 
 export interface Ipkg {
+  name: string;
   nodeVersion: number;
   engines: {
     [key: string]: string;
@@ -69,10 +74,13 @@ export interface Ipkg {
 }
 
 export interface IEnv {
-  isDevelopment: boolean;
+  isWDS: boolean;
+  isSyncDeps: boolean;
   isBuild: boolean;
+  isDevelopment: boolean;
   isDebug: boolean;
-  isStart: boolean;
+  isLib: boolean;
+  isDll: boolean;
   nodeModulePath: string;
 }
 
@@ -80,10 +88,11 @@ export interface IBuildConfig
   extends IContext,
     IEntry,
     IOutput,
-    ISyncNPM,
+    ISyncNpmDeps,
     IModules,
     IProxy,
     ICSS,
-    ITypescript {}
+    ITypescript,
+    IDllEntries {}
 
 export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {}

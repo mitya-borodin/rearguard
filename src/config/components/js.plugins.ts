@@ -12,14 +12,13 @@ import {
   context,
   dll_assets_name,
   dll_assets_path,
-  dll_entry_name,
   dll_lib_name,
   dll_manifest_path,
   dll_path,
   isBuild,
   isDebug,
   isDevelopment,
-  isStart,
+  isWDS,
   output,
   root,
 } from "./target.config";
@@ -37,16 +36,6 @@ export const HMR = (): webpack.Plugin[] => {
 
   return [];
 };
-
-// https://webpack.js.org/plugins/commons-chunk-plugin/
-export const extractVendors = (): webpack.Plugin[] => [
-  /*  new webpack.optimize.CommonsChunkPlugin(
-      {
-        minChunks: (module) => module.context && module.context.includes("node_modules"),
-        name: "vendor",
-      },
-    ),*/
-];
 
 export const uglify = (): webpack.Plugin[] => {
   if (!isDevelopment) {
@@ -83,8 +72,9 @@ export const analyze = (): webpack.Plugin[] => {
   return [];
 };
 
+// TODO: Доработать настройки и шаблон.
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
-  let dllConfig = { [dll_entry_name]: {} };
+  let dllConfig = { [dll_lib_name]: {} };
 
   if (dll && fs.existsSync(dll_assets_path)) {
     dllConfig = require(dll_assets_path);
@@ -105,9 +95,10 @@ export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
 
 export const DllPlugin = (): webpack.Plugin[] => {
   return [
+    ...clean([dll_path], true),
     new webpack.DllPlugin({
       context,
-      name: dll_entry_name,
+      name: dll_lib_name,
       path: dll_manifest_path,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(false),
@@ -121,6 +112,7 @@ export const DllPlugin = (): webpack.Plugin[] => {
 };
 
 export const DllReferencePlugin = (): webpack.Plugin[] => {
+  // Добавить возможность подключения плагинов для манифестов доступных в пакетах из списка include_npm_dll.
   if (fs.existsSync(dll_manifest_path)) {
     return [
       new webpack.DllReferencePlugin({
@@ -135,14 +127,14 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
 };
 
 export const workboxPlugin = (): webpack.Plugin[] => {
-  if ((!isDevelopment || isBuild) && !isStart) {
+  if ((!isDevelopment || isBuild) && !isWDS) {
     console.log(output.path);
 
     return [
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
         globDirectory: output.path,
-        globPatterns: ["*.{js,html}"],
+        globPatterns: ["*.{js,html,jpeg,jpg,svg,gif,png,ttf}"],
         importWorkboxFrom: "local",
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         navigateFallback: "/",

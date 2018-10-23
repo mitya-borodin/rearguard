@@ -12,9 +12,17 @@ interface IBoolObj {
 
 const [, , action, ...otherArguments] = process.argv;
 
-const alias: { [key: string]: string } = { d: "debug", r: "release" };
+const alias: { [key: string]: string } = {
+  d: "debug",
+  r: "release",
+};
 
-const { release = false, debug = false }: IBoolObj = otherArguments.reduce(
+const {
+  release = false,
+  debug = false,
+  dll = false,
+  lib = false,
+}: IBoolObj = otherArguments.reduce(
   (prevValue: IBoolObj, value: string): IBoolObj => {
     if (value.indexOf("--") === 0) {
       return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
@@ -31,19 +39,49 @@ const { release = false, debug = false }: IBoolObj = otherArguments.reduce(
   {},
 );
 
-if (
-  action === "start" ||
-  action === "build" ||
-  action === "dll" ||
-  action === "npmHardSync"
-) {
-  const launchFile: string = resolve(
+if (action === "wds" || action === "sync_deps" || action === "build") {
+  if ((action === "wds" || action === "sync_deps") && (dll || lib)) {
+    console.log(
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --dll | --lib ]" is not valid;`,
+      ),
+    );
+    console.log(
+      chalk.bold.green(`You should use: "rearguard build [ --dll | --lib ]";`),
+    );
+
+    process.exit(1);
+  }
+
+  if (action === "sync_deps" && release) {
+    console.log(
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --lib ]" is not valid;`,
+      ),
+    );
+    console.log(
+      chalk.bold.green(
+        `You should use: "rearguard ${action} [ --debug || -d ]";`,
+      ),
+    );
+
+    process.exit(1);
+  }
+
+  let launchEntryFile = action;
+
+  if (action === "build" && dll) {
+    launchEntryFile = "dll";
+  }
+
+  const launchPath: string = resolve(
     __dirname,
     "../src/launchers",
-    `${action}.js`,
+    `${launchEntryFile}.js`,
   );
 
-  if (existsSync(launchFile)) {
+  if (existsSync(launchPath)) {
+    // Определение глобального node_modules
     const GLOBAL_NODE_MODULES: string = execSync("npm root -g", {
       encoding: "utf8",
     }).replace("\n", "");
@@ -75,7 +113,7 @@ if (
         chalk.bold.cyan(`==========================================`),
       );
     }
-
+    // Определение локального node_modules
     const LOCAL_NODE_MODULES: string = resolve(process.cwd(), "node_modules");
     let NODE_MODULE_PATH = resolve(
       GLOBAL_NODE_MODULES,
@@ -89,26 +127,35 @@ if (
     if (existsSync(NODE_MODULE_PATH)) {
       process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH = GLOBAL_NODE_MODULES;
       process.env.REARGUARD_NODE_MODULE_PATH = NODE_MODULE_PATH;
-      process.env.REARGUARD_DEBUG = debug ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_START =
-        action === "start" ? "true" : "false";
+
+      // Варианты запуска
+      process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS =
+        action === "sync_deps" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD =
         action === "build" ? "true" : "false";
-      process.env.NODE_ENV = !release ? "development" : "production";
 
+      // Параметры запуска
+      process.env.NODE_ENV = !release ? "development" : "production";
+      process.env.REARGUARD_DEBUG = debug ? "true" : "false";
+      process.env.REARGUARD_LIB = lib ? "true" : "false";
+      process.env.REARGUARD_DLL = dll ? "true" : "false";
+
+      // Логирование параметров запуска.
       console.log(
         chalk.bold.blueBright(`================Rearguard==============`),
       );
       console.log(chalk.greenBright(`==================Info=================`));
-      console.log(chalk.greenBright(`TYPE: ${action}`));
+      console.log(chalk.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
+      console.log(chalk.greenBright(`ACTION: ${action}`));
       console.log(chalk.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
       console.log(chalk.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
-      console.log(chalk.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
-      console.log(chalk.greenBright(`LAUNCH: node ${launchFile}`));
+      console.log(chalk.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
+      console.log(chalk.greenBright(`LAUNCH: node ${launchPath}`));
       console.log(chalk.greenBright(`=======================================`));
       console.log(``);
 
-      const result = spawn.sync("node", [launchFile], {
+      const result = spawn.sync("node", [launchPath], {
         encoding: "utf8",
         stdio: "inherit",
       });
@@ -120,6 +167,7 @@ if (
               "The build failed because the process exited too early. This probably means the system ran out of memory or someone called `kill -9` on the process.",
             ),
           );
+
           process.exit(1);
         } else if (result.signal === "SIGTERM") {
           console.log(
@@ -127,8 +175,10 @@ if (
               "The build failed because the process exited too early. Someone might have called `kill` or `killall`, or the system could be shutting down.",
             ),
           );
+
           process.exit(1);
         }
+
         process.exit(0);
       }
 
@@ -136,20 +186,23 @@ if (
     } else {
       console.log(
         chalk.bold.red(
-          `[REARGUARD][NODE_MODULES][NOT_FOUND]: ${NODE_MODULE_PATH}`,
+          `[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`,
         ),
       );
+
       process.exit(1);
     }
   } else {
     console.log(
       chalk.bold.red(
-        `I am really sorry but file: ${launchFile}, not found, try check this throw command: ls -la ${launchFile}`,
+        `I am really sorry but file: ${launchPath}, not found, try check this throw command: "ls -la ${launchPath}";`,
       ),
     );
   }
 } else {
   console.log(
-    chalk.bold.red("You should use: rearguard [ start | build ] [ -r | -d ]|"),
+    chalk.bold.green(
+      "You should use: rearguard [ wds | sync_deps | build ] [ -r | --release | -d | --debug | --dll ];",
+    ),
   );
 }

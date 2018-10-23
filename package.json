@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "2.5.1",
+  "version": "3.0.0",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -41,7 +41,7 @@
     "prepublishOnly": "npm test && npm run build && sh prepublish.sh"
   },
   "dependencies": {
-    "@borodindmitriy/base-code": "5.1.7",
+    "@borodindmitriy/base-code": "5.1.9",
     "assets-webpack-plugin": "3.9.7",
     "autoprefixer": "9.2.0",
     "chalk": "2.4.1",
@@ -57,6 +57,7 @@
     "html-webpack-plugin": "3.2.0",
     "isomorphic-style-loader": "4.0.0",
     "joi": "14.0.0",
+    "lodash.snakecase": "4.1.1",
     "mkdirp": "0.5.1",
     "moment": "2.22.2",
     "node-object-hash": "1.4.1",
@@ -91,10 +92,12 @@
     "@types/chai": "4.1.6",
     "@types/chokidar": "1.7.5",
     "@types/clean-webpack-plugin": "0.1.2",
+    "@types/cross-spawn": "6.0.0",
     "@types/del": "3.0.1",
     "@types/glob": "7.1.1",
     "@types/html-webpack-plugin": "3.2.0",
     "@types/joi": "13.6.1",
+    "@types/lodash.snakecase": "4.1.4",
     "@types/mkdirp": "0.5.2",
     "@types/mocha": "5.2.5",
     "@types/node": "10.12.0",

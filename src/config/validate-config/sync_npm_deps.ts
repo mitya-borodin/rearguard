@@ -1,19 +1,20 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { ISyncNPM } from "../../interfaces/IConfigs";
+import { ISyncNpmDeps } from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
-const defaultValue: ISyncNPM = {
-  syncNPM: [],
+const defaultValue: ISyncNpmDeps = {
+  sync_npm_deps: [],
 };
+
 const propType = {
-  syncNPM: Joi.array()
+  sync_npm_deps: Joi.array()
     .items(Joi.string())
     .required(),
 };
 
-export default (fileName: string): ISyncNPM => {
-  const { exist, value: output } = detectConfig(fileName, "syncNPM");
+export default (fileName: string): ISyncNpmDeps => {
+  const { exist, value: output } = detectConfig(fileName, "sync_npm_deps");
 
   if (exist) {
     const { error } = Joi.validate(output, propType);
