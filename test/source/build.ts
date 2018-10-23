@@ -9,13 +9,20 @@ const configPath = path.resolve(CWD, "build.config.json");
 const essentialConfig = {
   context: "src",
   entry: "index.tsx",
+  // tslint:disable-next-line:object-literal-sort-keys
+  dll_entry: "src/vendors.ts",
   modules: ["src"],
   output: {
     path: "dist",
     publicPath: "/",
   },
-  // tslint:disable-next-line:object-literal-sort-keys
-  syncNPM: [],
+  typescript: {
+    config: {
+      compileOnSave: false,
+      compilerOptions: {},
+    },
+    configPath: "tsconfig.json",
+  },
   // tslint:disable-next-line:object-literal-sort-keys
   postCSS: {
     plugins: "postCssPlugins.js",
@@ -28,13 +35,8 @@ const essentialConfig = {
       ws: true,
     },
   },
-  typescript: {
-    config: {
-      compileOnSave: false,
-      compilerOptions: {},
-    },
-    configPath: "tsconfig.json",
-  },
+  // tslint:disable-next-line:object-literal-sort-keys
+  sync_npm_deps: [],
 };
 
 describe("Source", () => {
@@ -82,6 +84,8 @@ describe("Source", () => {
           postCssPlugins: false,
         },
         entry: false,
+        // tslint:disable-next-line:object-literal-sort-keys
+        dll_entry: "src/vendors.ts",
         isomorphic: {
           entry: null,
           publicDirName: NaN,
@@ -93,6 +97,7 @@ describe("Source", () => {
         proxy: {
           "/api": 44444,
         },
+        sync_npm_deps: [],
         typescript: {
           config: {
             compilerOptions: {},

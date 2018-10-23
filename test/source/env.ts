@@ -1,4 +1,4 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import "mocha";
 import env from "../../src/config/source/env.config";
 
@@ -13,27 +13,22 @@ describe("Source", () => {
     });
 
     it("isDevelopment must be true", () => {
-      const {isDevelopment} = env();
+      const { isDevelopment } = env();
 
       expect(isDevelopment).to.equal(true);
     });
     it("isDebug must be true", () => {
-      const {isDebug} = env();
+      const { isDebug } = env();
 
       expect(isDebug).to.equal(true);
     });
-    it("isStart must be true", () => {
-      const {isStart} = env();
-
-      expect(isStart).to.equal(true);
-    });
     it("isBuild must be true", () => {
-      const {isBuild} = env();
+      const { isBuild } = env();
 
       expect(isBuild).to.equal(true);
     });
     it("nodeModulePath must be true", () => {
-      const {nodeModulePath} = env();
+      const { nodeModulePath } = env();
 
       expect(nodeModulePath).to.equal("/node_module/path");
     });
