@@ -9,9 +9,9 @@ const configPath = path.resolve(CWD, "build.config.json");
 const essentialConfig = {
   context: "src",
   entry: "index.tsx",
-  lib_entry: "src/lib_exports.ts",
+  lib_entry: "lib_exports.ts",
   // tslint:disable-next-line:object-literal-sort-keys
-  dll_entry: "src/vendors.ts",
+  dll_entry: "vendors.ts",
   modules: ["src"],
   output: {
     path: "dist",
