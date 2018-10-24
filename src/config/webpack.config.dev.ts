@@ -6,18 +6,18 @@ import {
   htmlWebpackPlugin,
   workboxPlugin,
 } from "./components/js.plugins";
-import { output } from "./components/target.config";
+import { isLib, output } from "./components/target.config";
 import tsLoader from "./components/ts.loaders";
-import generalWebpackConfig from "./general.webpack.config";
+import { general_WP_config } from "./general.webpack.config";
 
-export const main = generalWebpackConfig(
+export const dev = general_WP_config(
   entry(),
   output,
   tsLoader(),
   [
     ...DllReferencePlugin(),
-    ...HMR(),
-    ...workboxPlugin(),
+    ...(!isLib ? HMR() : []),
+    ...(!isLib ? workboxPlugin() : []),
     ...htmlWebpackPlugin(),
     ...analyze(),
   ],

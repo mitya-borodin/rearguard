@@ -6,6 +6,10 @@ export interface IDllEntries {
   dll_entry: string;
 }
 
+export interface ILibEntry {
+  lib_entry: string;
+}
+
 export interface IEntry {
   entry: string;
 }
@@ -93,6 +97,7 @@ export interface IBuildConfig
     IProxy,
     ICSS,
     ITypescript,
+    ILibEntry,
     IDllEntries {}
 
 export interface IConfig extends IBuildConfig, ISocket, Ipkg, IEnv {}

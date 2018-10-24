@@ -13,13 +13,21 @@ export async function css_typing_builder() {
         console.log(chalk.yellow("[ REMOVED *.css.d.ts ]"), chalk.cyan(item));
       }
 
+      if (paths.length > 0) {
+        console.log("");
+      }
+
       copy([`${tmpTypings}/*.d.ts`], context, (error: any, files: any[]) => {
         if (!error) {
-          console.log("");
           for (const file of files) {
-            console.log(chalk.bold.cyan("[ SET TYPING ]"));
-            console.log(chalk.cyan(file.path));
+            console.log(chalk.bold.cyanBright("[ SET TYPING ]"));
+            console.log(chalk.cyanBright(file.path));
           }
+
+          if (files.length > 0) {
+            console.log("");
+          }
+
           resolve();
         } else {
           console.error(error);

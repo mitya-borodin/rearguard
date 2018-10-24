@@ -40,6 +40,8 @@ const {
 );
 
 if (action === "wds" || action === "sync_deps" || action === "build") {
+  console.log("");
+
   if ((action === "wds" || action === "sync_deps") && (dll || lib)) {
     console.log(
       chalk.bold.red(
@@ -73,6 +75,9 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
   if (action === "build" && dll) {
     launchEntryFile = "dll";
   }
+  if (action === "build" && lib) {
+    launchEntryFile = "lib";
+  }
 
   const launchPath: string = resolve(
     __dirname,
@@ -97,7 +102,7 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
       );
       console.log(chalk.cyan(`LAUNCH: ${npm} i -g rearguard`));
       console.log(
-        chalk.cyan(
+        chalk.bold.cyan(
           `INFO: pending may be continue around 60 - 200 seconds, it is normal because npm will be install rearguard.`,
         ),
       );
@@ -145,14 +150,20 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
       console.log(
         chalk.bold.blueBright(`================Rearguard==============`),
       );
-      console.log(chalk.greenBright(`==================Info=================`));
-      console.log(chalk.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
-      console.log(chalk.greenBright(`ACTION: ${action}`));
-      console.log(chalk.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
-      console.log(chalk.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
-      console.log(chalk.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
-      console.log(chalk.greenBright(`LAUNCH: node ${launchPath}`));
-      console.log(chalk.greenBright(`=======================================`));
+      console.log(
+        chalk.bold.greenBright(`==================Info=================`),
+      );
+      console.log(chalk.bold.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
+      console.log(chalk.bold.greenBright(`ACTION: ${action}`));
+      console.log(chalk.bold.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
+      console.log(
+        chalk.bold.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`),
+      );
+      console.log(chalk.bold.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
+      console.log(chalk.bold.greenBright(`LAUNCH: node ${launchPath}`));
+      console.log(
+        chalk.bold.greenBright(`=======================================`),
+      );
       console.log(``);
 
       const result = spawn.sync("node", [launchPath], {

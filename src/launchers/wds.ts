@@ -5,7 +5,7 @@ import { css_typing_builder } from "../config/components/css.typing.builder";
 import { sync_npm_deps } from "../config/components/sync.npm.deps";
 import { socket, WDSConfig } from "../config/components/target.config";
 import { ts_tsLint_config_builder } from "../config/components/ts.tsLint.config.builder";
-import { main as main_WS_config } from "../config/webpack.config";
+import { dev as dev_WS_config } from "../config/webpack.config.dev";
 
 async function wds() {
   console.log(chalk.bold.cyanBright(`[ WDS ]`));
@@ -14,7 +14,7 @@ async function wds() {
   await ts_tsLint_config_builder();
   await css_typing_builder();
 
-  const server = new WDS(webpack(main_WS_config), WDSConfig);
+  const server = new WDS(webpack(dev_WS_config), WDSConfig);
 
   server.listen(socket.port, socket.host, () => {
     console.log(``);

@@ -3,6 +3,7 @@ import {
   entry,
   isBuild,
   isDevelopment,
+  isLib,
   resolveNodeModules,
   socket,
 } from "./target.config";
@@ -10,7 +11,7 @@ import {
 export default (
   entries: string[] = [],
 ): string | string[] | Entry | EntryFunc => {
-  if (isDevelopment && !isBuild) {
+  if (isDevelopment && !isBuild && !isLib) {
     return [
       `${resolveNodeModules("webpack-dev-server")}/client?https://${
         socket.host

@@ -6,6 +6,7 @@ import context from "../validate-config/context";
 import css from "../validate-config/css";
 import dll_entry from "../validate-config/dll_entry";
 import entry from "../validate-config/entry";
+import lib_entry from "../validate-config/lib_entry";
 import modules from "../validate-config/modules";
 import output from "../validate-config/output";
 import proxy from "../validate-config/proxy";
@@ -18,6 +19,7 @@ export default (): IBuildConfig => {
   const config: IBuildConfig = {
     ...context(fileName),
     ...entry(fileName),
+    ...lib_entry(fileName),
     ...dll_entry(fileName),
     ...modules(fileName),
     ...output(fileName),

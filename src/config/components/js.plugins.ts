@@ -12,13 +12,12 @@ import {
   context,
   dll_assets_name,
   dll_assets_path,
-  dll_lib_name,
   dll_manifest_path,
+  dll_name,
   dll_path,
   isBuild,
   isDebug,
   isDevelopment,
-  isWDS,
   output,
   root,
 } from "./target.config";
@@ -74,7 +73,7 @@ export const analyze = (): webpack.Plugin[] => {
 
 // TODO: Доработать настройки и шаблон.
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
-  let dllConfig = { [dll_lib_name]: {} };
+  let dllConfig = { [dll_name]: {} };
 
   if (dll && fs.existsSync(dll_assets_path)) {
     dllConfig = require(dll_assets_path);
@@ -98,7 +97,7 @@ export const DllPlugin = (): webpack.Plugin[] => {
     ...clean([dll_path], true),
     new webpack.DllPlugin({
       context,
-      name: dll_lib_name,
+      name: dll_name,
       path: dll_manifest_path,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(false),
@@ -118,7 +117,7 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
       new webpack.DllReferencePlugin({
         context,
         manifest: dll_manifest_path,
-        name: dll_lib_name,
+        name: dll_name,
       }),
     ];
   }
@@ -127,7 +126,7 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
 };
 
 export const workboxPlugin = (): webpack.Plugin[] => {
-  if ((!isDevelopment || isBuild) && !isWDS) {
+  if (isBuild) {
     console.log(output.path);
 
     return [

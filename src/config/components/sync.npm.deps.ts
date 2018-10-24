@@ -18,13 +18,13 @@ const watchers: FSWatcher[] = [];
 
 export async function sync_npm_deps(watch: boolean = true) {
   if (dep_list.length === 0) {
-    console.log(chalk.bold.gray("[ SYNC_NPM ][ LIST IS EMPTY ]"));
+    console.log(chalk.bold.cyanBright("[ SYNC_NPM_DEPS ][ LIST IS EMPTY ]"));
+    console.log("");
     return;
   }
 
-  console.log("");
-  console.log(chalk.bold.yellow("[ SYNC_NPM ]"));
-  console.log(chalk.bold.magenta(`[ SYNC_LIST ][ ${dep_list.join(", ")} ]`));
+  console.log(chalk.bold.cyanBright("[ SYNC_NPM_DEPS ]"));
+  console.log(chalk.bold.cyanBright(`[ SYNC_LIST ][ ${dep_list.join(", ")} ]`));
   const localPkgPath = path.resolve(root, "package.json");
   const localPkg = require(localPkgPath);
   const npmHardSyncTarget = dep_list.map(resolveGlobalNodeModules);
@@ -44,7 +44,7 @@ export async function sync_npm_deps(watch: boolean = true) {
 
       throw new Error(`Symlink not found: ${npmLink}`);
     } else {
-      console.log(chalk.bold.yellow(`[ ORIGIN_SYMLINK: ${npmLink} ]`));
+      console.log(chalk.bold.cyanBright(`[ ORIGIN_SYMLINK: ${npmLink} ]`));
     }
   }
 
@@ -99,7 +99,10 @@ export async function sync_npm_deps(watch: boolean = true) {
               reject();
             } else {
               console.log(
-                chalk.green("[ CREATED_DIR ]", chalk.cyan(`${localCopy}`)),
+                chalk.bold.cyanBright(
+                  "[ CREATED_DIR ]",
+                  chalk.cyan(`${localCopy}`),
+                ),
               );
 
               resolve();
@@ -113,7 +116,10 @@ export async function sync_npm_deps(watch: boolean = true) {
             reject();
           } else {
             console.log(
-              chalk.green("[ CREATED_DIR ]", chalk.cyan(`${localCopy}`)),
+              chalk.bold.cyanBright(
+                "[ CREATED_DIR ]",
+                chalk.cyan(`${localCopy}`),
+              ),
             );
 
             resolve();
@@ -135,15 +141,17 @@ export async function sync_npm_deps(watch: boolean = true) {
             if (isDebug) {
               for (const file of files) {
                 console.log(
-                  chalk.yellow(`[ COPIED ][ ${moduleName} ]`),
+                  chalk.bold.cyanBright(`[ COPIED ][ ${moduleName} ]`),
                   chalk.cyan(file.path),
                 );
+                console.log("");
               }
             } else {
               console.log(
-                chalk.yellow(`[ COPIED ][ ${moduleName} ]`),
+                chalk.bold.cyanBright(`[ COPIED ][ ${moduleName} ]`),
                 chalk.cyan(`[ ${files.length} FILES ]`),
               );
+              console.log("");
             }
 
             resolve();
@@ -166,7 +174,7 @@ export async function sync_npm_deps(watch: boolean = true) {
 
   try {
     if (watch) {
-      console.log(chalk.yellow("[ WATCH_INIT ]"));
+      console.log(chalk.bold.cyanBright("[ WATCH_INIT ]"));
 
       if (watchers.length > 0) {
         for (const watcher of watchers) {
@@ -186,22 +194,23 @@ export async function sync_npm_deps(watch: boolean = true) {
 
           fs.unlinkSync(to);
           if (isDebug) {
-            console.log("");
-            console.log(chalk.yellow("[ REMOVED_LOCAL_COPY ]"));
+            console.log(chalk.bold.cyanBright("[ REMOVED_LOCAL_COPY ]"));
             console.log(chalk.cyan(`[ OF: ${to} ]`));
+            console.log("");
           }
 
           fs.copyFileSync(from, to);
           if (isDebug) {
-            console.log("");
-            console.log(chalk.yellow(`[ COPIED ][ ${moduleName} ]`));
+            console.log(chalk.bold.cyanBright(`[ COPIED ][ ${moduleName} ]`));
             console.log(chalk.cyan(`[ FROM: ${from} ]`));
             console.log(chalk.cyan(`[ TO ${to} ]`));
+            console.log("");
           }
           if (!isDebug) {
             console.log(
-              chalk.yellow(`[ SYNC_NPM ][ UPDATE ][ ${insidePath} ]`),
+              chalk.bold.cyanBright(`[ SYNC_NPM ][ UPDATE ][ ${insidePath} ]`),
             );
+            console.log("");
           }
         });
 
@@ -209,12 +218,14 @@ export async function sync_npm_deps(watch: boolean = true) {
       }
     }
   } catch (error) {
-    console.log("");
     console.error(error);
     console.log(
       chalk.bold.red(`[ SYNC_NPM ][ ERROR_MESSAGE: ${error.message} ]`),
     );
-    console.log(chalk.yellow(`[ SYNC_NPM ][ WILL_RESTARTED_TROUGHT 1000ms; ]`));
+    console.log(
+      chalk.bold.cyanBright(`[ SYNC_NPM ][ WILL_RESTARTED_TROUGHT 1000ms; ]`),
+    );
+    console.log("");
 
     setTimeout(sync_npm_deps, 1000);
   }

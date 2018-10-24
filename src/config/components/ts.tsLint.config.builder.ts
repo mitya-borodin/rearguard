@@ -13,7 +13,6 @@ import {
 } from "./target.config";
 
 export function ts_tsLint_config_builder() {
-  console.log(``);
   const { compilerOptions, compileOnSave } = ts;
   const {
     devDependencies: { typescript: version },
@@ -136,7 +135,7 @@ export function ts_tsLint_config_builder() {
       `[ BUILD ][ typescript and tslint config ]`.toUpperCase(),
     ),
   );
-  console.log(chalk.cyan(`[ TS_CONFING: ${tsConfigPath} ]`));
-  console.log(chalk.cyan(`[ TS_LINT: ${tsLintConfigPath} ]`));
+  console.log(chalk.bold.cyanBright(`[ TS_CONFING: ${tsConfigPath} ]`));
+  console.log(chalk.bold.cyanBright(`[ TS_LINT: ${tsLintConfigPath} ]`));
   console.log(``);
 }

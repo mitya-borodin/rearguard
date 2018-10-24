@@ -1,20 +1,20 @@
 import chalk from "chalk";
 import * as Joi from "joi";
-import { IDllEntries } from "../../interfaces/IConfigs";
+import { ILibEntry } from "../../interfaces/IConfigs";
 import detectConfig from "./common";
 
-const defaultValue = { dll_entry: "vendors.ts" };
+const defaultValue = { lib_entry: "lib_exports.ts" };
 
 const propType = {
-  dll_entry: Joi.string()
+  lib_entry: Joi.string()
     .trim()
     .min(3)
     .required(),
 };
 
-export default (fileName: string): IDllEntries => {
+export default (fileName: string): ILibEntry => {
   // tslint:disable-next-line:variable-name
-  const { exist, value } = detectConfig(fileName, "dll_entry");
+  const { exist, value } = detectConfig(fileName, "lib_entry");
 
   if (exist) {
     const { error } = Joi.validate(value, propType);
