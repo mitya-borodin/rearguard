@@ -11,8 +11,9 @@ export const resolveGlobalNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH || "", name);
 export const resolveNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
-export const resolveTarget = (relPath: string = "") =>
-  path.resolve(CWD, relPath);
+export const resolveLocalNodeModules = (name: string = "") =>
+  path.resolve(process.env.REARGUARD_LOCAL_NODE_MODULE_PATH || "", name);
+export const resolveTarget = (relPath: string = "") => path.resolve(CWD, relPath);
 
 // ENV ===================================================================
 export const isWDS = config.isWDS;
@@ -34,6 +35,8 @@ export const pkg = {
   name: config.name,
   nodeVersion: config.nodeVersion,
 };
+export const dist_dir_name = "dist";
+export const bundle_sub_dir = isDevelopment ? "dev" : "prod";
 // sync_npm_deps - список зависимостей которые могут быть:
 // 1) Слинкованны в глобальный node_modules;
 // 2) Установлены в локальный node_modules;
@@ -48,36 +51,18 @@ export const sync_npm_deps = config.sync_npm_deps;
 // END
 
 // LIB_BUNDLE =============================================================
-// lib_entry - ts файл в котором описаны экспорты;
 export const lib_entry = config.lib_entry;
-// lib_name - название dll_bundle или lib_bundle, используется неявно и генерируется из название npm пакета.
-// Поле name из package.json, приведенное к змеиной нотации;
-export const lib_name = `lib_${pkg.name}`;
-export const lib_file_name = `${lib_name}.[hash].js`;
-export const lib_path = path.resolve(
-  root,
-  "lib_bundle",
-  lib_name,
-  isDevelopment ? "dev" : "prod",
-);
-// END ===================================================================
+export const lib_entry_name = `lib_${pkg.name}`;
+export const lib_bundle_dirname = "lib_bundle";
+export const lib_path = path.resolve(root, lib_bundle_dirname, pkg.name, bundle_sub_dir);
+// END
 
 // DLL_BUNDLE ============================================================
-// dll_entry - ts файл в котором описаны импорты;
 export const dll_entry = config.dll_entry;
-// dll_lib_name - глобальное название dll пакета, в рамках браузера;
-export const dll_name = `dll_${lib_name}`;
-export const dll_file_name = `${dll_name}.[hash].js`;
-// dll_path - путь до директории в которую будут записаны фпайлы;
-export const dll_path = path.resolve(
-  root,
-  "dll_bundle",
-  lib_name,
-  isDevelopment ? "dev" : "prod",
-);
-// dll_manifest_name - json файл описывает содержимое dll bundle, необходим для работы DLLReference;
+export const dll_entry_name = `dll_${pkg.name}`;
+export const dll_bundle_dirname = "dll_bundle";
+export const dll_path = path.resolve(root, dll_bundle_dirname, pkg.name, bundle_sub_dir);
 export const dll_manifest_name = "manifest.json";
-// dll_assets_name - описывает пути относительно своего местоположения, необходим для составления index.html;
 export const dll_assets_name = "assets.json";
 export const dll_manifest_path = path.resolve(dll_path, dll_manifest_name);
 export const dll_assets_path = path.resolve(dll_path, dll_assets_name);
@@ -88,13 +73,11 @@ export const socket = config.socket;
 // END
 
 // Webpack ===============================================================
-const publicPath = path.normalize(
-  isDll || isLib
-    ? `${config.output.publicPath}/${pkg.name}/${
-        isDevelopment ? "dev" : "prod"
-      }`
-    : config.output.publicPath,
-);
+let publicPath = config.output.publicPath;
+
+if (isDll || isLib) {
+  publicPath = `${config.output.publicPath}/${pkg.name}/${bundle_sub_dir}`;
+}
 
 let outputPath = resolveTarget(config.output.path);
 
@@ -113,12 +96,10 @@ export const output: webpack.Output & { globalObject: string } = {
   // filename - шаблон имен файлов.
   filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
   // publicPath - путь до ресурса с файлами.
-  publicPath,
+  publicPath: path.normalize(publicPath),
   // Дописывает дополнительную информацию в bundle;
   pathinfo: isDebug,
-  chunkFilename: isDevelopment
-    ? "[name].chunk.js?[hash:8]"
-    : "[chunkhash:32].chunk.js",
+  chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
   // globalObject - непонятная хрень, после того, как все отлажу, то обязательно разберусь с этой настройкой.
   globalObject: "this",
 };
@@ -146,10 +127,7 @@ export const proxy = config.proxy;
 export const WDSConfig: WDS.Configuration = {
   bonjour: true,
   compress: true,
-  contentBase: [
-    path.resolve(root, "dll_bundle"),
-    path.resolve(root, "lib_bundle"),
-  ],
+  contentBase: [path.resolve(root, dll_bundle_dirname), path.resolve(root, lib_bundle_dirname)],
   watchContentBase: true,
   historyApiFallback: true,
   hot: true,
@@ -182,9 +160,7 @@ const externalPluginsPath = resolveTarget(config.postCSS.plugins);
 export const postCSS = {
   config: require(path.resolve(__dirname, "postcss.config.js")),
   plugins: {
-    list: fs.existsSync(externalPluginsPath)
-      ? require(externalPluginsPath)
-      : [],
+    list: fs.existsSync(externalPluginsPath) ? require(externalPluginsPath) : [],
     path: externalPluginsPath,
   },
 };

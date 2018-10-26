@@ -17,12 +17,7 @@ const alias: { [key: string]: string } = {
   r: "release",
 };
 
-const {
-  release = false,
-  debug = false,
-  dll = false,
-  lib = false,
-}: IBoolObj = otherArguments.reduce(
+const { release = false, debug = false, dll = false, lib = false }: IBoolObj = otherArguments.reduce(
   (prevValue: IBoolObj, value: string): IBoolObj => {
     if (value.indexOf("--") === 0) {
       return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
@@ -39,18 +34,14 @@ const {
   {},
 );
 
-if (action === "wds" || action === "sync_deps" || action === "build") {
+if (action === "wds" || action === "sync_deps" || action === "build" || action === "tsc") {
   console.log("");
 
   if ((action === "wds" || action === "sync_deps") && (dll || lib)) {
     console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --dll | --lib ]" is not valid;`,
-      ),
+      chalk.bold.red(`I am really sorry but this configuration: "rearguard ${action} [ --dll | --lib ]" is not valid;`),
     );
-    console.log(
-      chalk.bold.green(`You should use: "rearguard build [ --dll | --lib ]";`),
-    );
+    console.log(chalk.bold.green(`You should use: "rearguard build [ --dll | --lib ]";`));
 
     process.exit(1);
   }
@@ -61,11 +52,7 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
         `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --lib ]" is not valid;`,
       ),
     );
-    console.log(
-      chalk.bold.green(
-        `You should use: "rearguard ${action} [ --debug || -d ]";`,
-      ),
-    );
+    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug || -d ]";`));
 
     process.exit(1);
   }
@@ -75,15 +62,12 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
   if (action === "build" && dll) {
     launchEntryFile = "dll";
   }
+
   if (action === "build" && lib) {
     launchEntryFile = "lib";
   }
 
-  const launchPath: string = resolve(
-    __dirname,
-    "../src/launchers",
-    `${launchEntryFile}.js`,
-  );
+  const launchPath: string = resolve(__dirname, "../src/launchers", `${launchEntryFile}.js`);
 
   if (existsSync(launchPath)) {
     // Определение глобального node_modules
@@ -94,12 +78,8 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
     if (!existsSync(resolve(GLOBAL_NODE_MODULES, "rearguard"))) {
       const npm = resolve(GLOBAL_NODE_MODULES, "../../bin/npm");
 
-      console.log(
-        chalk.bold.cyanBright(`=================Rearguard================`),
-      );
-      console.log(
-        chalk.bold.cyan(`==================Install=================`),
-      );
+      console.log(chalk.bold.cyanBright(`=================Rearguard================`));
+      console.log(chalk.bold.cyan(`==================Install=================`));
       console.log(chalk.cyan(`LAUNCH: ${npm} i -g rearguard`));
       console.log(
         chalk.bold.cyan(
@@ -109,21 +89,12 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
 
       execSync(`${npm} i -g rearguard`, { encoding: "utf8", stdio: "inherit" });
 
-      console.log(
-        chalk.bold.cyan(
-          `RESULT: rearguard was installed here ${npm}/rearguard`,
-        ),
-      );
-      console.log(
-        chalk.bold.cyan(`==========================================`),
-      );
+      console.log(chalk.bold.cyan(`RESULT: rearguard was installed here ${npm}/rearguard`));
+      console.log(chalk.bold.cyan(`==========================================`));
     }
     // Определение локального node_modules
     const LOCAL_NODE_MODULES: string = resolve(process.cwd(), "node_modules");
-    let NODE_MODULE_PATH = resolve(
-      GLOBAL_NODE_MODULES,
-      "rearguard/node_modules",
-    );
+    let NODE_MODULE_PATH = resolve(GLOBAL_NODE_MODULES, "rearguard/node_modules");
 
     if (existsSync(resolve(LOCAL_NODE_MODULES, "rearguard"))) {
       NODE_MODULE_PATH = LOCAL_NODE_MODULES;
@@ -132,13 +103,12 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
     if (existsSync(NODE_MODULE_PATH)) {
       process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH = GLOBAL_NODE_MODULES;
       process.env.REARGUARD_NODE_MODULE_PATH = NODE_MODULE_PATH;
+      process.env.REARGUARD_LOCAL_NODE_MODULE_PATH = LOCAL_NODE_MODULES;
 
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS =
-        action === "sync_deps" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_BUILD =
-        action === "build" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS = action === "sync_deps" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
 
       // Параметры запуска
       process.env.NODE_ENV = !release ? "development" : "production";
@@ -147,23 +117,15 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
       process.env.REARGUARD_DLL = dll ? "true" : "false";
 
       // Логирование параметров запуска.
-      console.log(
-        chalk.bold.blueBright(`================Rearguard==============`),
-      );
-      console.log(
-        chalk.bold.greenBright(`==================Info=================`),
-      );
+      console.log(chalk.bold.blueBright(`================Rearguard==============`));
+      console.log(chalk.bold.greenBright(`==================Info=================`));
       console.log(chalk.bold.greenBright(`NODE_MODULES: ${NODE_MODULE_PATH}`));
       console.log(chalk.bold.greenBright(`ACTION: ${action}`));
       console.log(chalk.bold.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
-      console.log(
-        chalk.bold.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`),
-      );
+      console.log(chalk.bold.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
       console.log(chalk.bold.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
       console.log(chalk.bold.greenBright(`LAUNCH: node ${launchPath}`));
-      console.log(
-        chalk.bold.greenBright(`=======================================`),
-      );
+      console.log(chalk.bold.greenBright(`=======================================`));
       console.log(``);
 
       const result = spawn.sync("node", [launchPath], {
@@ -195,11 +157,7 @@ if (action === "wds" || action === "sync_deps" || action === "build") {
 
       process.exit(result.status);
     } else {
-      console.log(
-        chalk.bold.red(
-          `[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`,
-        ),
-      );
+      console.log(chalk.bold.red(`[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`));
 
       process.exit(1);
     }

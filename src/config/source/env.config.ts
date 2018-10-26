@@ -10,4 +10,5 @@ export default (): IEnv => ({
   isLib: process.env.REARGUARD_LIB === "true",
   isDll: process.env.REARGUARD_DLL === "true",
   nodeModulePath: process.env.REARGUARD_NODE_MODULE_PATH || "",
+  localNodeModulePath: process.env.REARGUARD_LOCAL_NODE_MODULE_PATH || "",
 });

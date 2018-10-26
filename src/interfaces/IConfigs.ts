@@ -86,6 +86,7 @@ export interface IEnv {
   isLib: boolean;
   isDll: boolean;
   nodeModulePath: string;
+  localNodeModulePath: string;
 }
 
 export interface IBuildConfig

@@ -1,30 +1,39 @@
 import chalk from "chalk";
 import * as fs from "fs";
+import * as moment from "moment";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
-import { context, entry, isDll, isLib, root } from "./target.config";
+import { dist_dir_name, dll_bundle_dirname, isDll, isLib, lib_bundle_dirname, root } from "./target.config";
 
 export async function update_pkg() {
+  console.log(chalk.bold.blue(`===============PACKAGE.JSON============`));
+  const startTime = moment();
+  console.log(chalk.bold.blue(`[ PACKAGE.JSON ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
+  console.log("");
+
   const pkgPath = path.resolve(root, "package.json");
-  const isEntry = fs.existsSync(path.resolve(context, entry));
 
   if (fs.existsSync(pkgPath)) {
     let pkg = require(pkgPath);
 
-    pkg.isDll = isDll && !isEntry;
-    pkg.isLib = isLib;
-    pkg.isProject = isEntry && !isLib;
+    // Дополнительные флаги.
+    pkg.isDLL = false;
+    pkg.isLibrary = false;
+    pkg.isProject = false;
 
-    if (pkg.isDll) {
-      pkg.files = ["dll_bundle"];
+    if (isDll) {
+      pkg.files = [dll_bundle_dirname];
+      pkg.isDLL = true;
     }
 
-    if (pkg.isLib) {
-      pkg.files = ["lib", "lib_bundle"];
+    if (isLib) {
+      pkg.files = ["lib", dll_bundle_dirname, lib_bundle_dirname];
+      pkg.isLibrary = true;
     }
 
-    if (pkg.isProject) {
-      pkg.files = ["dist"];
+    if (!isDll && !isLib) {
+      pkg.files = [dist_dir_name];
+      pkg.isProject = true;
     }
 
     pkg = prettier_package_json.format(pkg, {
@@ -59,9 +68,9 @@ export async function update_pkg() {
         "preferGlobal",
         "bin",
         "files",
+        "isDLL",
+        "isLibrary",
         "isProject",
-        "isLib",
-        "isDll",
         "directories",
         "scripts",
         "config",
@@ -97,14 +106,20 @@ export async function update_pkg() {
       ],
     });
 
-    console.log(
-      chalk.bold.cyanBright(`[ PACKAGE.JSON ][ UPDATED: ${pkgPath} ]`),
-    );
+    console.log(chalk.white(`[ PACKAGE.JSON ][ UPDATED: ${pkgPath} ]`));
 
     fs.writeFileSync(pkgPath, pkg);
   } else {
-    console.log(
-      chalk.bold.redBright(`[ PACKAGE.JSON ][ IS_NOT_EXIST: ${pkgPath} ]`),
-    );
+    console.log(chalk.red(`[ PACKAGE.JSON ][ IS_NOT_EXIST: ${pkgPath} ]`));
   }
+
+  const endTime = moment();
+
+  console.log("");
+  console.log(
+    chalk.bold.blue(`[ PACKAGE.JSON ][ WORK_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`),
+  );
+  console.log(chalk.bold.blue(`[ PACKAGE.JSON ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
+  console.log(chalk.bold.blue(`=======================================`));
+  console.log("");
 }

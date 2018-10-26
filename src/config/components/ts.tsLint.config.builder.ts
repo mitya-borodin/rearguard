@@ -1,18 +1,16 @@
 import { isBoolean } from "@borodindmitriy/base-code/lib/utils";
 import chalk from "chalk";
 import * as fs from "fs";
+import * as moment from "moment";
 import * as path from "path";
-import {
-  context,
-  isDebug,
-  resolveTarget,
-  root,
-  ts,
-  tsConfigPath,
-  tsLintConfigPath,
-} from "./target.config";
+import { context, isDebug, isLib, resolveTarget, root, ts, tsConfigPath, tsLintConfigPath } from "./target.config";
 
 export function ts_tsLint_config_builder() {
+  console.log(chalk.bold.blue(`===============TS_&_TS_LINT============`));
+  const startTime = moment();
+  console.log(chalk.bold.blue(`[ TS_&_TS_LINT ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
+  console.log("");
+
   const { compilerOptions, compileOnSave } = ts;
   const {
     devDependencies: { typescript: version },
@@ -40,16 +38,10 @@ export function ts_tsLint_config_builder() {
         checkJs: false /* Report errors in .js files. */,
         target:
           "es6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
-        module:
-          "es6" /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */,
+        module: "es6" /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */,
         pretty: true, // Stylize errors and messages using color and context.
-        lib: [
-          "es6",
-          "es7",
-          "dom",
-        ] /* Specify library files to be included in the compilation:  */,
-        jsx:
-          "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+        lib: ["es6", "es7", "dom"] /* Specify library files to be included in the compilation:  */,
+        jsx: "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
         declaration: false /* Generates corresponding '.d.ts' file. */,
         importHelpers: true /* Import emit helpers from 'tslib'. */,
         downlevelIteration: false /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */,
@@ -90,9 +82,7 @@ export function ts_tsLint_config_builder() {
         baseUrl: context /* Base directory to resolve non-absolute module names. */,
         rootDirs: [] /* List of root folders whose combined content represents the structure of the project at runtime. */,
         paths /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
-        typeRoots: [
-          "node_modules/@types",
-        ] /* List of folders to include type definitions from. */,
+        typeRoots: ["node_modules/@types"] /* List of folders to include type definitions from. */,
         types: [] /* Type declaration files to be included in compilation. */,
         forceConsistentCasingInFileNames: true /* Disallow inconsistently-cased references to the same file. */,
 
@@ -106,6 +96,18 @@ export function ts_tsLint_config_builder() {
         experimentalDecorators: true /* Enables experimental support for ES7 decorators. */,
         // emitDecoratorMetadata: true,  /* Enables experimental support for emitting type metadata for decorators. */
       },
+      isLib
+        ? {
+            module: "commonjs",
+            declaration: true,
+            noImplicitAny: false,
+            noImplicitReturns: false,
+            noUnusedParameters: false,
+            strictPropertyInitialization: false,
+            rootDir: "src",
+            outDir: "lib",
+          }
+        : {},
       /* tslint:enable */
       compilerOptions,
     ),
@@ -130,12 +132,16 @@ export function ts_tsLint_config_builder() {
 
   fs.writeFileSync(tsConfigPath, JSON.stringify(config, null, 2));
   fs.writeFileSync(tsLintConfigPath, JSON.stringify(tsLint, null, 2));
+  console.log(chalk.white(`[ TS_&_TS_LINT ][ TS_CONFING: ${tsConfigPath} ]`));
+  console.log(chalk.white(`[ TS_&_TS_LINT ][ TS_LINT: ${tsLintConfigPath} ]`));
+
+  const endTime = moment();
+
+  console.log("");
   console.log(
-    chalk.bold.cyanBright(
-      `[ BUILD ][ typescript and tslint config ]`.toUpperCase(),
-    ),
+    chalk.bold.blue(`[ TS_&_TS_LINT ][ BUILD_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`),
   );
-  console.log(chalk.bold.cyanBright(`[ TS_CONFING: ${tsConfigPath} ]`));
-  console.log(chalk.bold.cyanBright(`[ TS_LINT: ${tsLintConfigPath} ]`));
-  console.log(``);
+  console.log(chalk.bold.blue(`[ TS_&_TS_LINT ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
+  console.log(chalk.bold.blue(`=======================================`));
+  console.log("");
 }
