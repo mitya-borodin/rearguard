@@ -1,47 +1,42 @@
-/* import chalk from "chalk";
-import * as copy from "copy";
-import * as del from "del";
-import * as path from "path";
+import chalk from "chalk";
+import * as moment from "moment";
 import * as webpack from "webpack";
-import { syncNPM } from "../config/components/syncNPM";
-import {
-  dll_path,
-  output,
-  root,
-  stats as statsConfig,
-} from "../config/components/target.config";
-import buildConfigs from "../config/components/typescript.config.builder";
-import { main } from "../config/webpack.config";
-import setTypingForAllCSSandFiles from "./setTypingForAllCSSandFiles";
+import { check_project } from "../config/components/chek.project";
+import { css_typing_builder } from "../config/components/css.typing.builder";
+import { sync_npm_deps } from "../config/components/sync.npm.deps";
+import { stats as statsConfig } from "../config/components/target.config";
+import { ts_tsLint_config_builder } from "../config/components/ts.tsLint.config.builder";
+import { update_pkg } from "../config/components/update.pkg";
+import { main_WS_config } from "../config/webpack.config";
 
-del([output.path || path.resolve(root, "dist")]).then(() => {
-  console.log(chalk.bold.cyan(`[CLEAN DIST]`));
-  console.log(
-    chalk.cyan(`[DELETE] ${output.path || path.resolve(root, "dist")}`),
-  );
+async function wds() {
+  check_project();
+  await sync_npm_deps(false);
+  await ts_tsLint_config_builder();
+  await css_typing_builder();
+  await update_pkg();
+
+  console.log(chalk.bold.blue(`=================WEBPACK===============`));
+  const startTime = moment();
+  console.log(chalk.bold.blue(`[ WEBPACK ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
   console.log("");
 
-  copy([`${dll_path}/*.js`, `${dll_path}/*.css`], output.path, async () => {
+  webpack(main_WS_config()).run((err: any, stats: any) => {
+    if (err) {
+      throw new Error(err);
+    }
+
+    console.info(stats.toString(statsConfig));
+    const endTime = moment();
+
     console.log("");
-    console.log(chalk.bold.cyan(`[ COPY DLL ]`));
-    console.log(chalk.cyan(`JS: ${dll_path}/*.js`));
-    console.log(chalk.cyan(`CSS: ${dll_path}/*.css`));
-    console.log(chalk.cyan(`TO: ${output.path}`));
-
-    await syncNPM(false);
-    await setTypingForAllCSSandFiles();
-    await buildConfigs();
-
-    console.log(chalk.bold.cyan(`[ BUILD ]`));
-    webpack(main).run((err: any, stats: any) => {
-      if (err) {
-        throw new Error(err);
-      }
-
-      console.log("");
-      console.info(stats.toString(statsConfig));
-      console.log(chalk.bold.cyan(`[ BUILD END ]`));
-    });
+    console.log(
+      chalk.bold.blue(`[ WEBPACK ][ COMPILE_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`),
+    );
+    console.log(chalk.bold.blue(`[ WEBPACK ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
+    console.log(chalk.bold.blue(`=======================================`));
+    console.log("");
   });
-});
- */
+}
+
+wds();

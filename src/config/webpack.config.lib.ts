@@ -13,7 +13,7 @@ export function library_WP_config(): webpack.Configuration {
     {
       ...output,
       library: lib_entry_name,
-      libraryTarget: "umd",
+      libraryTarget: "var",
     },
     tsLoader(),
     [...DllReferencePlugin(), ...HMR(), ...htmlWebpackPlugin(), ...analyze()],

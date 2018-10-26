@@ -73,7 +73,7 @@ export const analyze = (): webpack.Plugin[] => {
 };
 
 export const htmlWebpackPlugin = (dll = true): webpack.Plugin[] => {
-  if (!isLib && isBuild) {
+  if (!isLib && !isBuild) {
     // Необходим для:
     // 1) Режим разработки, так как для WDS необходим index.html.
     // 2) Сборка продакшн решения, так как для WEB сервера необходим index.html;

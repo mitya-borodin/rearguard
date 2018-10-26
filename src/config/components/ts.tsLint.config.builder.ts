@@ -1,4 +1,4 @@
-import { isBoolean } from "@borodindmitriy/base-code/lib/utils";
+import { isBoolean } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as moment from "moment";

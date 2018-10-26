@@ -21,11 +21,7 @@ export function general_WP_config(
   for (const { isLibrary, name, bundle_name } of info) {
     if (isLibrary) {
       lib_externals[name] = {
-        commonjs: bundle_name,
-        commonjs2: bundle_name,
-        // tslint:disable-next-line:object-literal-sort-keys
-        amd: bundle_name,
-        root: bundle_name,
+        var: bundle_name,
       };
     }
   }

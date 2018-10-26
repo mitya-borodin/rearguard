@@ -1,4 +1,4 @@
-import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/base-code/lib/utils";
+import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
 import chalk from "chalk";
 // import * as chokidar from "chokidar";
 // import { FSWatcher } from "chokidar";
