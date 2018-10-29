@@ -67,6 +67,7 @@ export const dll_path = path.resolve(root, dll_bundle_dirname, pkg.name, bundle_
 export const dll_manifest_name = "manifest.json";
 export const dll_assets_name = "assets.json";
 export const dll_manifest_path = path.resolve(dll_path, dll_manifest_name);
+export const dll_assets_path = path.resolve(dll_path, dll_assets_name);
 // END
 
 // Socket ================================================================

@@ -14,6 +14,7 @@ import {
   bundle_sub_dir,
   context,
   dll_assets_name,
+  dll_assets_path,
   dll_bundle_dirname,
   dll_entry_name,
   dll_manifest_path,
@@ -79,36 +80,38 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
 
 export const htmlWebpackPlugin = (): webpack.Plugin[] => {
   if (!isDll && !isLib) {
-    // Необходим для:
-    // 1) Режим разработки, так как для WDS необходим index.html.
-    // 2) Сборка продакшн решения, так как для WEB сервера необходим index.html;
-    // Откуда берутся данные для заполнения макета:
-    // 1) Из текущих entry -> htmlWebpackPlugin.files;
-    // 2) Из подклёченных dll_bundle и library_bundle;
-    // Когда появляется информация о файлах:
-    // 1) Перед запуском webpack выполняется подготовка, проверяется список sync_npm_deps;
-    // 2) Ищутся пакеты, из пакетов вытаскиваются файлы, анализируются файлы и JS файлы,
-    //    составляются в таком порядке в каком указаны sync_npm_deps;
-    // 3) Все готовую информацию подключают как script;
-    // 4) Существуют пакеты которые подключаются из приложения, они не участвуют в этом списке.
-    // TODO: 1) Получить подготовленные данные
     const info: IInfo[] = get_sync_npm_modules_info();
     const data: { js: string[] } = { js: [] };
 
     for (const { bundle_dir, bundle_sub_dir: sub_dir, bundle_name, isDLL, isLibrary } of info) {
-      let dir_name = "";
-
       if (isDLL) {
-        dir_name = dll_bundle_dirname;
+        const assets_data = require(path.resolve(root, dll_bundle_dirname, bundle_dir, sub_dir, dll_assets_name));
+
+        data.js.push(assets_data[bundle_name].js);
       }
 
       if (isLibrary) {
-        dir_name = lib_bundle_dirname;
+        // Библиотека может содержать DLL bundle для своего функционирования
+        // Если содержит, то мы должны добавить этот файл в index.html;
+        const i_dll_assets_path = path.resolve(root, dll_bundle_dirname, bundle_dir, sub_dir, dll_assets_name);
+
+        if (fs.existsSync(i_dll_assets_path)) {
+          const i_dll_assets_data = require(i_dll_assets_path);
+
+          data.js.push(i_dll_assets_data[bundle_name].js);
+        }
+
+        // Добавляем lib_bundle;
+        const i_lib_assets_data = require(path.resolve(root, lib_bundle_dirname, bundle_dir, sub_dir, dll_assets_name));
+
+        data.js.push(i_lib_assets_data[bundle_name].js);
       }
+    }
 
-      const assets_data = require(path.resolve(root, dir_name, bundle_dir, sub_dir, dll_assets_name));
+    if (fs.existsSync(dll_assets_path)) {
+      const assets_data = require(dll_assets_path);
 
-      data.js.push(assets_data[bundle_name].js);
+      data.js.push(assets_data[dll_entry_name].js);
     }
 
     return [
