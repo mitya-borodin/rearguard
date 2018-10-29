@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>Application</title>
-  <% if (htmlWebpackPlugin.options.dllConfig.vendors) { %>
-  <link href="/<%= htmlWebpackPlugin.options.dllConfig.vendors.css %>" rel="stylesheet">
-  <% } %>
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
   <% if (htmlWebpackPlugin.files) { %>
   <% for (key in htmlWebpackPlugin.files.css) { %>
   <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet">
@@ -16,11 +15,15 @@
 </head>
 
 <body>
-  <% if (htmlWebpackPlugin.options.dllConfig.vendors.js) { %>
-  <script src="/<%= htmlWebpackPlugin.options.dllConfig.vendors.js %>" type="text/javascript"></script>
+  <% if (htmlWebpackPlugin.options.data.js) { %>
+  <% for (key in htmlWebpackPlugin.options.data.js) { %>
+  <script src="<%= htmlWebpackPlugin.options.data.js[key] %>" type="text/javascript"></script>
   <% } %>
+  <% } %>
+  <% if (htmlWebpackPlugin.files) { %>
   <% for (key in htmlWebpackPlugin.files.js) { %>
   <script src="<%= htmlWebpackPlugin.files.js[key] %>" type="text/javascript"></script>
+  <% } %>
   <% } %>
 </body>
 

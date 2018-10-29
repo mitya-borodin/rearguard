@@ -31,6 +31,8 @@ export interface ICopyInfo {
 
 export interface IInfo {
   name: string;
+  bundle_dir: string;
+  bundle_sub_dir: string;
   bundle_name: string;
   manifest: string;
   isDLL: boolean;
@@ -367,7 +369,16 @@ export async function sync_npm_deps(watch: boolean = true) {
               const manifest = path.resolve(root, dll_bundle_dirname, snake_name, bundle_sub_dir, dll_manifest_name);
 
               if (fs.existsSync(manifest)) {
-                info.push({ name, bundle_name: `dll_${snake_name}`, manifest, isDLL, isLibrary, isProject });
+                info.push({
+                  name,
+                  bundle_dir: snake_name,
+                  bundle_sub_dir,
+                  bundle_name: `dll_${snake_name}`,
+                  manifest,
+                  isDLL,
+                  isLibrary,
+                  isProject,
+                });
               } else {
                 console.log(
                   chalk.red(`[ SYNC_NPM_DEPS ][ BUNDLE ][ MAKE_INFO ][ ERROR ][ MANIFEST_NOT_FOUND: ${manifest} ]`),
@@ -378,7 +389,16 @@ export async function sync_npm_deps(watch: boolean = true) {
             }
 
             if (isLibrary) {
-              info.push({ name, bundle_name: `lib_${snake_name}`, manifest: "", isDLL, isLibrary, isProject });
+              info.push({
+                name,
+                bundle_dir: snake_name,
+                bundle_sub_dir,
+                bundle_name: `lib_${snake_name}`,
+                manifest: "",
+                isDLL,
+                isLibrary,
+                isProject,
+              });
             }
           } else {
             console.log(chalk.red(`[ SYNC_NPM_DEPS ][ BUNDLE ][ MAKE_INFO ][ ERROR ][ NOT_FOUND: ${pkg_path} ]`));

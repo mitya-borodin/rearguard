@@ -1,6 +1,6 @@
 import * as path from "path";
-import { DllPlugin } from "./components/js.plugins";
-import { context, dll_entry, dll_entry_name, output } from "./components/target.config";
+import { analyze, assets, DllPlugin } from "./components/js.plugins";
+import { context, dll_bundle_dirname, dll_entry, dll_entry_name, output } from "./components/target.config";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./general.webpack.config";
 
@@ -15,7 +15,7 @@ export function dll_WP_config() {
       libraryTarget: "var",
     },
     tsLoader(),
-    [...DllPlugin()],
+    [...DllPlugin(), ...assets(dll_bundle_dirname), ...analyze()],
     {},
   );
 }

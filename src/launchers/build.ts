@@ -2,6 +2,7 @@ import chalk from "chalk";
 import * as moment from "moment";
 import * as webpack from "webpack";
 import { check_project } from "../config/components/chek.project";
+import { copy_bundles_to_dist } from "../config/components/copy.bundles_to_dist";
 import { css_typing_builder } from "../config/components/css.typing.builder";
 import { sync_npm_deps } from "../config/components/sync.npm.deps";
 import { stats as statsConfig } from "../config/components/target.config";
@@ -9,7 +10,7 @@ import { ts_tsLint_config_builder } from "../config/components/ts.tsLint.config.
 import { update_pkg } from "../config/components/update.pkg";
 import { main_WS_config } from "../config/webpack.config";
 
-async function wds() {
+async function build() {
   check_project();
   await sync_npm_deps(false);
   await ts_tsLint_config_builder();
@@ -36,7 +37,9 @@ async function wds() {
     console.log(chalk.bold.blue(`[ WEBPACK ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
     console.log(chalk.bold.blue(`=======================================`));
     console.log("");
+
+    copy_bundles_to_dist();
   });
 }
 
-wds();
+build();
