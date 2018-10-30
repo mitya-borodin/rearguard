@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
+import { configFileName as fileName } from "../../const";
 import { IBuildConfig } from "../../interfaces/IConfigs";
 import context from "../validate-config/context";
 import css from "../validate-config/css";
@@ -14,7 +15,6 @@ import sync_npm_deps from "../validate-config/sync_npm_deps";
 import typescript from "../validate-config/typescript";
 
 export default (): IBuildConfig => {
-  const fileName = "build.config.json";
   const configPath = path.resolve(process.cwd(), fileName);
   const config: IBuildConfig = {
     ...context(fileName),

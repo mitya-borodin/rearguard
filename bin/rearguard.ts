@@ -34,10 +34,16 @@ const { release = false, debug = false, dll = false, lib = false }: IBoolObj = o
   {},
 );
 
-if (action === "wds" || action === "sync_deps" || action === "build" || action === "tsc") {
+if (
+  action === "wds" ||
+  action === "sync_deps" ||
+  action === "ordering_npm_deps" ||
+  action === "build" ||
+  action === "tsc"
+) {
   console.log("");
 
-  if ((action === "wds" || action === "sync_deps") && (dll || lib)) {
+  if (action === "wds" && (dll || lib)) {
     console.log(
       chalk.bold.red(`I am really sorry but this configuration: "rearguard ${action} [ --dll | --lib ]" is not valid;`),
     );
@@ -102,8 +108,8 @@ if (action === "wds" || action === "sync_deps" || action === "build" || action =
 
     if (existsSync(NODE_MODULE_PATH)) {
       process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH = GLOBAL_NODE_MODULES;
-      process.env.REARGUARD_NODE_MODULE_PATH = NODE_MODULE_PATH;
       process.env.REARGUARD_LOCAL_NODE_MODULE_PATH = LOCAL_NODE_MODULES;
+      process.env.REARGUARD_NODE_MODULE_PATH = NODE_MODULE_PATH;
 
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";

@@ -75,7 +75,7 @@ export async function sync_npm_deps(watch: boolean = true) {
           const local_path = resolveLocalNodeModules(name);
 
           if (fs.existsSync(global_path)) {
-            console.log(chalk.white(`[ SYNC_NPM_DEPS ][ WAS_USE ][ GLOBAL_MODULE: ${local_path} ]`));
+            console.log(chalk.white(`[ SYNC_NPM_DEPS ][ WAS_USE ][ GLOBAL_MODULE: ${global_path} ]`));
 
             global_modules_path.push({ module_name: name, module_path: global_path });
           } else if (fs.existsSync(local_path)) {

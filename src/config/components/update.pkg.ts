@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as moment from "moment";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
+import { configFileName } from "../../const";
 import { dist_dir_name, dll_bundle_dirname, isDll, isLib, lib_bundle_dirname, root } from "./target.config";
 
 export async function update_pkg() {
@@ -22,89 +23,21 @@ export async function update_pkg() {
     pkg.isProject = false;
 
     if (isDll) {
-      pkg.files = [dll_bundle_dirname];
+      pkg.files = [dll_bundle_dirname, configFileName];
       pkg.isDLL = true;
     }
 
     if (isLib) {
-      pkg.files = ["lib", dll_bundle_dirname, lib_bundle_dirname];
+      pkg.files = [dll_bundle_dirname, lib_bundle_dirname, "lib", configFileName];
       pkg.isLibrary = true;
     }
 
     if (!isDll && !isLib) {
-      pkg.files = [dist_dir_name];
+      pkg.files = [dist_dir_name, configFileName];
       pkg.isProject = true;
     }
 
-    pkg = prettier_package_json.format(pkg, {
-      keyOrder: [
-        /**
-         * Details
-         */
-        "private",
-        "version",
-        "name",
-        "description",
-        "license",
-        "author",
-        "maintainers",
-        "contributors",
-        "homepage",
-        "repository",
-        "bugs",
-
-        /**
-         * Yarn specific
-         */
-        "workspaces",
-
-        /**
-         * Configuration
-         */
-        "main",
-        "module",
-        "browser",
-        "man",
-        "preferGlobal",
-        "bin",
-        "files",
-        "isDLL",
-        "isLibrary",
-        "isProject",
-        "directories",
-        "scripts",
-        "config",
-
-        /**
-         * Dependencies
-         */
-        "optionalDependencies",
-        "dependencies",
-        "bundleDependencies",
-        "bundledDependencies",
-        "peerDependencies",
-        "devDependencies",
-
-        /**
-         * Used for npm search
-         */
-        "keywords",
-
-        /**
-         * Constraints
-         */
-        "engines",
-        "engine-strict",
-        "engineStrict",
-        "os",
-        "cpu",
-
-        /**
-         * Package publishing configuration
-         */
-        "publishConfig",
-      ],
-    });
+    pkg = prettier_package_json.format(pkg);
 
     console.log(chalk.white(`[ PACKAGE.JSON ][ UPDATED: ${pkgPath} ]`));
 
