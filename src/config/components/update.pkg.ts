@@ -47,8 +47,8 @@ export async function update_pkg() {
     if (!isString(pkg.scripts.test)) {
       pkg.scripts.test = "echo 'do test'";
     }
-    if (!isString(pkg.scripts["pre-commit"])) {
-      pkg.scripts["pre-commit"] = "sh ./pre_publish.sh";
+    if (!isString(pkg.scripts.prepush)) {
+      pkg.scripts.prepush = "sh ./pre_publish.sh";
     }
 
     pkg = prettier_package_json.format(pkg);
