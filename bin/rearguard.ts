@@ -17,31 +17,74 @@ const alias: { [key: string]: string } = {
   r: "release",
 };
 
-const { release = false, debug = false, dll = false, lib = false }: IBoolObj = otherArguments.reduce(
-  (prevValue: IBoolObj, value: string): IBoolObj => {
-    if (value.indexOf("--") === 0) {
-      return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
-    } else if (value.indexOf("-") === 0) {
-      const flag: string = value.slice(1, value.length);
+const {
+  release = false,
+  debug = false,
+  dll = false,
+  lib = false,
+  init = false,
+  install = false,
+  build = false,
+  link = false,
+  bootstrap = false, // it is combination of (install, build, link);
+  sync = false,
+  test = false,
+  publish = false,
+  patch = false,
+  minor = false,
+  major = false,
+}: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
+  if (value.indexOf("--") === 0) {
+    return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
+  } else if (value.indexOf("-") === 0) {
+    const flag: string = value.slice(1, value.length);
 
-      if (alias.hasOwnProperty(flag)) {
-        return Object.assign(prevValue, { [alias[flag]]: true });
-      }
+    if (alias.hasOwnProperty(flag)) {
+      return Object.assign(prevValue, { [alias[flag]]: true });
     }
+  }
 
-    return prevValue;
-  },
-  {},
-);
+  return prevValue;
+}, {});
 
 if (
   action === "wds" ||
   action === "sync_deps" ||
   action === "ordering_npm_deps" ||
   action === "build" ||
-  action === "tsc"
+  action === "tsc" ||
+  action === "monorepo"
 ) {
   console.log("");
+
+  if (
+    action !== "monorepo" &&
+    (init || install || build || link || bootstrap || sync || test || publish || patch || minor || major)
+  ) {
+    console.log(
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]" is not valid;`,
+      ),
+    );
+    console.log(
+      chalk.bold.green(
+        `You should use: "rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]";`,
+      ),
+    );
+
+    process.exit(1);
+  }
+
+  if (action === "monorepo" && (patch || minor || major) && !publish) {
+    console.log(
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --patch | --minor | --major ]" is not valid without [ --publish ];`,
+      ),
+    );
+    console.log(chalk.bold.green(`You should use: "rearguard monorepo --publish [ --patch | --minor | --major ]";`));
+
+    process.exit(1);
+  }
 
   if (action === "wds" && (dll || lib)) {
     console.log(
@@ -121,6 +164,19 @@ if (
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
       process.env.REARGUARD_LIB = lib ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
+
+      // MONO_REPO
+      process.env.REARGUARD_MONO_INIT = init ? "true" : "false";
+      process.env.REARGUARD_MONO_INSTALL = install ? "true" : "false";
+      process.env.REARGUARD_MONO_BUILD = build ? "true" : "false";
+      process.env.REARGUARD_MONO_LINK = link ? "true" : "false";
+      process.env.REARGUARD_MONO_BOOTSTRAP = bootstrap ? "true" : "false";
+      process.env.REARGUARD_MONO_SYNC = sync ? "true" : "false";
+      process.env.REARGUARD_MONO_TEST = test ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH = publish ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_PATH = publish && patch ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_MINOR = publish && minor ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_MAJOR = publish && major ? "true" : "false";
 
       // Логирование параметров запуска.
       console.log(chalk.bold.blueBright(`================Rearguard==============`));
