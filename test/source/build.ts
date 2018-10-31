@@ -21,6 +21,8 @@ const essentialConfig = {
     config: {
       compileOnSave: false,
       compilerOptions: {},
+      exclude: [],
+      include: [],
     },
     configPath: "tsconfig.json",
   },
@@ -57,9 +59,7 @@ describe("Source", () => {
 
   describe("Build, file build.config.json is not exist.", () => {
     it("Config must be equal to essential config.", () => {
-      expect(JSON.stringify(build(), null, 2)).to.equal(
-        JSON.stringify(essentialConfig, null, 2),
-      );
+      expect(JSON.stringify(build(), null, 2)).to.equal(JSON.stringify(essentialConfig, null, 2));
     });
     it("Config file build.config.json must be exist.", () => {
       build();
@@ -150,6 +150,8 @@ describe("Source", () => {
           config: {
             compileOnSave: false,
             compilerOptions: {},
+            exclude: [],
+            include: [],
           },
           configPath: "tsconfig.json",
         }),
