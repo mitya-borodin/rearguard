@@ -8,6 +8,8 @@ const defaultValue: ITypescript = {
     config: {
       compileOnSave: false,
       compilerOptions: {},
+      exclude: [],
+      include: [],
     },
     configPath: "tsconfig.json",
   },
@@ -19,6 +21,8 @@ const propType = {
       config: Joi.object().keys({
         compileOnSave: Joi.boolean(),
         compilerOptions: Joi.object(),
+        exclude: Joi.array().required(),
+        include: Joi.array().required(),
       }),
       configPath: Joi.string()
         .trim()
@@ -35,16 +39,8 @@ export default (fileName: string): ITypescript => {
     const { error } = Joi.validate(typescript, propType);
 
     if (error !== null) {
-      console.log(
-        chalk.bold.yellow(
-          `Current value: "${JSON.stringify(typescript, null, 2)}"`,
-        ),
-      );
-      console.log(
-        chalk.bold.cyan(
-          `We are using: "${JSON.stringify(defaultValue, null, 2)}"`,
-        ),
-      );
+      console.log(chalk.bold.yellow(`Current value: "${JSON.stringify(typescript, null, 2)}"`));
+      console.log(chalk.bold.cyan(`We are using: "${JSON.stringify(defaultValue, null, 2)}"`));
 
       return defaultValue;
     }

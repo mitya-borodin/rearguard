@@ -1,3 +1,4 @@
+import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as moment from "moment";
@@ -35,6 +36,19 @@ export async function update_pkg() {
     if (!isDll && !isLib) {
       pkg.files = [dist_dir_name, configFileName];
       pkg.isProject = true;
+    }
+
+    if (!isString(pkg.scripts.lint)) {
+      pkg.scripts.lint = "echo 'do lint'";
+    }
+    if (!isString(pkg.scripts.build)) {
+      pkg.scripts.build = "echo 'do build'";
+    }
+    if (!isString(pkg.scripts.test)) {
+      pkg.scripts.test = "echo 'do test'";
+    }
+    if (!isString(pkg.scripts["pre-commit"])) {
+      pkg.scripts["pre-commit"] = "sh ./pre_publish.sh";
     }
 
     pkg = prettier_package_json.format(pkg);

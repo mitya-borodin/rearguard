@@ -11,7 +11,7 @@ export function ts_tsLint_config_builder() {
   console.log(chalk.bold.blue(`[ TS_&_TS_LINT ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
   console.log("");
 
-  const { compilerOptions, compileOnSave } = ts;
+  const { compilerOptions, compileOnSave, include, exclude } = ts;
   const {
     devDependencies: { typescript: version },
   } = require(path.resolve(__dirname, "../../../../package.json"));
@@ -111,8 +111,8 @@ export function ts_tsLint_config_builder() {
       /* tslint:enable */
       compilerOptions,
     ),
-    exclude: ["node_modules", "node_modules/.cache"],
-    include: [context],
+    exclude: ["node_modules", "node_modules/.cache", ...exclude],
+    include: [context, ...include],
     version,
   };
 

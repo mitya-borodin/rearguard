@@ -49,6 +49,8 @@ export interface ITypescript {
         [key: string]: any;
       };
       compileOnSave: boolean;
+      include: string[];
+      exclude: string[];
     };
   };
 }

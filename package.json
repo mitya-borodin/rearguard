@@ -31,14 +31,14 @@
   },
   "scripts": {
     "start": "tsc --watch",
-    "build": "tsc",
+    "build": "npm run lint && tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
     "test": "mocha -R spec -r ts-node/register test/**/*.ts",
     "test:watch": "mocha -R spec -w --watch-extensions ts -r ts-node/register test/**/*.ts",
     "test:coverage": "nyc --reporter=html --extension .ts npm test",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
     "pretest": "npm run lint",
     "precommit": "npm test",
-    "prepublishOnly": "npm test && npm run build && sh prepublish.sh"
+    "prepublishOnly": "sh ./pre_publish.sh"
   },
   "dependencies": {
     "@borodindmitriy/utils": "1.3.0",
