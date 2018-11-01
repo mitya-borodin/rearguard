@@ -5,17 +5,16 @@ import cssLoaders from "./components/css.loders";
 import { uglify } from "./components/js.plugins";
 import { get_sync_npm_modules_info, IInfo } from "./components/sync.npm.deps";
 import { context, isDebug, isDevelopment, modules, root, stats } from "./components/target.config";
+// tslint:disable:variable-name object-literal-sort-keys
 
 export function general_WP_config(
   entry: string | string[] | Entry | EntryFunc,
   output: webpack.Output & { globalObject: string },
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
-  // tslint:disable-next-line:variable-name
   externals: webpack.ExternalsObjectElement,
 ): webpack.Configuration {
   const info: IInfo[] = get_sync_npm_modules_info();
-  // tslint:disable-next-line:variable-name
   const lib_externals: webpack.ExternalsObjectElement = {};
 
   for (const { isLibrary, name, bundle_name } of info) {
@@ -33,7 +32,7 @@ export function general_WP_config(
     devtool: isDebug ? "source-map" : false,
     entry,
     externals: { ...lib_externals, ...externals },
-    mode: isDevelopment ? "development" : "production",
+    mode: "none",
     module: {
       rules: [
         {
@@ -48,7 +47,28 @@ export function general_WP_config(
       ],
     },
     optimization: {
-      minimize: !isDevelopment,
+      ...(isDevelopment
+        ? {
+            namedModules: true,
+            namedChunks: true,
+            flagIncludedChunks: false,
+            occurrenceOrder: false,
+            concatenateModules: false,
+            noEmitOnErrors: false,
+            checkWasmTypes: false,
+            minimize: false,
+          }
+        : {
+            namedModules: false,
+            namedChunks: false,
+            flagIncludedChunks: true,
+            occurrenceOrder: true,
+            concatenateModules: true,
+            noEmitOnErrors: true,
+            checkWasmTypes: true,
+            minimize: true,
+          }),
+      nodeEnv: isDevelopment ? "development" : "production",
       minimizer: uglify(),
     },
     output,
@@ -70,3 +90,5 @@ export function general_WP_config(
     stats,
   };
 }
+
+// tslint:enable:variable-name object-literal-sort-keys
