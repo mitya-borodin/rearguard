@@ -2,14 +2,15 @@ import * as webpack from "webpack";
 import { context, tsConfigPath, tsLintConfigPath } from "./target.config";
 
 export default (): webpack.Rule[] => {
-  const exclude = /node_modules/;
   const include = [context];
   const test = /\.(ts|tsx)?$/;
 
   return [
     {
       enforce: "pre",
-      exclude,
+      exclude(modulePath) {
+        return /node_modules/.test(modulePath);
+      },
       include,
       loader: "tslint-loader",
       options: {
@@ -18,7 +19,9 @@ export default (): webpack.Rule[] => {
       test,
     },
     {
-      exclude,
+      exclude(modulePath) {
+        return /node_modules/.test(modulePath);
+      },
       include,
       test,
       use: [

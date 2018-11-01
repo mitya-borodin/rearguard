@@ -81,7 +81,7 @@ export const socket = config.socket;
 let publicPath = config.output.publicPath;
 
 if (isDll || isLib) {
-  publicPath = `${config.output.publicPath}/${pkg.name}/${bundle_sub_dir}`;
+  publicPath = `${config.output.publicPath}/${pkg.name}/${bundle_sub_dir}/`;
 }
 
 let outputPath = resolveTarget(config.output.path);
