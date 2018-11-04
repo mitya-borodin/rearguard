@@ -3,11 +3,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [
-      "es6",
-      "webworker",
-      "es7"
-    ],
+    "lib": ["es6", "webworker", "es7"],
     "allowJs": true,
     "sourceMap": false,
     "outDir": "./lib",
@@ -28,20 +24,11 @@
     "baseUrl": "./src",
     "paths": {},
     "rootDirs": [],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true
   },
-  "include": [
-    "src/**/*",
-    "bin/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", "bin/**/*"],
+  "exclude": ["node_modules"]
 }
