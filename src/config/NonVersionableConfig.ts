@@ -6,28 +6,15 @@ import { NON_VERSIONABLE_CONFIG_FILE_NAME } from "../const";
 // tslint:disable:variable-name
 
 export class NonVersionableConfig {
-  public get fileName(): string {
-    return NON_VERSIONABLE_CONFIG_FILE_NAME;
-  }
-
-  public get config(): { [key: string]: any } {
-    if (fs.existsSync(this.config_path)) {
-      return require(this.config_path);
-    }
-
-    console.log(chalk.bold.red(`[ CONFIG ][ ERROR ][ You haven't config here: ${this.config_path} ]`));
-
-    return {};
-  }
-
-  public set config(config: { [key: string]: any }) {
-    fs.writeFileSync(this.config_path, JSON.stringify({ ...this.config, ...config }, null, 2));
-  }
-
   private readonly config_path: string = path.resolve(process.cwd(), NON_VERSIONABLE_CONFIG_FILE_NAME);
+  private readonly origin: { [key: string]: any };
 
   constructor() {
-    if (!fs.existsSync(this.config_path)) {
+    this.origin = {};
+
+    if (fs.existsSync(this.config_path)) {
+      this.config = require(this.config_path);
+    } else {
       this.config = {};
 
       console.log(chalk.greenBright(`=========NON-VESIONABLE-CONFIG========`));
@@ -35,6 +22,16 @@ export class NonVersionableConfig {
       console.log(chalk.greenBright(`======================================`));
       console.log("");
     }
+  }
+
+  public get config(): { [key: string]: any } {
+    return this.origin;
+  }
+
+  public set config(fields: { [key: string]: any }) {
+    Object.assign(this.origin, { ...this.config, ...fields });
+
+    fs.writeFileSync(this.config_path, JSON.stringify(this.origin, null, 2));
   }
 }
 
