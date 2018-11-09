@@ -3,7 +3,7 @@ import chalk from "chalk";
 import { NonVersionableConfig } from "../NonVersionableConfig";
 
 export class ProxyConfig extends NonVersionableConfig {
-  get map(): { [key: string]: any } {
+  get proxy(): { [key: string]: any } {
     if (isObject(this.config.proxy)) {
       return this.config.proxy;
     }
@@ -25,6 +25,6 @@ export class ProxyConfig extends NonVersionableConfig {
     console.log(chalk.bold.green(`[ PROXY_CONFIG ][ WAS_UPDATED ]`));
     console.log(chalk.green(JSON.stringify(this.config, null, 2)));
 
-    return this.map;
+    return this.proxy;
   }
 }
