@@ -4,11 +4,13 @@ import { VersionableConfig } from "../VersionableConfig";
 
 export class PkgInfo extends VersionableConfig {
   public get name(): string {
-    if (isString(this.pkg.name)) {
-      return this.pkg.name;
+    const { name } = this.pkg;
+
+    if (isString(name) && name.length > 0) {
+      return name;
     }
 
-    console.log(chalk.bold.red(`[ PKG_INFO ][ ERROR ][ name ][ MUST_BE_A_STRING ]`));
+    console.log(chalk.bold.red(`[ PKG_INFO ][ ERROR ][ name ][ MUST_BE_A_NON_EMPTY_STRING ]`));
     console.log(chalk.bold.red(JSON.stringify(this.pkg, null, 2)));
 
     process.exit(1);
@@ -17,7 +19,9 @@ export class PkgInfo extends VersionableConfig {
   }
 
   public get engines(): { [key: string]: any } {
-    if (!isObject(this.pkg.engines)) {
+    const { engines } = this.pkg;
+
+    if (!isObject(engines) || (isObject(engines) && Object.keys(engines).length === 0)) {
       this.pkg = {
         engines: {
           node: ">=10",
@@ -26,7 +30,7 @@ export class PkgInfo extends VersionableConfig {
       };
     }
 
-    return this.pkg.engines;
+    return this.engines;
   }
 
   public get nodeVersion(): number {
@@ -34,14 +38,14 @@ export class PkgInfo extends VersionableConfig {
   }
 
   public get dependencies(): { [key: string]: string } {
-    const deps = this.pkg.dependencies;
+    const { dependencies } = this.pkg;
 
-    if (deps) {
-      return deps;
+    if (dependencies) {
+      return dependencies;
     }
 
     this.pkg = { dependencies: {} };
 
-    return {};
+    return this.dependencies;
   }
 }
