@@ -82,19 +82,28 @@ export class RearguardConfig extends VersionableConfig {
   public get modules(): string[] {
     const { modules } = this.config;
 
-    if (isArray<string>(modules) && modules.length > 0) {
+    if (isArray(modules) && modules.length > 0) {
+      // tslint:disable-next-line:variable-name
+      const modules_result: string[] = [];
+
       for (const m of modules) {
-        if (!isString(m)) {
+        if (isString(m)) {
+          modules_result.push(m);
+        } else {
           console.log("");
-          console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ ERROR ][ modules ][ must be a string ]`));
+          console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ ERROR ][ module: ${m} ][ must be a string ]`));
+
+          process.exit(1);
         }
       }
 
-      return modules;
+      if (modules_result.length > 0) {
+        return modules_result;
+      }
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ modules ][ must be a non empty string ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ modules ][ must be not empty Array<string> ]`));
 
     this.config = { modules: ["src"] };
 
@@ -103,5 +112,37 @@ export class RearguardConfig extends VersionableConfig {
     console.log(chalk.bold.green(JSON.stringify(this.config, null, 2)));
 
     return this.modules;
+  }
+
+  public get output(): { path: string; publicPath: string } {
+    const { output } = this.config;
+
+    if (isString(output.path) && output.path.length > 0 && isString(output.publicPath) && output.publicPath.length) {
+      return output;
+    }
+
+    console.log("");
+    console.log(
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ output ][ must include { path: string, publicPath: string } ]`,
+      ),
+    );
+
+    this.config = {
+      output: {
+        path: "dist",
+        publicPath: "/",
+      },
+    };
+
+    console.log("");
+    console.log(
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ WRITE ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`,
+      ),
+    );
+    console.log(chalk.bold.green(JSON.stringify(this.config, null, 2)));
+
+    return this.output;
   }
 }
