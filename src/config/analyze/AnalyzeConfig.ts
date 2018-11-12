@@ -13,18 +13,17 @@ export class AnalyzeConfig extends NonVersionableConfig {
         return port;
       } else {
         console.log("");
-        console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ port ][ MUST_BE_A_NUMBER AND MORE THEN 5000 ]`));
+        console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ PORT ][ MUST_BE_A_NUMBER AND MORE THEN 5000 ]`));
       }
     } else {
       console.log("");
-      console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ analyze ][ MUST_BE_DEFINED ]`));
+      console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ ANALYZE ][ MUST_BE_DEFINED ]`));
     }
 
     this.config = { analyze: 10000 };
 
     console.log("");
-    console.log(chalk.bold.green(`[ ANALYZE_CONFIG ][ UPDATE ][ port ][ WAS_UPDATED_TO 10000 ]`));
-    console.log(chalk.green(JSON.stringify(this.config, null, 2)));
+    console.log(chalk.bold.green(`[ ANALYZE_CONFIG ][ WRITE ][ PORT ][ ASSIGN_TO 10000 ]`));
 
     return this.port;
   }

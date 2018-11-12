@@ -1,4 +1,4 @@
-import { isObject, isUndefined } from "@borodindmitriy/utils";
+import { isObject, isString, isUndefined } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
@@ -10,7 +10,11 @@ export class VersionableConfig {
   private package_json: { [key: string]: any };
   private readonly config_path: string = path.resolve(process.cwd(), "package.json");
 
-  constructor() {
+  constructor(config_path?: string) {
+    if (isString(config_path)) {
+      this.config_path = config_path;
+    }
+
     this.package_json = { rearguard: {} };
 
     if (fs.existsSync(this.config_path)) {

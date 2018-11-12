@@ -11,12 +11,11 @@ export class WDSConfig extends NonVersionableConfig {
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ WDS_CONFIG ][ HOST ][ WARNING ][ host must be a not empty string ]`));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ HOST ][ WARNING ][ must be a not empty string ]`));
 
     this.wds = { host: "localhost" };
 
-    console.log(chalk.bold.green(`[ WDS_CONFIG ][ HOST ][ WRITE ][ host assigned 'localhost' ]`));
-    console.log(chalk.green(JSON.stringify(this.wds, null, 2)));
+    console.log(chalk.bold.green(`[ CONFIG ][ HOST ][ WRITE ][ assign to 'localhost' ]`));
 
     return this.host;
   }
@@ -29,12 +28,11 @@ export class WDSConfig extends NonVersionableConfig {
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ WDS_CONFIG ][ PORT ][ WARNING ][ port must be a number ]`));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ PORT ][ WARNING ][ must be a number ]`));
 
     this.wds = { port: 3000 };
 
-    console.log(chalk.bold.green(`[ WDS_CONFIG ][ PORT ][ WRITE ][ PORT assigned '3000' ]`));
-    console.log(chalk.green(JSON.stringify(this.config, null, 2)));
+    console.log(chalk.bold.green(`[ CONFIG ][ PORT ][ WRITE ][ assign to '3000' ]`));
 
     return this.port;
   }
@@ -47,7 +45,7 @@ export class WDSConfig extends NonVersionableConfig {
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ WDS_CONFIG ][ PROXY ][ WARNING ][ proxy must be defined ]`));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ PROXY ][ WARNING ][ must be defined ]`));
 
     this.wds = {
       proxy: {
@@ -60,8 +58,7 @@ export class WDSConfig extends NonVersionableConfig {
       },
     };
 
-    console.log(chalk.bold.yellow(`[ WDS_CONFIG ][ PROXY ][ WRITE ][ proxy assigned default settings ]`));
-    console.log(chalk.green(JSON.stringify(this.wds, null, 2)));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ PROXY ][ WRITE ][ assign to default ]`));
 
     return this.proxy;
   }
@@ -74,9 +71,13 @@ export class WDSConfig extends NonVersionableConfig {
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ WDS_CONFIG ][ WARNING ][ wds must be defined ]`));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ WDS ][ WARNING ][ must be defined ]`));
 
-    return {};
+    this.config = { wds: {} };
+
+    console.log(chalk.bold.yellow(`[ CONFIG ][ WDS ][ WRITE ][ assign to '{}' ]`));
+
+    return this.wds;
   }
 
   private set wds(params: { [key: string]: any }) {
