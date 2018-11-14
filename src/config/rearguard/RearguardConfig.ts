@@ -207,93 +207,89 @@ export class RearguardConfig extends VersionableConfig {
 
     return this.sync_npm_deps;
   }
+  /**
+   * Среда может содержать три флага:
+   * has_dll: boolean; - код собирается из dll_entry в dll_bundle.js;
+   * has_node_lib: boolean; - код компилируется через typescript и результат вываливается в outDir,
+   *  в сочелании с has_ui_lib d.ts файлы не генерируются, так как они будут сгенерированны при webpack сборке;
+   * has_ui_lib: boolean; - код собирается из lib_entry в lib_bundle.js;
+   *
+   * Если неуказан ни один lib флаг то точно целевой проект.
+   * Хочу обратить внимание, что сборка серверной части не производится.
+   * Весь серверный код компилируется непосредственно компилятором typescript;
+   */
 
-  public get is_project(): boolean {
-    const { is_project } = this.config;
+  // HAS_DLL
+  // Означает, что необходимо использовать vendors.ts файл и из этого entry point сгенерировать dll_bundle с типом экспорта "var";
+  public get has_dll(): boolean {
+    const { has_dll } = this.config;
 
-    if (isBoolean(is_project)) {
-      return is_project;
+    if (isBoolean(has_dll)) {
+      return has_dll;
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_project ][ must be a boolean ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_dll ][ must be a boolean ]`));
 
-    this.config = { is_project: false };
+    this.config = { has_dll: false };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ is_project ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_dll ][ assign to 'false' ]`));
 
-    return this.is_project;
+    return this.has_dll;
   }
 
-  public set is_project(is_project: boolean) {
-    this.config = { is_project };
+  public set has_dll(has_dll: boolean) {
+    this.config = { has_dll };
   }
 
-  public get is_node_lib(): boolean {
-    const { is_node_lib } = this.config;
+  // HAS_NODE_LIB
+  // Означает, что необходимо выполнить компиляцию всей rootDir в outDir, если указана has_ui_lib, то нет необходимости
+  // генерировать .d.ts файлы.
+  public get has_node_lib(): boolean {
+    const { has_node_lib } = this.config;
 
-    if (isBoolean(is_node_lib)) {
-      return is_node_lib;
+    if (isBoolean(has_node_lib)) {
+      return has_node_lib;
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_node_lib ][ must be a boolean ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_node_lib ][ must be a boolean ]`));
 
-    this.config = { is_node_lib: false };
+    this.config = { has_node_lib: false };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ is_node_lib ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_node_lib ][ assign to 'false' ]`));
 
-    return this.is_node_lib;
+    return this.has_node_lib;
   }
 
-  public set is_node_lib(is_node_lib: boolean) {
-    this.config = { is_node_lib };
+  public set has_node_lib(has_node_lib: boolean) {
+    this.config = { has_node_lib };
   }
 
-  public get is_ui_lib(): boolean {
-    const { is_ui_lib } = this.config;
+  // HAS_UI_LIB
+  // Означает, что необходимо использовать lib_export.ts и из этой entry point создавать lib_bundle с типом экспорта "var";
+  public get has_ui_lib(): boolean {
+    const { has_ui_lib } = this.config;
 
-    if (isBoolean(is_ui_lib)) {
-      return is_ui_lib;
+    if (isBoolean(has_ui_lib)) {
+      return has_ui_lib;
     }
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_ui_lib ][ must be a boolean ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_ui_lib ][ must be a boolean ]`));
 
-    this.config = { is_ui_lib: false };
-
-    console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ is_ui_lib ][ assign to 'false' ]`));
-
-    return this.is_ui_lib;
-  }
-
-  public set is_ui_lib(is_ui_lib: boolean) {
-    this.config = { is_ui_lib };
-  }
-
-  public get is_dll(): boolean {
-    const { is_dll } = this.config;
-
-    if (isBoolean(is_dll)) {
-      return is_dll;
-    }
+    this.config = { has_ui_lib: false };
 
     console.log("");
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_dll ][ must be a boolean ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_ui_lib ][ assign to 'false' ]`));
 
-    this.config = { is_dll: false };
-
-    console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ is_dll ][ assign to 'false' ]`));
-
-    return this.is_dll;
+    return this.has_ui_lib;
   }
 
-  public set is_dll(is_dll: boolean) {
-    this.config = { is_dll };
+  public set has_ui_lib(has_ui_lib: boolean) {
+    this.config = { has_ui_lib };
   }
 }
 
