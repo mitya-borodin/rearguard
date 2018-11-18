@@ -20,8 +20,13 @@ const alias: { [key: string]: string } = {
 const {
   release = false,
   debug = false,
+
+  // mode
   dll = false,
-  lib = false,
+  node_lib = false,
+  ui_lib = false,
+
+  // monorepo
   init = false,
   install = false,
   build = false,
@@ -49,10 +54,10 @@ const {
 
 if (
   action === "wds" ||
-  action === "sync_deps" ||
-  action === "ordering_npm_deps" ||
   action === "build" ||
   action === "tsc" ||
+  action === "sync_deps" ||
+  action === "ordering_npm_deps" ||
   action === "monorepo"
 ) {
   console.log("");
@@ -86,22 +91,24 @@ if (
     process.exit(1);
   }
 
-  if (action === "wds" && (dll || lib)) {
+  if (action === "wds" && (dll || node_lib || ui_lib)) {
     console.log(
-      chalk.bold.red(`I am really sorry but this configuration: "rearguard ${action} [ --dll | --lib ]" is not valid;`),
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib ]" is not valid;`,
+      ),
     );
-    console.log(chalk.bold.green(`You should use: "rearguard build [ --dll | --lib ]";`));
+    console.log(chalk.bold.green(`You should use: "rearguard build [ --dll | --node_lib | --ui_lib ]";`));
 
     process.exit(1);
   }
 
-  if (action === "sync_deps" && release) {
+  if (action === "sync_deps" && (release || dll || node_lib || ui_lib)) {
     console.log(
       chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --lib ]" is not valid;`,
+        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --dll | --node_lib | --ui_lib ]" is not valid;`,
       ),
     );
-    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug || -d ]";`));
+    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
 
     process.exit(1);
   }
@@ -112,7 +119,11 @@ if (
     launchEntryFile = "dll";
   }
 
-  if (action === "build" && lib) {
+  if (action === "build" && node_lib) {
+    launchEntryFile = "lib";
+  }
+
+  if (action === "build" && ui_lib) {
     launchEntryFile = "lib";
   }
 
@@ -162,8 +173,9 @@ if (
       // Параметры запуска
       process.env.NODE_ENV = !release ? "development" : "production";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
-      process.env.REARGUARD_LIB = lib ? "true" : "false";
-      process.env.REARGUARD_DLL = dll ? "true" : "false";
+      process.env.REARGUARD_DLL = lib ? "true" : "false";
+      process.env.REARGUARD_NODE_LIB = dll ? "true" : "false";
+      process.env.REARGUARD_UI_LIB = dll ? "true" : "false";
 
       // MONO_REPO
       process.env.REARGUARD_MONO_INIT = init ? "true" : "false";
@@ -186,6 +198,8 @@ if (
       console.log(chalk.bold.greenBright(`NODE_ENV: ${process.env.NODE_ENV}`));
       console.log(chalk.bold.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
       console.log(chalk.bold.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
+      console.log(chalk.bold.greenBright(`NODE_LIB: ${process.env.REARGUARD_NODE_LIB}`));
+      console.log(chalk.bold.greenBright(`UI_LIB: ${process.env.REARGUARD_UI_LIB}`));
       console.log(chalk.bold.greenBright(`LAUNCH: node ${launchPath}`));
       console.log(chalk.bold.greenBright(`=======================================`));
       console.log(``);

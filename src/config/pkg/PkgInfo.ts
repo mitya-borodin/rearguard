@@ -1,8 +1,9 @@
 import { isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
+import { IPkgInfo } from "../../interfaces/IPkgInfo";
 import { VersionableConfig } from "../VersionableConfig";
 
-export class PkgInfo extends VersionableConfig {
+export class PkgInfo extends VersionableConfig implements IPkgInfo {
   public get name(): string {
     const { name } = this.pkg;
 

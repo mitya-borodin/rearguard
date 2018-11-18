@@ -3,10 +3,11 @@ import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
+import { IVersionableConfig } from "../interfaces/IVersionableConfig";
 
 // tslint:disable:variable-name
 
-export class VersionableConfig {
+export class VersionableConfig implements IVersionableConfig {
   private package_json: { [key: string]: any };
   private readonly config_path: string = path.resolve(process.cwd(), "package.json");
 

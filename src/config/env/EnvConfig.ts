@@ -7,12 +7,20 @@ export class EnvConfig {
     return process.env.REARGUARD_LAUNCH_IS_BUILD === "true";
   }
 
-  get isLib(): boolean {
-    return process.env.REARGUARD_LIB === "true";
+  get isDebug(): boolean {
+    return process.env.REARGUARD_DEBUG === "true";
   }
 
-  get isDll(): boolean {
+  get has_dll(): boolean {
     return process.env.REARGUARD_DLL === "true";
+  }
+
+  get has_node_lib(): boolean {
+    return process.env.REARGUARD_NODE_LIB === "true";
+  }
+
+  get has_ui_lib(): boolean {
+    return process.env.REARGUARD_UI_LIB === "true";
   }
 
   get isDevelopment(): boolean {
@@ -21,10 +29,6 @@ export class EnvConfig {
 
   get isSyncDeps(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS === "true";
-  }
-
-  get isDebug(): boolean {
-    return process.env.REARGUARD_DEBUG === "true";
   }
 
   get nodeModulePath(): string {

@@ -29,7 +29,7 @@ export function ts_tsLint_config_builder() {
 
   // Составление конфигурации.
   const config = {
-    compileOnSave: isBoolean(compileOnSave) ? compileOnSave : false,
+    compileOnSave: true,
     /* tslint:disable */
     compilerOptions: Object.assign(
       {

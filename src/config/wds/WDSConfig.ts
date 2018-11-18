@@ -15,7 +15,7 @@ export class WDSConfig extends NonVersionableConfig {
 
     this.wds = { host: "localhost" };
 
-    console.log(chalk.bold.green(`[ CONFIG ][ HOST ][ WRITE ][ assign to 'localhost' ]`));
+    console.log(chalk.bold.green(`[ CONFIG ][ HOST ][ ASSIGN_TO ][ 'localhost' ]`));
 
     return this.host;
   }
@@ -32,7 +32,7 @@ export class WDSConfig extends NonVersionableConfig {
 
     this.wds = { port: 3000 };
 
-    console.log(chalk.bold.green(`[ CONFIG ][ PORT ][ WRITE ][ assign to '3000' ]`));
+    console.log(chalk.bold.green(`[ CONFIG ][ PORT ][ ASSIGN_TO ][ 3000 ]`));
 
     return this.port;
   }
@@ -58,7 +58,7 @@ export class WDSConfig extends NonVersionableConfig {
       },
     };
 
-    console.log(chalk.bold.yellow(`[ CONFIG ][ PROXY ][ WRITE ][ assign to default ]`));
+    console.log(chalk.bold.yellow(`[ CONFIG ][ PROXY ][ ASSIGN_TO ][ default ]`));
 
     return this.proxy;
   }

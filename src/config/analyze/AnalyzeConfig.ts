@@ -1,8 +1,9 @@
 import { isNumber } from "@borodindmitriy/utils";
 import chalk from "chalk";
+import { IAnalyzeConfig } from "../../interfaces/IAnalyzeConfig";
 import { NonVersionableConfig } from "../NonVersionableConfig";
 
-export class AnalyzeConfig extends NonVersionableConfig {
+export class AnalyzeConfig extends NonVersionableConfig implements IAnalyzeConfig {
   get port(): number {
     const { analyze } = this.config;
 
@@ -23,7 +24,7 @@ export class AnalyzeConfig extends NonVersionableConfig {
     this.config = { analyze: 10000 };
 
     console.log("");
-    console.log(chalk.bold.green(`[ ANALYZE_CONFIG ][ WRITE ][ PORT ][ ASSIGN_TO 10000 ]`));
+    console.log(chalk.bold.green(`[ ANALYZE_CONFIG ][ ASSIGN ][ PORT ][ TO 10000 ]`));
 
     return this.port;
   }
