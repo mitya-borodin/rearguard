@@ -1,6 +1,6 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
-import { IRearguardConfig } from "../../interfaces/IRearguardConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { VersionableConfig } from "../VersionableConfig";
 
 // tslint:disable:variable-name

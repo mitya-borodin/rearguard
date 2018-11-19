@@ -3,7 +3,7 @@ import chalk from "chalk";
 import * as fs from "fs";
 import defaultsDeep from "lodash.defaultsdeep";
 import * as path from "path";
-import { IConfigFile } from "../interfaces/IConfigFile";
+import { IConfigFile } from "../interfaces/config/IConfigFile";
 
 // tslint:disable:variable-name
 

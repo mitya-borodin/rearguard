@@ -2,11 +2,11 @@ import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
 import { NON_VERSIONABLE_CONFIG_FILE_NAME } from "../const";
-import { INonVersionableConfig } from "../interfaces/INonVersionableConfig";
+import { IConfig } from "../interfaces/config/IConfig";
 
 // tslint:disable:variable-name
 
-export class NonVersionableConfig implements INonVersionableConfig {
+export class NonVersionableConfig implements IConfig {
   private readonly config_path: string = path.resolve(process.cwd(), NON_VERSIONABLE_CONFIG_FILE_NAME);
   private readonly origin: { [key: string]: any };
 

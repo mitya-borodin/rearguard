@@ -1,6 +1,6 @@
-import { IVersionableConfig } from "./IVersionableConfig";
+import { IConfig } from "./IConfig";
 
-export interface IPkgInfo extends IVersionableConfig {
+export interface IPkgInfo extends IConfig {
   name: string;
   engines: { [key: string]: any };
   nodeVersion: number;

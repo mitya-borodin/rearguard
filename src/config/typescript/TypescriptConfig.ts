@@ -1,7 +1,7 @@
 import * as path from "path";
-import { IEnvConfig } from "../../interfaces/IEnvConfig";
-import { IRearguardConfig } from "../../interfaces/IRearguardConfig";
-import { ITypescriptConfigFile } from "../../interfaces/ITypescriptConfigFile";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
+import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
 import { ConfigFile } from "../ConfigFile";
 
 // tslint:disable:variable-name object-literal-sort-keys

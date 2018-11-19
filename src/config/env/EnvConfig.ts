@@ -1,4 +1,4 @@
-import { IEnvConfig } from "../../interfaces/IEnvConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 export class EnvConfig implements IEnvConfig {
   get isWDS(): boolean {

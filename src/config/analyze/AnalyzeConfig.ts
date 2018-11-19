@@ -1,6 +1,6 @@
 import { isNumber } from "@borodindmitriy/utils";
 import chalk from "chalk";
-import { IAnalyzeConfig } from "../../interfaces/IAnalyzeConfig";
+import { IAnalyzeConfig } from "../../interfaces/config/IAnalyzeConfig";
 import { NonVersionableConfig } from "../NonVersionableConfig";
 
 export class AnalyzeConfig extends NonVersionableConfig implements IAnalyzeConfig {

@@ -1,6 +1,6 @@
 import { isNumber, isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
-import { IWDSConfig } from "../../interfaces/IWDSConfig";
+import { IWDSConfig } from "../../interfaces/config/IWDSConfig";
 import { NonVersionableConfig } from "../NonVersionableConfig";
 
 export class WDSConfig extends NonVersionableConfig implements IWDSConfig {

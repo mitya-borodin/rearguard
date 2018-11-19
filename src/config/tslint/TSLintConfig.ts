@@ -1,4 +1,4 @@
-import { ITSLintConfigFile } from "../../interfaces/ITSLintConfigFile";
+import { ITSLintConfigFile } from "../../interfaces/config/ITSLintConfigFile";
 import { ConfigFile } from "../ConfigFile";
 
 // tslint:disable:variable-name

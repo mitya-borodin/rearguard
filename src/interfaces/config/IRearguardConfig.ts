@@ -1,6 +1,6 @@
-import { IVersionableConfig } from "./IVersionableConfig";
+import { IConfig } from "./IConfig";
 
-export interface IRearguardConfig extends IVersionableConfig {
+export interface IRearguardConfig extends IConfig {
   context: string;
   entry: string;
   dll_entry: string;

@@ -1,6 +1,6 @@
 import { isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
-import { IPkgInfo } from "../../interfaces/IPkgInfo";
+import { IPkgInfo } from "../../interfaces/config/IPkgInfo";
 import { VersionableConfig } from "../VersionableConfig";
 
 export class PkgInfo extends VersionableConfig implements IPkgInfo {
