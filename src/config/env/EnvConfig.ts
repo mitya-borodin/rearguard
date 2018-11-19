@@ -1,4 +1,6 @@
-export class EnvConfig {
+import { IEnvConfig } from "../../interfaces/IEnvConfig";
+
+export class EnvConfig implements IEnvConfig {
   get isWDS(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }

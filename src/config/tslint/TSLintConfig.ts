@@ -1,10 +1,15 @@
-import { VersionableConfigFile } from "../VersionableConfigFile";
+import { ITSLintConfigFile } from "../../interfaces/ITSLintConfigFile";
+import { ConfigFile } from "../ConfigFile";
 
 // tslint:disable:variable-name
 
-export class TSLintConfig extends VersionableConfigFile {
+export class TSLintConfig extends ConfigFile implements ITSLintConfigFile {
   constructor() {
-    super("tslint.json", {
+    super("tslint.json");
+  }
+
+  protected get default_config(): { [key: string]: any } {
+    return {
       defaultSeverity: "error",
       extends: ["tslint:recommended"],
       jsRules: {},
@@ -16,7 +21,7 @@ export class TSLintConfig extends VersionableConfigFile {
         "variable-name": false,
       },
       rulesDirectory: [],
-    });
+    };
   }
 }
 

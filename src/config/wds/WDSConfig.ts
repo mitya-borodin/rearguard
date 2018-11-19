@@ -1,8 +1,9 @@
 import { isNumber, isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
+import { IWDSConfig } from "../../interfaces/IWDSConfig";
 import { NonVersionableConfig } from "../NonVersionableConfig";
 
-export class WDSConfig extends NonVersionableConfig {
+export class WDSConfig extends NonVersionableConfig implements IWDSConfig {
   public get host(): string {
     const { host } = this.wds;
 

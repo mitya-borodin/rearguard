@@ -1,3 +1,3 @@
 import { RearguardConfig } from "./RearguardConfig";
 
-export const rerguard = new RearguardConfig();
+export const rearguardConfig = new RearguardConfig();

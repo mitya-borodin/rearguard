@@ -1,10 +1,11 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
+import { IRearguardConfig } from "../../interfaces/IRearguardConfig";
 import { VersionableConfig } from "../VersionableConfig";
 
 // tslint:disable:variable-name
 
-export class RearguardConfig extends VersionableConfig {
+export class RearguardConfig extends VersionableConfig implements IRearguardConfig {
   public get context(): string {
     const { context } = this.config;
 
@@ -18,7 +19,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { context: "src" };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ context ][ assign to 'src' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ context ][ assign to 'src' ]`));
 
     return this.context;
   }
@@ -36,7 +37,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { entry: "index.tsx" };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ entry ][ assign to 'index.tsx' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ entry ][ assign to 'index.tsx' ]`));
 
     return this.entry;
   }
@@ -54,7 +55,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { dll_entry: "vendors.ts" };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ dll_entry ][ assign to 'vendors.ts' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ dll_entry ][ assign to 'vendors.ts' ]`));
 
     return this.dll_entry;
   }
@@ -72,7 +73,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { lib_entry: "lib_exports.ts" };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ lib_entry ][ assign to 'lib_exports.ts' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ lib_entry ][ assign to 'lib_exports.ts' ]`));
 
     return this.lib_entry;
   }
@@ -111,7 +112,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { modules };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ modules ][ assign to [ ${modules.join(", ")} ] ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ modules ][ assign to [ ${modules.join(", ")} ] ]`));
 
     return this.modules;
   }
@@ -139,9 +140,7 @@ export class RearguardConfig extends VersionableConfig {
 
     console.log("");
     console.log(
-      chalk.bold.green(
-        `[ RERGUARD_CONFIG ][ WRITE ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`,
-      ),
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`),
     );
 
     return this.output;
@@ -163,7 +162,7 @@ export class RearguardConfig extends VersionableConfig {
 
     console.log("");
     console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ post_css_plugins_path ][ assign to 'post_css_plugins.js' ]`),
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ post_css_plugins_path ][ assign to 'post_css_plugins.js' ]`),
     );
 
     return this.post_css_plugins_path;
@@ -202,25 +201,22 @@ export class RearguardConfig extends VersionableConfig {
 
     console.log("");
     console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ sync_npm_deps ][ assign to [ ${sync_npm_deps.join(", ")} ] ]`),
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ sync_npm_deps ][ assign to [ ${sync_npm_deps.join(", ")} ] ]`),
     );
 
     return this.sync_npm_deps;
   }
   /**
    * Среда может содержать три флага:
-   * has_dll: boolean; - код собирается из dll_entry в dll_bundle.js;
-   * has_node_lib: boolean; - код компилируется через typescript и результат вываливается в outDir,
-   *  в сочелании с has_ui_lib d.ts файлы не генерируются, так как они будут сгенерированны при webpack сборке;
-   * has_ui_lib: boolean; - код собирается из lib_entry в lib_bundle.js;
+   * has_dll: boolean; - говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
+   * has_node_lib: boolean; - говорит, о том, что в директории lib находятся .js, .d.ts файлы;
+   * has_ui_lib: boolean; - говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и manifest.json;
    *
-   * Если неуказан ни один lib флаг то точно целевой проект.
-   * Хочу обратить внимание, что сборка серверной части не производится.
-   * Весь серверный код компилируется непосредственно компилятором typescript;
+   * Эти флаги используются только для копирования собранных файлов из директорий dll_bundle, lib_bundle, lib;
    */
 
   // HAS_DLL
-  // Означает, что необходимо использовать vendors.ts файл и из этого entry point сгенерировать dll_bundle с типом экспорта "var";
+  // Говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
   public get has_dll(): boolean {
     const { has_dll } = this.config;
 
@@ -234,7 +230,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { has_dll: false };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_dll ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_dll ][ assign to 'false' ]`));
 
     return this.has_dll;
   }
@@ -244,8 +240,7 @@ export class RearguardConfig extends VersionableConfig {
   }
 
   // HAS_NODE_LIB
-  // Означает, что необходимо выполнить компиляцию всей rootDir в outDir, если указана has_ui_lib, то нет необходимости
-  // генерировать .d.ts файлы.
+  // Говорит, о том, что в директории lib находятся .js, .d.ts файлы;
   public get has_node_lib(): boolean {
     const { has_node_lib } = this.config;
 
@@ -259,7 +254,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { has_node_lib: false };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_node_lib ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_node_lib ][ assign to 'false' ]`));
 
     return this.has_node_lib;
   }
@@ -269,7 +264,7 @@ export class RearguardConfig extends VersionableConfig {
   }
 
   // HAS_UI_LIB
-  // Означает, что необходимо использовать lib_export.ts и из этой entry point создавать lib_bundle с типом экспорта "var";
+  // Говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и manifest.json;
   public get has_ui_lib(): boolean {
     const { has_ui_lib } = this.config;
 
@@ -283,7 +278,7 @@ export class RearguardConfig extends VersionableConfig {
     this.config = { has_ui_lib: false };
 
     console.log("");
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ WRITE ][ has_ui_lib ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_ui_lib ][ assign to 'false' ]`));
 
     return this.has_ui_lib;
   }
