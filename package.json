@@ -37,7 +37,6 @@
     "test:watch": "mocha -R spec -w --watch-extensions ts -r ts-node/register test/**/*.ts",
     "test:coverage": "nyc --reporter=html --extension .ts npm test",
     "pretest": "npm run lint",
-    "prepush": "sh ./pre_publish.sh",
     "prepublishOnly": "sh ./pre_publish.sh"
   },
   "dependencies": {

@@ -1,6 +1,13 @@
+import * as path from "path";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 export class EnvConfig implements IEnvConfig {
+  constructor() {
+    this.resolveLocalModule = this.resolveLocalModule.bind(this);
+    this.resolveGlobalModule = this.resolveGlobalModule.bind(this);
+    this.resolveDevModule = this.resolveDevModule.bind(this);
+  }
+
   get isWDS(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }
@@ -33,11 +40,31 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS === "true";
   }
 
-  get nodeModulePath(): string {
-    return process.env.REARGUARD_NODE_MODULE_PATH || "";
-  }
-
   get localNodeModulePath(): string {
     return process.env.REARGUARD_LOCAL_NODE_MODULE_PATH || "";
+  }
+
+  get globalNodeModulePath(): string {
+    return process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH || "";
+  }
+
+  get devNodeModulePath(): string {
+    return process.env.REARGUARD_DEV_NODE_MODULE_PATH || "";
+  }
+
+  get rootDir(): string {
+    return process.cwd();
+  }
+
+  public resolveLocalModule(name: string): string {
+    return path.resolve(this.localNodeModulePath, name);
+  }
+
+  public resolveGlobalModule(name: string): string {
+    return path.resolve(this.globalNodeModulePath, name);
+  }
+
+  public resolveDevModule(name: string): string {
+    return path.resolve(this.devNodeModulePath, name);
   }
 }

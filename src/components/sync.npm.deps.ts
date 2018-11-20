@@ -1,4 +1,4 @@
-import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
+/* import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
 import chalk from "chalk";
 // import * as chokidar from "chokidar";
 // import { FSWatcher } from "chokidar";
@@ -405,10 +405,10 @@ export async function sync_npm_deps(watch: boolean = true) {
 
             process.exit(1);
           }
-        }
-        // END
+        } */
+// END
 
-        /*     // WATCH секция.
+/*     // WATCH секция.
       try {
         if (watch) {
           console.log(chalk.blue("[ WATCH_INIT ]"));
@@ -457,7 +457,7 @@ export async function sync_npm_deps(watch: boolean = true) {
 
         setTimeout(sync_npm_deps, 1000);
       } */
-      } else {
+/*       } else {
         console.log(chalk.red("[ SYNC_NPM_DEPS ][ ERROR ][ package.json IS_NOT_EXIST ]"));
         console.log("");
 
@@ -481,5 +481,5 @@ export async function sync_npm_deps(watch: boolean = true) {
 
     process.exit(1);
   }
-}
+} */
 // tslint:enable:variable-name

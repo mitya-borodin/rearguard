@@ -1,8 +1,8 @@
-import chalk from "chalk";
+/* import chalk from "chalk";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import * as moment from "moment";
 import * as path from "path";
-import { configFileName } from "../../const";
+import { configFileName } from "../const";
 import { resolveGlobalNodeModules, resolveLocalNodeModules, root, sync_npm_deps } from "./target.config";
 // tslint:disable:variable-name
 
@@ -213,3 +213,4 @@ export async function ordering_npm_deps() {
   console.log("");
 }
 // tslint:enable:variable-name
+ */

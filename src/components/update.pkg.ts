@@ -1,4 +1,4 @@
-import { isString } from "@borodindmitriy/utils";
+/* import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as moment from "moment";
@@ -70,3 +70,4 @@ export async function update_pkg() {
   console.log(chalk.bold.blue(`=======================================`));
   console.log("");
 }
+ */

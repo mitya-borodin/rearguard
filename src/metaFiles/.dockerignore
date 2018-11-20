@@ -1,11 +1,10 @@
-node_modules
-package.json
-src
 dll_bundle
 lib_bundle
 lib
 readruard.json
 postCssPlugins.js
+pre_publish.sh
+pre_publish_build_tmp
 tsconfig.json
 tslint.json
 README.md
@@ -13,3 +12,6 @@ README.md
 .npmrc
 .gitignore
 .git
+node_modules
+package.json
+src

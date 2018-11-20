@@ -1,4 +1,4 @@
-import chalk from "chalk";
+/* import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
 import { context, dll_entry, entry as main_entry, isDll, isLib, isWDS, lib_entry } from "./target.config";
@@ -37,3 +37,4 @@ export function check_project() {
     }
   }
 }
+ */

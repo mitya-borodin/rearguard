@@ -1,4 +1,4 @@
-import * as fs from "fs";
+/* import * as fs from "fs";
 import * as path from "path";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
@@ -171,3 +171,4 @@ export const postCSS = {
 };
 // END
 // tslint:enable:variable-name object-literal-sort-keys
+ */

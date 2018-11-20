@@ -52,14 +52,43 @@ const {
   return prevValue;
 }, {});
 
-if (
-  action === "wds" ||
-  action === "build" ||
-  action === "tsc" ||
-  action === "sync_deps" ||
-  action === "ordering_npm_deps" ||
-  action === "monorepo"
-) {
+/**
+ * Синхронизация зависимотей - процедура копирования dll_bundle, lib_bundle в соответсвующие директории проекта.
+ *                             Копирование происходит как из локально установленных так из слинкованных в глобальный node_modules,
+ *                             если пакет слинкован в глобальной node_modules, то копируется указанное в (package.json).files
+ *                             после чего уже из локального node_moduled копируются dll_bundle, lib_bundle, если пакет собран как node_lib
+ *                             то в нем присутствует директрия lib и точка входа в пакет указана в полях (package.json).main, (package.json).types, (package.json).module;
+ *                             После того как файлы доставлены, то сортируется список зависимостей от независимых до зависимых, эта информация позволяет строить правильный index.html;
+ * Синхронизация нужна для:
+ * 1) Копирование необходимых файлов в целевой проект
+ * 2) Для получения информации по которой составляется index.html
+ * 3) Для получения информации по которой составляется dynamic_modules.ts, в котором указаны имена модулей в соотвествии с путем до js файла.
+ * Пример: export const page_product_detail = "/page_product_detail/page_product_detail.js?3dwq3e2"
+ * Использование: сачать этот модуль при помощи SystemJS и воспользоваться его кодом.
+ *
+ *
+ * Таким образом для сборки зависимостей не используется webpack, для реализации code spliting не используется webpack;
+ * Следовательно проект может быть размером 100 GB но скачиваться будут модули по кусочкам, и собираться модули будут тоже по кусочкам.
+ * Кусочки можно будет разрабатывать на слабеньких компьютерах с минимальным погружением в предметную область,
+ * это очень хорошо для разработчиков, управляющих проектом, владельцев компаний.
+ */
+
+/**
+ * В каждом сценарии запускается синхронизация зависимостей из node_modules как локального так и глобального;
+ * WDS - запускается webpack-dev-server, из точки входа без экспортов { entry: "index.tsx" };
+ * build - запускается webpack для сборки проекта из точки входа без экспорторв { entry: "index.tsx" };
+ * build --dll - запускается webpack для сборки dll bundle, который включает внешние зависимости (react, mobx, и так далее) из точки входа { dll_entry: "vendors.ts" };
+ *               на выходе получаем dll_bundle/%project_name%/dll_%project_name%.js и dll_bundle/%project_name%/manifest.json;
+ * build --ui_lib - запускается webpack для сборки библиотеки которая будет подключена в бразурер через глобальную перменную, из точки входа { lib_entry: "lib_exports.ts" }
+ *                  на выходе получаем lib/*.d.ts, и lib_bundle/%project_name%/lib_%project_name%.js
+ * build --node_lib - запускается tsc (typescript compile), и компилирует файлы из src в lib, на выходе получаем lib/{*.d.ts, *.js} файлы
+ *                    если указан флаг --ui_lib, то отключается генерация .d.ts файлов, так как они будут сгенерированны в процессе работы webpack;
+ * build --dll --ui_lib --node_lib  - будут задействованны { entry: "index.tsx", dll_entry: "vendors.ts", lib_entry: "lib_exports.ts" }, если какая то точка отствует,
+ *                                    то будет показано уведомление и секция обработки будет пропущена.
+ * sync_deps - Закопускает набор служебных скриптов, для синхронизации зависимостей.
+ */
+
+if (action === "wds" || action === "build" || action === "sync_deps" || action === "monorepo") {
   console.log("");
 
   if (
@@ -80,7 +109,7 @@ if (
     process.exit(1);
   }
 
-  if (action === "monorepo" && (patch || minor || major) && !publish) {
+  if (action === "monorepo" && !publish && (patch || minor || major)) {
     console.log(
       chalk.bold.red(
         `I am really sorry but this configuration: "rearguard ${action} [ --patch | --minor | --major ]" is not valid without [ --publish ];`,
@@ -91,21 +120,10 @@ if (
     process.exit(1);
   }
 
-  if (action === "wds" && (dll || node_lib || ui_lib)) {
+  if (action !== "build" && (dll || node_lib || ui_lib)) {
     console.log(
       chalk.bold.red(
         `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib ]" is not valid;`,
-      ),
-    );
-    console.log(chalk.bold.green(`You should use: "rearguard build [ --dll | --node_lib | --ui_lib ]";`));
-
-    process.exit(1);
-  }
-
-  if (action === "sync_deps" && (release || dll || node_lib || ui_lib)) {
-    console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --dll | --node_lib | --ui_lib ]" is not valid;`,
       ),
     );
     console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
@@ -113,21 +131,18 @@ if (
     process.exit(1);
   }
 
-  let launchEntryFile = action;
+  if (action !== "wds" && action !== "build" && release) {
+    console.log(
+      chalk.bold.red(
+        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r ]" is not valid;`,
+      ),
+    );
+    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
 
-  if (action === "build" && dll) {
-    launchEntryFile = "dll";
+    process.exit(1);
   }
 
-  if (action === "build" && node_lib) {
-    launchEntryFile = "lib";
-  }
-
-  if (action === "build" && ui_lib) {
-    launchEntryFile = "lib";
-  }
-
-  const launchPath: string = resolve(__dirname, "../src/launchers", `${launchEntryFile}.js`);
+  const launchPath: string = resolve(__dirname, "../src/launchers", `${action}.js`);
 
   if (existsSync(launchPath)) {
     // Определение глобального node_modules
@@ -152,6 +167,7 @@ if (
       console.log(chalk.bold.cyan(`RESULT: rearguard was installed here ${npm}/rearguard`));
       console.log(chalk.bold.cyan(`==========================================`));
     }
+
     // Определение локального node_modules
     const LOCAL_NODE_MODULES: string = resolve(process.cwd(), "node_modules");
     let NODE_MODULE_PATH = resolve(GLOBAL_NODE_MODULES, "rearguard/node_modules");
@@ -161,21 +177,25 @@ if (
     }
 
     if (existsSync(NODE_MODULE_PATH)) {
+      // Это директория глобального node_modules
       process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH = GLOBAL_NODE_MODULES;
+      // Это директория node_modules относительно CWD
       process.env.REARGUARD_LOCAL_NODE_MODULE_PATH = LOCAL_NODE_MODULES;
-      process.env.REARGUARD_NODE_MODULE_PATH = NODE_MODULE_PATH;
+      // Это директория node_modules внутри пакета readguard, где находтся все dev deps
+      process.env.REARGUARD_DEV_NODE_MODULE_PATH = NODE_MODULE_PATH;
 
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS = action === "sync_deps" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS = action === "sync_deps" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
 
       // Параметры запуска
       process.env.NODE_ENV = !release ? "development" : "production";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
-      process.env.REARGUARD_DLL = lib ? "true" : "false";
-      process.env.REARGUARD_NODE_LIB = dll ? "true" : "false";
-      process.env.REARGUARD_UI_LIB = dll ? "true" : "false";
+      process.env.REARGUARD_DLL = dll ? "true" : "false";
+      process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
+      process.env.REARGUARD_UI_LIB = ui_lib ? "true" : "false";
 
       // MONO_REPO
       process.env.REARGUARD_MONO_INIT = init ? "true" : "false";

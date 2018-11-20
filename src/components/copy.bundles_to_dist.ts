@@ -1,4 +1,4 @@
-import chalk from "chalk";
+/* import chalk from "chalk";
 import * as copy from "copy";
 import * as moment from "moment";
 import * as path from "path";
@@ -65,3 +65,4 @@ export async function copy_bundles_to_dist() {
   console.log(chalk.bold.blue(`=======================================`));
   console.log("");
 }
+ */

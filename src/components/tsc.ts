@@ -1,4 +1,4 @@
-import chalk from "chalk";
+/* import chalk from "chalk";
 import * as spawn from "cross-spawn";
 import * as moment from "moment";
 import { root } from "./target.config";
@@ -43,3 +43,4 @@ export function tsc() {
   console.log(chalk.bold.blue(`=======================================`));
   console.log("");
 }
+ */

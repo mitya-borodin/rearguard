@@ -6,3 +6,9 @@ dist
 readruard.json
 tsconfig.json
 tslint.json
+.dockerignore
+.editorconfig
+.npmrc
+pre_publish.sh
+pre_publish_build_tmp
+typings.d.ts

@@ -1,19 +1,5 @@
-import chalk from "chalk";
-import * as moment from "moment";
-import * as webpack from "webpack";
-import * as WDS from "webpack-dev-server";
-import { check_project } from "../config/components/chek.project";
-import { css_typing_builder } from "../config/components/css.typing.builder";
-import { ordering_npm_deps } from "../config/components/ordering.npm.deps";
-import { pre_publish_shell } from "../config/components/pre.publish.shell";
-import { sync_npm_deps } from "../config/components/sync.npm.deps";
-import { socket, WDSConfig } from "../config/components/target.config";
-import { ts_tsLint_config_builder } from "../config/components/ts.tsLint.config.builder";
-import { update_pkg } from "../config/components/update.pkg";
-import { main_WS_config } from "../config/webpack.config";
-
 async function wds() {
-  check_project();
+  /*   check_project();
   await ordering_npm_deps();
   await sync_npm_deps(false);
   await ts_tsLint_config_builder();
@@ -42,7 +28,7 @@ async function wds() {
     console.log(chalk.bold.blue(`[ WEBPACK ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
     console.log(chalk.bold.blue(`=======================================`));
     console.log("");
-  });
+  }); */
 }
 
 wds();

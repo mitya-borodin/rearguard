@@ -1,4 +1,4 @@
-import { context, postCSS } from "./target.config";
+/* import { context, postCSS } from "./target.config";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
@@ -40,3 +40,4 @@ module.exports = (loader: any) => [
 
   ...postCSS.plugins.list,
 ];
+ */
