@@ -97,9 +97,6 @@ function collect_all_deps(a_deps: string[], a_module_root?: string): string[] {
 }
 
 function calculate_weight_for_module(a_module_name: string, a_weight = 0, a_module_root?: string): number {
-  const global_path = envConfig.resolveGlobalModule(a_module_name);
-  const local_path = envConfig.resolveLocalModule(a_module_name);
-
   function worker(node_module_path: string, weight: number): number {
     const { sync_npm_deps } = new RearguardConfig(path.resolve(node_module_path, "package.json"));
 
@@ -115,6 +112,26 @@ function calculate_weight_for_module(a_module_name: string, a_weight = 0, a_modu
       return weight;
     }
   }
+
+  if (isString(a_module_root)) {
+    const module_path = path.resolve(a_module_root, a_module_name);
+
+    if (existsSync(module_path)) {
+      return worker(module_path, a_weight);
+    } else {
+      console.log(
+        chalk.red(
+          `[ ORDERINNG_NPM_DEPS ][ calculate_weight_for_module ][ ERROR ]` +
+            `[ You haven't module by path: ${module_path}; ]`,
+        ),
+      );
+
+      process.exit(1);
+    }
+  }
+
+  const global_path = envConfig.resolveGlobalModule(a_module_name);
+  const local_path = envConfig.resolveLocalModule(a_module_name);
 
   if (existsSync(global_path)) {
     return worker(global_path, a_weight);
