@@ -1,0 +1,79 @@
+import { isString } from "@borodindmitriy/utils";
+import chalk from "chalk";
+import * as fs from "fs";
+import * as mkdirp from "mkdirp";
+import * as path from "path";
+import * as prettier_package_json from "prettier-package-json";
+import { rearguardConfig } from "../config/rearguard";
+import { dockerIgnore } from "../meta/dockerignore";
+import { editorConfig } from "../meta/Editorconfig";
+import { gitIgnore } from "../meta/gitignore";
+import { prePublish } from "../meta/PrePublish";
+import { npmrc } from "./../meta/Npmrc/index";
+import { typingFileModule } from "./../meta/TypingFileModule/index";
+
+// tslint:disable:variable-name
+export async function initProject() {
+  const pkg_path = path.resolve(process.cwd(), "package.json");
+
+  if (!fs.existsSync(pkg_path)) {
+    console.log(chalk.red(`[ INIT ][ ERROR ][ You haven't package.json, you should do npm init ]`));
+
+    process.exit(1);
+  }
+
+  const pkg = require(pkg_path);
+  const src = path.resolve(process.cwd(), "src");
+  const entry = path.resolve(src, rearguardConfig.entry);
+  const dll_entry = path.resolve(src, rearguardConfig.dll_entry);
+  const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
+
+  // Init entries
+  mkdirp.sync(src);
+
+  if (!fs.existsSync(entry)) {
+    fs.writeFileSync(entry, `console.log("Точка входа в проект");`);
+  }
+
+  if (!fs.existsSync(dll_entry)) {
+    fs.writeFileSync(dll_entry, `// В этом файле указываются импорты пакетов, которые необходимо вынести в dll;`);
+  }
+
+  if (!fs.existsSync(lib_entry)) {
+    fs.writeFileSync(lib_entry, `// Точка экспорта API из библиотеки.`);
+  }
+
+  // Scripts init
+  if (!isString(pkg.scripts.lint)) {
+    pkg.scripts.lint = "echo 'do lint'";
+  }
+
+  if (!isString(pkg.scripts.build)) {
+    pkg.scripts.build = "echo 'do build'";
+  }
+
+  if (!isString(pkg.scripts.test)) {
+    pkg.scripts.test = "echo 'do test'";
+  }
+
+  if (!isString(pkg.scripts.prepush)) {
+    pkg.scripts.prepush = "sh ./pre_publish.sh";
+  }
+
+  if (!isString(pkg.scripts.prepublishOnly)) {
+    pkg.scripts.prepublishOnly = "sh ./pre_publish.sh";
+  }
+
+  const pkg_string = prettier_package_json.format(pkg);
+
+  fs.writeFileSync(pkg_path, pkg_string);
+
+  // Meta files init
+  dockerIgnore.init();
+  gitIgnore.init();
+  editorConfig.init();
+  npmrc.init();
+  prePublish.init();
+  typingFileModule.init();
+}
+// tslint:enable:variable-name

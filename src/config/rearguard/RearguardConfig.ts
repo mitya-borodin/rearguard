@@ -206,11 +206,17 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
     return this.sync_npm_deps;
   }
+
+  public set sync_npm_deps(sync_npm_deps: string[]) {
+    this.config = { sync_npm_deps };
+  }
+
   /**
    * Среда может содержать три флага:
    * has_dll: boolean; - говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
    * has_node_lib: boolean; - говорит, о том, что в директории lib находятся .js, .d.ts файлы;
-   * has_ui_lib: boolean; - говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и manifest.json;
+   * has_ui_lib: boolean; - говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и
+   * manifest.json;
    *
    * Эти флаги используются только для копирования собранных файлов из директорий dll_bundle, lib_bundle, lib;
    */
@@ -285,6 +291,26 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
   public set has_ui_lib(has_ui_lib: boolean) {
     this.config = { has_ui_lib };
+  }
+
+  // PUBLISH_IN_GIT
+  // Говорит о том, что необходимо оставить под версионированием директории указанные в (package.json).files;
+  public get publish_in_git(): boolean {
+    const { publish_in_git } = this.config;
+
+    if (isBoolean(publish_in_git)) {
+      return publish_in_git;
+    }
+
+    console.log("");
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ publish_in_git ][ must be a boolean ]`));
+
+    this.config = { publish_in_git: false };
+
+    console.log("");
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ publish_in_git ][ assign to 'false' ]`));
+
+    return this.publish_in_git;
   }
 }
 

@@ -1,7 +1,4 @@
+lib
 node_modules
 pre_publish_build_tmp
-lib
-.nyc_output
 coverage
-.idea
-.DS_Store

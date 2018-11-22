@@ -1,9 +1,9 @@
 {
-  "name": "rearguard",
-  "version": "3.1.7",
+  "name": "wrench",
+  "version": "1.0.0",
   "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "node": ">=10",
+    "npm": ">=6"
   },
   "files": [
     "lib",
@@ -32,7 +32,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "npm run lint && tsc",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts' --fix",
+    "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'",
     "test": "mocha -R spec -r ts-node/register test/**/*.ts",
     "test:watch": "mocha -R spec -w --watch-extensions ts -r ts-node/register test/**/*.ts",
     "test:coverage": "nyc --reporter=html --extension .ts npm test",
@@ -56,7 +56,6 @@
     "html-webpack-plugin": "3.2.0",
     "isomorphic-style-loader": "4.0.0",
     "joi": "14.0.2",
-    "lodash.defaultsdeep": "4.6.0",
     "lodash.snakecase": "4.1.1",
     "mkdirp": "0.5.1",
     "moment": "2.22.2",
@@ -81,7 +80,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "tslint-loader": "3.5.4",
-    "typescript": "3.1.4",
+    "typescript": "3.1.6",
     "webpack": "4.23.1",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-dev-server": "3.1.10",
@@ -98,7 +97,6 @@
     "@types/glob": "7.1.1",
     "@types/html-webpack-plugin": "3.2.0",
     "@types/joi": "14.0.0",
-    "@types/lodash.defaultsdeep": "4.6.4",
     "@types/lodash.snakecase": "4.1.4",
     "@types/mkdirp": "0.5.2",
     "@types/mocha": "5.2.5",
@@ -115,19 +113,28 @@
   },
   "description": "Pre set of configuration for build SPA powered by typescript, react, css-modules, webpack, postcss.",
   "keywords": [
-    "typescript",
-    "react",
-    "css-modules",
+    "development environment",
+    "assemble environment",
+    "library centric design",
+    "connection pre-assembled dependencies",
+    "support for config files",
+    "support meta files",
+    "publish to docker repository",
+    "publish to npm",
     "webpack",
-    "postcss",
-    "workbox-webpack-plugin",
-    "webpack-dev-server",
+    "DllPlugin",
+    "DllReferencePlugin",
+    "authoring libraries",
+    "dll builder",
+    "library builder",
+    "project builder",
+    "react",
+    "typescript",
     "tslint",
-    "hard-source-webpack-plugin",
-    "dll",
-    "dll-webpack-plugin",
-    "Web Workers",
-    "worker-loader"
+    "front-end",
+    "back-end",
+    "isomorphic",
+    "nodejs"
   ],
   "license": "MIT"
 }

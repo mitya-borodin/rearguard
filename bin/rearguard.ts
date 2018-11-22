@@ -51,6 +51,7 @@ const {
 
   return prevValue;
 }, {});
+// tslint:disable:max-line-length
 
 /**
  * Синхронизация зависимотей - процедура копирования dll_bundle, lib_bundle в соответсвующие директории проекта.
@@ -271,3 +272,5 @@ if (action === "wds" || action === "build" || action === "sync_deps" || action =
     ),
   );
 }
+
+// tslint:enable:max-line-length

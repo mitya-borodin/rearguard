@@ -1,5 +1,9 @@
+import { initProject } from "./initProject";
+
 async function build() {
-  /*   check_project();
+  await initProject();
+
+  /*
   await ordering_npm_deps();
   await sync_npm_deps(false);
   await ts_tsLint_config_builder();
