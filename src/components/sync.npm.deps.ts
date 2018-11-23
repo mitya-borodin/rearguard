@@ -1,4 +1,4 @@
-/* import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
+import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
 import chalk from "chalk";
 // import * as chokidar from "chokidar";
 // import { FSWatcher } from "chokidar";
@@ -230,6 +230,12 @@ export async function sync_npm_deps(watch: boolean = true) {
         console.log("");
         // END
 
+        /////////////////////
+        //
+        // START OF PROCEDURE
+        //
+        /////////////////////
+
         // Копирование dll_bundle и lib_bundle из локального node_modules;
         async function copy_bundle(module_path: string, bundle_dirname: string, name: string) {
           const snake_name = snakeCase(name);
@@ -405,59 +411,59 @@ export async function sync_npm_deps(watch: boolean = true) {
 
             process.exit(1);
           }
-        } */
-// END
+        }
+        // END
 
-/*     // WATCH секция.
-      try {
-        if (watch) {
-          console.log(chalk.blue("[ WATCH_INIT ]"));
+        // WATCH секция.
+        /*         try {
+          if (watch) {
+            console.log(chalk.blue("[ WATCH_INIT ]"));
 
-          if (watchers.length > 0) {
-            for (const watcher of watchers) {
-              watcher.close();
+            if (watchers.length > 0) {
+              for (const watcher of watchers) {
+                watcher.close();
+              }
+            }
+
+            for (const { moduleName, paths } of npmHardSyncCopyTarget) {
+              const watcher = chokidar.watch(paths);
+
+              watcher.on("change", (from) => {
+                const insidePath = from.substr(from.indexOf(moduleName) + moduleName.length + 1, from.length);
+                const to = path.resolve(LOCAL_NODE_MODULES, moduleName, insidePath);
+
+                fs.unlinkSync(to);
+                if (isDebug) {
+                  console.log(chalk.blue("[ REMOVED_LOCAL_COPY ]"));
+                  console.log(chalk.blue(`[ OF: ${to} ]`));
+                  console.log("");
+                }
+
+                fs.copyFileSync(from, to);
+                if (isDebug) {
+                  console.log(chalk.blue(`[ COPY ][ ${moduleName} ]`));
+                  console.log(chalk.blue(`[ FROM: ${from} ]`));
+                  console.log(chalk.blue(`[ TO ${to} ]`));
+                  console.log("");
+                }
+                if (!isDebug) {
+                  console.log(chalk.blue(`[ SYNC_NPM ][ UPDATE ][ ${insidePath} ]`));
+                  console.log("");
+                }
+              });
+
+              watchers.push(watcher);
             }
           }
+        } catch (error) {
+          console.error(error);
+          console.log(chalk.red(`[ SYNC_NPM ][ ERROR_MESSAGE: ${error.message} ]`));
+          console.log(chalk.blue(`[ SYNC_NPM ][ WILL_RESTARTED_TROUGHT 1000ms; ]`));
+          console.log("");
 
-          for (const { moduleName, paths } of npmHardSyncCopyTarget) {
-            const watcher = chokidar.watch(paths);
-
-            watcher.on("change", (from) => {
-              const insidePath = from.substr(from.indexOf(moduleName) + moduleName.length + 1, from.length);
-              const to = path.resolve(LOCAL_NODE_MODULES, moduleName, insidePath);
-
-              fs.unlinkSync(to);
-              if (isDebug) {
-                console.log(chalk.blue("[ REMOVED_LOCAL_COPY ]"));
-                console.log(chalk.blue(`[ OF: ${to} ]`));
-                console.log("");
-              }
-
-              fs.copyFileSync(from, to);
-              if (isDebug) {
-                console.log(chalk.blue(`[ COPY ][ ${moduleName} ]`));
-                console.log(chalk.blue(`[ FROM: ${from} ]`));
-                console.log(chalk.blue(`[ TO ${to} ]`));
-                console.log("");
-              }
-              if (!isDebug) {
-                console.log(chalk.blue(`[ SYNC_NPM ][ UPDATE ][ ${insidePath} ]`));
-                console.log("");
-              }
-            });
-
-            watchers.push(watcher);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        console.log(chalk.red(`[ SYNC_NPM ][ ERROR_MESSAGE: ${error.message} ]`));
-        console.log(chalk.blue(`[ SYNC_NPM ][ WILL_RESTARTED_TROUGHT 1000ms; ]`));
-        console.log("");
-
-        setTimeout(sync_npm_deps, 1000);
-      } */
-/*       } else {
+          setTimeout(sync_npm_deps, 1000);
+        } */
+      } else {
         console.log(chalk.red("[ SYNC_NPM_DEPS ][ ERROR ][ package.json IS_NOT_EXIST ]"));
         console.log("");
 
@@ -481,5 +487,5 @@ export async function sync_npm_deps(watch: boolean = true) {
 
     process.exit(1);
   }
-} */
+}
 // tslint:enable:variable-name

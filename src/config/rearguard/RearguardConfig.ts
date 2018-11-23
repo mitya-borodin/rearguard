@@ -168,15 +168,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     return this.post_css_plugins_path;
   }
 
-  public get sync_npm_deps(): string[] {
-    const { sync_npm_deps: a_sync_npm_deps } = this.config;
-    const sync_npm_deps: string[] = [];
+  public get sync_project_deps(): string[] {
+    const { sync_project_deps: a_sync_project_deps } = this.config;
+    const sync_project_deps: string[] = [];
     let has_error = false;
 
-    if (isArray(a_sync_npm_deps) && a_sync_npm_deps.length > 0) {
-      for (const i_s of a_sync_npm_deps) {
+    if (isArray(a_sync_project_deps) && a_sync_project_deps.length > 0) {
+      for (const i_s of a_sync_project_deps) {
         if (isString(i_s)) {
-          sync_npm_deps.push(i_s);
+          sync_project_deps.push(i_s);
         } else {
           console.log("");
           console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`));
@@ -185,30 +185,32 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
         }
       }
 
-      if (!has_error && sync_npm_deps.length > 0) {
-        return sync_npm_deps;
+      if (!has_error && sync_project_deps.length > 0) {
+        return sync_project_deps;
       }
     }
 
     if (!has_error) {
       console.log("");
       console.log(
-        chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ sync_npm_deps ][ must be not empty array of string ]`),
+        chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ sync_project_deps ][ must be not empty array of string ]`),
       );
     }
 
-    this.config = { sync_npm_deps };
+    this.config = { sync_project_deps };
 
     console.log("");
     console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ sync_npm_deps ][ assign to [ ${sync_npm_deps.join(", ")} ] ]`),
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ sync_project_deps ][ assign to [ ${sync_project_deps.join(", ")} ] ]`,
+      ),
     );
 
-    return this.sync_npm_deps;
+    return this.sync_project_deps;
   }
 
-  public set sync_npm_deps(sync_npm_deps: string[]) {
-    this.config = { sync_npm_deps };
+  public set sync_project_deps(sync_project_deps: string[]) {
+    this.config = { sync_project_deps };
   }
 
   /**

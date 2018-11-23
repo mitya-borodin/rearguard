@@ -3,11 +3,11 @@ import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
-import { IConfig } from "../interfaces/config/IConfig";
+import { IVersionableConfig } from "../interfaces/config/IVersionableConfig";
 
 // tslint:disable:variable-name
 
-export class VersionableConfig implements IConfig {
+export class VersionableConfig implements IVersionableConfig {
   private package_json: { [key: string]: any };
   private readonly config_path: string = path.resolve(process.cwd(), "package.json");
 
@@ -48,11 +48,11 @@ export class VersionableConfig implements IConfig {
     fs.writeFileSync(this.config_path, prettier_package_json.format(this.package_json));
   }
 
-  protected get pkg(): { [key: string]: any } {
+  public get pkg(): { [key: string]: any } {
     return this.package_json;
   }
 
-  protected set pkg(fields: { [key: string]: any }) {
+  public set pkg(fields: { [key: string]: any }) {
     this.package_json = { ...this.package_json, ...fields };
 
     fs.writeFileSync(this.config_path, prettier_package_json.format(this.package_json));
