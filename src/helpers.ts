@@ -5,6 +5,7 @@ import { pkgInfo } from "./config/pkg";
 import { rearguardConfig } from "./config/rearguard";
 import { ASSETS_NAME, BUNDLE_SUB_DIR, DLL_BUNDLE_DIR_NAME, DLL_MANIFEST_NAME, LIB_BUNDLE_DIR_NAME } from "./const";
 
+// CONTEXT
 export function get_context(): string {
   return path.resolve(process.cwd(), rearguardConfig.context);
 }

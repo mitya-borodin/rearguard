@@ -7,6 +7,9 @@ export interface IRearguardConfig extends IConfig {
   lib_entry: string;
   modules: string[];
   output: { path: string; publicPath: string };
+  bundle_public_path: string;
+  dll_output_path: string;
+  lib_output_path: string;
   post_css_plugins_path: string;
   sync_project_deps: string[];
   has_dll: boolean;

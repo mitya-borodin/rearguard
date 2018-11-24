@@ -1,23 +1,27 @@
+import chalk from "chalk";
+import * as moment from "moment";
+import * as webpack from "webpack";
+import * as WDS from "webpack-dev-server";
+import { initProject } from "../components/init_project";
+import { wdsConfig } from "../config/wds";
+import { get_WDS_config } from "../webpack/components/get_WDS_config";
+import { main_WS_config } from "../webpack/webpack.config.main";
+
 async function wds() {
-  /*   check_project();
-  await ordering_npm_deps();
-  await sync_npm_deps(false);
-  await ts_tsLint_config_builder();
-  await css_typing_builder();
-  await update_pkg();
-  pre_publish_shell();
+  await initProject();
 
   console.log(chalk.bold.blue(`=================WEBPACK===============`));
   const startTime = moment();
   console.log(chalk.bold.blue(`[ WEBPACK ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
   console.log("");
 
-  const server = new WDS(webpack(main_WS_config()), WDSConfig);
+  const { host, port } = wdsConfig;
+  const server = new WDS(webpack(main_WS_config()), get_WDS_config());
 
-  server.listen(socket.port, socket.host, () => {
+  server.listen(port, host, () => {
     console.log(``);
     console.log(chalk.bold.cyanBright(`[ WDS ][ LAUNCHED ]`));
-    console.log(chalk.cyan(`[ LAUNCHED: https://${socket.host}:${socket.port} ]`));
+    console.log(chalk.cyan(`[ LAUNCHED: https://${host}:${port} ]`));
 
     const endTime = moment();
 
@@ -28,7 +32,7 @@ async function wds() {
     console.log(chalk.bold.blue(`[ WEBPACK ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
     console.log(chalk.bold.blue(`=======================================`));
     console.log("");
-  }); */
+  });
 }
 
 wds();

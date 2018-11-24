@@ -1,11 +1,24 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
+import { snakeCase } from "lodash";
+import * as path from "path";
+import { BUNDLE_SUB_DIR } from "../../const";
+import { dll_path, lib_path } from "../../helpers";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { VersionableConfig } from "../VersionableConfig";
 
 // tslint:disable:variable-name
 
 export class RearguardConfig extends VersionableConfig implements IRearguardConfig {
+  private envConfig: IEnvConfig;
+
+  constructor(envConfig: IEnvConfig, config_path?: string) {
+    super();
+
+    this.envConfig = envConfig;
+  }
+
   public get context(): string {
     const { context } = this.config;
 
@@ -96,7 +109,11 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       }
 
       if (!has_error && modules.length > 0) {
-        return modules;
+        return [
+          ...modules.map(this.envConfig.resolveLocalModule),
+          this.envConfig.resolveLocalModule("node_modules"),
+          this.envConfig.resolveDevModule(""),
+        ];
       }
     }
 
@@ -121,7 +138,10 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     const { output } = this.config;
 
     if (isString(output.path) && output.path.length > 0 && isString(output.publicPath) && output.publicPath.length) {
-      return output;
+      return {
+        path: this.envConfig.resolveLocalModule(output.path),
+        publicPath: output.publicPath,
+      };
     }
 
     console.log("");
@@ -144,6 +164,18 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     );
 
     return this.output;
+  }
+
+  public get bundle_public_path(): string {
+    return path.normalize(`${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR}/`);
+  }
+
+  public get dll_output_path(): string {
+    return dll_path();
+  }
+
+  public get lib_output_path(): string {
+    return lib_path();
   }
 
   public get post_css_plugins_path(): string {

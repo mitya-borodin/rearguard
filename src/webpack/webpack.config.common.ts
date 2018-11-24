@@ -1,26 +1,32 @@
 import * as path from "path";
-import * as webpack from "webpack";
 import { Entry, EntryFunc } from "webpack";
+import * as webpack from "webpack";
+import { get_bundles_info } from "../components/project_deps/get_bundles_info";
+import { envConfig } from "../config/env";
+import { rearguardConfig } from "../config/rearguard";
 import { get_context } from "../helpers";
+import { IBundleInfo } from "./../interfaces/IBundleInfo";
 import cssLoaders from "./components/css.loders";
+import { get_stats } from "./components/get_stats";
 import { uglify } from "./components/js.plugins";
-import { get_sync_npm_modules_info, IInfo } from "./components/sync.npm.deps";
-import { isDebug, isDevelopment, modules, root, stats } from "./components/target.config";
 // tslint:disable:variable-name object-literal-sort-keys
 
 export function general_WP_config(
   entry: string | string[] | Entry | EntryFunc,
-  output: webpack.Output & { globalObject: string },
+  output: webpack.Output,
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
   externals: webpack.ExternalsObjectElement,
 ): webpack.Configuration {
-  const info: IInfo[] = get_sync_npm_modules_info();
+  const { modules } = rearguardConfig;
+  const { isDevelopment, isDebug } = envConfig;
+
+  const info: IBundleInfo[] = get_bundles_info();
   const lib_externals: webpack.ExternalsObjectElement = {};
 
-  for (const { isLibrary, name, bundle_name } of info) {
-    if (isLibrary) {
-      lib_externals[name] = {
+  for (const { has_ui_lib, bundle_name, bundle_entry_name } of info) {
+    if (has_ui_lib) {
+      lib_externals[bundle_entry_name.lib] = {
         var: bundle_name,
       };
     }
@@ -58,13 +64,22 @@ export function general_WP_config(
       noEmitOnErrors: !isDevelopment,
       minimizer: uglify(),
     },
-    output,
+    output: {
+      // filename - шаблон имен файлов.
+      filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
+      // Дописывает дополнительную информацию в bundle;
+      pathinfo: isDebug,
+      chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
+      // globalObject - непонятная хрень, после того, как все отлажу, то обязательно разберусь с этой настройкой.
+      globalObject: "this",
+      ...output,
+    },
     performance: {
       hints: false,
     },
     plugins: [...plugins],
     profile: true,
-    recordsPath: path.resolve(root, "node_modules/.cache/webpack/[confighash]/records.json"),
+    recordsPath: path.resolve(process.cwd(), "node_modules/.cache/webpack/[confighash]/records.json"),
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".css", ".json"],
       modules,
@@ -74,7 +89,7 @@ export function general_WP_config(
       mainFields: ["loader", "main"],
       modules,
     },
-    stats,
+    stats: get_stats(),
   };
 }
 

@@ -38,7 +38,7 @@ export const DllPlugin = (): webpack.Plugin[] => {
   ];
 };
 
-export const DllReferencePlugin = (): webpack.Plugin[] => {
+export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] => {
   const bundlesInfo: IBundleInfo[] = get_bundles_info();
   const plugins: webpack.Plugin[] = [];
 
@@ -60,14 +60,16 @@ export const DllReferencePlugin = (): webpack.Plugin[] => {
     }
   }
 
-  if (fs.existsSync(dll_manifest_path())) {
-    plugins.push(
-      new webpack.DllReferencePlugin({
-        context: get_context(),
-        manifest: dll_manifest_path(),
-        name: dll_entry_name(),
-      }),
-    );
+  if (!exclude_them_self) {
+    if (fs.existsSync(dll_manifest_path())) {
+      plugins.push(
+        new webpack.DllReferencePlugin({
+          context: get_context(),
+          manifest: dll_manifest_path(),
+          name: dll_entry_name(),
+        }),
+      );
+    }
   }
 
   return plugins;
