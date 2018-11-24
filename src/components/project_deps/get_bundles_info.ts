@@ -28,7 +28,7 @@ export function get_bundles_info(): IBundleInfo[] {
     for (const module of rearguardConfig.sync_project_deps) {
       // Абсолютный путь до директории модуля, который находится в локальном node_modules.
       const module_path = envConfig.resolveLocalModule(module);
-      const config = new RearguardConfig(module_path);
+      const config = new RearguardConfig(envConfig, module_path);
       const bundle_name = snakeCase(config.pkg.name);
 
       const bundleInfo: IBundleInfo = {

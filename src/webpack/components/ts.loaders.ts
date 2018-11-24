@@ -1,4 +1,6 @@
 import * as webpack from "webpack";
+import { tsLintConfig } from "../../config/tslint";
+import { typescriptConfig } from "../../config/typescript";
 import { get_context } from "../../helpers";
 
 export default (): webpack.Rule[] => {
@@ -14,7 +16,7 @@ export default (): webpack.Rule[] => {
       include,
       loader: "tslint-loader",
       options: {
-        configFile: tsLintConfigPath,
+        configFile: tsLintConfig.config_path,
       },
       test,
     },
@@ -28,7 +30,7 @@ export default (): webpack.Rule[] => {
         {
           loader: "ts-loader",
           options: {
-            configFile: tsConfigPath,
+            configFile: typescriptConfig.config_path,
           },
         },
       ],

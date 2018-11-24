@@ -1,14 +1,14 @@
 import { isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
-import defaultsDeep from "lodash.defaultsdeep";
+import { defaultsDeep } from "lodash";
 import * as path from "path";
 import { IConfigFile } from "../interfaces/config/IConfigFile";
 
 // tslint:disable:variable-name
 
 export class ConfigFile implements IConfigFile {
-  private readonly config_path: string;
+  public readonly config_path: string;
 
   constructor(file_name: string) {
     if (isString(file_name)) {

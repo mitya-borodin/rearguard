@@ -15,7 +15,7 @@ export function flatten_deps(a_cur_project_deps: string[], a_modules_root_direct
   const flat_deps: Set<string> = new Set();
 
   function worker(module_name: string, node_module_path: string): boolean {
-    const { sync_project_deps } = new RearguardConfig(path.resolve(node_module_path, "package.json"));
+    const { sync_project_deps } = new RearguardConfig(envConfig, path.resolve(node_module_path, "package.json"));
 
     if (sync_project_deps.length > 0) {
       flat_deps.add(module_name);

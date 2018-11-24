@@ -1,9 +1,13 @@
+import { existsSync } from "fs";
+import { envConfig } from "../config/env";
 import { get_context } from "../helpers";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
 
 module.exports = (loader: any) => {
+  const externalPluginsPath = envConfig.resolveLocalModule("postcss.config.js");
+
   return [
     // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
     // https://github.com/postcss/postcss-import
@@ -40,6 +44,6 @@ module.exports = (loader: any) => {
     // https://github.com/postcss/autoprefixer
     require("autoprefixer")([">0.1%"]),
 
-    ...postCSS.plugins.list,
+    ...(existsSync(externalPluginsPath) ? require(externalPluginsPath) : []),
   ];
 };

@@ -9,7 +9,7 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 
 export function get_module_weight(a_module_name: string, a_weight = 0, a_module_root?: string): number {
   function worker(a_module_path: string, weight: number): number {
-    const { sync_project_deps } = new RearguardConfig(path.resolve(a_module_path, "package.json"));
+    const { sync_project_deps } = new RearguardConfig(envConfig, path.resolve(a_module_path, "package.json"));
 
     if (sync_project_deps.length > 0) {
       weight += sync_project_deps.length;

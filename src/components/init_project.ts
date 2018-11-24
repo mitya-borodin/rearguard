@@ -8,6 +8,7 @@ import { rearguardConfig } from "../config/rearguard";
 import { dockerIgnore } from "../meta/dockerignore";
 import { editorConfig } from "../meta/Editorconfig";
 import { gitIgnore } from "../meta/gitignore";
+import { postcssPlugins } from "../meta/postcssPlugins";
 import { prePublish } from "../meta/PrePublish";
 import { npmrc } from "./../meta/Npmrc/index";
 import { typingFileModule } from "./../meta/TypingFileModule/index";
@@ -86,6 +87,7 @@ export async function initProject() {
   npmrc.init();
   prePublish.init();
   typingFileModule.init();
+  postcssPlugins.init();
 
   await ordering_project_deps();
   await sync_with_linked_modules();

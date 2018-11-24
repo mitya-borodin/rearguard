@@ -85,7 +85,7 @@ export async function sync_with_linked_modules(): Promise<void> {
         /////////////////////
 
         for (const module of linked_modules) {
-          const config = new RearguardConfig(module.path);
+          const config = new RearguardConfig(envConfig, module.path);
           const pkg_path = path.resolve(module.path, "package.json");
 
           if (existsSync(pkg_path)) {

@@ -89,7 +89,7 @@ export async function copy_bundles() {
   try {
     for (const module of rearguardConfig.sync_project_deps) {
       const module_path = envConfig.resolveLocalModule(module);
-      const { has_dll, has_ui_lib, pkg } = new RearguardConfig(module_path);
+      const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, module_path);
 
       if (has_dll || has_ui_lib) {
         await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);

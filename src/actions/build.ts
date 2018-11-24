@@ -1,4 +1,4 @@
-import { initProject } from "./initProject";
+import { initProject } from "../components/init_project";
 
 async function build() {
   await initProject();

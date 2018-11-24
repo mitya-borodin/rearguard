@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as webpack from "webpack";
 import { envConfig } from "../../config/env";
 import { get_context } from "../../helpers";
@@ -43,7 +44,7 @@ export default (): webpack.Rule[] => {
       loader: "postcss-loader",
       options: {
         ident: "postcss",
-        plugins: postCSS.config,
+        plugins: require(path.resolve(__dirname, "../../components", "postcss.config.js")),
       },
     },
   ];
