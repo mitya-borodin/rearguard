@@ -2,28 +2,41 @@ import { snakeCase } from "lodash";
 import * as path from "path";
 import { envConfig } from "./config/env";
 import { pkgInfo } from "./config/pkg";
-import { BUNDLE_SUB_DIR, DLL_ASSETS_NAME, DLL_BUNDLE_DIR_NAME, DLL_MANIFEST_NAME, LIB_BUNDLE_DIR_NAME } from "./const";
+import { rearguardConfig } from "./config/rearguard";
+import { ASSETS_NAME, BUNDLE_SUB_DIR, DLL_BUNDLE_DIR_NAME, DLL_MANIFEST_NAME, LIB_BUNDLE_DIR_NAME } from "./const";
 
-export function lib_entry_name(): string {
-  return `lib_${snakeCase(pkgInfo.name)}`;
+export function get_context(): string {
+  return path.resolve(process.cwd(), rearguardConfig.context);
 }
 
-export function lib_path(): string {
-  return path.resolve(envConfig.rootDir, LIB_BUNDLE_DIR_NAME, snakeCase(pkgInfo.name), BUNDLE_SUB_DIR);
+export function get_output_path(): string {
+  return path.resolve(process.cwd(), rearguardConfig.output.path);
 }
 
-export function dll_entry_name(): string {
-  return `dll_${snakeCase(pkgInfo.name)}`;
+export function dll_entry_name(name = snakeCase(pkgInfo.name)): string {
+  return `___DLL___${name}`;
 }
 
-export function dll_path(): string {
-  return path.resolve(envConfig.rootDir, DLL_BUNDLE_DIR_NAME, snakeCase(pkgInfo.name), BUNDLE_SUB_DIR);
+export function lib_entry_name(name = snakeCase(pkgInfo.name)): string {
+  return `___LIBRARY___${name}`;
 }
 
-export function dll_manifest_path(): string {
-  return path.resolve(dll_path(), DLL_MANIFEST_NAME);
+export function dll_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+  return path.resolve(root, DLL_BUNDLE_DIR_NAME, name, BUNDLE_SUB_DIR);
 }
 
-export function dll_assets_path(): string {
-  return path.resolve(dll_path(), DLL_ASSETS_NAME);
+export function lib_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+  return path.resolve(root, LIB_BUNDLE_DIR_NAME, name, BUNDLE_SUB_DIR);
+}
+
+export function dll_assets_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+  return path.resolve(dll_path(root, name), ASSETS_NAME);
+}
+
+export function lib_assets_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+  return path.resolve(lib_path(root, name), ASSETS_NAME);
+}
+
+export function dll_manifest_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+  return path.resolve(dll_path(root, name), DLL_MANIFEST_NAME);
 }

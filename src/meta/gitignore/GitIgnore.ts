@@ -1,8 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
+import { IMetaFile } from "../../interfaces/metaFile/IMetaFile";
 
-export class GitIgnore {
+export class GitIgnore implements IMetaFile {
   private rearguardConfig: IRearguardConfig;
 
   constructor(rearguardConfig: IRearguardConfig) {

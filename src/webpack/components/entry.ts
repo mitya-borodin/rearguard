@@ -1,11 +1,17 @@
 import { Entry, EntryFunc } from "webpack";
-import { entry, isBuild, isDevelopment, isLib, resolveNodeModules, socket } from "./target.config";
+import { envConfig } from "../../config/env";
+import { rearguardConfig } from "../../config/rearguard";
+import { wdsConfig } from "../../config/wds";
 
 export default (entries: string[] = []): string | string[] | Entry | EntryFunc => {
-  if (isDevelopment && !isBuild && !isLib) {
+  const { isWDS, isDevelopment } = envConfig;
+  const { entry } = rearguardConfig;
+  const { port, host } = wdsConfig;
+
+  if (isWDS && isDevelopment) {
     return [
-      `${resolveNodeModules("webpack-dev-server")}/client?https://${socket.host}:${socket.port}`,
-      `${resolveNodeModules("webpack")}/hot/only-dev-server`,
+      `${envConfig.resolveDevModule("webpack-dev-server")}/client?https://${host}:${port}`,
+      `${envConfig.resolveDevModule("webpack")}/hot/only-dev-server`,
       ...entries,
       entry,
     ];

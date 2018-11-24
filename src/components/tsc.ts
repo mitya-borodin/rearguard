@@ -19,7 +19,8 @@ export function tsc() {
     if (result.signal === "SIGKILL") {
       console.log(
         chalk.bold.red(
-          "The tsc failed because the process exited too early. This probably means the system ran out of memory or someone called `kill -9` on the process.",
+          "The tsc failed because the process exited too early. " +
+          "This probably means the system ran out of memory or someone called `kill -9` on the process.",
         ),
       );
 
@@ -27,7 +28,8 @@ export function tsc() {
     } else if (result.signal === "SIGTERM") {
       console.log(
         chalk.bold.red(
-          "The tsc failed because the process exited too early. Someone might have called `kill` or `killall`, or the system could be shutting down.",
+          "The tsc failed because the process exited too early. " +
+          "Someone might have called `kill` or `killall`, or the system could be shutting down.",
         ),
       );
 

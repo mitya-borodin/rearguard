@@ -1,3 +1,3 @@
 export interface IMetaFile {
-  init(): { [key: string]: any };
+  init(): void;
 }

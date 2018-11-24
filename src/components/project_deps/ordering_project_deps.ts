@@ -17,14 +17,17 @@ export async function ordering_project_deps(): Promise<void> {
   // START OF PROCEDURE
   //
   /////////////////////
+  const sync_project_deps = rearguardConfig.sync_project_deps;
 
-  const modules = flatten_deps(rearguardConfig.sync_project_deps);
-  const result: string[] = modules
-    .map((module) => ({ name: module, weight: get_module_weight(module, 0) }))
-    .sort((a, b) => (a.weight > b.weight ? 1 : -1))
-    .map(({ name }) => name);
+  if (sync_project_deps.length > 0) {
+    const modules = flatten_deps(sync_project_deps);
+    const result: string[] = modules
+      .map((module) => ({ name: module, weight: get_module_weight(module, 0) }))
+      .sort((a, b) => (a.weight > b.weight ? 1 : -1))
+      .map(({ name }) => name);
 
-  rearguardConfig.sync_project_deps = result;
+    rearguardConfig.sync_project_deps = result;
+  }
 
   /////////////////////
   //

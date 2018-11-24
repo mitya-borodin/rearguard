@@ -1,4 +1,4 @@
-/* import * as fs from "fs";
+import * as fs from "fs";
 import * as path from "path";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
@@ -11,11 +11,8 @@ export const resolveGlobalNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_GLOBAL_NODE_MODULES_PATH || "", name);
 export const resolveLocalNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_LOCAL_NODE_MODULE_PATH || "", name);
-
-// Разрешает пути, относительно того node_modules где установлен rearguard;
 export const resolveNodeModules = (name: string = "") =>
   path.resolve(process.env.REARGUARD_NODE_MODULE_PATH || "", name);
-
 export const resolveTarget = (relPath: string = "") => path.resolve(CWD, relPath);
 
 // ENV ===================================================================
@@ -171,4 +168,3 @@ export const postCSS = {
 };
 // END
 // tslint:enable:variable-name object-literal-sort-keys
- */

@@ -1,8 +1,8 @@
 import * as webpack from "webpack";
-import { context, tsConfigPath, tsLintConfigPath } from "./target.config";
+import { rearguardConfig } from "../../config/rearguard";
 
 export default (): webpack.Rule[] => {
-  const include = [context];
+  const include = [rearguardConfig.context];
   const test = /\.(ts|tsx)?$/;
 
   return [

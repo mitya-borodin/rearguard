@@ -1,7 +1,11 @@
 import * as webpack from "webpack";
-import { context, isDebug, isDevelopment, postCSS } from "./target.config";
+import { envConfig } from "../../config/env";
+import { rearguardConfig } from "../../config/rearguard";
 
 export default (): webpack.Rule[] => {
+  const { isDebug, isDevelopment } = envConfig;
+  const { context } = rearguardConfig;
+
   const style = [{ loader: "isomorphic-style-loader" }];
   const css = [
     {

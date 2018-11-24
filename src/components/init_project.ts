@@ -11,6 +11,9 @@ import { gitIgnore } from "../meta/gitignore";
 import { prePublish } from "../meta/PrePublish";
 import { npmrc } from "./../meta/Npmrc/index";
 import { typingFileModule } from "./../meta/TypingFileModule/index";
+import { copy_bundles } from "./project_deps/copy_bundles";
+import { ordering_project_deps } from "./project_deps/ordering_project_deps";
+import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
 
 // tslint:disable:variable-name
 export async function initProject() {
@@ -44,12 +47,20 @@ export async function initProject() {
   }
 
   // Scripts init
-  if (!isString(pkg.scripts.lint)) {
-    pkg.scripts.lint = "echo 'do lint'";
+  if (!pkg.scripts) {
+    pkg.scripts = {};
+  }
+
+  if (!isString(pkg.scripts.start)) {
+    pkg.scripts.start = "rearguard wds";
   }
 
   if (!isString(pkg.scripts.build)) {
-    pkg.scripts.build = "echo 'do build'";
+    pkg.scripts.build = "rearguard build";
+  }
+
+  if (!isString(pkg.scripts.lint)) {
+    pkg.scripts.lint = "echo 'do lint'";
   }
 
   if (!isString(pkg.scripts.test)) {
@@ -75,5 +86,9 @@ export async function initProject() {
   npmrc.init();
   prePublish.init();
   typingFileModule.init();
+
+  await ordering_project_deps();
+  await sync_with_linked_modules();
+  await copy_bundles();
 }
 // tslint:enable:variable-name

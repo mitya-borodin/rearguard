@@ -1,8 +1,9 @@
-/* import chalk from "chalk";
+import chalk from "chalk";
 import * as copy from "copy";
 import * as moment from "moment";
 import * as path from "path";
-import { dist_dir_name, dll_bundle_dirname, isDebug, lib_bundle_dirname, root } from "./target.config";
+import { envConfig } from "../../config/env";
+import { DIST_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 
 export async function copy_bundles_to_dist() {
   console.log(chalk.bold.blue(`=========COPY_BUNDLE_TO_DIST===========`));
@@ -12,16 +13,16 @@ export async function copy_bundles_to_dist() {
 
   await new Promise((resolve, reject) => {
     copy(
-      [`${path.resolve(root, dll_bundle_dirname)}/**`],
-      path.resolve(root, dist_dir_name),
+      [`${path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME)}/**`],
+      path.resolve(process.cwd(), DIST_DIR_NAME),
       (error: any, items: any[]) => {
         if (!error) {
-          if (isDebug) {
+          if (envConfig.isDebug) {
             for (const item of items) {
-              console.log(chalk.white(`[ COPY_BUNDLE_TO_DIST ][ DLL ]`), chalk.bold.blue(item.path));
+              console.log(chalk.white(`[ DLL ]`), chalk.bold.blue(item.path));
             }
           } else {
-            console.log(chalk.white(`[ COPY_BUNDLE_TO_DIST ][ DLL ][ ${items.length} FILES ]`));
+            console.log(chalk.white(`[ DLL ][ ${items.length} FILES ]`));
           }
 
           resolve();
@@ -33,16 +34,16 @@ export async function copy_bundles_to_dist() {
   });
   await new Promise((resolve, reject) => {
     copy(
-      [`${path.resolve(root, lib_bundle_dirname)}/**`],
-      path.resolve(root, dist_dir_name),
+      [`${path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME)}/**`],
+      path.resolve(process.cwd(), DIST_DIR_NAME),
       (error: any, items: any[]) => {
         if (!error) {
-          if (isDebug) {
+          if (envConfig.isDebug) {
             for (const item of items) {
-              console.log(chalk.white(`[ COPY_BUNDLE_TO_DIST ][ LIBRARY ]`), chalk.bold.blue(item.path));
+              console.log(chalk.white(`[ LIBRARY ]`), chalk.bold.blue(item.path));
             }
           } else {
-            console.log(chalk.white(`[ COPY_BUNDLE_TO_DIST ][ LIBRARY ][ ${items.length} FILES ]`));
+            console.log(chalk.white(`[ LIBRARY ][ ${items.length} FILES ]`));
           }
 
           resolve();
@@ -65,4 +66,3 @@ export async function copy_bundles_to_dist() {
   console.log(chalk.bold.blue(`=======================================`));
   console.log("");
 }
- */
