@@ -1,11 +1,9 @@
 import * as webpack from "webpack";
 import { envConfig } from "../../config/env";
-import { rearguardConfig } from "../../config/rearguard";
+import { get_context } from "../../helpers";
 
 export default (): webpack.Rule[] => {
   const { isDebug, isDevelopment } = envConfig;
-  const { context } = rearguardConfig;
-
   const style = [{ loader: "isomorphic-style-loader" }];
   const css = [
     {
@@ -55,12 +53,12 @@ export default (): webpack.Rule[] => {
       exclude(modulePath) {
         return /node_modules/.test(modulePath);
       },
-      include: context,
+      include: get_context(),
       test: /\.css/,
       use: [...style, ...cssModules, ...postCss],
     },
     {
-      exclude: context,
+      exclude: get_context(),
       test: /\.css/,
       use: [...style, ...css],
     },

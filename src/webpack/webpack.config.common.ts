@@ -1,10 +1,11 @@
 import * as path from "path";
 import * as webpack from "webpack";
 import { Entry, EntryFunc } from "webpack";
+import { get_context } from "../helpers";
 import cssLoaders from "./components/css.loders";
 import { uglify } from "./components/js.plugins";
 import { get_sync_npm_modules_info, IInfo } from "./components/sync.npm.deps";
-import { context, isDebug, isDevelopment, modules, root, stats } from "./components/target.config";
+import { isDebug, isDevelopment, modules, root, stats } from "./components/target.config";
 // tslint:disable:variable-name object-literal-sort-keys
 
 export function general_WP_config(
@@ -28,7 +29,7 @@ export function general_WP_config(
   return {
     bail: !isDevelopment,
     cache: true,
-    context,
+    context: get_context(),
     devtool: isDebug ? "source-map" : false,
     entry,
     externals: { ...lib_externals, ...externals },

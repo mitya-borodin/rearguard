@@ -1,8 +1,8 @@
 import * as webpack from "webpack";
-import { rearguardConfig } from "../../config/rearguard";
+import { get_context } from "../../helpers";
 
 export default (): webpack.Rule[] => {
-  const include = [rearguardConfig.context];
+  const include = [get_context()];
   const test = /\.(ts|tsx)?$/;
 
   return [

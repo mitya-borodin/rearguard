@@ -1,15 +1,13 @@
-import { rearguardConfig } from "../config/rearguard";
+import { get_context } from "../helpers";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5
 
 module.exports = (loader: any) => {
-  const { context } = rearguardConfig;
-
   return [
     // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
     // https://github.com/postcss/postcss-import
-    require("postcss-import")({ path: context }),
+    require("postcss-import")({ path: get_context() }),
 
     // https://github.com/maximkoretskiy/postcss-initial
     // This is polyfill for css rule: "all: initial".

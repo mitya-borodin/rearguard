@@ -1,4 +1,5 @@
 import * as path from "path";
+import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
@@ -25,7 +26,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
       compileOnSave: false,
       compilerOptions: {
         /* Base options */
-        baseUrl: path.resolve(process.cwd(), context),
+        baseUrl: get_context(),
         forceConsistentCasingInFileNames: true,
         target: "es6",
         jsx: "react",
