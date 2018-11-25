@@ -4,18 +4,21 @@ import * as fs from "fs";
 import * as mkdirp from "mkdirp";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
+import { prettierConfig } from "../config/prettier";
 import { rearguardConfig } from "../config/rearguard";
+import { tsLintConfig } from "../config/tslint";
+import { typescriptConfig } from "../config/typescript";
 import { dockerIgnore } from "../meta/dockerignore";
-import { editorConfig } from "../meta/Editorconfig";
+import { editorConfig } from "../meta/editorConfig";
 import { gitIgnore } from "../meta/gitignore";
 import { postcssPlugins } from "../meta/postcssPlugins";
 import { prePublish } from "../meta/PrePublish";
+import { typings } from "../meta/Typings";
 import { npmrc } from "./../meta/Npmrc/index";
-import { typingFileModule } from "./../meta/TypingFileModule/index";
-import { copy_bundles } from "./project_deps/copy_bundles";
+/* import { copy_bundles } from "./project_deps/copy_bundles";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
-
+ */
 // tslint:disable:variable-name
 export async function initProject() {
   const pkg_path = path.resolve(process.cwd(), "package.json");
@@ -76,9 +79,12 @@ export async function initProject() {
     pkg.scripts.prepublishOnly = "sh ./pre_publish.sh";
   }
 
-  const pkg_string = prettier_package_json.format(pkg);
+  fs.writeFileSync(pkg_path, prettier_package_json.format(pkg));
 
-  fs.writeFileSync(pkg_path, pkg_string);
+  // Config file
+  prettierConfig.init();
+  typescriptConfig.init();
+  tsLintConfig.init();
 
   // Meta files init
   dockerIgnore.init();
@@ -86,11 +92,11 @@ export async function initProject() {
   editorConfig.init();
   npmrc.init();
   prePublish.init();
-  typingFileModule.init();
+  typings.init();
   postcssPlugins.init();
 
-  await ordering_project_deps();
+  /*   await ordering_project_deps();
   await sync_with_linked_modules();
-  await copy_bundles();
+  await copy_bundles(); */
 }
 // tslint:enable:variable-name

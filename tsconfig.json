@@ -3,7 +3,7 @@
     "outDir": "./lib",
     "rootDir": "./",
     "strict": true,
-    "module": "es6",
+    "module": "commonjs",
     "lib": ["es6", "webworker", "es7"],
     "moduleResolution": "node",
     "target": "es6",

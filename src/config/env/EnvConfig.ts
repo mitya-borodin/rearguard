@@ -20,6 +20,10 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_DEBUG === "true";
   }
 
+  get force(): boolean {
+    return process.env.REARGUARD_FORCE === "true";
+  }
+
   get has_dll(): boolean {
     return process.env.REARGUARD_DLL === "true";
   }

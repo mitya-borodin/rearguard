@@ -38,6 +38,9 @@ const {
   patch = false,
   minor = false,
   major = false,
+
+  // state
+  force = false,
 }: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
   if (value.indexOf("--") === 0) {
     return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
@@ -143,7 +146,7 @@ if (action === "wds" || action === "build" || action === "sync_deps" || action =
     process.exit(1);
   }
 
-  const launchPath: string = resolve(__dirname, "../src/launchers", `${action}.js`);
+  const launchPath: string = resolve(__dirname, "../src/actions", `${action}.js`);
 
   if (existsSync(launchPath)) {
     // Определение глобального node_modules
@@ -197,6 +200,9 @@ if (action === "wds" || action === "build" || action === "sync_deps" || action =
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
       process.env.REARGUARD_UI_LIB = ui_lib ? "true" : "false";
+
+      // Состояние запуска
+      process.env.REARGUARD_FORCE = force ? "true" : "false";
 
       // MONO_REPO
       process.env.REARGUARD_MONO_INIT = init ? "true" : "false";

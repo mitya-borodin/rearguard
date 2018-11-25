@@ -1,7 +1,5 @@
-import * as path from "path";
 import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
-import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
 import { ConfigFile } from "../ConfigFile";
 
@@ -9,24 +7,22 @@ import { ConfigFile } from "../ConfigFile";
 
 export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFile {
   private envConfig: IEnvConfig;
-  private rearguardConfig: IRearguardConfig;
 
-  constructor(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+  constructor(envConfig: IEnvConfig) {
     super("tsconfig.json");
 
     this.envConfig = envConfig;
-    this.rearguardConfig = rearguardConfig;
   }
 
   protected get default_config(): { [key: string]: any } {
     const { isDebug } = this.envConfig;
-    const { context } = this.rearguardConfig;
 
     return {
       compileOnSave: false,
       compilerOptions: {
         /* Base options */
         baseUrl: get_context(),
+        allowSyntheticDefaultImports: true,
         forceConsistentCasingInFileNames: true,
         target: "es6",
         jsx: "react",
@@ -48,6 +44,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
           --strictPropertyInitialization.
            */,
         noImplicitReturns: true /* Report error when not all code paths in function return a value. */,
+        noImplicitAny: false /** Raise error on expressions and declarations with an implied any type. */,
         strictPropertyInitialization: false,
 
         /* Experimental Options */

@@ -1,9 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
 import { IMetaFile } from "../../interfaces/metaFile/IMetaFile";
+import { MetaFile } from "../MetaFile";
 
-export class EditorConfig implements IMetaFile {
-  public init() {
-    fs.copyFileSync(path.resolve(__dirname, ".editorconfig"), path.resolve(process.cwd(), ".editorconfig"));
+export class EditorConfig extends MetaFile implements IMetaFile {
+  constructor() {
+    super(".editorconfig");
   }
 }

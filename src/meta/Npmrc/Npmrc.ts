@@ -1,9 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
 import { IMetaFile } from "../../interfaces/metaFile/IMetaFile";
+import { MetaFile } from "../MetaFile";
 
-export class Npmrc implements IMetaFile {
-  public init() {
-    fs.copyFileSync(path.resolve(__dirname, ".npmrc"), path.resolve(process.cwd(), ".npmrc"));
+export class Npmrc extends MetaFile implements IMetaFile {
+  constructor() {
+    super(".npmrc");
   }
 }

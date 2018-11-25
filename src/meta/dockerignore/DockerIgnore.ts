@@ -1,9 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
 import { IMetaFile } from "../../interfaces/metaFile/IMetaFile";
+import { MetaFile } from "../MetaFile";
 
-export class DockerIgnore implements IMetaFile {
-  public init() {
-    fs.copyFileSync(path.resolve(__dirname, ".dockerignore"), path.resolve(process.cwd(), ".dockerignore"));
+export class DockerIgnore extends MetaFile implements IMetaFile {
+  constructor() {
+    super(".dockerignore");
   }
 }
