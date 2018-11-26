@@ -92,7 +92,7 @@ const {
  * sync_deps - Закопускает набор служебных скриптов, для синхронизации зависимостей.
  */
 
-if (action === "wds" || action === "build" || action === "sync_deps" || action === "monorepo") {
+if (action === "init" || action === "wds" || action === "build" || action === "sync_deps" || action === "monorepo") {
   console.log("");
 
   if (

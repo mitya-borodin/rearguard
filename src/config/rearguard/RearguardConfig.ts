@@ -14,7 +14,7 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
   private envConfig: IEnvConfig;
 
   constructor(envConfig: IEnvConfig, config_path?: string) {
-    super();
+    super(config_path);
 
     this.envConfig = envConfig;
   }
@@ -26,13 +26,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return context;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ context ][ must be a non empty string ]`));
 
     this.config = { context: "src" };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ context ][ assign to 'src' ]`));
+    console.log("");
 
     return this.context;
   }
@@ -44,13 +43,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return entry;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ entry ][ must be a non empty string ]`));
 
     this.config = { entry: "index.tsx" };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ entry ][ assign to 'index.tsx' ]`));
+    console.log("");
 
     return this.entry;
   }
@@ -62,13 +60,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return dll_entry;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ dll_entry ][ must be a non empty string ]`));
 
     this.config = { dll_entry: "vendors.ts" };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ dll_entry ][ assign to 'vendors.ts' ]`));
+    console.log("");
 
     return this.dll_entry;
   }
@@ -80,13 +77,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return lib_entry;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ lib_entry ][ must be a non empty string ]`));
 
     this.config = { lib_entry: "lib_exports.ts" };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ lib_entry ][ assign to 'lib_exports.ts' ]`));
+    console.log("");
 
     return this.lib_entry;
   }
@@ -101,7 +97,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
         if (isString(i_m)) {
           modules.push(i_m);
         } else {
-          console.log("");
           console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ module: ${i_m} must be a string ]`));
 
           has_error = true;
@@ -109,6 +104,8 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       }
 
       if (!has_error && modules.length > 0) {
+        console.log("");
+
         return [
           ...modules.map(this.envConfig.resolveLocalModule),
           this.envConfig.resolveLocalModule("node_modules"),
@@ -118,7 +115,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     }
 
     if (!has_error && modules.length === 0) {
-      console.log("");
       console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ modules ][ must be not empty array of string ]`));
     }
 
@@ -128,8 +124,8 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
     this.config = { modules };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ modules ][ assign to [ ${modules.join(", ")} ] ]`));
+    console.log("");
 
     return this.modules;
   }
@@ -144,7 +140,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       };
     }
 
-    console.log("");
     console.log(
       chalk.bold.yellow(
         `[ RERGUARD_CONFIG ][ WARNING ][ output ][ must include { path: string, publicPath: string } ]`,
@@ -158,10 +153,10 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       },
     };
 
-    console.log("");
     console.log(
       chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`),
     );
+    console.log("");
 
     return this.output;
   }
@@ -185,17 +180,16 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return post_css_plugins_path;
     }
 
-    console.log("");
     console.log(
       chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ post_css_plugins_path ][ must be a non empty string ]`),
     );
 
     this.config = { post_css_plugins_path: "post_css_plugins.js" };
 
-    console.log("");
     console.log(
       chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ post_css_plugins_path ][ assign to 'post_css_plugins.js' ]`),
     );
+    console.log("");
 
     return this.post_css_plugins_path;
   }
@@ -205,38 +199,34 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     const sync_project_deps: string[] = [];
     let has_error = false;
 
-    if (isArray(a_sync_project_deps) && a_sync_project_deps.length > 0) {
+    if (isArray(a_sync_project_deps)) {
       for (const i_s of a_sync_project_deps) {
         if (isString(i_s)) {
           sync_project_deps.push(i_s);
         } else {
-          console.log("");
           console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`));
 
           has_error = true;
         }
       }
 
-      if (!has_error && sync_project_deps.length > 0) {
+      if (!has_error) {
         return sync_project_deps;
       }
     }
 
-    if (!has_error) {
-      console.log("");
-      console.log(
-        chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ sync_project_deps ][ must be not empty array of string ]`),
-      );
-    }
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ sync_project_deps ][ must be not empty array of string ]`),
+    );
 
     this.config = { sync_project_deps };
 
-    console.log("");
     console.log(
       chalk.bold.green(
         `[ RERGUARD_CONFIG ][ INIT ][ sync_project_deps ][ assign to [ ${sync_project_deps.join(", ")} ] ]`,
       ),
     );
+    console.log("");
 
     return this.sync_project_deps;
   }
@@ -264,13 +254,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_dll;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_dll ][ must be a boolean ]`));
 
     this.config = { has_dll: false };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_dll ][ assign to 'false' ]`));
+    console.log("");
 
     return this.has_dll;
   }
@@ -288,13 +277,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_node_lib;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_node_lib ][ must be a boolean ]`));
 
     this.config = { has_node_lib: false };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_node_lib ][ assign to 'false' ]`));
+    console.log("");
 
     return this.has_node_lib;
   }
@@ -312,13 +300,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_ui_lib;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_ui_lib ][ must be a boolean ]`));
 
     this.config = { has_ui_lib: false };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_ui_lib ][ assign to 'false' ]`));
+    console.log("");
 
     return this.has_ui_lib;
   }
@@ -336,13 +323,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return publish_in_git;
     }
 
-    console.log("");
     console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ publish_in_git ][ must be a boolean ]`));
 
     this.config = { publish_in_git: false };
 
-    console.log("");
     console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ publish_in_git ][ assign to 'false' ]`));
+    console.log("");
 
     return this.publish_in_git;
   }

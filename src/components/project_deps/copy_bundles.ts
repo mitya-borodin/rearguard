@@ -26,7 +26,7 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
       const paths = await del(target_bundle);
 
       for (const item of paths) {
-        console.log(chalk.magenta(`[ REMOVE ][ ${name} ]`), chalk.magenta(item));
+        console.log(chalk.gray(`[ REMOVE ][ ${name} ][ ${path.relative(process.cwd(), item)} ]`));
       }
     }
     /////////////////////
@@ -41,7 +41,7 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
           if (error) {
             reject(error);
           } else {
-            console.log(chalk.green(`[ CREATED ][ DIR ][ ${name} ]`, chalk.green(target_bundle)));
+            console.log(chalk.green(`[ CREATED ][ DIR ][ ${name} ][ ${path.relative(process.cwd(), target_bundle)} ]`));
 
             resolve();
           }
@@ -53,10 +53,10 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
           if (!error) {
             if (envConfig.isDebug) {
               for (const item of items) {
-                console.log(chalk.bold.cyan(`[ COPY ][ ${name} ]`), chalk.bold.cyan(item.path));
+                console.log(chalk.cyan(`[ COPY ][ ${name} ][ ${path.relative(process.cwd(), item.path)} ]`));
               }
             } else {
-              console.log(chalk.bold.cyan(`[ COPY ][ ${name} ][ ${items.length} FILES ]`));
+              console.log(chalk.cyan(`[ COPY ][ ${name} ][ ${items.length} FILES ]`));
             }
 
             resolve();
@@ -65,6 +65,8 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
           }
         });
       });
+
+      console.log("");
     }
   } catch (error) {
     console.error(error);
@@ -89,7 +91,7 @@ export async function copy_bundles() {
   try {
     for (const module of rearguardConfig.sync_project_deps) {
       const module_path = envConfig.resolveLocalModule(module);
-      const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, module_path);
+      const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, path.resolve(module_path, "package.json"));
 
       if (has_dll || has_ui_lib) {
         await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);

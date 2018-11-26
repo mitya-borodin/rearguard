@@ -54,13 +54,13 @@ export async function sync_with_linked_modules(): Promise<void> {
         const local_path = envConfig.resolveLocalModule(name);
 
         if (existsSync(global_path)) {
-          console.log(chalk.white(`[ USE ][ GLOBAL_MODULE: ${global_path} ]`));
+          console.log(chalk.white(`[ USED ][ GLOBAL_MODULE: ${global_path} ]`));
 
           linked_modules.push({ name, path: global_path });
         } else if (existsSync(local_path)) {
           // Внимание, modules_path - в этот список необходимо добавлять только глобально слинкованные модули.
           // Так как существует ситуация когда зависимости устанавдиваются локально, и не разрабатываются.
-          console.log(chalk.bold.yellow(`[ USE ][ LOCAL_MODULE: ${local_path} ]`));
+          console.log(chalk.bold.yellow(`[ USED ][ LOCAL_MODULE: ${local_path} ]`));
         } else {
           console.log(
             chalk.red(
@@ -75,6 +75,7 @@ export async function sync_with_linked_modules(): Promise<void> {
           process.exit(1);
         }
       }
+      console.log("");
       // END
 
       if (linked_modules.length > 0) {
@@ -85,8 +86,8 @@ export async function sync_with_linked_modules(): Promise<void> {
         /////////////////////
 
         for (const module of linked_modules) {
-          const config = new RearguardConfig(envConfig, module.path);
           const pkg_path = path.resolve(module.path, "package.json");
+          const config = new RearguardConfig(envConfig, pkg_path);
 
           if (existsSync(pkg_path)) {
             const files: string[] = [pkg_path];
@@ -99,20 +100,20 @@ export async function sync_with_linked_modules(): Promise<void> {
                   files.push(`${file_path}/**`);
                 } else {
                   console.log(chalk.red(`[ COPY_TASK ][ ERROR ][ module haven't file: ${file_path} ]`));
-
+                  console.log("");
                   process.exit(1);
                 }
               }
             } else {
               console.log(chalk.red(`[ COPY_TASK ][ ERROR ][ module must defined 'files: []' ]`));
-
+              console.log("");
               process.exit(1);
             }
 
             copyTasks.push({ version: config.pkg.version, name: module.name, files });
           } else {
             console.log(chalk.red(`[ COPY_TASK ][ ERROR ][ not found: ${pkg_path} ]`));
-
+            console.log("");
             process.exit(1);
           }
         }
@@ -143,7 +144,7 @@ export async function sync_with_linked_modules(): Promise<void> {
             const paths = await del(module_path);
 
             for (const item of paths) {
-              console.log(chalk.magenta("[ MODULE ][ REMOVE ]"), chalk.magenta(item));
+              console.log(chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
             }
           }
 
@@ -153,13 +154,16 @@ export async function sync_with_linked_modules(): Promise<void> {
                 console.error(error);
                 reject();
               } else {
-                console.log(chalk.green("[ MODULE ][ CREATED ][ DIR ]", chalk.green(`${path}`)));
+                console.log(
+                  chalk.green(`[ MODULE ][ CREATED ][ DIR ][ ${path.relative(process.cwd(), module_path)} ]`),
+                );
 
                 resolve();
               }
             });
           });
         }
+        console.log("");
         // END
 
         /////////////////////
@@ -176,12 +180,12 @@ export async function sync_with_linked_modules(): Promise<void> {
               if (!error) {
                 if (envConfig.isDebug) {
                   for (const item of items) {
-                    console.log(chalk.bold.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`), chalk.bold.cyan(item.path));
+                    console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`), chalk.cyan(item.path));
                   }
                 } else {
                   console.log(
-                    chalk.bold.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`),
-                    chalk.bold.cyan(`[ ${items.length} FILES ]`),
+                    chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`),
+                    chalk.cyan(`[ ${items.length} FILES ]`),
                   );
                 }
 
@@ -204,6 +208,7 @@ export async function sync_with_linked_modules(): Promise<void> {
         // Обновляем локальный package.json
         rearguardConfig.pkg = LOCAL_PKG;
 
+        console.log("");
         console.log(chalk.bold.white(`[ UPDATED VERSIONS OF LINKED MODULES IN LOCAL PACKAGE.JSON ]`));
         console.log("");
         // END

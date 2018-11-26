@@ -5,7 +5,7 @@ import { ConfigFile } from "../ConfigFile";
 
 export class PrettierConfig extends ConfigFile implements IPrettierConfigFile {
   constructor() {
-    super("prettierrc.json");
+    super(".prettierrc");
   }
 
   protected get default_config(): { [key: string]: any } {
