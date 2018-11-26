@@ -40,10 +40,6 @@ export class EnvConfig implements IEnvConfig {
     return process.env.NODE_ENV === "development";
   }
 
-  get isSyncDeps(): boolean {
-    return process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS === "true";
-  }
-
   get localNodeModulePath(): string {
     return process.env.REARGUARD_LOCAL_NODE_MODULE_PATH || "";
   }

@@ -19,6 +19,7 @@ import { prePublish } from "../meta/PrePublish";
 import { typings } from "../meta/Typings";
 import { npmrc } from "./../meta/Npmrc/index";
 import { copy_bundles } from "./project_deps/copy_bundles";
+import { delete_bundles } from "./project_deps/delete_bundles";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
 
@@ -26,7 +27,7 @@ import { sync_with_linked_modules } from "./project_deps/sync_with_linked_module
 export async function initProject() {
   console.log(chalk.bold.blue(`=================INIT_PROJECT===============`));
   const startTime = moment();
-  console.log(chalk.bold.blue(`[ INIT_PROJECT ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`));
+  console.log(chalk.bold.blue(`[ INIT_PROJECT ][ RUN ]`));
   console.log("");
 
   const pkg_path = path.resolve(process.cwd(), "package.json");
@@ -226,15 +227,13 @@ export async function initProject() {
 
   await ordering_project_deps();
   await sync_with_linked_modules();
+  await delete_bundles();
   await copy_bundles();
 
   const endTime = moment();
 
   console.log("");
-  console.log(
-    chalk.bold.blue(`[ INIT_PROJECT ][ INTI_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`),
-  );
-  console.log(chalk.bold.blue(`[ INIT_PROJECT ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`));
+  console.log(chalk.bold.blue(`[ INIT_PROJECT ][ DONE ][ ${endTime.diff(startTime, "milliseconds")} ms ]`));
   console.log(chalk.bold.blue(`============================================`));
   console.log("");
 }

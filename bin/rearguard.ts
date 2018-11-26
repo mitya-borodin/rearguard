@@ -89,10 +89,10 @@ const {
  *                    если указан флаг --ui_lib, то отключается генерация .d.ts файлов, так как они будут сгенерированны в процессе работы webpack;
  * build --dll --ui_lib --node_lib  - будут задействованны { entry: "index.tsx", dll_entry: "vendors.ts", lib_entry: "lib_exports.ts" }, если какая то точка отствует,
  *                                    то будет показано уведомление и секция обработки будет пропущена.
- * sync_deps - Закопускает набор служебных скриптов, для синхронизации зависимостей.
+ * init - Закопускает набор служебных скриптов, для инициализации проекта и синхронизации зависимостей.
  */
 
-if (action === "init" || action === "wds" || action === "build" || action === "sync_deps" || action === "monorepo") {
+if (action === "init" || action === "wds" || action === "build" || action === "monorepo") {
   console.log("");
 
   if (
@@ -191,7 +191,6 @@ if (action === "init" || action === "wds" || action === "build" || action === "s
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_SYNC_DEPS = action === "sync_deps" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
 
       // Параметры запуска
@@ -274,7 +273,7 @@ if (action === "init" || action === "wds" || action === "build" || action === "s
 } else {
   console.log(
     chalk.bold.green(
-      "You should use: rearguard [ wds | sync_deps | build ] [ -r | --release | -d | --debug | --dll ];",
+      "You should use: rearguard [ init | wds | build | monorepo ] [ -r | --release | -d | --debug | --dll ];",
     ),
   );
 }

@@ -12,6 +12,56 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 
 // tslint:disable:variable-name
+export async function copy_bundles() {
+  if (
+    (envConfig.isWDS || envConfig.isBuild) &&
+    !(envConfig.has_dll || envConfig.has_ui_lib || envConfig.has_node_lib)
+  ) {
+    const startTime = moment();
+
+    console.log(chalk.bold.blue(`==============COPY_BUNDLES=============`));
+    console.log("");
+
+    /////////////////////
+    //
+    // START OF PROCEDURE
+    //
+    /////////////////////
+
+    try {
+      for (const module of rearguardConfig.sync_project_deps) {
+        const module_path = envConfig.resolveLocalModule(module);
+        const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, path.resolve(module_path, "package.json"));
+
+        if (has_dll || has_ui_lib) {
+          await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
+        }
+
+        if (has_ui_lib) {
+          await copy_bundle(module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+
+      process.exit(1);
+    }
+
+    /////////////////////
+    //
+    // END OF PROCEDURE
+    //
+    /////////////////////
+
+    const endTime = moment();
+
+    console.log("");
+    console.log(chalk.bold.blue(`[ SPEED ][ ${endTime.diff(startTime, "milliseconds")} ms ]`));
+    console.log(chalk.bold.blue(`=======================================`));
+    console.log("");
+  }
+}
+
 async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name: string) {
   try {
     // Имя пакета (package.json).name;
@@ -73,55 +123,6 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
 
     process.exit(1);
   }
-}
-
-export async function copy_bundles() {
-  const startTime = moment();
-
-  console.log(chalk.bold.blue(`==============COPY_BUNDLES=============`));
-  console.log(chalk.bold.blue(`[ COPY_BUNDLES ][ RUN ][ ${startTime.format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
-  console.log("");
-
-  /////////////////////
-  //
-  // START OF PROCEDURE
-  //
-  /////////////////////
-
-  try {
-    for (const module of rearguardConfig.sync_project_deps) {
-      const module_path = envConfig.resolveLocalModule(module);
-      const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, path.resolve(module_path, "package.json"));
-
-      if (has_dll || has_ui_lib) {
-        await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
-      }
-
-      if (has_ui_lib) {
-        await copy_bundle(module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
-      }
-    }
-  } catch (error) {
-    console.error(error);
-
-    process.exit(1);
-  }
-
-  /////////////////////
-  //
-  // END OF PROCEDURE
-  //
-  /////////////////////
-
-  const endTime = moment();
-
-  console.log("");
-  console.log(
-    chalk.bold.blue(`[ COPY_BUNDLES ][ WORK_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`),
-  );
-  console.log(chalk.bold.blue(`[ COPY_BUNDLES ][ DONE ][ ${endTime.format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
-  console.log(chalk.bold.blue(`=======================================`));
-  console.log("");
 }
 
 // tslint:enable:variable-name

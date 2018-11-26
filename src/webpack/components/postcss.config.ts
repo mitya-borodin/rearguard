@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
-import { envConfig } from "../config/env";
-import { get_context } from "../helpers";
+import { envConfig } from "../../config/env";
+import { get_context } from "../../helpers";
 
 // webpack.config.js
 // https://github.com/postcss/postcss-loader/tree/v2.0.5

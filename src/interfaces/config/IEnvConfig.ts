@@ -7,7 +7,6 @@ export interface IEnvConfig {
   has_node_lib: boolean;
   has_ui_lib: boolean;
   isDevelopment: boolean;
-  isSyncDeps: boolean;
   localNodeModulePath: string;
   globalNodeModulePath: string;
   devNodeModulePath: string;

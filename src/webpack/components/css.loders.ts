@@ -44,7 +44,7 @@ export default (): webpack.Rule[] => {
       loader: "postcss-loader",
       options: {
         ident: "postcss",
-        plugins: require(path.resolve(__dirname, "../../components", "postcss.config.js")),
+        plugins: require(path.resolve(__dirname, "postcss.config.js")),
       },
     },
   ];
