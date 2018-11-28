@@ -4,7 +4,7 @@ import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
 import { LIB_BUNDLE_DIR_NAME } from "../const";
 import { get_context, lib_entry_name } from "../helpers";
-import { analyze, assetsPlugin, DllReferencePlugin } from "./components/js.plugins";
+import { analyze, assetsPlugin, clean, DllReferencePlugin } from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
@@ -12,7 +12,6 @@ import { general_WP_config } from "./webpack.config.common";
 
 export function library_WP_config(): webpack.Configuration {
   const { lib_entry, bundle_public_path, lib_output_path } = rearguardConfig;
-  const { isDevelopment, isDebug } = envConfig;
 
   return general_WP_config(
     {
@@ -27,7 +26,7 @@ export function library_WP_config(): webpack.Configuration {
       libraryTarget: "var",
     },
     tsLoader(),
-    [...DllReferencePlugin(), ...assetsPlugin(LIB_BUNDLE_DIR_NAME), ...analyze()],
+    [...DllReferencePlugin(), ...assetsPlugin(LIB_BUNDLE_DIR_NAME), ...analyze(), ...clean([lib_output_path])],
     {},
   );
 }

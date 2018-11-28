@@ -22,6 +22,7 @@ const {
   debug = false,
 
   // mode
+  project = false,
   dll = false,
   node_lib = false,
   ui_lib = false,
@@ -95,55 +96,76 @@ const {
 if (action === "init" || action === "wds" || action === "build" || action === "monorepo") {
   console.log("");
 
-  if (
-    action !== "monorepo" &&
-    (init || install || build || link || bootstrap || sync || test || publish || patch || minor || major)
-  ) {
-    console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]" is not valid;`,
-      ),
-    );
-    console.log(
-      chalk.bold.green(
-        `You should use: "rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]";`,
-      ),
-    );
+  if (action === "init") {
+    if (!(project || dll || ui_lib || node_lib)) {
+      console.log(chalk.bold.green(`You should use: "rearguard init --project  [ --dll | --force ]";`));
+      console.log(chalk.bold.green(`Or: "rearguard init --dll | --ui_lib | --node_lib | --force";`));
 
-    process.exit(1);
-  }
+      process.exit(1);
+    }
 
-  if (action === "monorepo" && !publish && (patch || minor || major)) {
-    console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --patch | --minor | --major ]" is not valid without [ --publish ];`,
-      ),
-    );
-    console.log(chalk.bold.green(`You should use: "rearguard monorepo --publish [ --patch | --minor | --major ]";`));
+    if (project && (ui_lib || node_lib)) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard init --project [ --ui_lib | --node_lib ] is not valid;`,
+        ),
+      );
 
-    process.exit(1);
-  }
+      console.log(chalk.bold.green(`You should use: "rearguard init --project | [ --dll | --force ]";`));
 
-  if (action !== "build" && (dll || node_lib || ui_lib)) {
-    console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib ]" is not valid;`,
-      ),
-    );
-    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
+      process.exit(1);
+    }
+  } else {
+    if (
+      action !== "monorepo" &&
+      (init || install || build || link || bootstrap || sync || test || publish || patch || minor || major)
+    ) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard ${action} [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]" is not valid;`,
+        ),
+      );
+      console.log(
+        chalk.bold.green(
+          `You should use: "rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]";`,
+        ),
+      );
 
-    process.exit(1);
-  }
+      process.exit(1);
+    }
 
-  if (action !== "wds" && action !== "build" && release) {
-    console.log(
-      chalk.bold.red(
-        `I am really sorry but this configuration: "rearguard ${action} [ --release | -r ]" is not valid;`,
-      ),
-    );
-    console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
+    if (action === "monorepo" && !publish && (patch || minor || major)) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard ${action} [ --patch | --minor | --major ]" is not valid without [ --publish ];`,
+        ),
+      );
+      console.log(chalk.bold.green(`You should use: "rearguard monorepo --publish [ --patch | --minor | --major ]";`));
 
-    process.exit(1);
+      process.exit(1);
+    }
+
+    if (action !== "build" && (dll || node_lib || ui_lib)) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib ]" is not valid;`,
+        ),
+      );
+      console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
+
+      process.exit(1);
+    }
+
+    if (action !== "wds" && action !== "build" && release) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard ${action} [ --release | -r ]" is not valid;`,
+        ),
+      );
+      console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
+
+      process.exit(1);
+    }
   }
 
   const launchPath: string = resolve(__dirname, "../src/actions", `${action}.js`);
@@ -189,6 +211,7 @@ if (action === "init" || action === "wds" || action === "build" || action === "m
       process.env.REARGUARD_DEV_NODE_MODULE_PATH = NODE_MODULE_PATH;
 
       // Варианты запуска
+      process.env.REARGUARD_LAUNCH_IS_INIT = action === "init" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
@@ -196,6 +219,7 @@ if (action === "init" || action === "wds" || action === "build" || action === "m
       // Параметры запуска
       process.env.NODE_ENV = !release ? "development" : "production";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
+      process.env.REARGUARD_IS_PROJECT = project ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
       process.env.REARGUARD_UI_LIB = ui_lib ? "true" : "false";

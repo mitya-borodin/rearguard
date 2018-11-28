@@ -21,22 +21,19 @@ interface ICopyTask {
 }
 
 export async function sync_with_linked_modules(): Promise<void> {
-  const startTime = moment();
-
-  console.log(chalk.bold.blue(`========SYNC_WITH_LINKED_MODULES=======`));
-  console.log(chalk.bold.blue(`[ SYNC_WITH_LINKED_MODULES ][ RUN ][ ${startTime.format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
-  console.log("");
-
-  /////////////////////
-  //
-  // START OF PROCEDURE
-  //
-  /////////////////////
-
   try {
     const { sync_project_deps } = rearguardConfig;
 
     if (sync_project_deps.length > 0) {
+      console.log(chalk.bold.blue(`==========SYNC_WITH_LINKED_MODULES==========`));
+      console.log("");
+
+      /////////////////////
+      //
+      // START OF PROCEDURE
+      //
+      /////////////////////
+
       console.log(chalk.bold.white(`[ LIST ][ ${sync_project_deps.join(", ")} ]`));
       console.log("");
       const linked_modules: Array<{ name: string; path: string }> = [];
@@ -217,8 +214,14 @@ export async function sync_with_linked_modules(): Promise<void> {
         console.log(chalk.bold.gray("[ USED ONLY LOCAL INSTALLED MODULES ]"));
         console.log("");
       }
-    } else {
-      console.log(chalk.bold.gray("[ LIST IS EMPTY ]"));
+
+      /////////////////////
+      //
+      // END OF PROCEDURE
+      //
+      /////////////////////
+
+      console.log(chalk.bold.blue(`============================================`));
       console.log("");
     }
   } catch (error) {
@@ -226,23 +229,6 @@ export async function sync_with_linked_modules(): Promise<void> {
 
     process.exit(1);
   }
-
-  /////////////////////
-  //
-  // END OF PROCEDURE
-  //
-  /////////////////////
-
-  const endTime = moment();
-
-  console.log(
-    chalk.bold.blue(
-      `[ SYNC_WITH_LINKED_MODULES ][ WORK_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`,
-    ),
-  );
-  console.log(chalk.bold.blue(`[ SYNC_WITH_LINKED_MODULES ][ DONE ][ ${endTime.format("YYYY-MM-DD hh:mm:ss ZZ")} ]`));
-  console.log(chalk.bold.blue(`=======================================`));
-  console.log("");
 }
 
 // tslint:enable:variable-name

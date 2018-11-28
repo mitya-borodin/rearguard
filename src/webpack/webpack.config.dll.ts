@@ -3,7 +3,7 @@ import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
 import { DLL_BUNDLE_DIR_NAME } from "../const";
 import { dll_entry_name, get_context } from "../helpers";
-import { analyze, assetsPlugin, DllPlugin, DllReferencePlugin } from "./components/js.plugins";
+import { analyze, assetsPlugin, clean, DllPlugin, DllReferencePlugin } from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
@@ -26,7 +26,13 @@ export function dll_WP_config() {
       libraryTarget: "var",
     },
     tsLoader(),
-    [...DllReferencePlugin(true), ...DllPlugin(), ...assetsPlugin(DLL_BUNDLE_DIR_NAME), ...analyze()],
+    [
+      ...DllReferencePlugin(true),
+      ...DllPlugin(),
+      ...assetsPlugin(DLL_BUNDLE_DIR_NAME),
+      ...analyze(),
+      ...clean([dll_output_path]),
+    ],
     {},
   );
 }

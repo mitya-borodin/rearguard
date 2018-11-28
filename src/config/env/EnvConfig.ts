@@ -8,6 +8,10 @@ export class EnvConfig implements IEnvConfig {
     this.resolveDevModule = this.resolveDevModule.bind(this);
   }
 
+  get isInit(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_INIT === "true";
+  }
+
   get isWDS(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }
@@ -22,6 +26,10 @@ export class EnvConfig implements IEnvConfig {
 
   get force(): boolean {
     return process.env.REARGUARD_FORCE === "true";
+  }
+
+  get isProject(): boolean {
+    return process.env.REARGUARD_IS_PROJECT === "true";
   }
 
   get has_dll(): boolean {

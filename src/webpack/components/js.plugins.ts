@@ -20,6 +20,7 @@ import {
   dll_path,
   get_context,
   get_output_path,
+  lib_entry_name,
 } from "../../helpers";
 import { IBundleInfo } from "../../interfaces/IBundleInfo";
 import { analyzeConfig } from "./../../config/analyze/index";
@@ -78,17 +79,17 @@ export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] 
 export const htmlWebpackPlugin = (): webpack.Plugin[] => {
   const { isWDS, isBuild } = envConfig;
 
-  if (isWDS && isBuild) {
+  if (isWDS || isBuild) {
     const bundlesInfo: IBundleInfo[] = get_bundles_info();
     const data: { js: string[] } = { js: [] };
 
     for (const { assets, bundle_name, has_dll, has_ui_lib } of bundlesInfo) {
       if (has_dll && fs.existsSync(assets.dll)) {
-        data.js.push(require(assets.dll)[bundle_name].js);
+        data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
       }
 
       if (has_ui_lib && fs.existsSync(assets.lib)) {
-        data.js.push(require(assets.lib)[bundle_name].js);
+        data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
       }
     }
 

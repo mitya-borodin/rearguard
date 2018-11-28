@@ -1,4 +1,3 @@
-import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
 import { DIST_DIR_NAME } from "../const";
 import entry from "./components/entry";
@@ -10,7 +9,6 @@ import { general_WP_config } from "./webpack.config.common";
 
 export function main_WS_config() {
   const { output } = rearguardConfig;
-  const { isDevelopment, isDebug } = envConfig;
 
   return general_WP_config(
     entry(),

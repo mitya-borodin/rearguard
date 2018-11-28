@@ -21,7 +21,7 @@ export class AnalyzeConfig extends NonVersionableConfig implements IAnalyzeConfi
       console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ ANALYZE ][ MUST_BE_DEFINED ]`));
     }
 
-    this.config = { analyze: 10000 };
+    this.config = { analyze: { port: 10000 } };
 
     console.log("");
     console.log(chalk.bold.green(`[ ANALYZE_CONFIG ][ ASSIGN ][ PORT ][ TO 10000 ]`));

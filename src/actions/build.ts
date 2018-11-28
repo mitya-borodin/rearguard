@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import * as spawn from "cross-spawn";
 import * as moment from "moment";
+import * as path from "path";
 import * as webpack from "webpack";
 import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
@@ -13,33 +14,10 @@ import { main_WS_config } from "../webpack/webpack.config.main";
 async function build() {
   await initProject();
 
-  console.log(chalk.bold.blue(`==================BUILD================`));
-  const startTime = moment();
-  console.log("");
-
-  if (!(envConfig.has_dll || envConfig.has_ui_lib || envConfig.has_node_lib)) {
-    // Сборка front-end проекта.
-
-    await new Promise((resolve, reject) => {
-      webpack(main_WS_config()).run(async (err: any, stats: any) => {
-        if (err) {
-          reject(err);
-        }
-
-        console.info(stats.toString(get_stats()));
-
-        await copy_bundles_to_dist();
-
-        resolve();
-      });
-    });
-
-    console.log("");
-    console.log("=======================================");
-    console.log("");
-  }
-
   if (envConfig.has_dll) {
+    console.log(chalk.bold.blue(`[ BUILD_DLL ][ START ]`));
+    const startTime = moment();
+
     await new Promise((resolve, reject) => {
       webpack(dll_WP_config()).run(async (err: any, stats: any) => {
         if (err) {
@@ -53,11 +31,14 @@ async function build() {
     });
 
     console.log("");
-    console.log("=======================================");
+    console.log(chalk.bold.blue(`[ BUILD_DLL ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
 
   if (envConfig.has_ui_lib) {
+    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ START ]`));
+    const startTime = moment();
+
     await new Promise((resolve, reject) => {
       webpack(library_WP_config()).run(async (err: any, stats: any) => {
         if (err) {
@@ -71,16 +52,34 @@ async function build() {
     });
 
     console.log("");
-    console.log("=======================================");
+    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
 
   if (envConfig.has_node_lib) {
-    const result = spawn.sync("tsc", [], {
-      cwd: process.cwd(),
-      encoding: "utf8",
-      stdio: "inherit",
-    });
+    console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ START ]`));
+    const startTime = moment();
+    console.log("");
+
+    const result = spawn.sync(
+      "tsc",
+      [
+        "-p",
+        path.resolve(process.cwd(), "tsconfig.json"),
+        "--rootDir",
+        path.resolve(process.cwd(), "src"),
+        "--outDir",
+        path.resolve(process.cwd(), "lib"),
+        "--module",
+        "es6",
+        "--declaration",
+      ],
+      {
+        cwd: process.cwd(),
+        encoding: "utf8",
+        stdio: "inherit",
+      },
+    );
 
     if (result.signal) {
       if (result.signal === "SIGKILL") {
@@ -105,13 +104,34 @@ async function build() {
     }
 
     console.log("");
-    console.log("=======================================");
+    console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
 
-  console.log(chalk.bold.blue(`[ SPEED ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
-  console.log(chalk.bold.blue(`=======================================`));
-  console.log("");
+  if (envConfig.isProject) {
+    console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ START ]`));
+    const startTime = moment();
+
+    // Сборка front-end проекта.
+
+    await new Promise((resolve, reject) => {
+      webpack(main_WS_config()).run(async (err: any, stats: any) => {
+        if (err) {
+          reject(err);
+        }
+
+        console.info(stats.toString(get_stats()));
+
+        await copy_bundles_to_dist();
+
+        resolve();
+      });
+    });
+
+    console.log("");
+    console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log("");
+  }
 }
 
 build();

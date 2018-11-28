@@ -4,7 +4,7 @@ import * as webpack from "webpack";
 import { get_bundles_info } from "../components/project_deps/get_bundles_info";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
-import { get_context } from "../helpers";
+import { get_context, lib_entry_name } from "../helpers";
 import { IBundleInfo } from "./../interfaces/IBundleInfo";
 import cssLoaders from "./components/css.loders";
 import { get_stats } from "./components/get_stats";
@@ -24,13 +24,15 @@ export function general_WP_config(
   const info: IBundleInfo[] = get_bundles_info();
   const lib_externals: webpack.ExternalsObjectElement = {};
 
-  for (const { has_ui_lib, bundle_name, bundle_entry_name } of info) {
+  for (const { has_ui_lib, bundle_name, pkg_name } of info) {
     if (has_ui_lib) {
-      lib_externals[bundle_entry_name.lib] = {
-        var: bundle_name,
+      lib_externals[pkg_name] = {
+        var: lib_entry_name(bundle_name),
       };
     }
   }
+
+  console.log("[ EXTERNALS ]", { ...lib_externals, ...externals });
 
   return {
     bail: !isDevelopment,
@@ -89,7 +91,6 @@ export function general_WP_config(
       mainFields: ["loader", "main"],
       modules,
     },
-    stats: get_stats(),
   };
 }
 

@@ -107,8 +107,8 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
         console.log("");
 
         return [
-          ...modules.map(this.envConfig.resolveLocalModule),
-          this.envConfig.resolveLocalModule("node_modules"),
+          ...modules.map((dir_name) => path.resolve(process.cwd(), dir_name)),
+          this.envConfig.resolveLocalModule(""),
           this.envConfig.resolveDevModule(""),
         ];
       }
@@ -133,7 +133,13 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
   public get output(): { path: string; publicPath: string } {
     const { output } = this.config;
 
-    if (isString(output.path) && output.path.length > 0 && isString(output.publicPath) && output.publicPath.length) {
+    if (
+      output &&
+      isString(output.path) &&
+      output.path.length > 0 &&
+      isString(output.publicPath) &&
+      output.publicPath.length
+    ) {
       return {
         path: this.envConfig.resolveLocalModule(output.path),
         publicPath: output.publicPath,

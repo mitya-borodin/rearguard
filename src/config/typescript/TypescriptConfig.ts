@@ -1,3 +1,5 @@
+import * as path from "path";
+import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
 import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
@@ -56,6 +58,12 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         extendedDiagnostics: isDebug, // Show verbose diagnostic information.
         traceResolution: isDebug, // Enable tracing of the name resolution process.
       },
+      exclude: [
+        "node_modules",
+        path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME),
+        path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME),
+        path.resolve(process.cwd(), LIB_DIR_NAME),
+      ],
     };
   }
 }
