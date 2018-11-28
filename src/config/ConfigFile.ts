@@ -33,10 +33,10 @@ export class ConfigFile implements IConfigFile {
     }
   }
 
-  public init(): { [key: string]: any } {
+  public init(force = false): { [key: string]: any } {
     if (fs.existsSync(this.config_path)) {
       try {
-        if (!envConfig.force) {
+        if (!envConfig.force || !force) {
           const config_from_file = fs.readFileSync(this.config_path);
           const source_config = JSON.parse(config_from_file.toString());
 

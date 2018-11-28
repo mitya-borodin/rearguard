@@ -1,8 +1,6 @@
-import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
-import * as moment from "moment";
 import * as path from "path";
 import * as prettier_package_json from "prettier-package-json";
 import { envConfig } from "../config/env";
@@ -43,32 +41,31 @@ export async function initProject() {
    * INIT PROJECT STATUS
    */
 
-  if (envConfig.isInit || envConfig.isBuild) {
+  if (envConfig.isInit) {
+    rearguardConfig.has_project = envConfig.has_project;
     rearguardConfig.has_dll = envConfig.has_dll;
     rearguardConfig.has_ui_lib = envConfig.has_ui_lib;
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
   }
 
-  if (!envConfig.isProject && (rearguardConfig.has_dll || rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
-    const files: string[] = [];
+  const files: string[] = [];
 
-    if (rearguardConfig.has_dll) {
-      files.push(DLL_BUNDLE_DIR_NAME);
-    }
-
-    if (rearguardConfig.has_ui_lib) {
-      files.push(LIB_BUNDLE_DIR_NAME);
-    }
-
-    if (rearguardConfig.has_node_lib || rearguardConfig.has_ui_lib) {
-      files.push(LIB_DIR_NAME);
-    }
-
-    console.log(chalk.green(`[ FILES ][ ${files.join(", ")} ]`));
-    console.log("");
-
-    pkg.files = files;
+  if (rearguardConfig.has_dll) {
+    files.push(DLL_BUNDLE_DIR_NAME);
   }
+
+  if (rearguardConfig.has_ui_lib) {
+    files.push(LIB_BUNDLE_DIR_NAME);
+  }
+
+  if (rearguardConfig.has_node_lib || rearguardConfig.has_ui_lib) {
+    files.push(LIB_DIR_NAME);
+  }
+
+  console.log(chalk.green(`[ FILES ][ ${files.join(", ")} ]`));
+  console.log("");
+
+  pkg.files = files;
 
   /**
    * INIT ENTRY FILES
@@ -78,7 +75,7 @@ export async function initProject() {
 
   mkdirp.sync(src);
 
-  if (envConfig.isProject) {
+  if (rearguardConfig.has_project) {
     const entry = path.resolve(src, rearguardConfig.entry);
 
     if (!fs.existsSync(entry)) {
@@ -111,7 +108,7 @@ export async function initProject() {
     }
   }
 
-  if (!envConfig.isProject && (rearguardConfig.has_node_lib || rearguardConfig.has_ui_lib)) {
+  if (rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib) {
     const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
     const basename = path.basename(lib_entry, ".ts");
 
@@ -132,46 +129,46 @@ export async function initProject() {
    * START
    */
 
-  if (envConfig.isProject) {
+  if (rearguardConfig.has_project) {
     pkg.scripts.start = "rearguard wds";
     pkg.scripts["start:release"] = "rearguard wds -r";
+
+    pkg.scripts["project:build"] = "rearguard build --project";
+    pkg.scripts["project:build:release"] = "rearguard build --project -r";
+
+    if (rearguardConfig.has_dll) {
+      pkg.scripts.dll = "rearguard build --dll";
+      pkg.scripts["dll:release"] = "rearguard build --dll -r";
+    }
   } else {
     delete pkg.scripts.start;
     delete pkg.scripts["start:release"];
+    delete pkg.scripts.dll;
+    delete pkg.scripts["dll:release"];
+    delete pkg.scripts["project:build"];
+    delete pkg.scripts["project:build:release"];
   }
 
   /**
    * BUILD
    */
-  if (envConfig.isProject) {
-    pkg.scripts.build = "rearguard build --project";
-    pkg.scripts["build:release"] = "rearguard build -r --project";
 
-    if (rearguardConfig.has_dll) {
-      pkg.scripts.dll = "rearguard build --dll";
-      pkg.scripts["dll:release"] = "rearguard build -r --dll";
-    }
-  } else {
-    const args: string[] = [];
+  const args: string[] = [];
 
-    if (rearguardConfig.has_dll) {
-      args.push("--dll");
-    }
-
-    if (rearguardConfig.has_ui_lib) {
-      args.push("--ui_lib");
-    }
-
-    if (rearguardConfig.has_node_lib) {
-      args.push("--node_lib");
-    }
-
-    pkg.scripts.build = "rearguard build " + args.join(" ");
-    pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
-
-    delete pkg.scripts.dll;
-    delete pkg.scripts["dll:release"];
+  if (rearguardConfig.has_dll) {
+    args.push("--dll");
   }
+
+  if (rearguardConfig.has_ui_lib) {
+    args.push("--ui_lib");
+  }
+
+  if (rearguardConfig.has_node_lib) {
+    args.push("--node_lib");
+  }
+
+  pkg.scripts.build = "rearguard build " + args.join(" ");
+  pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
 
   /**
    * PRE_PUBLISH_ONLY
@@ -186,19 +183,19 @@ export async function initProject() {
   fs.writeFileSync(pkg_path, prettier_package_json.format(pkg));
 
   // Config file
-  typescriptConfig.init();
-  tsLintConfig.init();
-  prettierConfig.init();
+  typescriptConfig.init(true);
+  tsLintConfig.init(true);
+  prettierConfig.init(true);
 
   // Meta files init
-  dockerIgnore.init();
-  gitIgnore.init();
-  editorConfig.init();
-  npmrc.init();
+  dockerIgnore.init(true);
+  gitIgnore.init(true);
+  editorConfig.init(true);
+  npmrc.init(true);
 
-  if (envConfig.isProject || rearguardConfig.has_ui_lib) {
-    prePublish.init();
-    typings.init();
+  if (rearguardConfig.has_project || rearguardConfig.has_ui_lib) {
+    prePublish.init(true);
+    typings.init(true);
     postcssPlugins.init();
   }
 
@@ -207,10 +204,12 @@ export async function initProject() {
   await ordering_project_deps();
   await sync_with_linked_modules();
 
-  if (envConfig.isProject || rearguardConfig.has_dll || rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_ui_lib) {
     await delete_bundles();
     await copy_bundles();
   }
+
+  rearguardConfig.order_config_fields();
 
   console.log(chalk.bold.magenta(`============================================`));
   console.log("");

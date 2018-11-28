@@ -16,6 +16,14 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }
 
+  get isTND(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_TND === "true";
+  }
+
+  get isBNS(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER === "true";
+  }
+
   get isBuild(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_BUILD === "true";
   }
@@ -28,7 +36,7 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_FORCE === "true";
   }
 
-  get isProject(): boolean {
+  get has_project(): boolean {
     return process.env.REARGUARD_IS_PROJECT === "true";
   }
 

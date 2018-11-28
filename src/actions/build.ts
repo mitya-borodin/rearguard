@@ -64,14 +64,14 @@ async function build() {
     const result = spawn.sync(
       "tsc",
       [
-        "-p",
+        "--project",
         path.resolve(process.cwd(), "tsconfig.json"),
         "--rootDir",
         path.resolve(process.cwd(), "src"),
         "--outDir",
         path.resolve(process.cwd(), "lib"),
         "--module",
-        "es6",
+        "commonjs",
         "--declaration",
       ],
       {
@@ -108,7 +108,7 @@ async function build() {
     console.log("");
   }
 
-  if (envConfig.isProject) {
+  if (envConfig.has_project) {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ START ]`));
     const startTime = moment();
 

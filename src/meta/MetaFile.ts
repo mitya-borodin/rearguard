@@ -14,16 +14,15 @@ export class MetaFile implements IMetaFile {
     this.srcFile = isString(srcFile) ? srcFile : destFile;
   }
 
-  public init() {
+  public init(force = false) {
     const src = path.resolve(__dirname, "../../../templates", this.srcFile);
     const dest = path.resolve(process.cwd(), this.destFile);
     const hasFile = fs.existsSync(dest);
-    const { force } = envConfig;
 
-    if (!hasFile || force) {
+    if (!hasFile || envConfig.force || force) {
       fs.copyFileSync(src, dest);
 
-      if (hasFile && force) {
+      if (hasFile && (envConfig.force || force)) {
         console.log(chalk.yellow(`[ META_FILE ][ FORCE_INIT ][ ${dest} ]`));
       }
 

@@ -56,6 +56,7 @@ export class VersionableConfig implements IVersionableConfig {
       "output",
       "post_css_plugins_path",
       "sync_project_deps",
+      "has_project",
       "has_dll",
       "has_node_lib",
       "has_ui_lib",

@@ -141,7 +141,7 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       output.publicPath.length
     ) {
       return {
-        path: this.envConfig.resolveLocalModule(output.path),
+        path: path.resolve(process.cwd(), output.path),
         publicPath: output.publicPath,
       };
     }
@@ -320,6 +320,29 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { has_ui_lib };
   }
 
+  // HAS_PROJECT
+  // Говорит, о том, что проект можно собарть как файлы без экспортов, для заливки на сервер;
+  public get has_project(): boolean {
+    const { has_project } = this.config;
+
+    if (isBoolean(has_project)) {
+      return has_project;
+    }
+
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_project ][ must be a boolean ]`));
+
+    this.config = { has_project: false };
+
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_project ][ assign to 'false' ]`));
+    console.log("");
+
+    return this.has_project;
+  }
+
+  public set has_project(has_project: boolean) {
+    this.config = { has_project };
+  }
+
   // PUBLISH_IN_GIT
   // Говорит о том, что необходимо оставить под версионированием директории указанные в (package.json).files;
   public get publish_in_git(): boolean {
@@ -337,6 +360,10 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     console.log("");
 
     return this.publish_in_git;
+  }
+
+  public order_config_fields(): void {
+    this.config = this.config;
   }
 }
 

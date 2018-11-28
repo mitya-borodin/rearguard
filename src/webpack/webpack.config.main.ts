@@ -20,12 +20,12 @@ export function main_WS_config() {
     },
     tsLoader(),
     [
+      ...clean([DIST_DIR_NAME]),
       ...DllReferencePlugin(),
       ...HMR(),
       ...workboxPlugin(),
       ...htmlWebpackPlugin(),
       ...analyze(),
-      ...clean([DIST_DIR_NAME]),
     ],
     {},
   );

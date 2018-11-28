@@ -16,10 +16,9 @@ export class GitIgnore implements IMetaFile {
     this.init = this.init.bind(this);
   }
 
-  public init() {
+  public init(force = false) {
     const dest = path.resolve(process.cwd(), ".gitignore");
-    /*     const { force } = envConfig;
-    const hasFile = fs.existsSync(dest); */
+    const hasFile = fs.existsSync(dest);
     let gitignore = [`node_modules`];
 
     if (!this.rearguardConfig.publish_in_git) {
@@ -41,20 +40,16 @@ export class GitIgnore implements IMetaFile {
       "pre_publish_build_tmp",
     ]);
 
-    fs.writeFileSync(path.resolve(process.cwd(), ".gitignore"), gitignore.join("\r\n"));
-
-    console.log(chalk.green(`[ META_FILE ][ CREATE ][ ${dest} ]`));
-
-    /*     if (!hasFile || force) {
+    if (!hasFile || envConfig.force || force) {
       fs.writeFileSync(path.resolve(process.cwd(), ".gitignore"), gitignore.join("\r\n"));
 
-      if (hasFile && force) {
+      if (hasFile && (envConfig.force || force)) {
         console.log(chalk.yellow(`[ META_FILE ][ FORCE_INIT ][ ${dest} ]`));
       }
 
       if (!hasFile) {
         console.log(chalk.green(`[ META_FILE ][ CREATE ][ ${dest} ]`));
       }
-    } */
+    }
   }
 }

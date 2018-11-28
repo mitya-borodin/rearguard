@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import * as moment from "moment";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import { initProject } from "../components/init_project";
