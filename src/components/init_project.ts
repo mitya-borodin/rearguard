@@ -126,31 +126,7 @@ export async function initProject() {
   }
 
   /**
-   * START
-   */
-
-  if (rearguardConfig.has_project) {
-    pkg.scripts.start = "rearguard wds";
-    pkg.scripts["start:release"] = "rearguard wds -r";
-
-    pkg.scripts["project:build"] = "rearguard build --project";
-    pkg.scripts["project:build:release"] = "rearguard build --project -r";
-
-    if (rearguardConfig.has_dll) {
-      pkg.scripts.dll = "rearguard build --dll";
-      pkg.scripts["dll:release"] = "rearguard build --dll -r";
-    }
-  } else {
-    delete pkg.scripts.start;
-    delete pkg.scripts["start:release"];
-    delete pkg.scripts.dll;
-    delete pkg.scripts["dll:release"];
-    delete pkg.scripts["project:build"];
-    delete pkg.scripts["project:build:release"];
-  }
-
-  /**
-   * BUILD
+   * BUILD_SCRIPTS
    */
 
   const args: string[] = [];
@@ -169,6 +145,39 @@ export async function initProject() {
 
   pkg.scripts.build = "rearguard build " + args.join(" ");
   pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
+
+  /**
+   * START
+   */
+
+  if (rearguardConfig.has_project) {
+    pkg.scripts.start = "rearguard wds";
+    pkg.scripts["start:release"] = "rearguard wds -r";
+
+    if (rearguardConfig.has_dll) {
+      if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
+        pkg.scripts.build = pkg.scripts.build.replace("--dll", "");
+        pkg.scripts["build:release"] = pkg.scripts["build:release"].replace("--dll", "");
+      }
+
+      pkg.scripts.dll = "rearguard build --dll";
+      pkg.scripts["dll:release"] = "rearguard build --dll -r";
+    }
+
+    if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
+      pkg.scripts.build += " --project";
+      pkg.scripts["build:release"] += " --project";
+    }
+  } else {
+    delete pkg.scripts.start;
+    delete pkg.scripts["start:release"];
+
+    delete pkg.scripts.dll;
+    delete pkg.scripts["dll:release"];
+
+    delete pkg.scripts["project:build"];
+    delete pkg.scripts["project:build:release"];
+  }
 
   /**
    * PRE_PUBLISH_ONLY
