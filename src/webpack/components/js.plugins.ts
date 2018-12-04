@@ -17,7 +17,7 @@ import {
   dll_assets_path,
   dll_entry_name,
   dll_manifest_path,
-  dll_path,
+  dll_output_path,
   get_context,
   get_output_path,
   lib_entry_name,
@@ -29,7 +29,7 @@ import { analyzeConfig } from "./../../config/analyze/index";
 
 export const DllPlugin = (): webpack.Plugin[] => {
   return [
-    ...clean([dll_path()], true),
+    ...clean([dll_output_path()], true),
     new webpack.DllPlugin({
       context: get_context(),
       name: dll_entry_name(),

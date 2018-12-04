@@ -72,6 +72,58 @@ export class EnvConfig implements IEnvConfig {
     return process.cwd();
   }
 
+  /**
+   * MONO_REPOSITORY
+   */
+
+  get is_mono_init(): boolean {
+    return process.env.REARGUARD_MONO_INIT === "true";
+  }
+
+  get is_mono_clear(): boolean {
+    return process.env.REARGUARD_MONO_CLEAR === "true";
+  }
+
+  get is_mono_install(): boolean {
+    return process.env.REARGUARD_MONO_INSTALL === "true";
+  }
+
+  get is_mono_build(): boolean {
+    return process.env.REARGUARD_MONO_BUILD === "true";
+  }
+
+  get is_mono_link(): boolean {
+    return process.env.REARGUARD_MONO_LINK === "true";
+  }
+
+  get is_mono_bootstrap(): boolean {
+    return process.env.REARGUARD_MONO_BOOTSTRAP === "true";
+  }
+
+  get is_mono_test(): boolean {
+    return process.env.REARGUARD_MONO_TEST === "true";
+  }
+
+  get is_mono_publish(): boolean {
+    return process.env.REARGUARD_MONO_PUBLISH === "true";
+  }
+
+  get is_mono_publish_patch(): boolean {
+    return process.env.REARGUARD_MONO_PUBLISH_PATH === "true";
+  }
+
+  get is_mono_publish_minor(): boolean {
+    return process.env.REARGUARD_MONO_PUBLISH_MINOR === "true";
+  }
+
+  get is_mono_publish_major(): boolean {
+    return process.env.REARGUARD_MONO_PUBLISH_MAJOR === "true";
+  }
+
+  /**
+   * END
+   */
+
   public resolveLocalModule(name: string): string {
     return path.resolve(this.localNodeModulePath, name);
   }

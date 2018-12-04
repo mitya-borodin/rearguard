@@ -7,7 +7,12 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 
 // tslint:disable:variable-name
 
-export function get_module_weight(a_module_name: string, a_weight = 0, a_module_root?: string): number {
+export function get_module_weight(
+  a_module_name: string,
+  a_weight = 0,
+  a_module_root?: string,
+  a_module_map?: Map<string, string>,
+): number {
   function worker(a_module_path: string, weight: number): number {
     const { sync_project_deps } = new RearguardConfig(envConfig, path.resolve(a_module_path, "package.json"));
 
@@ -15,7 +20,7 @@ export function get_module_weight(a_module_name: string, a_weight = 0, a_module_
       weight += sync_project_deps.length;
 
       for (const module_name of sync_project_deps) {
-        weight += get_module_weight(module_name, 0, a_module_root);
+        weight += get_module_weight(module_name, 0, a_module_root, a_module_map);
       }
 
       return weight;
@@ -24,8 +29,8 @@ export function get_module_weight(a_module_name: string, a_weight = 0, a_module_
     }
   }
 
-  if (isString(a_module_root)) {
-    const module_path = path.resolve(a_module_root, a_module_name);
+  if (isString(a_module_root) && a_module_map) {
+    const module_path = path.resolve(a_module_root, a_module_map.get(a_module_name) || "");
 
     if (existsSync(module_path)) {
       return worker(module_path, a_weight);

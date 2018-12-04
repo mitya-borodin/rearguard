@@ -3,7 +3,6 @@ import chalk from "chalk";
 import { snakeCase } from "lodash";
 import * as path from "path";
 import { BUNDLE_SUB_DIR } from "../../const";
-import { dll_path, lib_path } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { VersionableConfig } from "../VersionableConfig";
@@ -169,14 +168,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
   public get bundle_public_path(): string {
     return path.normalize(`${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR}/`);
-  }
-
-  public get dll_output_path(): string {
-    return dll_path();
-  }
-
-  public get lib_output_path(): string {
-    return lib_path();
   }
 
   public get post_css_plugins_path(): string {

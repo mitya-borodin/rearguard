@@ -22,22 +22,22 @@ export function lib_entry_name(name = snakeCase(pkgInfo.name)): string {
   return `___LIBRARY___${name}`;
 }
 
-export function dll_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+export function dll_output_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
   return path.resolve(root, DLL_BUNDLE_DIR_NAME, name, BUNDLE_SUB_DIR);
 }
 
-export function lib_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+export function lib_output_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
   return path.resolve(root, LIB_BUNDLE_DIR_NAME, name, BUNDLE_SUB_DIR);
 }
 
 export function dll_assets_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
-  return path.resolve(dll_path(root, name), ASSETS_NAME);
+  return path.resolve(dll_output_path(root, name), ASSETS_NAME);
 }
 
 export function lib_assets_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
-  return path.resolve(lib_path(root, name), ASSETS_NAME);
+  return path.resolve(lib_output_path(root, name), ASSETS_NAME);
 }
 
 export function dll_manifest_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
-  return path.resolve(dll_path(root, name), DLL_MANIFEST_NAME);
+  return path.resolve(dll_output_path(root, name), DLL_MANIFEST_NAME);
 }

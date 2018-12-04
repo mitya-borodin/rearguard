@@ -2,7 +2,7 @@ import * as path from "path";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
 import { DLL_BUNDLE_DIR_NAME } from "../const";
-import { dll_entry_name, get_context } from "../helpers";
+import { dll_entry_name, dll_output_path, get_context } from "../helpers";
 import { analyze, assetsPlugin, clean, DllPlugin, DllReferencePlugin } from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
@@ -10,7 +10,7 @@ import { general_WP_config } from "./webpack.config.common";
 // tslint:disable:object-literal-sort-keys
 
 export function dll_WP_config() {
-  const { dll_entry, bundle_public_path, dll_output_path } = rearguardConfig;
+  const { dll_entry, bundle_public_path } = rearguardConfig;
   const { isDevelopment, isDebug } = envConfig;
 
   return general_WP_config(
@@ -19,7 +19,7 @@ export function dll_WP_config() {
     },
     {
       // path - путь куда записываются файлы.
-      path: dll_output_path,
+      path: dll_output_path(),
       // publicPath - путь до ресурса с файлами.
       publicPath: bundle_public_path,
       library: dll_entry_name(),
@@ -31,7 +31,7 @@ export function dll_WP_config() {
       ...DllPlugin(),
       ...assetsPlugin(DLL_BUNDLE_DIR_NAME),
       ...analyze(),
-      ...clean([dll_output_path]),
+      ...clean([dll_output_path()]),
     ],
     {},
   );

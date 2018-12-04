@@ -29,13 +29,13 @@ const {
 
   // monorepo
   init = false,
+  clear = false,
   install = false,
   build = false,
   link = false,
-  bootstrap = false, // it is combination of (install, build, link);
-  sync = false,
+  bootstrap = false, // it is combination of (clear, install, build, link);
   test = false,
-  publish = false,
+  publish = false, // work with (--patch, --minor, --major)
   patch = false,
   minor = false,
   major = false,
@@ -78,7 +78,7 @@ if (
   } else {
     if (
       action !== "monorepo" &&
-      (init || install || build || link || bootstrap || sync || test || publish || patch || minor || major)
+      (init || install || build || link || bootstrap || clear || test || publish || patch || minor || major)
     ) {
       console.log(
         chalk.bold.red(
@@ -116,7 +116,7 @@ if (
       process.exit(1);
     }
 
-    if (action !== "wds" && action !== "build" && release) {
+    if (action !== "wds" && action !== "build" && action !== "monorepo" && release) {
       console.log(
         chalk.bold.red(
           `I am really sorry but this configuration: "rearguard ${action} [ --release | -r ]" is not valid;`,
@@ -191,15 +191,15 @@ if (
 
       // MONO_REPO
       process.env.REARGUARD_MONO_INIT = init ? "true" : "false";
+      process.env.REARGUARD_MONO_CLEAR = clear ? "true" : "false";
       process.env.REARGUARD_MONO_INSTALL = install ? "true" : "false";
       process.env.REARGUARD_MONO_BUILD = build ? "true" : "false";
       process.env.REARGUARD_MONO_LINK = link ? "true" : "false";
       process.env.REARGUARD_MONO_BOOTSTRAP = bootstrap ? "true" : "false";
-      process.env.REARGUARD_MONO_SYNC = sync ? "true" : "false";
       process.env.REARGUARD_MONO_TEST = test ? "true" : "false";
       process.env.REARGUARD_MONO_PUBLISH = publish ? "true" : "false";
-      process.env.REARGUARD_MONO_PUBLISH_PATH = publish && patch ? "true" : "false";
-      process.env.REARGUARD_MONO_PUBLISH_MINOR = publish && minor ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_PATH = publish && patch && !(minor || major) ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_MINOR = publish && minor && !major ? "true" : "false";
       process.env.REARGUARD_MONO_PUBLISH_MAJOR = publish && major ? "true" : "false";
 
       // Логирование параметров запуска.

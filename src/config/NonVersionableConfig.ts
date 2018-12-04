@@ -7,10 +7,11 @@ import { IConfig } from "../interfaces/config/IConfig";
 // tslint:disable:variable-name
 
 export class NonVersionableConfig implements IConfig {
-  private readonly config_path: string = path.resolve(process.cwd(), NON_VERSIONABLE_CONFIG_FILE_NAME);
+  private readonly config_path: string;
   private readonly origin: { [key: string]: any };
 
-  constructor() {
+  constructor(file_name = NON_VERSIONABLE_CONFIG_FILE_NAME) {
+    this.config_path = path.resolve(process.cwd(), file_name);
     this.origin = {};
 
     if (fs.existsSync(this.config_path)) {
@@ -18,9 +19,7 @@ export class NonVersionableConfig implements IConfig {
     } else {
       this.config = {};
 
-      console.log(chalk.greenBright(`=========NON-VESIONABLE-CONFIG========`));
-      console.log(chalk.greenBright(`CREATED: ${this.config_path};`));
-      console.log(chalk.greenBright(`======================================`));
+      console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ] ${this.config_path}`));
       console.log("");
     }
   }

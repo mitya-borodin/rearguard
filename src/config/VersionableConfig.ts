@@ -24,13 +24,13 @@ export class VersionableConfig implements IVersionableConfig {
       if (isUndefined(this.package_json.rearguard)) {
         this.config = {};
 
-        console.log(chalk.greenBright(`===========VESIONABLE-CONFIG==========`));
-        console.log(chalk.greenBright(`CREATED FIELD 'rearguard' IN: ${this.config_path};`));
-        console.log(chalk.greenBright(`======================================`));
+        console.log(chalk.greenBright(`[ VERSIONABLE-CONFIG ][ CREATED ] FIELD 'rearguard' IN: ${this.config_path};`));
         console.log("");
       }
     } else {
-      console.log(chalk.bold.red(`[ CONFIG ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`));
+      console.trace(
+        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
+      );
 
       process.exit(1);
     }

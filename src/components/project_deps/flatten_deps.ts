@@ -11,7 +11,11 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
  * @param a_cur_project_deps - список имен модулей от которых зависит проект
  * @param a_modules_root_directory - директория в которой находятся все модули
  */
-export function flatten_deps(a_cur_project_deps: string[], a_modules_root_directory?: string): string[] {
+export function flatten_deps(
+  a_cur_project_deps: string[],
+  a_modules_root_directory?: string,
+  a_module_map?: Map<string, string>,
+): string[] {
   const flat_deps: Set<string> = new Set();
 
   function worker(module_name: string, node_module_path: string): boolean {
@@ -35,8 +39,8 @@ export function flatten_deps(a_cur_project_deps: string[], a_modules_root_direct
   }
 
   for (const module_name of a_cur_project_deps) {
-    if (isString(a_modules_root_directory)) {
-      const module_path = path.resolve(a_modules_root_directory, module_name);
+    if (isString(a_modules_root_directory) && a_module_map) {
+      const module_path = path.resolve(a_modules_root_directory, a_module_map.get(module_name) || "");
 
       if (existsSync(module_path)) {
         if (worker(module_name, module_path)) {

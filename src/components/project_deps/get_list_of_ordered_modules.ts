@@ -1,12 +1,15 @@
-import { isArray, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as moment from "moment";
-import { rearguardConfig } from "../../config/rearguard";
 import { flatten_deps } from "./flatten_deps";
 import { get_module_weight } from "./get_module_weight";
+
 // tslint:disable:variable-name
 
-export async function get_list_of_ordered_modules(a_root: string, a_modules: string[]): Promise<string[]> {
+export async function get_list_of_ordered_modules(
+  a_root: string,
+  a_modules: string[],
+  a_module_map: Map<string, string>,
+): Promise<string[]> {
   console.log(chalk.bold.blue(`============GET_LIST_OF_ORDERED_MODULES=========`));
   const startTime = moment();
   console.log(chalk.bold.blue(`[ GET_LIST_OF_ORDERED_MODULES ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`));
@@ -18,9 +21,9 @@ export async function get_list_of_ordered_modules(a_root: string, a_modules: str
   //
   /////////////////////
 
-  const modules = flatten_deps(a_modules, a_root);
+  const modules = flatten_deps(a_modules, a_root, a_module_map);
   const result: string[] = modules
-    .map((module) => ({ name: module, weight: get_module_weight(module, 0, a_root) }))
+    .map((module) => ({ name: module, weight: get_module_weight(module, 0, a_root, a_module_map) }))
     .sort((a, b) => (a.weight > b.weight ? 1 : -1))
     .map(({ name }) => name);
 
