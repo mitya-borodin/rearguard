@@ -76,34 +76,69 @@ export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] 
   return plugins;
 };
 
+class ComputeDataForHWP {
+  public apply(compiler: webpack.Compiler) {
+    compiler.hooks.compilation.tap("compute_data_for_html_webpack_plugin", (compilation) => {
+      HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
+        "compute_data_for_html_webpack_plugin", // <-- Set a meaningful name here for stacktraces
+        (
+          compilation_data: {
+            assets: {
+              publicPath: string;
+              js: string[];
+              css: string[];
+              favicon?: string | undefined;
+              manifest?: string | undefined;
+            };
+            outputName: string;
+            plugin: HtmlWebpackPlugin;
+          },
+          callback: (...args: any[]) => void,
+        ) => {
+          const bundlesInfo: IBundleInfo[] = get_bundles_info();
+          const data: { js: string[] } = { js: [] };
+
+          for (const { assets, bundle_name, has_dll, has_ui_lib } of bundlesInfo) {
+            if (has_dll && fs.existsSync(assets.dll)) {
+              data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
+            }
+
+            if (has_ui_lib && fs.existsSync(assets.lib)) {
+              data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
+            }
+          }
+
+          if (fs.existsSync(dll_assets_path())) {
+            data.js.push(require(dll_assets_path())[dll_entry_name()].js);
+          }
+
+          // Manipulate the content
+
+          compilation_data.assets.js = [...data.js, ...compilation_data.assets.js];
+
+          console.log(compilation_data.assets);
+
+          // Tell webpack to move on
+          callback(null, compilation_data);
+        },
+      );
+    });
+  }
+}
+
 export const htmlWebpackPlugin = (): webpack.Plugin[] => {
   const { isWDS, isBuild } = envConfig;
 
   if (isWDS || isBuild) {
-    const bundlesInfo: IBundleInfo[] = get_bundles_info();
-    const data: { js: string[] } = { js: [] };
-
-    for (const { assets, bundle_name, has_dll, has_ui_lib } of bundlesInfo) {
-      if (has_dll && fs.existsSync(assets.dll)) {
-        data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
-      }
-
-      if (has_ui_lib && fs.existsSync(assets.lib)) {
-        data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
-      }
-    }
-
-    if (fs.existsSync(dll_assets_path())) {
-      data.js.push(require(dll_assets_path())[dll_entry_name()].js);
-    }
-
     return [
       new HtmlWebpackPlugin({
-        data,
         filename: "index.html",
         inject: false,
         template: path.resolve(__dirname, "../../../../templates/html-webpack-template.ejs"),
+        // tslint:disable-next-line:object-literal-sort-keys
+        meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
       }),
+      new ComputeDataForHWP(),
     ];
   }
 
