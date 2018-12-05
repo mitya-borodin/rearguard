@@ -36,7 +36,23 @@ export async function publish(CWD: string) {
       }
 
       if (was_published) {
-        if (cur_version === pub_version || semver.lt(cur_version, pub_version)) {
+        const { is_mono_publish_patch, is_mono_publish_minor, is_mono_publish_major } = envConfig;
+
+        if (!(is_mono_publish_patch || is_mono_publish_minor || is_mono_publish_major)) {
+          if (cur_version === pub_version) {
+            return;
+          }
+
+          if (semver.lt(cur_version, pub_version)) {
+            rearguardConfig.pkg = { version: pub_version };
+            return;
+          }
+        }
+
+        if (
+          (is_mono_publish_patch || is_mono_publish_minor || is_mono_publish_major) &&
+          (cur_version === pub_version || semver.lt(cur_version, pub_version))
+        ) {
           let release: "patch" | "minor" | "major" = "patch";
 
           if (envConfig.is_mono_publish_minor) {
