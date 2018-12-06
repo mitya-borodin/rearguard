@@ -1,6 +1,4 @@
 # Rearguard
-## Содержание
-
 - [Что такое rearguard?](#whatIsIt)
 - [Под капотом](#underTheHood)
 - [Конфигурация](#configuration)
