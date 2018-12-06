@@ -1,8 +1,8 @@
+import { EventEmitter } from "@borodindmitriy/isomorphic";
 import chalk from "chalk";
 import * as chokidar from "chokidar";
 import { existsSync } from "fs";
 import * as path from "path";
-import { buildStatusConfig } from "../config/buildStatus";
 import { BuildStatusConfig } from "../config/buildStatus/BuildStatusConfig";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
@@ -17,6 +17,7 @@ import { sync_with_linked_modules } from "./project_deps/sync_with_linked_module
 let global_modules_watcher: chokidar.FSWatcher | void;
 let local_modules_watcher: chokidar.FSWatcher | void;
 let sync_project_deps: string | void;
+export const watch_deps_event_emitter = new EventEmitter();
 
 async function doSync() {
   const cur_sync_project_deps = rearguardConfig.sync_project_deps.join(", ");
@@ -92,21 +93,25 @@ export function watch_deps() {
 
   local_modules_watcher = chokidar.watch(local_modules, options);
 
-  local_modules_watcher.on("all", (type: string, watched_file: string) => {
+  local_modules_watcher.on("all", async (type: string, watched_file: string) => {
     console.log(type, watched_file);
 
-    doSync();
+    await doSync();
+
+    watch_deps_event_emitter.emit("SYNCED");
   });
 
   global_modules_watcher = chokidar.watch(global_modules, options);
 
-  global_modules_watcher.on("all", (type: string, watched_file: string) => {
+  global_modules_watcher.on("all", async (type: string, watched_file: string) => {
     console.log(type, watched_file);
 
     const { status } = new BuildStatusConfig(watched_file);
 
     if (status === "done") {
-      doSync();
+      await doSync();
+
+      watch_deps_event_emitter.emit("SYNCED");
     }
   });
 }
