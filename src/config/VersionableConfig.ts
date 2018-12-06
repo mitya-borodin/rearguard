@@ -8,43 +8,21 @@ import { IVersionableConfig } from "../interfaces/config/IVersionableConfig";
 // tslint:disable:variable-name
 
 export class VersionableConfig implements IVersionableConfig {
-  private package_json: { [key: string]: any };
   private readonly config_path: string = path.resolve(process.cwd(), "package.json");
 
   constructor(config_path?: string) {
     if (isString(config_path)) {
       this.config_path = config_path;
     }
-
-    this.package_json = { rearguard: {} };
-
-    if (fs.existsSync(this.config_path)) {
-      this.package_json = require(this.config_path);
-
-      if (isUndefined(this.package_json.rearguard)) {
-        this.config = {};
-
-        console.log(chalk.greenBright(`[ VERSIONABLE-CONFIG ][ CREATED ] FIELD 'rearguard' IN: ${this.config_path};`));
-        console.log("");
-      }
-    } else {
-      console.trace(
-        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
-      );
-
-      process.exit(1);
-    }
   }
 
   public get config(): { [key: string]: any } {
-    return this.package_json.rearguard;
+    return this.pkg.rearguard;
   }
 
   public set config(fields: { [key: string]: any }) {
-    const { rearguard } = this.package_json;
-
-    this.package_json.rearguard = { ...(isObject(rearguard) ? rearguard : {}), ...fields };
-
+    const cur_rearguard = this.pkg.rearguard;
+    const unsorted_rearguard = { ...(isObject(cur_rearguard) ? cur_rearguard : {}), ...fields };
     const sorted_rearguard: { [key: string]: any } = {};
 
     for (const key of [
@@ -62,10 +40,10 @@ export class VersionableConfig implements IVersionableConfig {
       "has_ui_lib",
       "publish_in_git",
     ]) {
-      sorted_rearguard[key] = this.package_json.rearguard[key];
+      sorted_rearguard[key] = unsorted_rearguard[key];
     }
 
-    const pkg = JSON.parse(prettier_package_json.format(this.package_json));
+    const pkg = JSON.parse(prettier_package_json.format(this.pkg));
 
     pkg.rearguard = sorted_rearguard;
 
@@ -73,13 +51,40 @@ export class VersionableConfig implements IVersionableConfig {
   }
 
   public get pkg(): { [key: string]: any } {
-    return this.package_json;
+    if (fs.existsSync(this.config_path)) {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(this.config_path).toString());
+
+        if (!pkg.rearguard) {
+          this.pkg = { rearguard: {} };
+
+          console.log(
+            chalk.greenBright(`[ VERSIONABLE-CONFIG ][ CREATED ] FIELD 'rearguard' IN: ${this.config_path};`),
+          );
+          console.log("");
+
+          return this.pkg;
+        }
+
+        return pkg;
+      } catch (error) {
+        console.error(error);
+
+        return {};
+      }
+    } else {
+      console.trace(
+        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
+      );
+
+      process.exit(1);
+
+      return {};
+    }
   }
 
   public set pkg(fields: { [key: string]: any }) {
-    this.package_json = { ...this.package_json, ...fields };
-
-    fs.writeFileSync(this.config_path, prettier_package_json.format(this.package_json));
+    fs.writeFileSync(this.config_path, prettier_package_json.format({ ...this.pkg, ...fields }));
   }
 }
 

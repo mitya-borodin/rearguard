@@ -5,6 +5,7 @@ import * as path from "path";
 import * as webpack from "webpack";
 import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
+import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { get_stats } from "../webpack/components/get_stats";
 import { dll_WP_config } from "../webpack/webpack.config.dll";
@@ -12,6 +13,8 @@ import { library_WP_config } from "../webpack/webpack.config.lib";
 import { main_WS_config } from "../webpack/webpack.config.main";
 
 async function build() {
+  buildStatusConfig.start();
+
   await initProject();
 
   if (envConfig.has_dll) {
@@ -132,6 +135,8 @@ async function build() {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
+
+  buildStatusConfig.end();
 }
 
 build();

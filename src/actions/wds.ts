@@ -4,6 +4,7 @@ import * as path from "path";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import { initProject } from "../components/init_project";
+import { watch_deps } from "../components/watch_deps";
 import { wdsConfig } from "../config/wds";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../const";
 import { get_WDS_config } from "../webpack/components/get_WDS_config";
@@ -13,6 +14,8 @@ let watcher: chokidar.FSWatcher | void;
 
 async function wds() {
   await initProject();
+
+  watch_deps();
 
   const { host, port } = wdsConfig;
   const server: any = new WDS(webpack(main_WS_config()), get_WDS_config());
