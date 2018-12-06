@@ -1,6 +1,6 @@
 {
-  "name": "wrench",
-  "version": "1.0.0",
+  "name": "rearguard",
+  "version": "4.0.0",
   "engines": {
     "node": ">=10",
     "npm": ">=6"

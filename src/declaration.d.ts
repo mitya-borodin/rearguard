@@ -1,3 +1,4 @@
+/* tslint:disable */
 declare module "workbox-webpack-plugin";
 declare module "hard-source-webpack-plugin";
 declare module "node-object-hash";
@@ -224,3 +225,4 @@ declare module "html-webpack-plugin" {
     innerHTML?: string;
   }
 }
+/* tslint:enable */
