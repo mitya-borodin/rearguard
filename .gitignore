@@ -1,5 +1,4 @@
-node_modules
 lib
-.nyc_output
+node_modules
+pre_publish_build_tmp
 coverage
-.idea

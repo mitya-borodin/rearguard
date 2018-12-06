@@ -1,47 +1,14 @@
 {
-  "version": "2.4.2",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": [
-      "es6",
-      "webworker",
-      "es7"
-    ],
-    "allowJs": true,
-    "sourceMap": false,
     "outDir": "./lib",
     "rootDir": "./",
-    "removeComments": true,
-    "importHelpers": true,
-    "downlevelIteration": false,
-    "isolatedModules": false,
-
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-
+    "module": "commonjs",
+    "lib": ["es6", "webworker", "es7"],
     "moduleResolution": "node",
-    "baseUrl": "./src",
-    "paths": {},
-    "rootDirs": [],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ],
-    "allowSyntheticDefaultImports": true,
-    "preserveConstEnums": true
+    "target": "es6",
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*",
-    "bin/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", "bin/**/*"]
 }
