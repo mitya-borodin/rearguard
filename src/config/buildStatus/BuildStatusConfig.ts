@@ -15,12 +15,10 @@ export class BuildStatusConfig extends NonVersionableConfig implements IBuildSta
   }
 
   public start(): void {
-    console.log("[ START ]");
     this.config = { status: "in_progress" };
   }
 
   public end(): void {
-    console.log("[ END ]");
     this.config = { status: "done" };
   }
 }

@@ -67,8 +67,6 @@ async function monorepo() {
       await publish(module_path);
     }
   }
-
-  console.log("monorepo");
 }
 
 monorepo();
