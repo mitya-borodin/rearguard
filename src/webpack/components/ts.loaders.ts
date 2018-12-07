@@ -10,9 +10,6 @@ export default (): webpack.Rule[] => {
   return [
     {
       enforce: "pre",
-      exclude(modulePath) {
-        return /node_modules/.test(modulePath);
-      },
       include,
       loader: "tslint-loader",
       options: {
@@ -21,9 +18,6 @@ export default (): webpack.Rule[] => {
       test,
     },
     {
-      exclude(modulePath) {
-        return /node_modules/.test(modulePath);
-      },
       include,
       test,
       use: [

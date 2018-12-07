@@ -236,7 +236,7 @@ export const clean = (toRemove: string[] = [], force = false): webpack.Plugin[] 
 export const assetsPlugin = (bundle_dir: string) => {
   return [
     new AssetsPlugin({
-      path: path.resolve(envConfig.rootDir, bundle_dir, snakeCase(pkgInfo.name), BUNDLE_SUB_DIR),
+      path: path.resolve(envConfig.rootDir, bundle_dir, snakeCase(pkgInfo.name), BUNDLE_SUB_DIR()),
       // tslint:disable-next-line:object-literal-sort-keys
       filename: ASSETS_NAME,
       processOutput(data: any) {

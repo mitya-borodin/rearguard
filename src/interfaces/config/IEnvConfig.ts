@@ -1,7 +1,7 @@
 export interface IEnvConfig {
   isInit: boolean;
   isWDS: boolean;
-  isTND: boolean;
+  isWDND: boolean;
   isBNS: boolean;
   isBuild: boolean;
   isDebug: boolean;
@@ -11,6 +11,7 @@ export interface IEnvConfig {
   has_node_lib: boolean;
   has_ui_lib: boolean;
   isDevelopment: boolean;
+  isBuildBoth: boolean;
   localNodeModulePath: string;
   globalNodeModulePath: string;
   devNodeModulePath: string;

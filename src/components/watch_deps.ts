@@ -94,8 +94,6 @@ export function watch_deps() {
   local_modules_watcher = chokidar.watch(local_modules, options);
 
   local_modules_watcher.on("all", async (type: string, watched_file: string) => {
-    console.log(type, watched_file);
-
     await doSync();
 
     watch_deps_event_emitter.emit("SYNCED");
@@ -104,8 +102,6 @@ export function watch_deps() {
   global_modules_watcher = chokidar.watch(global_modules, options);
 
   global_modules_watcher.on("all", async (type: string, watched_file: string) => {
-    console.log(type, watched_file);
-
     const { status } = new BuildStatusConfig(watched_file);
 
     if (status === "done") {

@@ -16,8 +16,8 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }
 
-  get isTND(): boolean {
-    return process.env.REARGUARD_LAUNCH_IS_TND === "true";
+  get isWDND(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_WDND === "true";
   }
 
   get isBNS(): boolean {
@@ -54,6 +54,10 @@ export class EnvConfig implements IEnvConfig {
 
   get isDevelopment(): boolean {
     return process.env.NODE_ENV === "development";
+  }
+
+  get isBuildBoth(): boolean {
+    return process.env.REARGUARD_BUILD_BOTH === "true";
   }
 
   get localNodeModulePath(): string {

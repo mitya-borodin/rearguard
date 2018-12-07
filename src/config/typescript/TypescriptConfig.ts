@@ -29,7 +29,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         target: "es6",
         jsx: "react",
         lib: ["dom", "es6", "DOM.Iterable", "ScriptHost", "es7"],
-        module: this.envConfig.isTND || this.envConfig.isBNS ? "commonjs" : "es6",
+        module: this.envConfig.isWDND || this.envConfig.isBNS ? "commonjs" : "es6",
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
@@ -57,10 +57,11 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         diagnostics: isDebug, // Show diagnostic information.
         extendedDiagnostics: isDebug, // Show verbose diagnostic information.
         traceResolution: isDebug, // Enable tracing of the name resolution process.
+        skipLibCheck: true,
       },
       exclude: [
         "node_modules",
-        ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isTND || this.envConfig.isBNS)
+        ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isWDND || this.envConfig.isBNS)
           ? [
               path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME),
               path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME),
@@ -68,7 +69,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
             ]
           : []),
       ],
-      ...(this.envConfig.isTND || this.envConfig.isBNS
+      ...(this.envConfig.isWDND || this.envConfig.isBNS
         ? { include: [path.resolve(process.cwd(), "bin"), path.resolve(process.cwd(), "src")] }
         : {}),
     };

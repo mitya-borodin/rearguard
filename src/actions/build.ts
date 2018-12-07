@@ -12,53 +12,7 @@ import { dll_WP_config } from "../webpack/webpack.config.dll";
 import { library_WP_config } from "../webpack/webpack.config.lib";
 import { main_WS_config } from "../webpack/webpack.config.main";
 
-async function build() {
-  buildStatusConfig.start();
-
-  await initProject();
-
-  if (envConfig.has_dll) {
-    console.log(chalk.bold.blue(`[ BUILD_DLL ][ START ]`));
-    const startTime = moment();
-
-    await new Promise((resolve, reject) => {
-      webpack(dll_WP_config()).run(async (err: any, stats: any) => {
-        if (err) {
-          reject(err);
-        }
-
-        console.info(stats.toString(get_stats()));
-
-        resolve();
-      });
-    });
-
-    console.log("");
-    console.log(chalk.bold.blue(`[ BUILD_DLL ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
-    console.log("");
-  }
-
-  if (envConfig.has_ui_lib) {
-    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ START ]`));
-    const startTime = moment();
-
-    await new Promise((resolve, reject) => {
-      webpack(library_WP_config()).run(async (err: any, stats: any) => {
-        if (err) {
-          reject(err);
-        }
-
-        console.info(stats.toString(get_stats()));
-
-        resolve();
-      });
-    });
-
-    console.log("");
-    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
-    console.log("");
-  }
-
+async function build_node_lib() {
   if (envConfig.has_node_lib) {
     console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ START ]`));
     const startTime = moment();
@@ -110,6 +64,50 @@ async function build() {
     console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
+}
+
+async function build() {
+  if (envConfig.has_dll) {
+    console.log(chalk.bold.blue(`[ BUILD_DLL ][ START ]`));
+    const startTime = moment();
+
+    await new Promise((resolve, reject) => {
+      webpack(dll_WP_config()).run(async (err: any, stats: any) => {
+        if (err) {
+          reject(err);
+        }
+
+        console.info(stats.toString(get_stats()));
+
+        resolve();
+      });
+    });
+
+    console.log("");
+    console.log(chalk.bold.blue(`[ BUILD_DLL ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log("");
+  }
+
+  if (envConfig.has_ui_lib) {
+    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ START ]`));
+    const startTime = moment();
+
+    await new Promise((resolve, reject) => {
+      webpack(library_WP_config()).run(async (err: any, stats: any) => {
+        if (err) {
+          reject(err);
+        }
+
+        console.info(stats.toString(get_stats()));
+
+        resolve();
+      });
+    });
+
+    console.log("");
+    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log("");
+  }
 
   if (envConfig.has_project) {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ START ]`));
@@ -135,8 +133,26 @@ async function build() {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
   }
+}
+
+async function run() {
+  buildStatusConfig.start();
+
+  await initProject();
+
+  if (envConfig.isBuildBoth) {
+    process.env.NODE_ENV = "development";
+    await build();
+
+    process.env.NODE_ENV = "production";
+    await build();
+  } else {
+    await build();
+  }
+
+  await build_node_lib();
 
   buildStatusConfig.end();
 }
 
-build();
+run();

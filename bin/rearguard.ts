@@ -19,6 +19,7 @@ const alias: { [key: string]: string } = {
 
 const {
   release = false,
+  both = false,
   debug = false,
 
   // mode
@@ -60,7 +61,7 @@ const {
 if (
   action === "init" ||
   action === "wds" ||
-  action === "tnd" ||
+  action === "watch_deps_for_node_dev" ||
   action === "build_node_server" ||
   action === "build" ||
   action === "monorepo"
@@ -116,13 +117,26 @@ if (
       process.exit(1);
     }
 
-    if (action !== "wds" && action !== "build" && action !== "monorepo" && release) {
+    if (action !== "wds" && action !== "build" && action !== "monorepo" && (release || both)) {
       console.log(
         chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --release | -r ]" is not valid;`,
+          `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --both ]" is not valid;`,
         ),
       );
       console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
+
+      process.exit(1);
+    }
+
+    if (action === "build" && both && release) {
+      console.log(
+        chalk.bold.red(
+          `I am really sorry but this configuration: "rearguard ${action} --both [ --release | -r ]" is not correct;`,
+        ),
+      );
+      console.log(
+        chalk.bold.green(`You should use: "rearguard ${action} [ --release | -r ]" or "rearguard ${action} --both";`),
+      );
 
       process.exit(1);
     }
@@ -173,13 +187,14 @@ if (
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_INIT = action === "init" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_TND = action === "tnd" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_WDND = action === "watch_deps_for_node_dev" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER = action === "build_node_server" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
 
       // Параметры запуска
       process.env.NODE_ENV = !release ? "development" : "production";
+      process.env.REARGUARD_BUILD_BOTH = both ? "true" : "false";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
       process.env.REARGUARD_IS_PROJECT = project ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";

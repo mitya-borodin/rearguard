@@ -145,6 +145,7 @@ export async function initProject() {
 
   pkg.scripts.build = "rearguard build " + args.join(" ");
   pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
+  pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
 
   /**
    * START
@@ -158,6 +159,7 @@ export async function initProject() {
       if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
         pkg.scripts.build = pkg.scripts.build.replace("--dll", "");
         pkg.scripts["build:release"] = pkg.scripts["build:release"].replace("--dll", "");
+        pkg.scripts["build:both"] = pkg.scripts["build:both"].replace("--dll", "");
       }
 
       pkg.scripts.dll = "rearguard build --dll";
@@ -167,6 +169,7 @@ export async function initProject() {
     if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
       pkg.scripts.build += " --project";
       pkg.scripts["build:release"] += " --project";
+      pkg.scripts["build:both"] += " --project";
     }
   } else {
     delete pkg.scripts.start;
@@ -174,9 +177,6 @@ export async function initProject() {
 
     delete pkg.scripts.dll;
     delete pkg.scripts["dll:release"];
-
-    delete pkg.scripts["project:build"];
-    delete pkg.scripts["project:build:release"];
   }
 
   /**
@@ -186,7 +186,7 @@ export async function initProject() {
   if (!rearguardConfig.has_dll && !rearguardConfig.has_ui_lib && rearguardConfig.has_node_lib) {
     pkg.scripts.prepublishOnly = "npm run build:release";
   } else {
-    pkg.scripts.prepublishOnly = "npm run build && npm run build:release";
+    pkg.scripts.prepublishOnly = "npm run build:both";
   }
 
   fs.writeFileSync(pkg_path, prettier_package_json.format(pkg));

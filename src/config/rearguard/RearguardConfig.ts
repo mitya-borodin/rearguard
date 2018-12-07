@@ -167,7 +167,7 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
   }
 
   public get bundle_public_path(): string {
-    return path.normalize(`${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR}/`);
+    return path.normalize(`${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR()}/`);
   }
 
   public get post_css_plugins_path(): string {
