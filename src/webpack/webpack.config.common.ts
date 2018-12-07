@@ -79,7 +79,7 @@ export function general_WP_config(
     performance: {
       hints: false,
     },
-    plugins: [...plugins],
+    plugins: [...plugins, new webpack.WatchIgnorePlugin([/node_modules/])],
     profile: true,
     recordsPath: path.resolve(process.cwd(), "node_modules/.cache/webpack/[confighash]/records.json"),
     resolve: {
