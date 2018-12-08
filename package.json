@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "4.0.0",
+  "version": "4.0.3",
   "engines": {
     "node": ">=10",
     "npm": ">=6"
@@ -114,7 +114,7 @@
     "mocha": "5.2.0",
     "nyc": "13.1.0"
   },
-  "description": "Pre set of configuration for build SPA powered by typescript, react, css-modules, webpack, postcss.",
+  "description": "Ultimate build and dev tool for create web site, SPA, mobile and desktop application powered by Cordova project. This tool support library oriented paradigm.",
   "keywords": [
     "development environment",
     "assemble environment",
