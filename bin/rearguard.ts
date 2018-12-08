@@ -106,21 +106,10 @@ if (
       process.exit(1);
     }
 
-    if (action !== "build" && (dll || node_lib || ui_lib)) {
+    if (action !== "build" && (dll || node_lib || ui_lib || project || both)) {
       console.log(
         chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib ]" is not valid;`,
-        ),
-      );
-      console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
-
-      process.exit(1);
-    }
-
-    if (action !== "wds" && action !== "build" && action !== "monorepo" && (release || both)) {
-      console.log(
-        chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --release | -r | --both ]" is not valid;`,
+          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib | --project ]" is not valid;`,
         ),
       );
       console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
