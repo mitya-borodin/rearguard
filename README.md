@@ -1,8 +1,7 @@
 # Rearguard
 - [Что такое rearguard?](#whatIsIt)
-- [Под капотом](#underTheHood)
-- [Конфигурация](#configuration)
-- [DLL](#dll)
+- [Технологии](#tech)
+- [Настройки](#settings)
 - [Установка](#install)
 - [CLI](#cli)
 - [Структура проекта](#structure)
@@ -13,180 +12,77 @@
 
 ### Что такое rearguard?
 
-Rearguard - это консольная утилита, включающая комплект настроек для разработки SPA, приложения основанного на технологиях
-Typescript, React, CSS-Modules, Webpack, PostCSS.
+Rearguard - это интрумент сборки и разработки сайтов, одностраничных приложений,
+мобильных и десктопных приложений (на базе проекта Cordova). Инструмент 
+поддерживает библиотека ориентированную парадигму разработки. Также 
+поддерживается способ разработки известный как монорепозиторий. Монолитный 
+способ разработки не исключён и является частным случаем.
 
-<a name="underTheHood"></a>
+<a name="tech"></a>
 
-#### Под капотом
+#### Технологии
 
-- webpack
-- webpack-dev-server
-- ts-loader
-- tslint-loader
-- postCSS
-- css-modules
-- isomorphic-style-loader
-- worker-loader
-- DLLPlugin
-- hard-source-webpack-plugin
-- workbox-webpack-plugin
+- OOP
+- SOLID
+- Design patterns
+- Browser
+- HTML
+- CSS
+- React.js
+- JSS
+- CSS-Modules
+- Mobx
+- Node.js
+- MongoDB
+- Express
+- React server rendering
+- Java
+- Swift
 
-<a name="configuration"></a>
+Данный список технологий используется для создания сайтов, одностраничных 
+приложений, мобильных и настольных приложений основанных на проекте Cordova.
 
-### Конфигурация
+<a name="settings"></a>
 
-Для начала работы ничего конфигурировать не нужно. Все необходимые файлы будут добавлены в проект автоматически.
+### Настройки
+#### Версионируемые
+Все версионируемые настройки находятся в поле rearguard: {/* поля настроек */}, внутри package.json.
 
-Rearguard ожидает, что имеется package.json и src/index.tsx.
+- **context: string** - директория контекста, указывается относительно текущей рабочей директории.
+- **entry: string** - точка входа в проект, используется для сборки (проекта) и/или разработки (проекта, библиотеки). Точка входа в проект не имеет экспортов API.
+- **dll_entry: string** - точка входа для DLL, в результате будет собран dll_bindle и manifest.json.
+- **lib_entry: string** - точка выхода API библиотеки, в результате будет собран lib_bundle для подключения в браузере и скомпилированы соответсвующие директории в директорию lib для использования d.ts файлов в IDE и js файлов в среде node.js.
+- **modules: string[]** - список директорий внутри context, которые можно считать модулями. Позволяет писать не относительные и не абсолютные пути. Но если вы создаете библиотеку то вам необходимо использовать абсолютные пути.
+- **output: { path: string; publicPath: string }** - указывается директория в которую вываливать результат сборки проекта, а так же публичный путь для доступа к файлам из браузера.
+- **post_css_plugins_path: string** - указывает на файл с module.exports = [ /*подключенные плагины для post_css*/ ], отновительно текущей рабочей директории.
+- **sync_project_deps: string[]** - список названий модулей, которые необходимо подключить к проекту. В частности какие dll_bundle и lib_bundle необходимо подключить в браузер. Так же каждый из указанных модулей ищется в глобальном node_modules и копируется в локальный при изменении модуля по линку. Эта настройка позволяет осуществлять сборку и разработку текущего проекта или библиотеки, а так же разработку зависимого модуля.
+- **has_dll: boolean** - говорит о том, что в текущем проекте есть dll_bundle;
+- **has_node_lib: boolean** - говорит о том, что в текущем проекте компилируется версия для использования в среде node.js;
+- **has_ui_lib: boolean** - говорит о том, что в текущем проекте есть lib_bundle, который будет использоваться в браузерной среде;
+- **has_project: boolean** - говорит о том, что текущий проект можно использовать как самостоятельный. Сделать сборку из entry и залить на сервер.
+- **publish_in_git: boolean** - говорит о том, что проект публикуется только в  git, в npm registry его публиковать не нужно.
 
-Файл конфигурации называется `build.config.json` и он будет создан автоматически, если его нет. Также этот файл **ДОЛЖЕН
-находиться под версионированием.**
+#### Не версионируемые
+Все не версионируемые настройки находятся в файле rearguard.json.
 
-Файлы `tsconfig.json` и `tslint.json` генерируются автоматически и при каждом запуске перезаписываются. Эти файлы **НЕ
-ДОЛЖНЫ** находиться под версионированием.
+- **analyze: { port: 10000 (значение по умолчанию) }** - декларируется порт для средства анализа бандла.
+- **status: "init"(значение по умолчанию)** - статус сборки проекта бывает «init», «in_progress», «done». Прослушивая эту настройку можно понять на какой стадии находится сборка проекта.
+- **wds: { host: string, port: string, proxy: { [key: string]: any } }** - настройки для webpack-dev-server.
 
-Файл `socket.config.json` генерируется автоматически и **НЕ перезаписывается при каждом запуске**. Описывает три
-сущности:
+#### Мета
+Все мета файлы являются автоматически генерируемыми. Внесение изменений в эти файлы только через pull request;
 
-- Порт сервера, который обслуживает аналитику по сборке (webpack-bundle-analyzer).
-- Настройки для всех прокси (webpack-dev-server).
-- Хост и порт для webpack-dev-server.
-
-Файл `src/typings.d.ts` генерируется автоматически и при каждом запуске перезаписывается.
-
-Декларирует модули для css и других файлов ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2.
-
-Этот файл необходим для того, чтобы не решать задачу с генерацией d.ts файлов, для css и прочих файлов.
-
-Файлы `build.config.json`, `socket.config.json` - проходят валидацию на:
-
-- наличие необходимых полей;
-- отсутствие полей, которые не участвуют в конфигурации;
-- типы значений, которые содержат поля;
-
-##### build.config.json
-
-Полное содержание этого файла:
-
-```json
-{
-  "context": "src",
-  "entry": "index.tsx",
-  "output": {
-    "path": "dist",
-    "publicPath": "/"
-  },
-  "modules": ["src"],
-  "typescript": {
-    "configPath": "tsconfig.json",
-    "config": {
-      "compilerOptions": {
-        "importHelpers": true,
-        "noImplicitAny": false,
-        "noUnusedParameters": false,
-        "strictPropertyInitialization": false,
-        "types": ["node"]
-      },
-      "compileOnSave": false
-    }
-  },
-  "postCSS": {
-    "plugins": "postCssPlugins.js"
-  }
-}
-```
-
-- context - директория, в которой находится исходный код.
-- entry - точка входа в приложение, так как этот набор настроек для SPA приложения, то и точка входа может быть только
-  одна.
-- output.path - путь до директории, в которую будет выгружен результат сборки, рассчитывается от места запуска консольной
-  утилиты.
-- output.publicPath - описывает по какому URL буду загрузаться файлы. Например: если указать /assets, то URL всех файлов
-  будут начинаться с /assets.
-- modules - описывает директории, в которых webpack будет искать модули. Необходимо для того, чтобы не описывать полные
-  или относительные пути, ниже я приведу примеры использования.
-- typescript.configPath - путь до конфигурационного файла, относительно директории запуска консольной утилиты.
-- typescript.config.compilerOptions - настройки которые будут добавлены в файл `tsconfig.json` и использованы в
-  ts-loader.
-- typescript.config.compileOnSave - смотреть [тут](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-- postCSS.plugins - указывает на файл с плагинами для postCSS которые будут подключены к webpack + к тем которые
-  втроенные.
-
-Пример `postCssPlugins.js`:
-
-```js
-module.exports = [
-  require("postcss-nesting")(),
-  require("postcss-nested")(),
-  require("postcss-calc")(),
-  require("postcss-extend")(),
-];
-```
-
-##### socket.config.json
-
-Полное содержание этого файла:
-
-```json
-{
-  "analyze": {
-    "port": 20000
-  },
-  "proxy": {
-    "/graphql": "http://localhost:9900",
-    "/auth": "http://localhost:9900",
-    "/ws": {
-      "target": "ws://localhost:9900",
-      "ws": true
-    }
-  },
-  "socket": {
-    "host": "localhost",
-    "port": 5500
-  }
-}
-```
-
-- analyze.port - порт для webpack-bundle-analyzer.
-- proxy - описывает все необходимые вам проксирования.
-- socket - описывает хост и порт для webpack-dev-server.
-
-<a name="dll"></a>
-
-#### DLL
-
-DLL - динамическая загрузка библиотек.
-Для работы этой возможности необходим файл `src/vendors.ts`.
-Следующего содержания **внимание - это ПРИМЕР не для копирования**:
-
-```ecmascript 6
-import "antd";
-import "antd/dist/antd.css";
-import "antd/lib/locale-provider/en_US";
-import "crew";
-import "hoist-non-react-statics";
-import "isomorphic-style-loader/lib/withStyles";
-import "mobx";
-import "mobx-react";
-import "mobx-react-devtools";
-import "mobx-utils";
-import "normalize.css";
-import "prop-types";
-import "react";
-import "react-dom";
-import "react-router";
-import "react-router-dom";
-import "twix";
-import "validatorjs";
-```
-
-То что будет импортированно в этом файле будет собрано в отдельный JS файл, который позже подключится в браузер отдельным
-линком.
-И будет создан специальный JSON файл с описанием того, что есть в этом dll.js файле. И когда вы будете в проекте импортировать,
-например, `mobx-react` то webpack посмотрит в JSON файл и если там найдет описание того, что этот `mobx-react` уже
-имеется в dll.js добавит в сборку только функцию получения объекта из dll.js файла. Таким образом, скорость разработки
-увеличивается и _**меньше тратится электричество.**_
+- **monorepo.json** - содержит { modules: string }, указывает на директорию в которой находится модули.
+- **.prettierrc** - содержит настройки для prettier.io.
+- **tslint.json** - содержит настройки для tsLint.
+- **tsconfig.json** - содержит настройки для typescript.
+- **.npmrc** - содержит настройки для npm.
+- **pre_publish.sh** - содержит набор действий для проверки пакета перед публикацией.
+- **typings.d.ts** - содержит декларацию типов для модулей с расширениями отличающиеся от ts;
+- **.dockerignore** - содержит информацию о том, какие директории и файлы убрать из контекста докера.
+- **.editorconfig** - определяет настройки табуляции для IDE.
+- **.gitignore** - указывает какие файлы и директории не версионируются.
+- **postcss.config.js** - файл в который подключаются плагины для post_css.
 
 <a name="install"></a>
 
@@ -208,60 +104,127 @@ npm install -g rearguard
 npm install -D rearguard
 ```
 
-Лично я ставлю глобально `:-)`
-
 <a name="cli"></a>
 
 ### CLI
-
-Команды:
-
-- rearguard start - запускает dev режим с прослушиванием файлов и пересборкой, но **БЕЗ sourcemap**. Sourcemap это очень
-  долго и не всегда необходимо.
-- rearguard start -d - запуск dev режима со всевозможными отладочными средствами и sourcemap.
-- rearguard start -r - запуск prod режима, необходим, чтобы протестировать результующую сборку.
-- rearguard build [-d | -r] - аналогично команде start только на выходе будут файлы.
-- rearguard dll [-d | -r] - запускает сборку dll для dev или prod режимов, и ,также, имеет возможность включить отладочную
-  информацию. На выходе будет сгенерирован файл внешних библиотек, который будет подключен в index.html.
-
-```json
-{
-  "scripts": {
-    "start": "rearguard start",
-    "start:debug": "rearguard start -d",
-    "start:release": "rearguard start -r",
-    "build": "rearguard build",
-    "build:debug": "rearguard build -d",
-    "build:release": "rearguard build -r",
-    "dll": "rearguard dll",
-    "dll:debug": "rearguard dll -d",
-    "dll:release": "rearguard dll -r"
-  }
-}
-```
+- rearguard init [ --project | --dll | --ui_lib | --node_lib | --force ]
+- rearguard wds [ --release | -r | --debug ]
+- rearguard build [ --project | --dll | --ui_lib | --node_lib | --release | -r | --both | --debug ]
+- rearguard build_node_server
+- rearguard watch_deps_for_node_dev
+- rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]
 
 <a name="structure"></a>
 
-### Структура проекта
+### Monolithic project structure or master-project or slave project
 
 ```
-my-app
+monolit-project || master-project || slave-project
 ├── package.json
 └── src - context
-    ├── decorators - Декораторы и HOC компоненты.
-    ├── interfaces - TS интерфейсы.
-    ├── pages - Каталог страниц.
+    ├── decorators
+    ├── adapters
+    ├── components
+    ├── compositions
+    ├── static - статические файлы (fonts, images, audio, video)
+    ├── interfaces
+    ├── pages
+    ├── library
+    │   ├── utils
+    │   ├── interfaces
+    |   |   ├── stores
+    |   |   ├── repositoryes
+    |   |   ├── form
+    |   ├── stores 
+    |   ├── repositoryes
+    |   ├── form
     ├── services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
-    ├── smartComponents - Компонеты которы содержат логику работы с данными и не содержат верстки и CSS.
-    ├── static - статические файлы (fonts, images)
-    ├── stores - Каталог хранилищ приложения, тут описывается бизнес логика работы приложения ("мозги приложения").
-    ├── stubComponents - верстка (UI пакеты такие как [Ant](https://ant.design/)).
-    ├── utils - Униферсальные классы и функции.
+    ├── stores - Каталог хранилищ приложения.
+    ├── typings.d.ts - Декларация для не TS модулей.
     ├── vars - CSS переменные и JS переменные.
-    ├── vendors.ts - Описывает внешние зависимости пакета, могут быть как из node_modules так и из других мест.
-    ├── typings.d.ts - Генерируется автоматически, декларируются css модули и модули для статических файлов.
-    └── index.tsx - Точка входа в приложение.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    ├── lib_exports.ts - Точка экспорта того, что реализовано внутри проекта.
+    └── index.tsx - Точка входа в приложение, для разработки и сборки результата.
 ```
+
+### DLL package structure
+
+```
+dll-package
+├── package.json
+└── src - context
+    └── vendors.ts - Информация для составления dll_bundle.
+```
+
+### Ui library structure
+
+```
+ui-library
+├── package.json
+└── src - context
+    ├── decorators
+    ├── adapters
+    ├── components
+    ├── compositions
+    ├── static - статические файлы (fonts, images, audio, video)
+    ├── interfaces
+    ├── pages
+    ├── stores
+    |   └── browserHistory - экспортирует объект истории.
+    ├── vars
+    ├── typings.d.ts - Декларация для не TS модулей.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    ├── lib_exports.ts - Точка экспорта того, что реализовано внутри библиотеки.
+    └── index.tsx - Точка входа в приложение, для разработки.
+```
+
+### Class Library Structure
+
+```
+classes-library
+├── package.json
+└── src - context
+    ├── architecture
+    |   ├── implementations
+    |   ├── interfaces
+    ├── enums
+    ├── helpers
+    ├── lists
+    ├── utils
+    ├── vendors.ts - Информация для составления dll_bundle.
+    └── lib_exports.ts - Точка экспорта того, что реализовано внутри библиотеки.
+```
+
+### Master-project structure
+
+```
+master-project
+├── package.json
+└── src - context
+    ├── decorators
+    ├── adapters
+    ├── interfaces
+    ├── pages
+    ├── library
+    │   ├── utils
+    │   ├── interfaces
+    |   |   ├── stores
+    |   |   ├── repositoryes
+    |   |   ├── form
+    |   ├── stores 
+    |   ├── repositoryes
+    |   ├── form
+    ├── services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
+    ├── stores - Каталог хранилищ приложения.
+    ├── typings.d.ts - Декларация для не TS модулей.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    └── index.tsx - Точка входа в приложение, для разработки и сборки результата.
+```
+- **DLL - динамически подклюбчаемые зависимости, которые анализиуер webpack через manifest.json**
+- **Library - собранный js файл содержащий экспорт наружу определнного API, это могут быть как UI компоненты, классы, функции, константы, enums, интерфейсы**
+- **Master-project - проект который подключает все зависимости, именно этот проект собирается дла развертывания**
+- **Master-project - может быть реализовал как монолитный проект, проект подключающий библиотеки (ui-library, classes-library, dll-packe, slave-project, и прочие)**
+- **Slave-project - может иметь собственную реализацию UI и бизнес логику. Так же как и master-project может подключать любые библиотеки.**
 
 <a name="modules"></a>
 
@@ -579,27 +542,3 @@ export default ReportSmart;
 ReportTable и необходимый для него css текст, из внешнего пакета "antd/dist/antd.css" и модульного css самого компонента.
 
 Вопросы и предложения можно написать в issue или непосредственно мне: [Dmitriy Borodin](http://borodin.site)
-
-#### Режими работы
-
-- DLL -
-  все зависимости собранные в единый файл, для подключения непосредственно в браузер, зависимоти указываются в файле dll_entry;
-  Не запускается в режиме разработки;
-  Не имеет экспорт API;
-  Не может зависеть от dll_bundle и lib_bundle;
-  Не может быть собран для развертывания на сервере;
-
-- Library -
-  самостоятельная реализация, как часть Project, так и как повторноиспользуемый код в других Library;
-  Запускается в режиме разработки;
-  Имеет экспорт API;
-  Может зависеть от dll_bundle и lib_bundle;
-  Не может быть собран для развертывания на сервере;
-
-- Project -
-  результирующий проект;
-  Запускается в режиме разработки;
-  Не имеет экспорт API;
-  Может зависеть от dll_bundle и lib_bundle;
-  Может быть собран для развертывания на сервере, создается index.html и в него заносятся необходимые теги;
-  Так же копируются все необходимые файлы;
