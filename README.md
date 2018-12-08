@@ -118,26 +118,115 @@ npm install -D rearguard
 
 <a name="structure"></a>
 
-### Структура проекта
+### Monolithic project structure or master-project or slave project
 
 ```
-my-app
+monolit-project || master-project || slave-project
 ├── package.json
 └── src - context
-    ├── decorators - Декораторы и HOC компоненты.
-    ├── interfaces - TS интерфейсы.
-    ├── pages - Каталог страниц.
+    ├── decorators
+    ├── adapters
+    ├── components
+    ├── compositions
+    ├── static - статические файлы (fonts, images, audio, video)
+    ├── interfaces
+    ├── pages
+    ├── library
+    │   ├── utils
+    │   ├── interfaces
+    |   |   ├── stores
+    |   |   ├── repositoryes
+    |   |   ├── form
+    |   ├── stores 
+    |   ├── repositoryes
+    |   ├── form
     ├── services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
-    ├── smartComponents - Компонеты которы содержат логику работы с данными и не содержат верстки и CSS.
-    ├── static - статические файлы (fonts, images)
-    ├── stores - Каталог хранилищ приложения, тут описывается бизнес логика работы приложения ("мозги приложения").
-    ├── stubComponents - верстка (UI пакеты такие как [Ant](https://ant.design/)).
-    ├── utils - Униферсальные классы и функции.
+    ├── stores - Каталог хранилищ приложения.
+    ├── typings.d.ts - Декларация для не TS модулей.
     ├── vars - CSS переменные и JS переменные.
-    ├── vendors.ts - Описывает внешние зависимости пакета, могут быть как из node_modules так и из других мест.
-    ├── typings.d.ts - Генерируется автоматически, декларируются css модули и модули для статических файлов.
-    └── index.tsx - Точка входа в приложение.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    ├── lib_exports.ts - Точка экспорта того, что реализовано внутри проекта.
+    └── index.tsx - Точка входа в приложение, для разработки и сборки результата.
 ```
+
+### DLL package structure
+
+```
+dll-package
+├── package.json
+└── src - context
+    └── vendors.ts - Информация для составления dll_bundle.
+```
+
+### Ui library structure
+
+```
+ui-library
+├── package.json
+└── src - context
+    ├── decorators
+    ├── adapters
+    ├── components
+    ├── compositions
+    ├── static - статические файлы (fonts, images, audio, video)
+    ├── interfaces
+    ├── pages
+    ├── stores
+    |   └── browserHistory - экспортирует объект истории.
+    ├── vars
+    ├── typings.d.ts - Декларация для не TS модулей.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    ├── lib_exports.ts - Точка экспорта того, что реализовано внутри библиотеки.
+    └── index.tsx - Точка входа в приложение, для разработки.
+```
+
+### Class Library Structure
+
+```
+classes-library
+├── package.json
+└── src - context
+    ├── architecture
+    |   ├── implementations
+    |   ├── interfaces
+    ├── enums
+    ├── helpers
+    ├── lists
+    ├── utils
+    ├── vendors.ts - Информация для составления dll_bundle.
+    └── lib_exports.ts - Точка экспорта того, что реализовано внутри библиотеки.
+```
+
+### Master-project structure
+
+```
+master-project
+├── package.json
+└── src - context
+    ├── decorators
+    ├── adapters
+    ├── interfaces
+    ├── pages
+    ├── library
+    │   ├── utils
+    │   ├── interfaces
+    |   |   ├── stores
+    |   |   ├── repositoryes
+    |   |   ├── form
+    |   ├── stores 
+    |   ├── repositoryes
+    |   ├── form
+    ├── services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
+    ├── stores - Каталог хранилищ приложения.
+    ├── typings.d.ts - Декларация для не TS модулей.
+    ├── vendors.ts - Информация для составления dll_bundle.
+    └── index.tsx - Точка входа в приложение, для разработки и сборки результата.
+```
+**DLL - динамически подклюбчаемые зависимости, которые анализиуер webpack через manifest.json**
+**Library - собранный js файл содержащий экспорт наружу определнного API, это могут быть как UI компоненты, классы, функции, константы, enums, интерфейсы**
+**Master-project - проект который подключает все зависимости, именно этот проект собирается дла развертывания**
+**Master-project - может быть реализовал как монолитный проект, проект подключающий библиотеки (ui-library, classes-library, dll-packe, slave-project, и прочие)**
+**Slave-project - может иметь собственную реализацию UI и бизнес логику. Так же как и master-project может подключать любые библиотеки.**
 
 <a name="modules"></a>
 
