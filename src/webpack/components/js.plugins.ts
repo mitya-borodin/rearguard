@@ -44,8 +44,8 @@ export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] 
   const bundlesInfo: IBundleInfo[] = get_bundles_info();
   const plugins: webpack.Plugin[] = [];
 
-  for (const { has_dll, bundle_entry_name, manifest } of bundlesInfo) {
-    if (has_dll) {
+  for (const { has_dll, bundle_entry_name, manifest, load_on_demand } of bundlesInfo) {
+    if (!load_on_demand && has_dll) {
       if (path.isAbsolute(manifest) && fs.existsSync(manifest)) {
         plugins.push(
           new webpack.DllReferencePlugin({
@@ -61,6 +61,8 @@ export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] 
       }
     }
   }
+
+  // exclude_them_self - выставляется в true в случае когда dll зависит от dll.
 
   if (!exclude_them_self) {
     if (fs.existsSync(dll_manifest_path())) {
