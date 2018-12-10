@@ -27,6 +27,7 @@ const {
   dll = false,
   node_lib = false,
   ui_lib = false,
+  load_on_demand = false,
 
   // monorepo
   init = false,
@@ -189,6 +190,7 @@ if (
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
       process.env.REARGUARD_UI_LIB = ui_lib ? "true" : "false";
+      process.env.REARGUARD_LOAD_ON_DEMAND = load_on_demand ? "true" : "false";
 
       // Состояние запуска
       process.env.REARGUARD_FORCE = force ? "true" : "false";

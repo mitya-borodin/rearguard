@@ -10,6 +10,7 @@ export interface IEnvConfig {
   has_dll: boolean;
   has_node_lib: boolean;
   has_ui_lib: boolean;
+  load_on_demand: boolean;
   isDevelopment: boolean;
   isBuildBoth: boolean;
   localNodeModulePath: string;

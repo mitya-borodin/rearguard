@@ -12,6 +12,7 @@ import * as WorkboxPlugin from "workbox-webpack-plugin";
 import { get_bundles_info } from "../../components/project_deps/get_bundles_info";
 import { envConfig } from "../../config/env";
 import { pkgInfo } from "../../config/pkg";
+import { rearguardConfig } from "../../config/rearguard";
 import { ASSETS_NAME, BUNDLE_SUB_DIR } from "../../const";
 import {
   dll_assets_path,
@@ -96,24 +97,25 @@ class ComputeDataForHWP {
           callback: (...args: any[]) => void,
         ) => {
           const bundlesInfo: IBundleInfo[] = get_bundles_info();
-          const data: { js: string[] } = { js: [] };
+          const data: { js: string[]; css: [] } = { js: [], css: [] };
 
-          for (const { assets, bundle_name, has_dll, has_ui_lib } of bundlesInfo) {
-            if (has_dll && fs.existsSync(assets.dll)) {
-              data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
-            }
+          for (const { assets, bundle_name, has_dll, has_ui_lib, load_on_demand } of bundlesInfo) {
+            if (!load_on_demand) {
+              if (has_dll && fs.existsSync(assets.dll)) {
+                data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
+              }
 
-            if (has_ui_lib && fs.existsSync(assets.lib)) {
-              data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
+              if (has_ui_lib && fs.existsSync(assets.lib)) {
+                data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
+              }
             }
           }
 
-          if (fs.existsSync(dll_assets_path())) {
+          if (!rearguardConfig.load_on_demand && fs.existsSync(dll_assets_path())) {
             data.js.push(require(dll_assets_path())[dll_entry_name()].js);
           }
 
           // Manipulate the content
-
           compilation_data.assets.js = [...data.js, ...compilation_data.assets.js];
 
           console.log("");

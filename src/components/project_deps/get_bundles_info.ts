@@ -27,6 +27,7 @@ export function get_bundles_info(): IBundleInfo[] {
       const bundleInfo: IBundleInfo = {
         has_dll: config.has_dll,
         has_ui_lib: config.has_ui_lib,
+        load_on_demand: config.load_on_demand,
         // Имя модуля
         pkg_name: config.pkg.name,
         // Имя бандал.

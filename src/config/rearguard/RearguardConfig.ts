@@ -334,6 +334,30 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { has_project };
   }
 
+  // LOAD_ON_DEMAND
+  // Говорит, о том, что библиотека не будет автоматически добавлена в index.html, а будет
+  // добавлена информация о том, где она расположена на сервере, для загрузки во времени выполнения.
+  public get load_on_demand(): boolean {
+    const { load_on_demand } = this.config;
+
+    if (isBoolean(load_on_demand)) {
+      return load_on_demand;
+    }
+
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ load_on_demand ][ must be a boolean ]`));
+
+    this.config = { load_on_demand: false };
+
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ load_on_demand ][ assign to 'false' ]`));
+    console.log("");
+
+    return this.load_on_demand;
+  }
+
+  public set load_on_demand(load_on_demand: boolean) {
+    this.config = { load_on_demand };
+  }
+
   // PUBLISH_IN_GIT
   // Говорит о том, что необходимо оставить под версионированием директории указанные в (package.json).files;
   public get publish_in_git(): boolean {

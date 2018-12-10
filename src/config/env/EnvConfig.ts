@@ -52,6 +52,10 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_UI_LIB === "true";
   }
 
+  get load_on_demand(): boolean {
+    return process.env.REARGUARD_LOAD_ON_DEMAND === "true";
+  }
+
   get isDevelopment(): boolean {
     return process.env.NODE_ENV === "development";
   }

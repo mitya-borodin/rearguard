@@ -46,6 +46,7 @@ export async function initProject() {
     rearguardConfig.has_dll = envConfig.has_dll;
     rearguardConfig.has_ui_lib = envConfig.has_ui_lib;
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
+    rearguardConfig.load_on_demand = envConfig.load_on_demand;
   }
 
   const files: string[] = [];
