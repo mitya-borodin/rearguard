@@ -116,7 +116,15 @@ class ComputeDataForHWP {
 
           compilation_data.assets.js = [...data.js, ...compilation_data.assets.js];
 
-          console.log(compilation_data.assets);
+          console.log("");
+          console.log(chalk.bold.green("[ HtmlWebpackPlugin ][ BUILD ][ index.html ]"));
+          for (const css of compilation_data.assets.css) {
+            console.log(chalk.green(`[ CSS ][ ${css} ]`));
+          }
+          for (const js of compilation_data.assets.js) {
+            console.log(chalk.green(`[ JS ][ ${js} ]`));
+          }
+          console.log("");
 
           // Tell webpack to move on
           callback(null, compilation_data);

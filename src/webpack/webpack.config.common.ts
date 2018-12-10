@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import * as path from "path";
 import { Entry, EntryFunc } from "webpack";
 import * as webpack from "webpack";
@@ -16,7 +17,7 @@ export function general_WP_config(
   output: webpack.Output,
   rules: webpack.Rule[],
   plugins: webpack.Plugin[],
-  externals: webpack.ExternalsObjectElement,
+  a_externals: webpack.ExternalsObjectElement,
 ): webpack.Configuration {
   const { modules } = rearguardConfig;
   const { isDevelopment, isDebug } = envConfig;
@@ -32,7 +33,18 @@ export function general_WP_config(
     }
   }
 
-  console.log("[ EXTERNALS ]", { ...lib_externals, ...externals });
+  const externals: { [key: string]: any } = { ...lib_externals, ...a_externals };
+
+  console.log(chalk.bold.green("[ EXTERNALS ]"));
+  for (const key in externals) {
+    if (externals.hasOwnProperty(key)) {
+      const types = Object.keys(externals[key]);
+
+      for (const type of types) {
+        console.log(chalk.green(`[ ${key} ][ ${type} ][ ${externals[key][type]} ]`));
+      }
+    }
+  }
 
   return {
     bail: !isDevelopment,
@@ -40,7 +52,7 @@ export function general_WP_config(
     context: get_context(),
     devtool: isDebug ? "source-map" : false,
     entry,
-    externals: { ...lib_externals, ...externals },
+    externals,
     mode: "none",
     module: {
       rules: [
