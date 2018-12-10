@@ -39,6 +39,7 @@ export class VersionableConfig implements IVersionableConfig {
       "has_node_lib",
       "has_ui_lib",
       "publish_in_git",
+      "load_on_demand",
     ]) {
       sorted_rearguard[key] = unsorted_rearguard[key];
     }

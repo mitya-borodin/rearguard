@@ -78,6 +78,15 @@ if (
       process.exit(1);
     }
   } else {
+    if (load_on_demand) {
+      console.log(
+        chalk.bold.red(
+          `You should use: "rearguard init [ --project | --dll | --ui_lib | --node_lib | --load_on_demand | --force ]";`,
+        ),
+      );
+
+      process.exit(1);
+    }
     if (
       action !== "monorepo" &&
       (init || install || build || link || bootstrap || clear || test || publish || patch || minor || major)
