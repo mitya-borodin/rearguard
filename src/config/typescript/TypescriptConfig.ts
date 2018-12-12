@@ -4,6 +4,7 @@ import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
 import { ConfigFile } from "../ConfigFile";
+import { rearguardConfig } from "../rearguard";
 
 // tslint:disable:variable-name object-literal-sort-keys
 
@@ -33,7 +34,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
-        ...(!this.envConfig.has_node_lib
+        ...(!rearguardConfig.has_node_lib && !rearguardConfig.has_project && rearguardConfig.has_ui_lib
           ? {
               declaration: true,
               outDir: path.resolve(process.cwd(), LIB_DIR_NAME),
