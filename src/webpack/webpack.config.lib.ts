@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as webpack from "webpack";
-import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
 import { LIB_BUNDLE_DIR_NAME } from "../const";
 import { get_context, lib_entry_name, lib_output_path } from "../helpers";
@@ -11,7 +10,7 @@ import { general_WP_config } from "./webpack.config.common";
 // tslint:disable:object-literal-sort-keys
 
 export function library_WP_config(): webpack.Configuration {
-  const { lib_entry, bundle_public_path } = rearguardConfig;
+  const { lib_entry, bundle_public_path, pkg } = rearguardConfig;
 
   return general_WP_config(
     {
@@ -24,6 +23,7 @@ export function library_WP_config(): webpack.Configuration {
       publicPath: bundle_public_path,
       library: lib_entry_name(),
       libraryTarget: "var",
+      ...(rearguardConfig.load_on_demand ? { libraryTarget: "umd", library: pkg.name } : {}),
     },
     tsLoader(),
     [...DllReferencePlugin(), ...assetsPlugin(LIB_BUNDLE_DIR_NAME), ...analyze(), ...clean([lib_output_path()])],

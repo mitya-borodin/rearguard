@@ -10,8 +10,9 @@ import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../co
 // tslint:disable:variable-name
 
 export async function delete_bundles() {
-  if (envConfig.isBuild && (envConfig.has_dll || envConfig.has_ui_lib || envConfig.has_node_lib)) {
-    const { pkg } = rearguardConfig;
+  const { pkg, has_dll, has_ui_lib, has_node_lib, has_project } = rearguardConfig;
+
+  if (envConfig.isBuild && (has_dll || has_ui_lib || has_node_lib || has_project)) {
     const cur_bundle_name = snakeCase(pkg.name);
     const dll_bundle_dir = path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME);
     const lib_bundle_dir = path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME);

@@ -77,7 +77,7 @@ export async function initProject() {
 
   mkdirp.sync(src);
 
-  if (rearguardConfig.has_project) {
+  if (rearguardConfig.has_ui_lib || rearguardConfig.has_project) {
     const entry = path.resolve(src, rearguardConfig.entry);
 
     if (!fs.existsSync(entry)) {
@@ -179,6 +179,11 @@ export async function initProject() {
 
     delete update_for_pkg.scripts.dll;
     delete update_for_pkg.scripts["dll:release"];
+  }
+
+  if (!rearguardConfig.has_project && rearguardConfig.has_ui_lib) {
+    update_for_pkg.scripts.start = "rearguard wds";
+    update_for_pkg.scripts["start:release"] = "rearguard wds -r";
   }
 
   /**
