@@ -19,6 +19,7 @@ import { npmrc } from "./../meta/Npmrc/index";
 import { copy_bundles } from "./project_deps/copy_bundles";
 import { delete_bundles } from "./project_deps/delete_bundles";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
+import { set_list_of_modules_with_deferred_loading } from "./project_deps/set_list_of_modules_with_deferred_loading";
 import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
 
 // tslint:disable:variable-name
@@ -35,7 +36,7 @@ export async function initProject() {
     process.exit(1);
   }
 
-  const pkg = require(pkg_path);
+  const update_for_pkg: { [key: string]: any } = {};
 
   /**
    * INIT PROJECT STATUS
@@ -66,7 +67,7 @@ export async function initProject() {
   console.log(chalk.green(`[ FILES ][ ${files.join(", ")} ]`));
   console.log("");
 
-  pkg.files = files;
+  update_for_pkg.files = files;
 
   /**
    * INIT ENTRY FILES
@@ -113,17 +114,17 @@ export async function initProject() {
     const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
     const basename = path.basename(lib_entry, ".ts");
 
-    pkg.main = `${LIB_DIR_NAME}/${basename}.js`;
-    pkg.module = `${LIB_DIR_NAME}/${basename}.js`;
-    pkg.types = `${LIB_DIR_NAME}/${basename}.d.ts`;
+    update_for_pkg.main = `${LIB_DIR_NAME}/${basename}.js`;
+    update_for_pkg.module = `${LIB_DIR_NAME}/${basename}.js`;
+    update_for_pkg.types = `${LIB_DIR_NAME}/${basename}.d.ts`;
   }
 
   /**
    * INIT SCRIPTS
    */
 
-  if (!pkg.scripts) {
-    pkg.scripts = {};
+  if (!update_for_pkg.scripts) {
+    update_for_pkg.scripts = {};
   }
 
   /**
@@ -144,40 +145,40 @@ export async function initProject() {
     args.push("--node_lib");
   }
 
-  pkg.scripts.build = "rearguard build " + args.join(" ");
-  pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
-  pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
+  update_for_pkg.scripts.build = "rearguard build " + args.join(" ");
+  update_for_pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
+  update_for_pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
 
   /**
    * START
    */
 
   if (rearguardConfig.has_project) {
-    pkg.scripts.start = "rearguard wds";
-    pkg.scripts["start:release"] = "rearguard wds -r";
+    update_for_pkg.scripts.start = "rearguard wds";
+    update_for_pkg.scripts["start:release"] = "rearguard wds -r";
 
     if (rearguardConfig.has_dll) {
       if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
-        pkg.scripts.build = pkg.scripts.build.replace("--dll", "");
-        pkg.scripts["build:release"] = pkg.scripts["build:release"].replace("--dll", "");
-        pkg.scripts["build:both"] = pkg.scripts["build:both"].replace("--dll", "");
+        update_for_pkg.scripts.build = update_for_pkg.scripts.build.replace("--dll", "");
+        update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace("--dll", "");
+        update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace("--dll", "");
       }
 
-      pkg.scripts.dll = "rearguard build --dll";
-      pkg.scripts["dll:release"] = "rearguard build --dll -r";
+      update_for_pkg.scripts.dll = "rearguard build --dll";
+      update_for_pkg.scripts["dll:release"] = "rearguard build --dll -r";
     }
 
     if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
-      pkg.scripts.build += " --project";
-      pkg.scripts["build:release"] += " --project";
-      pkg.scripts["build:both"] += " --project";
+      update_for_pkg.scripts.build += " --project";
+      update_for_pkg.scripts["build:release"] += " --project";
+      update_for_pkg.scripts["build:both"] += " --project";
     }
   } else {
-    delete pkg.scripts.start;
-    delete pkg.scripts["start:release"];
+    delete update_for_pkg.scripts.start;
+    delete update_for_pkg.scripts["start:release"];
 
-    delete pkg.scripts.dll;
-    delete pkg.scripts["dll:release"];
+    delete update_for_pkg.scripts.dll;
+    delete update_for_pkg.scripts["dll:release"];
   }
 
   /**
@@ -185,12 +186,14 @@ export async function initProject() {
    */
 
   if (!rearguardConfig.has_dll && !rearguardConfig.has_ui_lib && rearguardConfig.has_node_lib) {
-    pkg.scripts.prepublishOnly = "npm run build:release";
+    update_for_pkg.scripts.prepublishOnly = "npm run build:release";
   } else {
-    pkg.scripts.prepublishOnly = "npm run build:both";
+    update_for_pkg.scripts.prepublishOnly = "npm run build:both";
   }
 
-  fs.writeFileSync(pkg_path, prettier_package_json.format(pkg));
+  const cur_pkg = require(pkg_path);
+
+  fs.writeFileSync(pkg_path, prettier_package_json.format({ ...cur_pkg, ...update_for_pkg }));
 
   // Config file
   typescriptConfig.init(true);
@@ -220,6 +223,8 @@ export async function initProject() {
   }
 
   rearguardConfig.order_config_fields();
+
+  set_list_of_modules_with_deferred_loading();
 
   console.log(chalk.bold.magenta(`============================================`));
   console.log("");

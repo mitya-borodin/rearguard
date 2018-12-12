@@ -10,3 +10,4 @@ export const ASSETS_NAME = "assets.json";
 export const LIB_BUNDLE_DIR_NAME = "lib_bundle";
 export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
 export const LIB_DIR_NAME = "lib";
+export const DEFERRED_MODULE_LIST = "deferred_module_list.ts";

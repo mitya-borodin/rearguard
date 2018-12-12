@@ -13,57 +13,55 @@ import { library_WP_config } from "../webpack/webpack.config.lib";
 import { main_WS_config } from "../webpack/webpack.config.main";
 
 async function build_node_lib() {
-  if (envConfig.has_node_lib) {
-    console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ START ]`));
-    const startTime = moment();
-    console.log("");
+  console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ START ]`));
+  const startTime = moment();
+  console.log("");
 
-    const result = spawn.sync(
-      "tsc",
-      [
-        "--project",
-        path.resolve(process.cwd(), "tsconfig.json"),
-        "--rootDir",
-        path.resolve(process.cwd(), "src"),
-        "--outDir",
-        path.resolve(process.cwd(), "lib"),
-        "--module",
-        "commonjs",
-        "--declaration",
-      ],
-      {
-        cwd: process.cwd(),
-        encoding: "utf8",
-        stdio: "inherit",
-      },
-    );
+  const result = spawn.sync(
+    "tsc",
+    [
+      "--project",
+      path.resolve(process.cwd(), "tsconfig.json"),
+      "--rootDir",
+      path.resolve(process.cwd(), "src"),
+      "--outDir",
+      path.resolve(process.cwd(), "lib"),
+      "--module",
+      "commonjs",
+      "--declaration",
+    ],
+    {
+      cwd: process.cwd(),
+      encoding: "utf8",
+      stdio: "inherit",
+    },
+  );
 
-    if (result.signal) {
-      if (result.signal === "SIGKILL") {
-        console.log(
-          chalk.bold.red(
-            "The tsc failed because the process exited too early. " +
-              "This probably means the system ran out of memory or someone called `kill -9` on the process.",
-          ),
-        );
+  if (result.signal) {
+    if (result.signal === "SIGKILL") {
+      console.log(
+        chalk.bold.red(
+          "The tsc failed because the process exited too early. " +
+            "This probably means the system ran out of memory or someone called `kill -9` on the process.",
+        ),
+      );
 
-        process.exit(1);
-      } else if (result.signal === "SIGTERM") {
-        console.log(
-          chalk.bold.red(
-            "The tsc failed because the process exited too early. " +
-              "Someone might have called `kill` or `killall`, or the system could be shutting down.",
-          ),
-        );
+      process.exit(1);
+    } else if (result.signal === "SIGTERM") {
+      console.log(
+        chalk.bold.red(
+          "The tsc failed because the process exited too early. " +
+            "Someone might have called `kill` or `killall`, or the system could be shutting down.",
+        ),
+      );
 
-        process.exit(1);
-      }
+      process.exit(1);
     }
-
-    console.log("");
-    console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
-    console.log("");
   }
+
+  console.log("");
+  console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+  console.log("");
 }
 
 async function build() {
@@ -150,7 +148,9 @@ async function run() {
     await build();
   }
 
-  await build_node_lib();
+  if (envConfig.has_node_lib) {
+    await build_node_lib();
+  }
 
   buildStatusConfig.end();
 }

@@ -7,6 +7,23 @@ import { IVersionableConfig } from "../interfaces/config/IVersionableConfig";
 
 // tslint:disable:variable-name
 
+const field_order = [
+  "context",
+  "entry",
+  "dll_entry",
+  "lib_entry",
+  "modules",
+  "output",
+  "post_css_plugins_path",
+  "sync_project_deps",
+  "has_dll",
+  "has_ui_lib",
+  "load_on_demand",
+  "has_project",
+  "has_node_lib",
+  "publish_in_git",
+];
+
 export class VersionableConfig implements IVersionableConfig {
   private readonly config_path: string = path.resolve(process.cwd(), "package.json");
 
@@ -21,34 +38,20 @@ export class VersionableConfig implements IVersionableConfig {
   }
 
   public set config(fields: { [key: string]: any }) {
-    const cur_rearguard = this.pkg.rearguard;
-    const unsorted_rearguard = { ...(isObject(cur_rearguard) ? cur_rearguard : {}), ...fields };
+    const unsorted_rearguard = { ...this.pkg.rearguard, ...fields };
     const sorted_rearguard: { [key: string]: any } = {};
 
-    for (const key of [
-      "context",
-      "entry",
-      "dll_entry",
-      "lib_entry",
-      "modules",
-      "output",
-      "post_css_plugins_path",
-      "sync_project_deps",
-      "has_project",
-      "has_dll",
-      "has_node_lib",
-      "has_ui_lib",
-      "publish_in_git",
-      "load_on_demand",
-    ]) {
-      sorted_rearguard[key] = unsorted_rearguard[key];
+    for (const key of field_order) {
+      if (unsorted_rearguard.hasOwnProperty(key)) {
+        sorted_rearguard[key] = unsorted_rearguard[key];
+      }
     }
 
     const pkg = JSON.parse(prettier_package_json.format(this.pkg));
 
     pkg.rearguard = sorted_rearguard;
 
-    fs.writeFileSync(this.config_path, JSON.stringify(pkg, null, 2));
+    fs.writeFileSync(this.config_path, JSON.stringify(pkg, null, 2), { encoding: "utf-8" });
   }
 
   public get pkg(): { [key: string]: any } {
@@ -56,7 +59,7 @@ export class VersionableConfig implements IVersionableConfig {
       try {
         const pkg = JSON.parse(fs.readFileSync(this.config_path).toString());
 
-        if (!pkg.rearguard) {
+        if (!isObject(pkg.rearguard)) {
           this.pkg = { rearguard: {} };
 
           console.log(
@@ -85,7 +88,27 @@ export class VersionableConfig implements IVersionableConfig {
   }
 
   public set pkg(fields: { [key: string]: any }) {
-    fs.writeFileSync(this.config_path, prettier_package_json.format({ ...this.pkg, ...fields }));
+    if (fs.existsSync(this.config_path)) {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(this.config_path).toString());
+
+        fs.writeFileSync(this.config_path, prettier_package_json.format({ ...pkg, ...fields }));
+      } catch (error) {
+        console.error(error);
+
+        process.exit(1);
+      }
+    } else {
+      console.trace(
+        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
+      );
+
+      process.exit(1);
+    }
+  }
+
+  public order_config_fields() {
+    this.config = this.config;
   }
 }
 

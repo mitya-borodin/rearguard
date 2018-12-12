@@ -376,10 +376,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
     return this.publish_in_git;
   }
-
-  public order_config_fields(): void {
-    this.config = this.config;
-  }
 }
 
 // tslint:enable:variable-name

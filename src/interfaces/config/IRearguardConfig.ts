@@ -16,6 +16,4 @@ export interface IRearguardConfig extends IConfig {
   has_project: boolean;
   load_on_demand: boolean;
   publish_in_git: boolean;
-
-  order_config_fields(): void;
 }

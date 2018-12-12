@@ -11,20 +11,8 @@ export class NonVersionableConfig implements IConfig {
   private readonly config_path: string = path.resolve(process.cwd(), NON_VERSIONABLE_CONFIG_FILE_NAME);
 
   constructor(config_path?: string) {
-    if (isString(config_path)) {
-      if (fs.existsSync(config_path)) {
-        this.config_path = config_path;
-      } else {
-        console.trace(
-          chalk.bold.red(
-            `[ ${this.constructor.name} ][ ERROR ][ You haven't non versionable config ${this.config_path} here: ${
-              this.config_path
-            } ]`,
-          ),
-        );
-
-        process.exit(1);
-      }
+    if (isString(config_path) && fs.existsSync(config_path)) {
+      this.config_path = config_path;
     }
   }
 
@@ -35,19 +23,18 @@ export class NonVersionableConfig implements IConfig {
       } catch (error) {
         console.error(error);
 
+        process.exit(0);
+
         return {};
       }
+    } else {
+      fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2));
+
+      console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
+      console.log("");
+
+      return this.config;
     }
-
-    console.trace(
-      chalk.bold.red(
-        `[ ${this.constructor.name} ][ ERROR ][ You haven't non versionable config here: ${this.config_path} ]`,
-      ),
-    );
-
-    process.exit(1);
-
-    return {};
   }
 
   public set config(fields: { [key: string]: any }) {

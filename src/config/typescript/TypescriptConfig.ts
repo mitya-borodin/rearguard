@@ -33,6 +33,12 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
+        ...(!this.envConfig.has_node_lib
+          ? {
+              declaration: true,
+              outDir: path.resolve(process.cwd(), LIB_DIR_NAME),
+            }
+          : {}),
 
         /* Strict Type-Checking Options */
         strict: true /*

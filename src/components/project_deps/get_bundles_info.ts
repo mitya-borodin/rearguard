@@ -30,7 +30,7 @@ export function get_bundles_info(): IBundleInfo[] {
         load_on_demand: config.load_on_demand,
         // Имя модуля
         pkg_name: config.pkg.name,
-        // Имя бандал.
+        // Имя бандал в snake_case.
         bundle_name,
         // Абсолютный путь к субдиректории (deb/prod) бандла.
         // Имя точки входа, ключь для assets.

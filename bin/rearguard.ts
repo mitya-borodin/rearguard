@@ -72,7 +72,9 @@ if (
   if (action === "init") {
     if (!(project || dll || ui_lib || node_lib)) {
       console.log(
-        chalk.bold.green(`You should use: "rearguard init [ --project | --dll | --ui_lib | --node_lib | --force ]";`),
+        chalk.bold.green(
+          `You should use: "rearguard init [ --project | --dll | --ui_lib | --node_lib | --load_on_demand | --force ]";`,
+        ),
       );
 
       process.exit(1);
