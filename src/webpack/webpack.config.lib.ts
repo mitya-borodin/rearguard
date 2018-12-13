@@ -23,7 +23,6 @@ export function library_WP_config(): webpack.Configuration {
       publicPath: bundle_public_path,
       library: lib_entry_name(),
       libraryTarget: "var",
-      ...(rearguardConfig.load_on_demand ? { libraryTarget: "umd", library: pkg.name } : {}),
     },
     tsLoader(),
     [...DllReferencePlugin(), ...assetsPlugin(LIB_BUNDLE_DIR_NAME), ...analyze(), ...clean([lib_output_path()])],

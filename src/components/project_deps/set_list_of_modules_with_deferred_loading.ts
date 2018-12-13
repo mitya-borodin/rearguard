@@ -14,19 +14,21 @@ export async function set_list_of_modules_with_deferred_loading(): Promise<void>
 
   for (const info of bundles_info) {
     if (info.load_on_demand) {
-      if (info.has_dll && info.has_ui_lib) {
-        const dll_public_path = require(info.assets.dll)[dll_entry_name(info.bundle_name)].js;
-        const lib_public_path = require(info.assets.lib)[lib_entry_name(info.bundle_name)].js;
+      const dll_name = dll_entry_name(info.bundle_name);
+      const lib_name = lib_entry_name(info.bundle_name);
+      const dll_public_path = require(info.assets.dll)[dll_name].js;
+      const lib_public_path = require(info.assets.lib)[lib_name].js;
 
-        file += `export const ${info.bundle_name} = { dll: "${dll_public_path}", lib: "${lib_public_path}" } \r`;
+      if (info.has_dll && info.has_ui_lib) {
+        file +=
+          `export const ${info.bundle_name} = ` +
+          `{ dll: [ "${dll_name}" , "${dll_public_path}" ], lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
 
         need_write = true;
       }
 
       if (!info.has_dll && info.has_ui_lib) {
-        const lib_public_path = require(info.assets.lib)[lib_entry_name(info.bundle_name)].js;
-
-        file += `export const ${info.bundle_name} = { lib: "${lib_public_path}" } \r`;
+        file += `export const ${info.bundle_name} = { lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
 
         need_write = true;
       }
