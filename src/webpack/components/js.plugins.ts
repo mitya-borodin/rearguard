@@ -101,13 +101,13 @@ class ComputeDataForHWP {
           const bundlesInfo: IBundleInfo[] = get_bundles_info();
           const data: { js: string[]; css: [] } = { js: [], css: [] };
 
-          for (const { assets, bundle_name, has_dll, has_ui_lib, load_on_demand } of bundlesInfo) {
+          for (const { assets, bundle_name, has_dll, has_browser_lib, load_on_demand } of bundlesInfo) {
             if (!load_on_demand) {
               if (has_dll && fs.existsSync(assets.dll)) {
                 data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
               }
 
-              if (has_ui_lib && fs.existsSync(assets.lib)) {
+              if (has_browser_lib && fs.existsSync(assets.lib)) {
                 data.js.push(require(assets.lib)[lib_entry_name(bundle_name)].js);
               }
             }

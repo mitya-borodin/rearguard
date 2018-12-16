@@ -25,8 +25,8 @@ const {
   // mode
   project = false,
   dll = false,
+  browser_lib = false,
   node_lib = false,
-  ui_lib = false,
   load_on_demand = false,
 
   // monorepo
@@ -62,7 +62,7 @@ const {
 if (
   action === "init" ||
   action === "wds" ||
-  action === "watch_deps_for_node_dev" ||
+  action === "sync" ||
   action === "build_node_server" ||
   action === "build" ||
   action === "monorepo"
@@ -70,10 +70,10 @@ if (
   console.log("");
 
   if (action === "init") {
-    if (!(project || dll || ui_lib || node_lib)) {
+    if (!(project || dll || browser_lib || node_lib)) {
       console.log(
         chalk.bold.green(
-          `You should use: "rearguard init [ --project | --dll | --ui_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --project | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -83,7 +83,7 @@ if (
     if (load_on_demand) {
       console.log(
         chalk.bold.red(
-          `You should use: "rearguard init [ --project | --dll | --ui_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --project | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -118,10 +118,10 @@ if (
       process.exit(1);
     }
 
-    if (action !== "build" && (dll || node_lib || ui_lib || project || both)) {
+    if (action !== "build" && (dll || node_lib || browser_lib || project || both)) {
       console.log(
         chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --ui_lib | --project ]" is not valid;`,
+          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --browser_lib | --project ]" is not valid;`,
         ),
       );
       console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
@@ -188,7 +188,7 @@ if (
       // Варианты запуска
       process.env.REARGUARD_LAUNCH_IS_INIT = action === "init" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_WDND = action === "watch_deps_for_node_dev" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_SYNC = action === "sync" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER = action === "build_node_server" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
@@ -200,7 +200,7 @@ if (
       process.env.REARGUARD_IS_PROJECT = project ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
-      process.env.REARGUARD_UI_LIB = ui_lib ? "true" : "false";
+      process.env.REARGUARD_BROWSER_LIB = browser_lib ? "true" : "false";
       process.env.REARGUARD_LOAD_ON_DEMAND = load_on_demand ? "true" : "false";
 
       // Состояние запуска
@@ -228,7 +228,7 @@ if (
       console.log(chalk.bold.greenBright(`DEBUG: ${process.env.REARGUARD_DEBUG}`));
       console.log(chalk.bold.greenBright(`DLL: ${process.env.REARGUARD_DLL}`));
       console.log(chalk.bold.greenBright(`NODE_LIB: ${process.env.REARGUARD_NODE_LIB}`));
-      console.log(chalk.bold.greenBright(`UI_LIB: ${process.env.REARGUARD_UI_LIB}`));
+      console.log(chalk.bold.greenBright(`browser_lib: ${process.env.REARGUARD_browser_lib}`));
       console.log(chalk.bold.greenBright(`LAUNCH: node ${launchPath}`));
       console.log(chalk.bold.greenBright(`=======================================`));
       console.log(``);

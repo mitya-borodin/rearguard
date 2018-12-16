@@ -26,7 +26,7 @@ export function get_bundles_info(): IBundleInfo[] {
 
       const bundleInfo: IBundleInfo = {
         has_dll: config.has_dll,
-        has_ui_lib: config.has_ui_lib,
+        has_browser_lib: config.has_browser_lib,
         load_on_demand: config.load_on_demand,
         // Имя модуля
         pkg_name: config.pkg.name,
@@ -36,11 +36,11 @@ export function get_bundles_info(): IBundleInfo[] {
         // Имя точки входа, ключь для assets.
         bundle_entry_name: {
           dll: config.has_dll ? dll_entry_name(bundle_name) : "",
-          lib: config.has_ui_lib ? lib_entry_name(bundle_name) : "",
+          lib: config.has_browser_lib ? lib_entry_name(bundle_name) : "",
         },
         assets: {
           dll: config.has_dll ? dll_assets_path(module_path, bundle_name) : "",
-          lib: config.has_ui_lib ? lib_assets_path(module_path, bundle_name) : "",
+          lib: config.has_browser_lib ? lib_assets_path(module_path, bundle_name) : "",
         },
         manifest: config.has_dll ? dll_manifest_path(module_path, bundle_name) : "",
       };

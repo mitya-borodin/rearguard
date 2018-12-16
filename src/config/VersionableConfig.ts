@@ -17,7 +17,7 @@ const field_order = [
   "post_css_plugins_path",
   "sync_project_deps",
   "has_dll",
-  "has_ui_lib",
+  "has_browser_lib",
   "load_on_demand",
   "has_project",
   "has_node_lib",

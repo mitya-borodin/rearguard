@@ -12,7 +12,7 @@ export interface IRearguardConfig extends IConfig {
   sync_project_deps: string[];
   has_dll: boolean;
   has_node_lib: boolean;
-  has_ui_lib: boolean;
+  has_browser_lib: boolean;
   has_project: boolean;
   load_on_demand: boolean;
   publish_in_git: boolean;

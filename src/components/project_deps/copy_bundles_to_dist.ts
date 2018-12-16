@@ -6,7 +6,7 @@ import { envConfig } from "../../config/env";
 import { DIST_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 
 export async function copy_bundles_to_dist() {
-  if (envConfig.isBuild && !(envConfig.has_dll || envConfig.has_ui_lib || envConfig.has_node_lib)) {
+  if (envConfig.isBuild && !(envConfig.has_dll || envConfig.has_browser_lib || envConfig.has_node_lib)) {
     console.log(chalk.bold.blue(`=========COPY_BUNDLE_TO_DIST===========`));
     const startTime = moment();
     console.log("");

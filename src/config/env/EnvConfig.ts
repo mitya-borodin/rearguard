@@ -16,8 +16,8 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_LAUNCH_IS_WDS === "true";
   }
 
-  get isWDND(): boolean {
-    return process.env.REARGUARD_LAUNCH_IS_WDND === "true";
+  get isSync(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_SYNC === "true";
   }
 
   get isBNS(): boolean {
@@ -48,8 +48,8 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_NODE_LIB === "true";
   }
 
-  get has_ui_lib(): boolean {
-    return process.env.REARGUARD_UI_LIB === "true";
+  get has_browser_lib(): boolean {
+    return process.env.REARGUARD_BROWSER_LIB === "true";
   }
 
   get load_on_demand(): boolean {

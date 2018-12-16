@@ -29,7 +29,7 @@ async function doSync() {
   await ordering_project_deps();
   await sync_with_linked_modules();
 
-  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
     await delete_bundles();
     await copy_bundles();
   }

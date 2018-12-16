@@ -25,8 +25,8 @@ export function general_WP_config(
   const info: IBundleInfo[] = get_bundles_info();
   const lib_externals: webpack.ExternalsObjectElement = {};
 
-  for (const { has_ui_lib, bundle_name, pkg_name } of info) {
-    if (has_ui_lib) {
+  for (const { has_browser_lib, bundle_name, pkg_name } of info) {
+    if (has_browser_lib) {
       lib_externals[pkg_name] = {
         var: lib_entry_name(bundle_name),
       };

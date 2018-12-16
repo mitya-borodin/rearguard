@@ -30,11 +30,11 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         target: "es6",
         jsx: "react",
         lib: ["dom", "es6", "DOM.Iterable", "ScriptHost", "es7"],
-        module: this.envConfig.isWDND || this.envConfig.isBNS ? "commonjs" : "es6",
+        module: this.envConfig.isSync || this.envConfig.isBNS ? "commonjs" : "es6",
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
-        ...(!rearguardConfig.has_node_lib && !rearguardConfig.has_project && rearguardConfig.has_ui_lib
+        ...(!rearguardConfig.has_node_lib && !rearguardConfig.has_project && rearguardConfig.has_browser_lib
           ? {
               declaration: true,
               outDir: path.resolve(process.cwd(), LIB_DIR_NAME),
@@ -68,7 +68,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
       },
       exclude: [
         "node_modules",
-        ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isWDND || this.envConfig.isBNS)
+        ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isSync || this.envConfig.isBNS)
           ? [
               path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME),
               path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME),
@@ -76,7 +76,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
             ]
           : []),
       ],
-      ...(this.envConfig.isWDND || this.envConfig.isBNS
+      ...(this.envConfig.isSync || this.envConfig.isBNS
         ? { include: [path.resolve(process.cwd(), "bin"), path.resolve(process.cwd(), "src")] }
         : {}),
     };

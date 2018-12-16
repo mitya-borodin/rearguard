@@ -15,7 +15,7 @@ import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 export async function copy_bundles() {
   if (
     (envConfig.isWDS || envConfig.isBuild) &&
-    !(envConfig.has_dll || envConfig.has_ui_lib || envConfig.has_node_lib)
+    !(envConfig.has_dll || envConfig.has_browser_lib || envConfig.has_node_lib)
   ) {
     const startTime = moment();
 
@@ -31,13 +31,16 @@ export async function copy_bundles() {
     try {
       for (const module of rearguardConfig.sync_project_deps) {
         const module_path = envConfig.resolveLocalModule(module);
-        const { has_dll, has_ui_lib, pkg } = new RearguardConfig(envConfig, path.resolve(module_path, "package.json"));
+        const { has_dll, has_browser_lib, pkg } = new RearguardConfig(
+          envConfig,
+          path.resolve(module_path, "package.json"),
+        );
 
-        if (has_dll || has_ui_lib) {
+        if (has_dll || has_browser_lib) {
           await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
         }
 
-        if (has_ui_lib) {
+        if (has_browser_lib) {
           await copy_bundle(module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
         }
       }

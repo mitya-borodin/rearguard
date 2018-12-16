@@ -45,7 +45,7 @@ export async function initProject() {
   if (envConfig.isInit) {
     rearguardConfig.has_project = envConfig.has_project;
     rearguardConfig.has_dll = envConfig.has_dll;
-    rearguardConfig.has_ui_lib = envConfig.has_ui_lib;
+    rearguardConfig.has_browser_lib = envConfig.has_browser_lib;
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
     rearguardConfig.load_on_demand = envConfig.load_on_demand;
   }
@@ -56,11 +56,11 @@ export async function initProject() {
     files.push(DLL_BUNDLE_DIR_NAME);
   }
 
-  if (rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_browser_lib) {
     files.push(LIB_BUNDLE_DIR_NAME);
   }
 
-  if (rearguardConfig.has_node_lib || rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_node_lib || rearguardConfig.has_browser_lib) {
     files.push(LIB_DIR_NAME);
   }
 
@@ -77,7 +77,7 @@ export async function initProject() {
 
   mkdirp.sync(src);
 
-  if (rearguardConfig.has_ui_lib || rearguardConfig.has_project) {
+  if (rearguardConfig.has_browser_lib || rearguardConfig.has_project) {
     const entry = path.resolve(src, rearguardConfig.entry);
 
     if (!fs.existsSync(entry)) {
@@ -99,7 +99,7 @@ export async function initProject() {
     }
   }
 
-  if (rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib) {
+  if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
     const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
 
     if (!fs.existsSync(lib_entry)) {
@@ -110,7 +110,7 @@ export async function initProject() {
     }
   }
 
-  if (rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib) {
+  if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
     const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
     const basename = path.basename(lib_entry, ".ts");
 
@@ -137,7 +137,7 @@ export async function initProject() {
     args.push("--dll");
   }
 
-  if (rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_browser_lib) {
     args.push("--ui_lib");
   }
 
@@ -158,7 +158,7 @@ export async function initProject() {
     update_for_pkg.scripts["start:release"] = "rearguard wds -r";
 
     if (rearguardConfig.has_dll) {
-      if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
+      if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
         update_for_pkg.scripts.build = update_for_pkg.scripts.build.replace("--dll", "");
         update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace("--dll", "");
         update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace("--dll", "");
@@ -168,7 +168,7 @@ export async function initProject() {
       update_for_pkg.scripts["dll:release"] = "rearguard build --dll -r";
     }
 
-    if (!(rearguardConfig.has_ui_lib || rearguardConfig.has_node_lib)) {
+    if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
       update_for_pkg.scripts.build += " --project";
       update_for_pkg.scripts["build:release"] += " --project";
       update_for_pkg.scripts["build:both"] += " --project";
@@ -181,7 +181,7 @@ export async function initProject() {
     delete update_for_pkg.scripts["dll:release"];
   }
 
-  if (!rearguardConfig.has_project && rearguardConfig.has_ui_lib) {
+  if (!rearguardConfig.has_project && rearguardConfig.has_browser_lib) {
     update_for_pkg.scripts.start = "rearguard wds";
     update_for_pkg.scripts["start:release"] = "rearguard wds -r";
   }
@@ -190,7 +190,7 @@ export async function initProject() {
    * PRE_PUBLISH_ONLY
    */
 
-  if (!rearguardConfig.has_dll && !rearguardConfig.has_ui_lib && rearguardConfig.has_node_lib) {
+  if (!rearguardConfig.has_dll && !rearguardConfig.has_browser_lib && rearguardConfig.has_node_lib) {
     update_for_pkg.scripts.prepublishOnly = "npm run build:release";
   } else {
     update_for_pkg.scripts.prepublishOnly = "npm run build:both";
@@ -211,7 +211,7 @@ export async function initProject() {
   editorConfig.init(true);
   npmrc.init(true);
 
-  if (rearguardConfig.has_project || rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_project || rearguardConfig.has_browser_lib) {
     prePublish.init(true);
     typings.init(true);
     postcssPlugins.init();
@@ -222,7 +222,7 @@ export async function initProject() {
   await ordering_project_deps();
   await sync_with_linked_modules();
 
-  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_ui_lib) {
+  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
     await delete_bundles();
     await copy_bundles();
   }

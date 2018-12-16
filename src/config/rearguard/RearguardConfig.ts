@@ -236,7 +236,7 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
    * Среда может содержать три флага:
    * has_dll: boolean; - говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
    * has_node_lib: boolean; - говорит, о том, что в директории lib находятся .js, .d.ts файлы;
-   * has_ui_lib: boolean; - говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и
+   * has_browser_lib: boolean; - говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и
    * manifest.json;
    *
    * Эти флаги используются только для копирования собранных файлов из директорий dll_bundle, lib_bundle, lib;
@@ -288,27 +288,27 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { has_node_lib };
   }
 
-  // HAS_UI_LIB
-  // Говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и manifest.json;
-  public get has_ui_lib(): boolean {
-    const { has_ui_lib } = this.config;
+  // has_browser_lib
+  // Говорит, о том, что в директории lib_bundle/%(package.json).name% собран бандл и assets.json;
+  public get has_browser_lib(): boolean {
+    const { has_browser_lib } = this.config;
 
-    if (isBoolean(has_ui_lib)) {
-      return has_ui_lib;
+    if (isBoolean(has_browser_lib)) {
+      return has_browser_lib;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_ui_lib ][ must be a boolean ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_browser_lib ][ must be a boolean ]`));
 
-    this.config = { has_ui_lib: false };
+    this.config = { has_browser_lib: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_ui_lib ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_browser_lib ][ assign to 'false' ]`));
     console.log("");
 
-    return this.has_ui_lib;
+    return this.has_browser_lib;
   }
 
-  public set has_ui_lib(has_ui_lib: boolean) {
-    this.config = { has_ui_lib };
+  public set has_browser_lib(has_browser_lib: boolean) {
+    this.config = { has_browser_lib };
   }
 
   // HAS_PROJECT

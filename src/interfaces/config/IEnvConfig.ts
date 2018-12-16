@@ -1,7 +1,7 @@
 export interface IEnvConfig {
   isInit: boolean;
   isWDS: boolean;
-  isWDND: boolean;
+  isSync: boolean;
   isBNS: boolean;
   isBuild: boolean;
   isDebug: boolean;
@@ -9,7 +9,7 @@ export interface IEnvConfig {
   has_project: boolean;
   has_dll: boolean;
   has_node_lib: boolean;
-  has_ui_lib: boolean;
+  has_browser_lib: boolean;
   load_on_demand: boolean;
   isDevelopment: boolean;
   isBuildBoth: boolean;

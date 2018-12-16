@@ -86,7 +86,7 @@ async function build() {
     console.log("");
   }
 
-  if (envConfig.has_ui_lib) {
+  if (envConfig.has_browser_lib) {
     console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ START ]`));
     const startTime = moment();
 

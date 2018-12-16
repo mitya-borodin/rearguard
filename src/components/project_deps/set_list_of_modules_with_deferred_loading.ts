@@ -19,7 +19,7 @@ export async function set_list_of_modules_with_deferred_loading(): Promise<void>
       const dll_public_path = require(info.assets.dll)[dll_name].js;
       const lib_public_path = require(info.assets.lib)[lib_name].js;
 
-      if (info.has_dll && info.has_ui_lib) {
+      if (info.has_dll && info.has_browser_lib) {
         file +=
           `export const ${info.bundle_name} = ` +
           `{ dll: [ "${dll_name}" , "${dll_public_path}" ], lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
@@ -27,7 +27,7 @@ export async function set_list_of_modules_with_deferred_loading(): Promise<void>
         need_write = true;
       }
 
-      if (!info.has_dll && info.has_ui_lib) {
+      if (!info.has_dll && info.has_browser_lib) {
         file += `export const ${info.bundle_name} = { lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
 
         need_write = true;
