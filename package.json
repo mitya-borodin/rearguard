@@ -38,7 +38,8 @@
     "test:watch": "mocha -R spec -w --watch-extensions ts -r ts-node/register test/**/*.ts",
     "test:coverage": "nyc --reporter=html --extension .ts npm test",
     "pretest": "npm run lint",
-    "prepublishOnly": "sh ./pre_publish.sh"
+    "prepublishOnly": "sh ./pre_publish.sh",
+    "pre-push": "git push mirror_on_git_hub"
   },
   "dependencies": {
     "@borodindmitriy/interfaces": "1.0.13",

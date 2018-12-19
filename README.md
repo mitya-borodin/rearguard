@@ -1,4 +1,4 @@
-# Rearguard 11111
+# Rearguard
 
 - [Что такое rearguard?](#whatIsIt)
 - [Технологии](#tech)
