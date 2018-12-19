@@ -32,6 +32,10 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_DEBUG === "true";
   }
 
+  get isWatch(): boolean {
+    return process.env.REARGUARD_WATCH === "true";
+  }
+
   get force(): boolean {
     return process.env.REARGUARD_FORCE === "true";
   }

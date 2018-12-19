@@ -138,7 +138,7 @@ export async function initProject() {
   }
 
   if (rearguardConfig.has_browser_lib) {
-    args.push("--ui_lib");
+    args.push("--browser_lib");
   }
 
   if (rearguardConfig.has_node_lib) {

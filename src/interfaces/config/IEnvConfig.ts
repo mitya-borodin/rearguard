@@ -5,6 +5,7 @@ export interface IEnvConfig {
   isBNS: boolean;
   isBuild: boolean;
   isDebug: boolean;
+  isWatch: boolean;
   force: boolean;
   has_project: boolean;
   has_dll: boolean;

@@ -21,6 +21,7 @@ const {
   release = false,
   both = false,
   debug = false,
+  watch = false,
 
   // mode
   project = false,
@@ -61,8 +62,8 @@ const {
 
 if (
   action === "init" ||
-  action === "wds" ||
   action === "sync" ||
+  action === "wds" ||
   action === "build_node_server" ||
   action === "build" ||
   action === "monorepo"
@@ -197,6 +198,7 @@ if (
       process.env.NODE_ENV = !release ? "development" : "production";
       process.env.REARGUARD_BUILD_BOTH = both ? "true" : "false";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
+      process.env.REARGUARD_WATCH = watch ? "true" : "false";
       process.env.REARGUARD_IS_PROJECT = project ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
@@ -275,9 +277,9 @@ if (
   }
 } else {
   console.log(
-    chalk.bold.green(
-      "You should use: rearguard [ init | wds | build | monorepo ] [ -r | --release | -d | --debug | --dll ];",
-    ),
+    chalk.bold.green("You should use: rearguard init;"),
+    chalk.bold.green("You should use: rearguard sync [ --watch ];"),
+    chalk.bold.green("You should use: rearguard [ wds | build | monorepo ] [ --release | -r | --debug | -d ];"),
   );
 }
 

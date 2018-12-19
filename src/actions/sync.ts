@@ -1,6 +1,7 @@
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { watch_deps } from "../components/watch_deps";
+import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
 import { tsLintConfig } from "../config/tslint";
 import { typescriptConfig } from "../config/typescript";
@@ -9,7 +10,7 @@ import { editorConfig } from "../meta/editorConfig";
 import { gitIgnore } from "../meta/gitignore";
 import { npmrc } from "../meta/Npmrc";
 
-async function watch_deps_for_node_dev() {
+async function sync() {
   // Config file
   typescriptConfig.init(true);
   tsLintConfig.init(true);
@@ -26,7 +27,9 @@ async function watch_deps_for_node_dev() {
   await ordering_project_deps();
   await sync_with_linked_modules();
 
-  watch_deps();
+  if (envConfig.isWatch) {
+    watch_deps();
+  }
 }
 
-watch_deps_for_node_dev();
+sync();

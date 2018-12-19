@@ -113,11 +113,11 @@ npm install -D rearguard
 
 ### CLI
 
-- rearguard init [ --browser_lib | --node_lib | --project | --dll | --load_on_demand | --force ]
-- rearguard build [ --project | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug ]
-- rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]
-- rearguard wds [ --release | -r | --debug ]
-- rearguard sync
+- rearguard init [ --dll | --browser_lib | --node_lib | --project | --load_on_demand | --force ]
+- rearguard build [ --project | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]
+- rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --release | -r | --sync | --test | --publish | --patch | --minor | --major ]
+- rearguard wds [ --release | -r | --debug | -d ]
+- rearguard sync [ --watch ]
 - rearguard build_node_server
 
 <a name="structure"></a>
