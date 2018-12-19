@@ -1,6 +1,7 @@
 # Rearguard
 
 - [Что такое rearguard?](#whatIsIt)
+- [Примеры использования](#examples)
 - [Технологии](#tech)
 - [Настройки](#settings)
 - [Установка](#install)
@@ -18,6 +19,19 @@ Rearguard - это интрумент сборки и разработки са�
 поддерживает [библиотека ориентированную парадигму](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/library_oriented_design.md) разработки. Также
 поддерживается способ разработки известный как монорепозиторий. Монолитный
 способ разработки не исключён и является частным случаем.
+
+<a name="examples"></a>
+
+### Примеры использования
+
+- [@borodindmitriy/vendors](https://www.npmjs.com/package/@borodindmitriy/vendors)
+- [@borodindmitriy/interfaces](https://www.npmjs.com/package/@borodindmitriy/interfaces)
+- [@borodindmitriy/utils](https://www.npmjs.com/package/@borodindmitriy/utils)
+- [@borodindmitriy/isomorphic](https://www.npmjs.com/package/@borodindmitriy/isomorphic)
+- [@borodindmitriy/deferred_module_test](https://www.npmjs.com/package/@borodindmitriy/deferred_module_test)
+- [@borodindmitriy/front-end-lib](https://www.npmjs.com/package/@borodindmitriy/front-end-lib)
+- [@borodindmitriy/back-end-lib](https://www.npmjs.com/package/@borodindmitriy/back-end-lib)
+- [home-tracker](https://gitlab.com/home-tracker) - Проект реализует приложение для взаимодействия между владельцами квартир и управляющей компании. Для реализации используется **rearguard** и **successful software design**.
 
 <a name="tech"></a>
 

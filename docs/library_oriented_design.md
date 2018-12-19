@@ -22,7 +22,7 @@
 
 - [**DLL**](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/vendors) - пакет содержит зависимости для разработки браузерных пакетов.
 - [**browser_library**](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/front) - проект содержит классы и компоненты для клиентской разработки.
-- **browser_library + node_library ( [utils](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/utils), [isomorphic](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/isomorphic) )** - эти два проекта используются как на клиентской стороне так и на серверной.
+- **browser_library + node_library ( [**utils**](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/utils), [**isomorphic**](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/isomorphic) )** - эти два проекта используются как на клиентской стороне так и на серверной.
 - [**node_library**](https://gitlab.com/mitya-borodin/base-code/blob/master/packages/back/package.json) - проект содержит классы и интерфейсы для серверной разработки.
 - [**browser_library ( load_on_demand )**](https://gitlab.com/mitya-borodin/base-code/tree/master/packages/deferred_module_test) - это пример проекта с отложенной загрузкой.
 - [**target_project**](https://gitlab.com/home-tracker/front-end) - пример проекта который реализует непосредственно продукт.
