@@ -43,11 +43,11 @@ export async function initProject() {
    */
 
   if (envConfig.isInit) {
-    rearguardConfig.has_project = envConfig.has_project;
     rearguardConfig.has_dll = envConfig.has_dll;
     rearguardConfig.has_browser_lib = envConfig.has_browser_lib;
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
     rearguardConfig.load_on_demand = envConfig.load_on_demand;
+    rearguardConfig.has_project = envConfig.has_project;
   }
 
   const files: string[] = [];
