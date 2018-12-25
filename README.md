@@ -129,10 +129,10 @@ npm install -D rearguard
 
 - [rearguard init [ --dll | --browser_lib | --load_on_demand | --node_lib | --project ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
 - [rearguard build [ --project | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build.md)
-- rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --release | -r | --sync | --test | --publish | --patch | --minor | --major ]
-- rearguard wds [ --release | -r | --debug | -d ]
-- rearguard sync [ --watch ]
-- rearguard build_node_server
+- [rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --release | -r | --test | --publish | --patch | --minor | --major ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/monorepo.md)
+- [rearguard wds [ --release | -r | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/wds.md)
+- [rearguard sync [ --watch ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync.md)
+- [rearguard build_node_server](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build_node_server.md)
 
 <a name="structure"></a>
 
