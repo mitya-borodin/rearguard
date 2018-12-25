@@ -10,12 +10,6 @@ export default (): webpack.Rule[] => {
     {
       loader: "css-loader",
       options: {
-        discardComments: {
-          removeAll: true,
-        },
-        ident: "css",
-        // CSS Nano http://cssnano.co/options/
-        minimize: !isDevelopment,
         // CSS Modules https://github.com/css-modules/css-modules
         sourceMap: isDebug,
       },
@@ -25,14 +19,8 @@ export default (): webpack.Rule[] => {
     {
       loader: "css-loader",
       options: {
-        discardComments: {
-          removeAll: true,
-        },
-        ident: "css-modules",
         importLoaders: 1,
         localIdentName: isDevelopment ? "[path][local][hash:base64:4]" : "[hash:base64:32]",
-        // CSS Nano http://cssnano.co/options/
-        minimize: !isDevelopment,
         // CSS Modules https://github.com/css-modules/css-modules
         modules: true,
         sourceMap: isDebug,
