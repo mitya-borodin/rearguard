@@ -19,7 +19,7 @@ export class GitIgnore implements IMetaFile {
   public init(force = false) {
     const dest = path.resolve(process.cwd(), ".gitignore");
     const hasFile = fs.existsSync(dest);
-    let gitignore = [`node_modules`];
+    let gitignore = [`node_modules`, `.env`];
 
     if (!this.rearguardConfig.publish_in_git) {
       gitignore.push("dll_bundle");
