@@ -36,7 +36,6 @@ export const DllPlugin = (): webpack.Plugin[] => {
       name: dll_entry_name(),
       path: dll_manifest_path(),
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(false),
   ];
 };
 
