@@ -1,3 +1,4 @@
+import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { watch_deps } from "../components/watch_deps";
@@ -24,6 +25,7 @@ async function sync() {
 
   console.log("");
 
+  await install_declared_deps();
   await ordering_project_deps();
   await sync_with_linked_modules();
 

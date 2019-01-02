@@ -2,6 +2,7 @@ import chalk from "chalk";
 import * as spawn from "cross-spawn";
 import * as moment from "moment";
 import * as path from "path";
+import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { prettierConfig } from "../config/prettier";
@@ -26,6 +27,7 @@ async function build_node_server() {
 
   console.log("");
 
+  await install_declared_deps();
   await ordering_project_deps();
   await sync_with_linked_modules();
 

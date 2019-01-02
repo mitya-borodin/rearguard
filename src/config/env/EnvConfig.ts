@@ -40,6 +40,9 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_FORCE === "true";
   }
 
+  get install_deps(): boolean {
+    return process.env.REARGUARD_INSTALL_DEPS === "true";
+  }
   get has_project(): boolean {
     return process.env.REARGUARD_IS_PROJECT === "true";
   }

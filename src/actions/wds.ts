@@ -2,6 +2,7 @@ import chalk from "chalk";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import { initProject } from "../components/init_project";
+import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { watch_deps, watch_deps_event_emitter } from "../components/watch_deps";
 import { wdsConfig } from "../config/wds";
 import { get_WDS_config } from "../webpack/components/get_WDS_config";

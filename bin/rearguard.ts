@@ -45,6 +45,9 @@ const {
 
   // state
   force = false,
+
+  // check_deps_on_npm
+  install_deps = false,
 }: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
   if (value.indexOf("--") === 0) {
     return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
@@ -63,6 +66,7 @@ const {
 if (
   action === "init" ||
   action === "sync" ||
+  action === "check_deps_on_npm" ||
   action === "wds" ||
   action === "build_node_server" ||
   action === "build" ||
@@ -207,6 +211,9 @@ if (
 
       // Состояние запуска
       process.env.REARGUARD_FORCE = force ? "true" : "false";
+
+      // check_deps_n_npm
+      process.env.REARGUARD_INSTALL_DEPS = install_deps ? "true" : "false";
 
       // MONO_REPO
       process.env.REARGUARD_MONO_INIT = init ? "true" : "false";

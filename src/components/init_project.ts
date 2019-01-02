@@ -18,6 +18,7 @@ import { typings } from "../meta/Typings";
 import { npmrc } from "./../meta/Npmrc/index";
 import { copy_bundles } from "./project_deps/copy_bundles";
 import { delete_bundles } from "./project_deps/delete_bundles";
+import { install_declared_deps } from "./project_deps/install_declared_deps";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
 import { set_list_of_modules_with_deferred_loading } from "./project_deps/set_list_of_modules_with_deferred_loading";
 import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
@@ -186,6 +187,9 @@ export async function initProject() {
     update_for_pkg.scripts["start:release"] = "rearguard wds -r";
   }
 
+  update_for_pkg.scripts.check_deps_on_npm = "rearguard check_deps_on_npm";
+  update_for_pkg.scripts["check_deps_on_npm:install"] = "rearguard check_deps_on_npm --install_deps";
+
   /**
    * PRE_PUBLISH_ONLY
    */
@@ -219,6 +223,7 @@ export async function initProject() {
 
   console.log("");
 
+  await install_declared_deps();
   await ordering_project_deps();
   await sync_with_linked_modules();
 

@@ -1,4 +1,4 @@
-import { readdirSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { resolve } from "path";
 import { build } from "../components/mono_repository/build";
 import { clear } from "../components/mono_repository/clear";
@@ -26,6 +26,7 @@ async function monorepo() {
 
   for (const module_dir of dirs) {
     const module_path = resolve(root, module_dir);
+
     const { pkg } = new RearguardConfig(envConfig, resolve(module_path, "package.json"));
 
     module_map.set(pkg.name, module_path);
@@ -33,7 +34,10 @@ async function monorepo() {
   }
 
   const oredered_modules: string[] = await get_list_of_ordered_modules(root, module_names, module_map);
-  const ordered_paths: string[] = oredered_modules.map((N) => resolve(root, module_map.get(N) || ""));
+  const ordered_paths: string[] = oredered_modules
+    .filter((N) => module_map.has(N)) // Пропускаются модули, только из директории packages,
+    // так как могут быть внешние модули не входящие в состав монорепозитория.
+    .map((N) => resolve(root, module_map.get(N) || ""));
 
   for (const module_path of ordered_paths) {
     if (!envConfig.is_mono_bootstrap && envConfig.is_mono_clear) {
