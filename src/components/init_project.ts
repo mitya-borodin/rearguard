@@ -1,3 +1,4 @@
+import { isObject } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
@@ -125,7 +126,22 @@ export async function initProject() {
    */
 
   if (!update_for_pkg.scripts) {
-    update_for_pkg.scripts = {};
+    const { scripts } = require(pkg_path);
+
+    if (isObject(scripts)) {
+      update_for_pkg.scripts = { ...scripts };
+
+      delete update_for_pkg.scripts.build;
+      delete update_for_pkg.scripts["build:release"];
+      delete update_for_pkg.scripts["build:both"];
+      delete update_for_pkg.scripts.start;
+      delete update_for_pkg.scripts["start:release"];
+      delete update_for_pkg.scripts.dll;
+      delete update_for_pkg.scripts["dll:release"];
+      delete update_for_pkg.scripts.check_deps_on_npm;
+      delete update_for_pkg.scripts["check_deps_on_npm:install"];
+      delete update_for_pkg.scripts.prepublishOnly;
+    }
   }
 
   /**
