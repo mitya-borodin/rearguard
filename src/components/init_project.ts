@@ -141,6 +141,8 @@ export async function initProject() {
       delete update_for_pkg.scripts.check_deps_on_npm;
       delete update_for_pkg.scripts["check_deps_on_npm:install"];
       delete update_for_pkg.scripts.prepublishOnly;
+    } else {
+      update_for_pkg.scripts = {};
     }
   }
 
