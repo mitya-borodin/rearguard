@@ -51,6 +51,7 @@ Rearguard - это интрумент сборки и разработки са�
 - MongoDB
 - Express
 - React server rendering
+- Cordova
 - Java
 - Swift
 
