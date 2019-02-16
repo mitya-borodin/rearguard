@@ -1,0 +1,21 @@
+{
+  "search.followSymlinks": false,
+  "vsicons.dontShowNewVersionMessage": true,
+  "editor.formatOnSave": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "npm.enableScriptExplorer": true,
+  "files.autoSave": "afterDelay",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "tslint.autoFixOnSave": true,
+  "prettier.printWidth": 120,
+  "prettier.stylelintIntegration": true,
+  "prettier.tslintIntegration": true,
+  "prettier.trailingComma": "all",
+  "workbench.colorTheme": "Darcula - WebStorm Edition",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.editor.revealIfOpen": true
+}
