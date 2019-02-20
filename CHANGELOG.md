@@ -1,0 +1,22 @@
+## Next Release
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
+## 4.3.4 (2019-02-20)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Update dependencies;
+- Add CHANGELOG.md file;
+
+BUG FIXES:
