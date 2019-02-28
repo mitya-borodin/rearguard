@@ -14,10 +14,13 @@ BREAKING CHANGES:
 
 - Change all --project flags to --aplication
 - Rename (package.json).rearguard.has_project to (package.json).rearguard.is_application;
+- Update isomorphic-style-loader to [5.0.0](https://github.com/kriasoft/isomorphic-style-loader/blob/master/CHANGELOG.md)
 
 FEATURES:
 
 IMPROVEMENTS:
+
+- Update dependencies;
 
 BUG FIXES:
 
