@@ -188,13 +188,9 @@ export async function initProject() {
     }
 
     if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
-      update_for_pkg.scripts.build += " --application";
-      update_for_pkg.scripts["build:release"] += " --application";
-      update_for_pkg.scripts["build:both"] += " --application";
-
-      update_for_pkg.scripts.build.replace("  ", " ");
-      update_for_pkg.scripts["build:release"].replace("  ", " ");
-      update_for_pkg.scripts["build:both"].replace("  ", " ");
+      update_for_pkg.scripts.build += "--application";
+      update_for_pkg.scripts["build:release"] += "--application";
+      update_for_pkg.scripts["build:both"] += "--application";
     }
   } else {
     delete update_for_pkg.scripts.start;

@@ -22,7 +22,7 @@ async function build_node_lib() {
   const result = spawn.sync(
     "tsc",
     [
-      "--application",
+      "--project",
       path.resolve(process.cwd(), "tsconfig.json"),
       "--rootDir",
       path.resolve(process.cwd(), "src"),
