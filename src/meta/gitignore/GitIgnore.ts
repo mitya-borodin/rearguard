@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import { envConfig } from "../../config/env";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { IMetaFile } from "../../interfaces/metaFile/IMetaFile";
 
@@ -16,7 +16,7 @@ export class GitIgnore implements IMetaFile {
     this.init = this.init.bind(this);
   }
 
-  public init(force = false) {
+  public init(envConfig: IEnvConfig, force = false) {
     const dest = path.resolve(process.cwd(), ".gitignore");
     const hasFile = fs.existsSync(dest);
     let gitignore = [`node_modules`, `.env`];

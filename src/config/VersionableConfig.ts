@@ -1,4 +1,4 @@
-import { isObject, isString, isUndefined } from "@borodindmitriy/utils";
+import { isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
@@ -19,9 +19,10 @@ const field_order = [
   "has_dll",
   "has_browser_lib",
   "load_on_demand",
-  "has_project",
+  "is_application",
   "has_node_lib",
   "publish_in_git",
+  "last_build_time",
 ];
 
 export class VersionableConfig implements IVersionableConfig {

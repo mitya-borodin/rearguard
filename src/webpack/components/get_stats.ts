@@ -1,8 +1,7 @@
-import { envConfig } from "../../config/env";
-import { rearguardConfig } from "../../config/rearguard";
 import { get_context } from "../../helpers";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
-export function get_stats(): any {
+export function get_stats(envConfig: IEnvConfig): any {
   return envConfig.isDebug
     ? "verbose"
     : {

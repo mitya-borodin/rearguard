@@ -2,7 +2,7 @@ import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import { envConfig } from "../config/env";
+import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IMetaFile } from "../interfaces/metaFile/IMetaFile";
 
 export class MetaFile implements IMetaFile {
@@ -14,7 +14,7 @@ export class MetaFile implements IMetaFile {
     this.srcFile = isString(srcFile) ? srcFile : destFile;
   }
 
-  public init(force = false) {
+  public init(envConfig: IEnvConfig, force = false) {
     const src = path.resolve(__dirname, "../../../templates", this.srcFile);
     const dest = path.resolve(process.cwd(), this.destFile);
     const hasFile = fs.existsSync(dest);

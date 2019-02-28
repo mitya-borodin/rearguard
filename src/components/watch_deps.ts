@@ -4,9 +4,9 @@ import * as chokidar from "chokidar";
 import { existsSync } from "fs";
 import * as path from "path";
 import { BuildStatusConfig } from "../config/buildStatus/BuildStatusConfig";
-import { envConfig } from "../config/env";
-import { rearguardConfig } from "../config/rearguard";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME, NON_VERSIONABLE_CONFIG_FILE_NAME } from "../const";
+import { IEnvConfig } from "../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import { copy_bundles } from "./project_deps/copy_bundles";
 import { delete_bundles } from "./project_deps/delete_bundles";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
@@ -19,23 +19,23 @@ let local_modules_watcher: chokidar.FSWatcher | void;
 let sync_project_deps: string | void;
 export const watch_deps_event_emitter = new EventEmitter();
 
-async function doSync() {
+async function doSync(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
   const cur_sync_project_deps = rearguardConfig.sync_project_deps.join(", ");
 
   if (sync_project_deps !== cur_sync_project_deps) {
-    return watch_deps();
+    return watch_deps(envConfig, rearguardConfig);
   }
 
-  await ordering_project_deps();
-  await sync_with_linked_modules();
+  await ordering_project_deps(envConfig);
+  await sync_with_linked_modules(envConfig);
 
-  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
-    await delete_bundles();
-    await copy_bundles();
+  if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
+    await delete_bundles(envConfig, rearguardConfig);
+    await copy_bundles(envConfig);
   }
 }
 
-export function watch_deps() {
+export function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
   if (global_modules_watcher) {
     global_modules_watcher.close();
   }
@@ -94,7 +94,7 @@ export function watch_deps() {
   local_modules_watcher = chokidar.watch(local_modules, options);
 
   local_modules_watcher.on("all", async (type: string, watched_file: string) => {
-    await doSync();
+    await doSync(envConfig, rearguardConfig);
 
     watch_deps_event_emitter.emit("SYNCED");
   });
@@ -105,7 +105,7 @@ export function watch_deps() {
     const { status } = new BuildStatusConfig(watched_file);
 
     if (status === "done") {
-      await doSync();
+      await doSync(envConfig, rearguardConfig);
 
       watch_deps_event_emitter.emit("SYNCED");
     }

@@ -2,11 +2,11 @@ import { getErrorMessage } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { check_npm } from "../check_npm";
 
-export async function install_declared_deps(CWD: string = process.cwd()): Promise<boolean> {
+export async function install_declared_deps(envConfig: IEnvConfig, CWD: string = process.cwd()): Promise<boolean> {
   try {
     const { sync_project_deps, pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
 
@@ -19,7 +19,7 @@ export async function install_declared_deps(CWD: string = process.cwd()): Promis
       if (npmIsAvailable) {
         /////////////////////
         //
-        // START OF PROCEDURE
+        // * START OF PROCEDURE
         //
         /////////////////////
         const deps: string[] = Object.keys(pkg.dependencies || {});
@@ -46,7 +46,7 @@ export async function install_declared_deps(CWD: string = process.cwd()): Promis
 
           return true;
         } else {
-          console.log(chalk.white(`  Dependencies alredy installed`));
+          console.log(chalk.white(`Dependencies alredy installed`));
 
           console.log("");
         }
@@ -54,7 +54,7 @@ export async function install_declared_deps(CWD: string = process.cwd()): Promis
 
       /////////////////////
       //
-      // END OF PROCEDURE
+      // * END OF PROCEDURE
       //
       /////////////////////
 

@@ -7,6 +7,7 @@ import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
+import { rearguardConfig } from "../config/rearguard";
 import { get_stats } from "../webpack/components/get_stats";
 import { dll_WP_config } from "../webpack/webpack.config.dll";
 import { library_WP_config } from "../webpack/webpack.config.lib";
@@ -14,13 +15,14 @@ import { main_WS_config } from "../webpack/webpack.config.main";
 
 async function build_node_lib() {
   console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ START ]`));
-  const startTime = moment();
   console.log("");
+
+  const startTime = moment();
 
   const result = spawn.sync(
     "tsc",
     [
-      "--project",
+      "--application",
       path.resolve(process.cwd(), "tsconfig.json"),
       "--rootDir",
       path.resolve(process.cwd(), "src"),
@@ -37,6 +39,7 @@ async function build_node_lib() {
     },
   );
 
+  // ! Обработка сигнала.
   if (result.signal) {
     if (result.signal === "SIGKILL") {
       console.log(
@@ -67,15 +70,16 @@ async function build_node_lib() {
 async function build() {
   if (envConfig.has_dll) {
     console.log(chalk.bold.blue(`[ BUILD_DLL ][ START ]`));
+
     const startTime = moment();
 
     await new Promise((resolve, reject) => {
-      webpack(dll_WP_config()).run(async (err: any, stats: any) => {
+      webpack(dll_WP_config(envConfig, rearguardConfig)).run(async (err: any, stats: any) => {
         if (err) {
           reject(err);
         }
 
-        console.info(stats.toString(get_stats()));
+        console.info(stats.toString(get_stats(envConfig)));
 
         resolve();
       });
@@ -91,12 +95,12 @@ async function build() {
     const startTime = moment();
 
     await new Promise((resolve, reject) => {
-      webpack(library_WP_config()).run(async (err: any, stats: any) => {
+      webpack(library_WP_config(envConfig, rearguardConfig)).run(async (err: any, stats: any) => {
         if (err) {
           reject(err);
         }
 
-        console.info(stats.toString(get_stats()));
+        console.info(stats.toString(get_stats(envConfig)));
 
         resolve();
       });
@@ -107,21 +111,21 @@ async function build() {
     console.log("");
   }
 
-  if (envConfig.has_project) {
+  if (envConfig.is_application) {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ START ]`));
     const startTime = moment();
 
     // Сборка front-end проекта.
 
     await new Promise((resolve, reject) => {
-      webpack(main_WS_config()).run(async (err: any, stats: any) => {
+      webpack(main_WS_config(envConfig, rearguardConfig)).run(async (err: any, stats: any) => {
         if (err) {
           reject(err);
         }
 
-        console.info(stats.toString(get_stats()));
+        console.info(stats.toString(get_stats(envConfig)));
 
-        await copy_bundles_to_dist();
+        await copy_bundles_to_dist(envConfig);
 
         resolve();
       });
@@ -152,6 +156,7 @@ async function run() {
     await build_node_lib();
   }
 
+  rearguardConfig.last_build_time = moment();
   buildStatusConfig.end();
 }
 

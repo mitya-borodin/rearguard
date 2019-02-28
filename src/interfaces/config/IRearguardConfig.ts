@@ -1,6 +1,7 @@
-import { IConfig } from "./IConfig";
+import { Moment } from "moment";
+import { IVersionableConfig } from "./IVersionableConfig";
 
-export interface IRearguardConfig extends IConfig {
+export interface IRearguardConfig extends IVersionableConfig {
   context: string;
   entry: string;
   dll_entry: string;
@@ -13,7 +14,8 @@ export interface IRearguardConfig extends IConfig {
   has_dll: boolean;
   has_node_lib: boolean;
   has_browser_lib: boolean;
-  has_project: boolean;
+  is_application: boolean;
   load_on_demand: boolean;
   publish_in_git: boolean;
+  last_build_time: Moment;
 }

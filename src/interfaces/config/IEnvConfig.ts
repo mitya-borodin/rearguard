@@ -8,7 +8,7 @@ export interface IEnvConfig {
   isWatch: boolean;
   force: boolean;
   install_deps: boolean;
-  has_project: boolean;
+  is_application: boolean;
   has_dll: boolean;
   has_node_lib: boolean;
   has_browser_lib: boolean;

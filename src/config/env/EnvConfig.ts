@@ -43,8 +43,8 @@ export class EnvConfig implements IEnvConfig {
   get install_deps(): boolean {
     return process.env.REARGUARD_INSTALL_DEPS === "true";
   }
-  get has_project(): boolean {
-    return process.env.REARGUARD_IS_PROJECT === "true";
+  get is_application(): boolean {
+    return process.env.REARGUARD_IS_APPLICATION === "true";
   }
 
   get has_dll(): boolean {
