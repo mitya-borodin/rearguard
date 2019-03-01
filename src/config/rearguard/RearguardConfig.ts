@@ -408,6 +408,12 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
   public set last_build_time(last_build_time: Moment) {
     this.config = { last_build_time: last_build_time.utc().toISOString() };
   }
+
+  public get has_last_build_time(): boolean {
+    const { last_build_time } = this.config;
+
+    return !!isDate(last_build_time);
+  }
 }
 
 // tslint:enable:variable-name

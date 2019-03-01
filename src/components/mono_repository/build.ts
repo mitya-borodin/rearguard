@@ -78,8 +78,6 @@ export async function build(CWD: string) {
 
   rearguardConfig.last_build_time = moment();
 
-  console.log(111, rearguardConfig.last_build_time.format("YYYY-MM-DD HH:mm ZZ"));
-
   console.log(chalk.green(`[ ${rearguardConfig.pkg.name} ][ BUILD ][ END ]`));
   console.log("");
 }

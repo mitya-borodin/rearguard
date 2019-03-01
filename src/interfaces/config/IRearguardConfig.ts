@@ -18,4 +18,5 @@ export interface IRearguardConfig extends IVersionableConfig {
   load_on_demand: boolean;
   publish_in_git: boolean;
   last_build_time: Moment;
+  has_last_build_time: boolean;
 }

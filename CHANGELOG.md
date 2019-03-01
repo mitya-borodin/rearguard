@@ -8,6 +8,18 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.0 (2019-03-01)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+- Implemented the procedure of assembling dependencies that do not follow the chronological order.
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
 ## 4.4.0 (2019-02-28)
 
 BREAKING CHANGES:

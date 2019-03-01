@@ -3,6 +3,7 @@ import * as spawn from "cross-spawn";
 import * as moment from "moment";
 import * as path from "path";
 import * as webpack from "webpack";
+import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
 import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
 import { buildStatusConfig } from "../config/buildStatus";
@@ -138,6 +139,8 @@ async function build() {
 }
 
 async function run() {
+  await build_intermediate_dependencies(envConfig, rearguardConfig);
+
   buildStatusConfig.start();
 
   await initProject();

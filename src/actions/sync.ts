@@ -1,3 +1,4 @@
+import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
@@ -13,6 +14,8 @@ import { gitIgnore } from "../meta/gitignore";
 import { npmrc } from "../meta/Npmrc";
 
 async function sync() {
+  await build_intermediate_dependencies(envConfig, rearguardConfig);
+
   // Config file
   typescriptConfig.init(true);
   tsLintConfig.init(true);
