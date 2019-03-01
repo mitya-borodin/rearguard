@@ -8,7 +8,7 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
-## 4.5.0 (2019-03-01)
+## [4.5.0](https://gitlab.com/mitya-borodin/rearguard/tags/4.5.0) (2019-03-01)
 
 BREAKING CHANGES:
 
