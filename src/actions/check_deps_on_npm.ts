@@ -9,8 +9,9 @@ import { check_npm } from "../components/check_npm";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
-import { envConfig } from "../config/env";
+import { envConfig as instance_of_EnvConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
+import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 
 async function search(depName: string): Promise<any[] | void> {
   return await new Promise<any[] | void>((resolve) => {
@@ -61,7 +62,11 @@ async function search(depName: string): Promise<any[] | void> {
 
 let needInstall: boolean = false;
 
-async function checker(target: string[], key: "dependencies" | "devDependencies" | "peerDependencies"): Promise<void> {
+async function checker(
+  envConfig: IEnvConfig,
+  target: string[],
+  key: "dependencies" | "devDependencies" | "peerDependencies",
+): Promise<void> {
   const { install_deps } = envConfig;
   const { pkg } = rearguardConfig;
 
@@ -104,8 +109,8 @@ async function checker(target: string[], key: "dependencies" | "devDependencies"
   }
 }
 
-async function check_deps_on_npm(): Promise<void> {
-  await install_declared_deps();
+async function check_deps_on_npm(envConfig: IEnvConfig): Promise<void> {
+  await install_declared_deps(envConfig);
 
   try {
     const { sync_project_deps } = rearguardConfig;
@@ -123,9 +128,9 @@ async function check_deps_on_npm(): Promise<void> {
       const npmIsAvailable: boolean = await check_npm();
 
       if (npmIsAvailable) {
-        await checker(sync_project_deps, "dependencies");
-        await checker(sync_project_deps, "devDependencies");
-        await checker(sync_project_deps, "peerDependencies");
+        await checker(envConfig, sync_project_deps, "dependencies");
+        await checker(envConfig, sync_project_deps, "devDependencies");
+        await checker(envConfig, sync_project_deps, "peerDependencies");
 
         if (install_deps && needInstall) {
           console.log(chalk.white(`npm install`));
@@ -138,8 +143,8 @@ async function check_deps_on_npm(): Promise<void> {
 
           console.log("");
 
-          await ordering_project_deps();
-          await sync_with_linked_modules();
+          await ordering_project_deps(envConfig);
+          await sync_with_linked_modules(envConfig);
         }
       }
 
@@ -159,4 +164,4 @@ async function check_deps_on_npm(): Promise<void> {
   }
 }
 
-check_deps_on_npm();
+check_deps_on_npm(instance_of_EnvConfig);

@@ -24,7 +24,7 @@ const {
   watch = false,
 
   // mode
-  project = false,
+  application = false,
   dll = false,
   browser_lib = false,
   node_lib = false,
@@ -75,10 +75,10 @@ if (
   console.log("");
 
   if (action === "init") {
-    if (!(project || dll || browser_lib || node_lib)) {
+    if (!(application || dll || browser_lib || node_lib)) {
       console.log(
         chalk.bold.green(
-          `You should use: "rearguard init [ --project | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --application | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -88,7 +88,7 @@ if (
     if (load_on_demand) {
       console.log(
         chalk.bold.red(
-          `You should use: "rearguard init [ --project | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --application | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -123,10 +123,10 @@ if (
       process.exit(1);
     }
 
-    if (action !== "build" && (dll || node_lib || browser_lib || project || both)) {
+    if (action !== "build" && (dll || node_lib || browser_lib || application || both)) {
       console.log(
         chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --browser_lib | --project ]" is not valid;`,
+          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --browser_lib | --application ]" is not valid;`,
         ),
       );
       console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
@@ -203,7 +203,7 @@ if (
       process.env.REARGUARD_BUILD_BOTH = both ? "true" : "false";
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
       process.env.REARGUARD_WATCH = watch ? "true" : "false";
-      process.env.REARGUARD_IS_PROJECT = project ? "true" : "false";
+      process.env.REARGUARD_IS_APPLICATION = application ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
       process.env.REARGUARD_BROWSER_LIB = browser_lib ? "true" : "false";

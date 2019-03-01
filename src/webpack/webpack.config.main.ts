@@ -1,5 +1,6 @@
-import { rearguardConfig } from "../config/rearguard";
 import { DIST_DIR_NAME } from "../const";
+import { IEnvConfig } from "../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import entry from "./components/entry";
 import { analyze, clean, DllReferencePlugin, HMR, htmlWebpackPlugin, workboxPlugin } from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
@@ -7,10 +8,12 @@ import { general_WP_config } from "./webpack.config.common";
 
 // tslint:disable:object-literal-sort-keys
 
-export function main_WS_config() {
+export function main_WS_config(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
   const { output } = rearguardConfig;
 
   return general_WP_config(
+    envConfig,
+    rearguardConfig,
     entry(),
     {
       // path - путь куда записываются файлы.
@@ -20,12 +23,12 @@ export function main_WS_config() {
     },
     tsLoader(),
     [
-      ...clean([DIST_DIR_NAME]),
-      ...DllReferencePlugin(),
-      ...HMR(),
-      ...workboxPlugin(),
-      ...htmlWebpackPlugin(),
-      ...analyze(),
+      ...clean(envConfig, [DIST_DIR_NAME]),
+      ...DllReferencePlugin(envConfig, rearguardConfig),
+      ...HMR(envConfig),
+      ...workboxPlugin(envConfig),
+      ...htmlWebpackPlugin(envConfig, rearguardConfig),
+      ...analyze(envConfig),
     ],
     {},
   );

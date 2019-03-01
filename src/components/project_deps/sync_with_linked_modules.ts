@@ -4,13 +4,12 @@ import * as copy from "copy";
 import * as del from "del";
 import { existsSync } from "fs";
 import * as mkdirp from "mkdirp";
-import * as moment from "moment";
 import * as path from "path";
 import * as semver from "semver";
 import { isArray } from "util";
-import { envConfig } from "../../config/env";
 import { rearguardConfig } from "../../config/rearguard";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 // tslint:disable:variable-name
 
@@ -20,7 +19,7 @@ interface ICopyTask {
   files: string[];
 }
 
-export async function sync_with_linked_modules(): Promise<void> {
+export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<void> {
   try {
     const { sync_project_deps } = rearguardConfig;
 
@@ -30,19 +29,20 @@ export async function sync_with_linked_modules(): Promise<void> {
 
       /////////////////////
       //
-      // START OF PROCEDURE
+      // * START OF PROCEDURE
       //
       /////////////////////
 
       console.log(chalk.bold.white(`[ LIST ][ ${sync_project_deps.join(", ")} ]`));
       console.log("");
+
       const linked_modules: Array<{ name: string; path: string }> = [];
       const copyTasks: ICopyTask[] = [];
 
       /////////////////////
       //
-      // Проверка на существование модулей;
-      // Составление списка модулей;
+      // * Проверка на существование модулей;
+      // * Составление списка модулей;
       //
       /////////////////////
 
@@ -78,7 +78,7 @@ export async function sync_with_linked_modules(): Promise<void> {
       if (linked_modules.length > 0) {
         /////////////////////
         //
-        // Составляю задач для копирования слинкованных модулей;
+        // * Составляю задач для копирования слинкованных модулей;
         //
         /////////////////////
 
@@ -118,9 +118,9 @@ export async function sync_with_linked_modules(): Promise<void> {
 
         /////////////////////
         //
-        // Фильтрация модулей, на те для которых есть слинованные замены и на те для которых нет.
-        // Удаление модулей для которых слинкованная замена.
-        // Восстановление директорий модулей для последующего наполнения.
+        // * Фильтрация модулей, на те для которых есть слинованные замены и на те для которых нет.
+        // * Удаление модулей для которых слинкованная замена.
+        // * Восстановление директорий модулей для последующего наполнения.
         //
         /////////////////////
 
@@ -165,7 +165,7 @@ export async function sync_with_linked_modules(): Promise<void> {
 
         /////////////////////
         //
-        // Выполнение задачь по копированияю.
+        // * Выполнение задачь по копированияю.
         //
         /////////////////////
 
@@ -202,7 +202,7 @@ export async function sync_with_linked_modules(): Promise<void> {
           }
         }
 
-        // Обновляем локальный package.json
+        // * Обновляем локальный package.json
         rearguardConfig.pkg = LOCAL_PKG;
 
         console.log("");
@@ -217,7 +217,7 @@ export async function sync_with_linked_modules(): Promise<void> {
 
       /////////////////////
       //
-      // END OF PROCEDURE
+      // * END OF PROCEDURE
       //
       /////////////////////
 

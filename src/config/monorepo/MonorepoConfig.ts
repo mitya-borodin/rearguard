@@ -1,4 +1,3 @@
-import { isArray } from "@borodindmitriy/utils";
 import { isString } from "util";
 import { IMonorepoConfig } from "../../interfaces/config/IMonorepoConfig";
 import { ConfigFile } from "../ConfigFile";

@@ -5,33 +5,38 @@ import * as spawn from "cross-spawn";
 import * as ora from "ora";
 import * as path from "path";
 import * as semver from "semver";
-import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { check_npm } from "../check_npm";
 
 // tslint:disable:variable-name
 
-export async function publish(CWD: string) {
+export async function publish(envConfig: IEnvConfig, CWD: string) {
   const rearguardConfig = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
   const npmIsAvailable: boolean = await check_npm();
 
   if (npmIsAvailable && !rearguardConfig.publish_in_git) {
+    // * INIT VALUES
     const cur_name = rearguardConfig.pkg.name;
     const cur_version = rearguardConfig.pkg.version;
     let pub_version: string = "1.0.0";
+    let was_published = false;
+
     console.log(chalk.bold.green(`[ ${cur_name} ][ PUBLISH ]`));
     console.log("");
 
-    let was_published = false;
+    // * SEARCH IN NPM REGISTRY
     const spinner = ora(`npm search --json ${cur_name}`).start();
     const search_result = execSync(`npm search --json ${cur_name}`, { encoding: "utf8" });
 
     try {
+      // * PARSING_RESULT
       const result: Array<{ [key: string]: any }> = JSON.parse(search_result);
 
       spinner.succeed();
       console.log("");
 
+      // * FIND_CUR_MODULE
       if (Array.isArray(result) && result.length > 0) {
         for (const item of result) {
           if (item.name === cur_name) {

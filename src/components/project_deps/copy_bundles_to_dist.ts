@@ -2,14 +2,15 @@ import chalk from "chalk";
 import * as copy from "copy";
 import * as moment from "moment";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { DIST_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
-export async function copy_bundles_to_dist() {
+export async function copy_bundles_to_dist(envConfig: IEnvConfig) {
   if (envConfig.isBuild && !(envConfig.has_dll || envConfig.has_browser_lib || envConfig.has_node_lib)) {
     console.log(chalk.bold.blue(`=========COPY_BUNDLE_TO_DIST===========`));
-    const startTime = moment();
     console.log("");
+
+    const startTime = moment();
 
     await new Promise((resolve, reject) => {
       copy(
@@ -32,6 +33,7 @@ export async function copy_bundles_to_dist() {
         },
       );
     });
+
     await new Promise((resolve, reject) => {
       copy(
         [`${path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME)}/**`],

@@ -10,9 +10,7 @@ import * as webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import * as WorkboxPlugin from "workbox-webpack-plugin";
 import { get_bundles_info } from "../../components/project_deps/get_bundles_info";
-import { envConfig } from "../../config/env";
 import { pkgInfo } from "../../config/pkg";
-import { rearguardConfig } from "../../config/rearguard";
 import { ASSETS_NAME, BUNDLE_SUB_DIR } from "../../const";
 import {
   dll_assets_path,
@@ -23,14 +21,16 @@ import {
   get_output_path,
   lib_entry_name,
 } from "../../helpers";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "../../interfaces/IBundleInfo";
 import { analyzeConfig } from "./../../config/analyze/index";
 
 // tslint:disable:variable-name
 
-export const DllPlugin = (): webpack.Plugin[] => {
+export const DllPlugin = (envConfig: IEnvConfig): webpack.Plugin[] => {
   return [
-    ...clean([dll_output_path()], true),
+    ...clean(envConfig, [dll_output_path()], true),
     new webpack.DllPlugin({
       context: get_context(),
       name: dll_entry_name(),
@@ -39,8 +39,12 @@ export const DllPlugin = (): webpack.Plugin[] => {
   ];
 };
 
-export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] => {
-  const bundlesInfo: IBundleInfo[] = get_bundles_info();
+export const DllReferencePlugin = (
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+  exclude_them_self = false,
+): webpack.Plugin[] => {
+  const bundlesInfo: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
   const plugins: webpack.Plugin[] = [];
 
   for (const { has_dll, bundle_entry_name, manifest, load_on_demand } of bundlesInfo) {
@@ -79,6 +83,16 @@ export const DllReferencePlugin = (exclude_them_self = false): webpack.Plugin[] 
 };
 
 class ComputeDataForHWP {
+  private rearguardConfig: IRearguardConfig;
+  private envConfig: IEnvConfig;
+
+  constructor(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+    this.rearguardConfig = rearguardConfig;
+    this.envConfig = envConfig;
+
+    this.apply = this.apply.bind(this);
+  }
+
   public apply(compiler: webpack.Compiler) {
     compiler.hooks.compilation.tap("compute_data_for_html_webpack_plugin", (compilation) => {
       HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
@@ -97,7 +111,7 @@ class ComputeDataForHWP {
           },
           callback: (...args: any[]) => void,
         ) => {
-          const bundlesInfo: IBundleInfo[] = get_bundles_info();
+          const bundlesInfo: IBundleInfo[] = get_bundles_info(this.envConfig, this.rearguardConfig);
           const data: { js: string[]; css: [] } = { js: [], css: [] };
 
           for (const { assets, bundle_name, has_dll, has_browser_lib, load_on_demand } of bundlesInfo) {
@@ -112,7 +126,7 @@ class ComputeDataForHWP {
             }
           }
 
-          if (!rearguardConfig.load_on_demand && fs.existsSync(dll_assets_path())) {
+          if (!this.rearguardConfig.load_on_demand && fs.existsSync(dll_assets_path())) {
             data.js.push(require(dll_assets_path())[dll_entry_name()].js);
           }
 
@@ -137,7 +151,7 @@ class ComputeDataForHWP {
   }
 }
 
-export const htmlWebpackPlugin = (): webpack.Plugin[] => {
+export const htmlWebpackPlugin = (envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): webpack.Plugin[] => {
   const { isWDS, isBuild } = envConfig;
 
   if (isWDS || isBuild) {
@@ -149,14 +163,14 @@ export const htmlWebpackPlugin = (): webpack.Plugin[] => {
         // tslint:disable-next-line:object-literal-sort-keys
         meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
       }),
-      new ComputeDataForHWP(),
+      new ComputeDataForHWP(envConfig, rearguardConfig),
     ];
   }
 
   return [];
 };
 
-export const HMR = (): webpack.Plugin[] => {
+export const HMR = (envConfig: IEnvConfig): webpack.Plugin[] => {
   const { isDevelopment, isBuild } = envConfig;
 
   if (isDevelopment && !isBuild) {
@@ -172,7 +186,7 @@ export const HMR = (): webpack.Plugin[] => {
   return [];
 };
 
-export const uglify = (): webpack.Plugin[] => {
+export const uglify = (envConfig: IEnvConfig): webpack.Plugin[] => {
   const { isDevelopment } = envConfig;
 
   if (!isDevelopment) {
@@ -195,7 +209,7 @@ export const uglify = (): webpack.Plugin[] => {
   return [];
 };
 
-export const workboxPlugin = (): webpack.Plugin[] => {
+export const workboxPlugin = (envConfig: IEnvConfig): webpack.Plugin[] => {
   const { isDevelopment } = envConfig;
 
   if (!isDevelopment) {
@@ -218,7 +232,7 @@ export const workboxPlugin = (): webpack.Plugin[] => {
 
 // Webpack Bundle Analyzer
 // https://github.com/th0r/webpack-bundle-analyzer
-export const analyze = (): webpack.Plugin[] => {
+export const analyze = (envConfig: IEnvConfig): webpack.Plugin[] => {
   const { isDebug } = envConfig;
   const { port } = analyzeConfig;
 
@@ -233,7 +247,7 @@ export const analyze = (): webpack.Plugin[] => {
   return [];
 };
 
-export const clean = (toRemove: string[] = [], force = false): webpack.Plugin[] => {
+export const clean = (envConfig: IEnvConfig, toRemove: string[] = [], force = false): webpack.Plugin[] => {
   const { isDevelopment, isBuild, isDebug } = envConfig;
 
   if (!isDevelopment || force || isBuild) {
@@ -244,7 +258,7 @@ export const clean = (toRemove: string[] = [], force = false): webpack.Plugin[] 
 };
 
 // tslint:disable:variable-name
-export const assetsPlugin = (bundle_dir: string) => {
+export const assetsPlugin = (envConfig: IEnvConfig, bundle_dir: string) => {
   return [
     new AssetsPlugin({
       path: path.resolve(envConfig.rootDir, bundle_dir, snakeCase(pkgInfo.name), BUNDLE_SUB_DIR()),

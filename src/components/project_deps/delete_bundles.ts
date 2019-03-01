@@ -3,16 +3,16 @@ import * as del from "del";
 import { existsSync, readdirSync } from "fs";
 import { snakeCase } from "lodash";
 import * as path from "path";
-import { envConfig } from "../../config/env";
-import { rearguardConfig } from "../../config/rearguard";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 
 // tslint:disable:variable-name
 
-export async function delete_bundles() {
-  const { pkg, has_dll, has_browser_lib, has_node_lib, has_project } = rearguardConfig;
+export async function delete_bundles(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+  const { pkg, has_dll, has_browser_lib, has_node_lib, is_application } = rearguardConfig;
 
-  if (envConfig.isBuild && (has_dll || has_browser_lib || has_node_lib || has_project)) {
+  if (envConfig.isBuild && (has_dll || has_browser_lib || has_node_lib || is_application)) {
     const cur_bundle_name = snakeCase(pkg.name);
     const dll_bundle_dir = path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME);
     const lib_bundle_dir = path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME);

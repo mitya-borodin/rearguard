@@ -6,13 +6,13 @@ import { snakeCase } from "lodash";
 import * as mkdirp from "mkdirp";
 import * as moment from "moment";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { rearguardConfig } from "../../config/rearguard";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 // tslint:disable:variable-name
-export async function copy_bundles() {
+export async function copy_bundles(envConfig: IEnvConfig) {
   if (
     (envConfig.isWDS || envConfig.isBuild) &&
     !(envConfig.has_dll || envConfig.has_browser_lib || envConfig.has_node_lib)
@@ -24,7 +24,7 @@ export async function copy_bundles() {
 
     /////////////////////
     //
-    // START OF PROCEDURE
+    // * START OF PROCEDURE
     //
     /////////////////////
 
@@ -37,11 +37,11 @@ export async function copy_bundles() {
         );
 
         if (has_dll || has_browser_lib) {
-          await copy_bundle(module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
+          await copy_bundle(envConfig, module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
         }
 
         if (has_browser_lib) {
-          await copy_bundle(module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
+          await copy_bundle(envConfig, module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
         }
       }
     } catch (error) {
@@ -52,7 +52,7 @@ export async function copy_bundles() {
 
     /////////////////////
     //
-    // END OF PROCEDURE
+    // * END OF PROCEDURE
     //
     /////////////////////
 
@@ -65,7 +65,7 @@ export async function copy_bundles() {
   }
 }
 
-async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name: string) {
+async function copy_bundle(envConfig: IEnvConfig, module_path: string, bundle_dirname: string, pkg_name: string) {
   try {
     // Имя пакета (package.json).name;
     const name = snakeCase(pkg_name);
@@ -84,7 +84,7 @@ async function copy_bundle(module_path: string, bundle_dirname: string, pkg_name
     }
     /////////////////////
     //
-    // Если существует бандл в node_modules то создаю директорию и копирую в неё содержимое источника.
+    // * Если существует бандл в node_modules то создаю директорию и копирую в неё содержимое источника.
     //
     /////////////////////
 

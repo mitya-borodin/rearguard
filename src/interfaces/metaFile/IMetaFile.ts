@@ -1,3 +1,5 @@
+import { IEnvConfig } from "../config/IEnvConfig";
+
 export interface IMetaFile {
-  init(): void;
+  init(envConfig: IEnvConfig): void;
 }

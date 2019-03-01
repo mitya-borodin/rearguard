@@ -34,7 +34,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
-        ...(!rearguardConfig.has_node_lib && !rearguardConfig.has_project && rearguardConfig.has_browser_lib
+        ...(!rearguardConfig.has_node_lib && !rearguardConfig.is_application && rearguardConfig.has_browser_lib
           ? {
               declaration: true,
               outDir: path.resolve(process.cwd(), LIB_DIR_NAME),

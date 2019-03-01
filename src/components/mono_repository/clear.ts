@@ -1,14 +1,15 @@
 import chalk from "chalk";
 import * as del from "del";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 // tslint:disable:variable-name
 
-export async function clear(CWD: string) {
+export async function clear(envConfig: IEnvConfig, CWD: string) {
   const { pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
+
   const dll_bundle_dir = path.resolve(CWD, DLL_BUNDLE_DIR_NAME);
   const lib_bundle_dir = path.resolve(CWD, LIB_BUNDLE_DIR_NAME);
   const lib_dir = path.resolve(CWD, LIB_DIR_NAME);

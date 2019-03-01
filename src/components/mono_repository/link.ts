@@ -15,6 +15,7 @@ export async function link(CWD: string) {
     stdio: "inherit",
   });
 
+  // ! Обработка сигнала.
   if (result.signal) {
     if (result.signal === "SIGKILL") {
       console.log(

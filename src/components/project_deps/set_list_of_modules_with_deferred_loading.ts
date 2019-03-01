@@ -2,13 +2,18 @@ import { writeFileSync } from "fs";
 import { resolve } from "path";
 import { DEFERRED_MODULE_LIST } from "../../const";
 import { dll_entry_name, lib_entry_name } from "../../helpers";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "../../interfaces/IBundleInfo";
 import { get_bundles_info } from "./get_bundles_info";
 
 // tslint:disable:variable-name
 
-export async function set_list_of_modules_with_deferred_loading(): Promise<void> {
-  const bundles_info: IBundleInfo[] = get_bundles_info();
+export async function set_list_of_modules_with_deferred_loading(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): Promise<void> {
+  const bundles_info: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
   let file: string = "/* tslint:disable */\r";
   let need_write = false;
 

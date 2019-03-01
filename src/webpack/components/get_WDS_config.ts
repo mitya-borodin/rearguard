@@ -1,18 +1,17 @@
 import * as express from "express";
 import * as path from "path";
 import { watch_deps_event_emitter } from "../../components/watch_deps";
-import { envConfig } from "../../config/env";
 import { wdsConfig } from "../../config/wds";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
-import { get_context } from "../../helpers";
-import { rearguardConfig } from "./../../config/rearguard/index";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
+import { get_stats } from "./get_stats";
 
 // tslint:disable:object-literal-sort-keys
 
-export function get_WDS_config(): any {
+export function get_WDS_config(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): any {
   const { proxy } = wdsConfig;
   const { output } = rearguardConfig;
-  const { isDebug } = envConfig;
 
   return {
     bonjour: true,
@@ -33,19 +32,7 @@ export function get_WDS_config(): any {
     overlay: false,
     proxy,
     publicPath: output.publicPath,
-    stats: isDebug
-      ? "verbose"
-      : {
-          assets: true,
-          colors: true,
-          context: get_context(),
-          hash: true,
-          modules: false,
-          performance: false,
-          publicPath: true,
-          timings: true,
-          version: true,
-        },
+    stats: get_stats(envConfig),
   };
 }
 

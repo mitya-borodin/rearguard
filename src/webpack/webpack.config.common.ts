@@ -3,16 +3,17 @@ import * as path from "path";
 import { Entry, EntryFunc } from "webpack";
 import * as webpack from "webpack";
 import { get_bundles_info } from "../components/project_deps/get_bundles_info";
-import { envConfig } from "../config/env";
-import { rearguardConfig } from "../config/rearguard";
 import { get_context, lib_entry_name } from "../helpers";
+import { IEnvConfig } from "../interfaces/config/IEnvConfig";
+import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "./../interfaces/IBundleInfo";
 import cssLoaders from "./components/css.loders";
-import { get_stats } from "./components/get_stats";
 import { uglify } from "./components/js.plugins";
 // tslint:disable:variable-name object-literal-sort-keys
 
 export function general_WP_config(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
   entry: string | string[] | Entry | EntryFunc,
   output: webpack.Output,
   rules: webpack.Rule[],
@@ -22,7 +23,7 @@ export function general_WP_config(
   const { modules } = rearguardConfig;
   const { isDevelopment, isDebug } = envConfig;
 
-  const info: IBundleInfo[] = get_bundles_info();
+  const info: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
   const lib_externals: webpack.ExternalsObjectElement = {};
 
   for (const { has_browser_lib, bundle_name, pkg_name } of info) {
@@ -76,7 +77,7 @@ export function general_WP_config(
       nodeEnv: isDevelopment ? "development" : "production",
       minimize: !isDevelopment,
       noEmitOnErrors: !isDevelopment,
-      minimizer: uglify(),
+      minimizer: uglify(envConfig),
     },
     output: {
       // filename - шаблон имен файлов.

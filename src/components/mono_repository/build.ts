@@ -1,12 +1,14 @@
 import chalk from "chalk";
 import * as spawn from "cross-spawn";
+import * as moment from "moment";
 import * as path from "path";
 import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 
 export async function build(CWD: string) {
-  const { pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
-  console.log(chalk.bold.green(`[ ${pkg.name} ][ BUILD ]`));
+  const rearguardConfig = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
+
+  console.log(chalk.bold.green(`[ ${rearguardConfig.pkg.name} ][ BUILD ]`));
   console.log("");
 
   if (envConfig.isDevelopment) {
@@ -16,6 +18,7 @@ export async function build(CWD: string) {
       stdio: "inherit",
     });
 
+    // ! Обработка сигнала.
     if (result.signal) {
       if (result.signal === "SIGKILL") {
         console.log(
@@ -39,9 +42,7 @@ export async function build(CWD: string) {
 
       process.exit(0);
     }
-  }
-
-  if (!envConfig.isDevelopment) {
+  } else {
     // tslint:disable-next-line:variable-name
     const result_release = spawn.sync("npm", ["run", "build:both"], {
       cwd: CWD,
@@ -49,6 +50,7 @@ export async function build(CWD: string) {
       stdio: "inherit",
     });
 
+    // ! Обработка сигнала.
     if (result_release.signal) {
       if (result_release.signal === "SIGKILL") {
         console.log(
@@ -74,6 +76,8 @@ export async function build(CWD: string) {
     }
   }
 
-  console.log(chalk.green(`[ ${pkg.name} ][ BUILD ][ END ]`));
+  rearguardConfig.last_build_time = moment();
+
+  console.log(chalk.green(`[ ${rearguardConfig.pkg.name} ][ BUILD ][ END ]`));
   console.log("");
 }

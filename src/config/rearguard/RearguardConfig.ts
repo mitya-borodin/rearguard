@@ -1,6 +1,8 @@
-import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isDate, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { snakeCase } from "lodash";
+import * as moment from "moment";
+import { Moment } from "moment";
 import * as path from "path";
 import { BUNDLE_SUB_DIR } from "../../const";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
@@ -311,27 +313,27 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { has_browser_lib };
   }
 
-  // HAS_PROJECT
+  // IS_APPLICATION
   // Говорит, о том, что проект можно собарть как файлы без экспортов, для заливки на сервер;
-  public get has_project(): boolean {
-    const { has_project } = this.config;
+  public get is_application(): boolean {
+    const { is_application } = this.config;
 
-    if (isBoolean(has_project)) {
-      return has_project;
+    if (isBoolean(is_application)) {
+      return is_application;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_project ][ must be a boolean ]`));
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_application ][ must be a boolean ]`));
 
-    this.config = { has_project: false };
+    this.config = { is_application: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_project ][ assign to 'false' ]`));
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_application ][ assign to 'false' ]`));
     console.log("");
 
-    return this.has_project;
+    return this.is_application;
   }
 
-  public set has_project(has_project: boolean) {
-    this.config = { has_project };
+  public set is_application(is_application: boolean) {
+    this.config = { is_application };
   }
 
   // LOAD_ON_DEMAND
@@ -375,6 +377,42 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     console.log("");
 
     return this.publish_in_git;
+  }
+
+  // ! LAST_BUILD_TIME
+  // ! Время последней сборки.
+  public get last_build_time(): Moment {
+    const { last_build_time } = this.config;
+
+    if (isDate(last_build_time)) {
+      return moment(new Date(last_build_time)).utc();
+    }
+
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ last_build_time ][ must be a Date ]`));
+
+    const def_last_build_time = moment().utc();
+
+    this.config = { last_build_time: def_last_build_time.toDate() };
+
+    console.log(
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ last_build_time ]` +
+          `[ assign to ${def_last_build_time.format("YYYY-MM-DD HH:mm ZZ")} ]`,
+      ),
+    );
+    console.log("");
+
+    return this.last_build_time;
+  }
+
+  public set last_build_time(last_build_time: Moment) {
+    this.config = { last_build_time: last_build_time.utc().toISOString() };
+  }
+
+  public get has_last_build_time(): boolean {
+    const { last_build_time } = this.config;
+
+    return !!isDate(last_build_time);
   }
 }
 

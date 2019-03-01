@@ -2,8 +2,8 @@ import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { existsSync } from "fs";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 // tslint:disable:variable-name
 /**
@@ -12,6 +12,7 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
  * @param a_modules_root_directory - директория в которой находятся все модули
  */
 export function flatten_deps(
+  envConfig: IEnvConfig,
   a_cur_project_deps: string[],
   a_modules_root_directory?: string,
   a_module_map?: Map<string, string>,
@@ -24,7 +25,7 @@ export function flatten_deps(
     if (sync_project_deps.length > 0) {
       flat_deps.add(module_name);
 
-      const items = flatten_deps(sync_project_deps, a_modules_root_directory);
+      const items = flatten_deps(envConfig, sync_project_deps, a_modules_root_directory);
 
       for (const item of items) {
         flat_deps.add(item);

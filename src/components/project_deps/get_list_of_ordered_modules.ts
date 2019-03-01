@@ -1,11 +1,13 @@
 import chalk from "chalk";
 import * as moment from "moment";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { flatten_deps } from "./flatten_deps";
 import { get_module_weight } from "./get_module_weight";
 
 // tslint:disable:variable-name
 
 export async function get_list_of_ordered_modules(
+  envConfig: IEnvConfig,
   a_root: string,
   a_modules: string[],
   a_module_map: Map<string, string>,
@@ -21,9 +23,9 @@ export async function get_list_of_ordered_modules(
   //
   /////////////////////
 
-  const modules = flatten_deps(a_modules, a_root, a_module_map);
+  const modules = flatten_deps(envConfig, a_modules, a_root, a_module_map);
   const result: string[] = modules
-    .map((module) => ({ name: module, weight: get_module_weight(module, 0, a_root, a_module_map) }))
+    .map((module) => ({ name: module, weight: get_module_weight(envConfig, module, 0, a_root, a_module_map) }))
     .sort((a, b) => (a.weight > b.weight ? 1 : -1))
     .map(({ name }) => name);
 

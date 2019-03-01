@@ -7,14 +7,18 @@ import { install_declared_deps } from "../project_deps/install_declared_deps";
 
 export async function install(CWD: string) {
   const { pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
+
   console.log(chalk.bold.green(`[ ${pkg.name} ][ INSTALL ]`));
   console.log("");
+
+  // ! Необходимо запомнить текущее значение, для того чтобы его
+  // ! восстановить в конце процедуры.
 
   const NODE_ENV = process.env.NODE_ENV;
 
   process.env.NODE_ENV = "development";
 
-  const wasInstalled: boolean = await install_declared_deps(CWD);
+  const wasInstalled: boolean = await install_declared_deps(envConfig, CWD);
 
   if (!wasInstalled) {
     const result = spawn.sync("npm", ["install"], {
@@ -23,6 +27,7 @@ export async function install(CWD: string) {
       stdio: "inherit",
     });
 
+    // ! Обработка сигнала.
     if (result.signal) {
       if (result.signal === "SIGKILL") {
         console.log(

@@ -2,12 +2,13 @@ import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { existsSync } from "fs";
 import * as path from "path";
-import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
+import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 
 // tslint:disable:variable-name
 
 export function get_module_weight(
+  envConfig: IEnvConfig,
   a_module_name: string,
   a_weight = 0,
   a_module_root?: string,
@@ -20,7 +21,7 @@ export function get_module_weight(
       weight += sync_project_deps.length;
 
       for (const module_name of sync_project_deps) {
-        weight += get_module_weight(module_name, 0, a_module_root, a_module_map);
+        weight += get_module_weight(envConfig, module_name, 0, a_module_root, a_module_map);
       }
 
       return weight;

@@ -41,7 +41,7 @@ export async function initProject() {
   const update_for_pkg: { [key: string]: any } = {};
 
   /**
-   * INIT PROJECT STATUS
+   * ! INIT PROJECT STATUS
    */
 
   if (envConfig.isInit) {
@@ -49,7 +49,7 @@ export async function initProject() {
     rearguardConfig.has_browser_lib = envConfig.has_browser_lib;
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
     rearguardConfig.load_on_demand = envConfig.load_on_demand;
-    rearguardConfig.has_project = envConfig.has_project;
+    rearguardConfig.is_application = envConfig.is_application;
   }
 
   const files: string[] = [];
@@ -72,14 +72,14 @@ export async function initProject() {
   update_for_pkg.files = files;
 
   /**
-   * INIT ENTRY FILES
+   * ! INIT ENTRY FILES
    */
 
   const src = path.resolve(process.cwd(), "src");
 
   mkdirp.sync(src);
 
-  if (rearguardConfig.has_browser_lib || rearguardConfig.has_project) {
+  if (rearguardConfig.has_browser_lib || rearguardConfig.is_application) {
     const entry = path.resolve(src, rearguardConfig.entry);
 
     if (!fs.existsSync(entry)) {
@@ -122,7 +122,7 @@ export async function initProject() {
   }
 
   /**
-   * INIT SCRIPTS
+   * ! INIT SCRIPTS
    */
 
   if (!update_for_pkg.scripts) {
@@ -147,7 +147,7 @@ export async function initProject() {
   }
 
   /**
-   * BUILD_SCRIPTS
+   * ! BUILD_SCRIPTS
    */
 
   const args: string[] = [];
@@ -169,10 +169,10 @@ export async function initProject() {
   update_for_pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
 
   /**
-   * START
+   * ! START
    */
 
-  if (rearguardConfig.has_project) {
+  if (rearguardConfig.is_application) {
     update_for_pkg.scripts.start = "rearguard wds";
     update_for_pkg.scripts["start:release"] = "rearguard wds -r";
 
@@ -188,9 +188,9 @@ export async function initProject() {
     }
 
     if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
-      update_for_pkg.scripts.build += " --project";
-      update_for_pkg.scripts["build:release"] += " --project";
-      update_for_pkg.scripts["build:both"] += " --project";
+      update_for_pkg.scripts.build += "--application";
+      update_for_pkg.scripts["build:release"] += "--application";
+      update_for_pkg.scripts["build:both"] += "--application";
     }
   } else {
     delete update_for_pkg.scripts.start;
@@ -200,7 +200,7 @@ export async function initProject() {
     delete update_for_pkg.scripts["dll:release"];
   }
 
-  if (!rearguardConfig.has_project && rearguardConfig.has_browser_lib) {
+  if (!rearguardConfig.is_application && rearguardConfig.has_browser_lib) {
     update_for_pkg.scripts.start = "rearguard wds";
     update_for_pkg.scripts["start:release"] = "rearguard wds -r";
   }
@@ -209,7 +209,7 @@ export async function initProject() {
   update_for_pkg.scripts["check_deps_on_npm:install"] = "rearguard check_deps_on_npm --install_deps";
 
   /**
-   * PRE_PUBLISH_ONLY
+   * ! PRE_PUBLISH_ONLY
    */
 
   if (!rearguardConfig.has_dll && !rearguardConfig.has_browser_lib && rearguardConfig.has_node_lib) {
@@ -228,31 +228,31 @@ export async function initProject() {
   prettierConfig.init(true);
 
   // Meta files init
-  dockerIgnore.init(true);
-  gitIgnore.init(true);
-  editorConfig.init(true);
-  npmrc.init(true);
+  dockerIgnore.init(envConfig, true);
+  gitIgnore.init(envConfig, true);
+  editorConfig.init(envConfig, true);
+  npmrc.init(envConfig, true);
 
-  if (rearguardConfig.has_project || rearguardConfig.has_browser_lib) {
-    prePublish.init(true);
-    typings.init(true);
-    postcssPlugins.init();
+  if (rearguardConfig.is_application || rearguardConfig.has_browser_lib) {
+    prePublish.init(envConfig, true);
+    typings.init(envConfig, true);
+    postcssPlugins.init(envConfig);
   }
 
   console.log("");
 
-  await install_declared_deps();
-  await ordering_project_deps();
-  await sync_with_linked_modules();
+  await install_declared_deps(envConfig);
+  await ordering_project_deps(envConfig);
+  await sync_with_linked_modules(envConfig);
 
-  if (rearguardConfig.has_project || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
-    await delete_bundles();
-    await copy_bundles();
+  if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
+    await delete_bundles(envConfig, rearguardConfig);
+    await copy_bundles(envConfig);
   }
 
   rearguardConfig.order_config_fields();
 
-  set_list_of_modules_with_deferred_loading();
+  set_list_of_modules_with_deferred_loading(envConfig, rearguardConfig);
 
   console.log(chalk.bold.magenta(`============================================`));
   console.log("");

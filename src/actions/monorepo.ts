@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "fs";
+import { readdirSync } from "fs";
 import { resolve } from "path";
 import { build } from "../components/mono_repository/build";
 import { clear } from "../components/mono_repository/clear";
@@ -33,7 +33,7 @@ async function monorepo() {
     module_names.push(pkg.name);
   }
 
-  const oredered_modules: string[] = await get_list_of_ordered_modules(root, module_names, module_map);
+  const oredered_modules: string[] = await get_list_of_ordered_modules(envConfig, root, module_names, module_map);
   const ordered_paths: string[] = oredered_modules
     .filter((N) => module_map.has(N)) // Пропускаются модули, только из директории packages,
     // так как могут быть внешние модули не входящие в состав монорепозитория.
@@ -41,7 +41,7 @@ async function monorepo() {
 
   for (const module_path of ordered_paths) {
     if (!envConfig.is_mono_bootstrap && envConfig.is_mono_clear) {
-      await clear(module_path);
+      await clear(envConfig, module_path);
     }
 
     if (!envConfig.is_mono_bootstrap && envConfig.is_mono_install) {
@@ -57,7 +57,7 @@ async function monorepo() {
     }
 
     if (envConfig.is_mono_bootstrap) {
-      await clear(module_path);
+      await clear(envConfig, module_path);
       await install(module_path);
       await build(module_path);
       await link(module_path);
@@ -68,7 +68,7 @@ async function monorepo() {
     }
 
     if (envConfig.is_mono_publish) {
-      await publish(module_path);
+      await publish(envConfig, module_path);
     }
   }
 }
