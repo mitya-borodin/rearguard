@@ -8,6 +8,19 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.1 (2019-02-28)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Moved time of last build to non versionable config;
+- Saved hash of dev and prod build, and if it change I will update time of last build;
+
+BUG FIXES:
+
 ## [4.5.0](https://gitlab.com/mitya-borodin/rearguard/tags/4.5.0) (2019-03-01)
 
 BREAKING CHANGES:

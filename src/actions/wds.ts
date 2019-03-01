@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import * as moment from "moment";
 import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
@@ -28,8 +27,6 @@ async function wds() {
     console.log(``);
     console.log(chalk.bold.cyanBright(`[ WDS ][ LAUNCHED ]`));
     console.log(chalk.cyan(`[ LAUNCHED: https://${host}:${port} ]`));
-
-    rearguardConfig.last_build_time = moment();
 
     watch_deps_event_emitter.on("SYNCED", async () => {
       await build_intermediate_dependencies(envConfig, rearguardConfig);

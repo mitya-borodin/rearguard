@@ -1,10 +1,11 @@
 import * as path from "path";
 import * as webpack from "webpack";
+import { buildStatusConfig } from "../config/buildStatus";
 import { LIB_BUNDLE_DIR_NAME } from "../const";
 import { get_context, lib_entry_name, lib_output_path } from "../helpers";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
-import { analyze, assetsPlugin, clean, DllReferencePlugin } from "./components/js.plugins";
+import { analyze, assetsPlugin, clean, DllReferencePlugin, HashWebpackPlugin } from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
@@ -33,6 +34,7 @@ export function library_WP_config(envConfig: IEnvConfig, rearguardConfig: IRearg
       ...assetsPlugin(envConfig, LIB_BUNDLE_DIR_NAME),
       ...analyze(envConfig),
       ...clean(envConfig, [lib_output_path()]),
+      new HashWebpackPlugin(buildStatusConfig, envConfig),
     ],
     {},
   );

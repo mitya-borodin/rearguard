@@ -6,6 +6,7 @@ import { build_intermediate_dependencies } from "../components/build_intermediat
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
+import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
 import { rearguardConfig } from "../config/rearguard";
@@ -81,6 +82,8 @@ async function build_node_server() {
       process.exit(1);
     }
   }
+
+  buildStatusConfig.last_build_time = moment();
 
   console.log("");
   console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));

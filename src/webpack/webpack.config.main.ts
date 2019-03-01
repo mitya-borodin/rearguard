@@ -1,8 +1,17 @@
+import { buildStatusConfig } from "../config/buildStatus";
 import { DIST_DIR_NAME } from "../const";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import entry from "./components/entry";
-import { analyze, clean, DllReferencePlugin, HMR, htmlWebpackPlugin, workboxPlugin } from "./components/js.plugins";
+import {
+  analyze,
+  clean,
+  DllReferencePlugin,
+  HashWebpackPlugin,
+  HMR,
+  htmlWebpackPlugin,
+  workboxPlugin,
+} from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
@@ -29,6 +38,7 @@ export function main_WS_config(envConfig: IEnvConfig, rearguardConfig: IRearguar
       ...workboxPlugin(envConfig),
       ...htmlWebpackPlugin(envConfig, rearguardConfig),
       ...analyze(envConfig),
+      new HashWebpackPlugin(buildStatusConfig, envConfig),
     ],
     {},
   );

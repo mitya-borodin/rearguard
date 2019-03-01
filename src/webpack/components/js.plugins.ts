@@ -4,6 +4,7 @@ import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as fs from "fs";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import { snakeCase } from "lodash";
+import * as moment from "moment";
 import * as path from "path";
 import * as TerserPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
@@ -21,6 +22,7 @@ import {
   get_output_path,
   lib_entry_name,
 } from "../../helpers";
+import { IBuildStatusConfig } from "../../interfaces/config/IBuildStatusConfig";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "../../interfaces/IBundleInfo";
@@ -278,5 +280,47 @@ export const assetsPlugin = (envConfig: IEnvConfig, bundle_dir: string) => {
     }),
   ];
 };
+
+// tslint:disable-next-line: max-classes-per-file
+export class HashWebpackPlugin {
+  private buildStatusConfig: IBuildStatusConfig;
+  private envConfig: IEnvConfig;
+
+  constructor(buildStatusConfig: IBuildStatusConfig, envConfig: IEnvConfig) {
+    this.buildStatusConfig = buildStatusConfig;
+    this.envConfig = envConfig;
+
+    this.apply = this.apply.bind(this);
+  }
+
+  public apply(compiler: webpack.Compiler) {
+    // ! See https://webpack.js.org/api/plugins/compiler/#event-hooks
+    compiler.plugin("after-emit", (compilation, callback) => {
+      const hash = compilation.hash;
+      let hash_key: "hash_dev" | "hash_prod" = "hash_dev";
+
+      if (this.envConfig.isDevelopment) {
+        hash_key = "hash_dev";
+      } else {
+        hash_key = "hash_prod";
+      }
+
+      console.log("isDevelopment", this.envConfig.isDevelopment);
+      console.log("hash_key", hash_key);
+
+      const cur_hash = this.buildStatusConfig[hash_key];
+
+      console.log("cur_hash !== hash", cur_hash !== hash);
+
+      if (cur_hash !== hash) {
+        this.buildStatusConfig.last_build_time = moment();
+      }
+
+      this.buildStatusConfig[hash_key] = hash;
+
+      callback(null);
+    });
+  }
+}
 
 // tslint:enable:variable-name

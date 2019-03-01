@@ -157,9 +157,12 @@ async function run() {
 
   if (envConfig.has_node_lib) {
     await build_node_lib();
+
+    if (!envConfig.has_dll && !envConfig.has_browser_lib && !envConfig.is_application) {
+      buildStatusConfig.last_build_time = moment();
+    }
   }
 
-  rearguardConfig.last_build_time = moment();
   buildStatusConfig.end();
 }
 

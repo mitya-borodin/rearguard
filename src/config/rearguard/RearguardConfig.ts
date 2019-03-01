@@ -378,42 +378,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
     return this.publish_in_git;
   }
-
-  // ! LAST_BUILD_TIME
-  // ! Время последней сборки.
-  public get last_build_time(): Moment {
-    const { last_build_time } = this.config;
-
-    if (isDate(last_build_time)) {
-      return moment(new Date(last_build_time)).utc();
-    }
-
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ last_build_time ][ must be a Date ]`));
-
-    const def_last_build_time = moment().utc();
-
-    this.config = { last_build_time: def_last_build_time.toDate() };
-
-    console.log(
-      chalk.bold.green(
-        `[ RERGUARD_CONFIG ][ INIT ][ last_build_time ]` +
-          `[ assign to ${def_last_build_time.format("YYYY-MM-DD HH:mm ZZ")} ]`,
-      ),
-    );
-    console.log("");
-
-    return this.last_build_time;
-  }
-
-  public set last_build_time(last_build_time: Moment) {
-    this.config = { last_build_time: last_build_time.utc().toISOString() };
-  }
-
-  public get has_last_build_time(): boolean {
-    const { last_build_time } = this.config;
-
-    return !!isDate(last_build_time);
-  }
 }
 
 // tslint:enable:variable-name

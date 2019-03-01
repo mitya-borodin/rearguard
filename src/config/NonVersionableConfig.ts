@@ -21,9 +21,10 @@ export class NonVersionableConfig implements IConfig {
       try {
         return JSON.parse(fs.readFileSync(this.config_path).toString());
       } catch (error) {
-        console.error(error);
+        fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2));
 
-        process.exit(0);
+        console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
+        console.log("");
 
         return {};
       }

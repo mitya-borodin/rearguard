@@ -1,4 +1,3 @@
-import { Moment } from "moment";
 import { IVersionableConfig } from "./IVersionableConfig";
 
 export interface IRearguardConfig extends IVersionableConfig {
@@ -17,6 +16,4 @@ export interface IRearguardConfig extends IVersionableConfig {
   is_application: boolean;
   load_on_demand: boolean;
   publish_in_git: boolean;
-  last_build_time: Moment;
-  has_last_build_time: boolean;
 }

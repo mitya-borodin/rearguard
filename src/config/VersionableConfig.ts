@@ -22,7 +22,6 @@ const field_order = [
   "is_application",
   "has_node_lib",
   "publish_in_git",
-  "last_build_time",
 ];
 
 export class VersionableConfig implements IVersionableConfig {

@@ -1,6 +1,5 @@
 import chalk from "chalk";
 import * as spawn from "cross-spawn";
-import * as moment from "moment";
 import * as path from "path";
 import { envConfig } from "../../config/env";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
@@ -75,8 +74,6 @@ export async function build(CWD: string) {
       process.exit(0);
     }
   }
-
-  rearguardConfig.last_build_time = moment();
 
   console.log(chalk.green(`[ ${rearguardConfig.pkg.name} ][ BUILD ][ END ]`));
   console.log("");
