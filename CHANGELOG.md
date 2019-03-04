@@ -8,7 +8,19 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
-## 4.5.2 (2019-04-04)
+## 4.5.3 (2019-03-04)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Replaced workbox-webpack-plugin to workbox-build;
+
+BUG FIXES:
+
+## 4.5.2 (2019-03-04)
 
 BREAKING CHANGES:
 

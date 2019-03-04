@@ -6,6 +6,7 @@ import * as webpack from "webpack";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
 import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
+import { create_workbox } from "../components/workbox";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
@@ -125,8 +126,10 @@ async function build() {
         }
 
         console.info(stats.toString(get_stats(envConfig)));
+        console.log("");
 
         await copy_bundles_to_dist(envConfig);
+        await create_workbox(envConfig);
 
         resolve();
       });

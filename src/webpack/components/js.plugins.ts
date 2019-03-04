@@ -9,7 +9,6 @@ import * as path from "path";
 import * as TerserPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import * as WorkboxPlugin from "workbox-webpack-plugin";
 import { get_bundles_info } from "../../components/project_deps/get_bundles_info";
 import { pkgInfo } from "../../config/pkg";
 import { ASSETS_NAME, BUNDLE_SUB_DIR } from "../../const";
@@ -19,7 +18,6 @@ import {
   dll_manifest_path,
   dll_output_path,
   get_context,
-  get_output_path,
   lib_entry_name,
 } from "../../helpers";
 import { IBuildStatusConfig } from "../../interfaces/config/IBuildStatusConfig";
@@ -204,27 +202,6 @@ export const uglify = (envConfig: IEnvConfig): webpack.Plugin[] => {
           },
           ecma: 8,
         },
-      }),
-    ];
-  }
-
-  return [];
-};
-
-export const workboxPlugin = (envConfig: IEnvConfig): webpack.Plugin[] => {
-  const { isDevelopment } = envConfig;
-
-  if (!isDevelopment) {
-    return [
-      new WorkboxPlugin.GenerateSW({
-        clientsClaim: true,
-        globDirectory: get_output_path(),
-        globPatterns: ["*.{js,html,jpeg,jpg,svg,gif,png,ttf}"],
-        importWorkboxFrom: "local",
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-        navigateFallback: "/",
-        skipWaiting: true,
-        swDest: "sw.js",
       }),
     ];
   }
