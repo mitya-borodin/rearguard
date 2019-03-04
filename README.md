@@ -14,11 +14,13 @@
 
 ### Что такое rearguard?
 
-Rearguard - это интрумент сборки и разработки сайтов, одностраничных приложений,
-мобильных и десктопных приложений (на базе проекта Cordova). Инструмент
-поддерживает [**библиотека ориентированный дизайн**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/library_oriented_design.md) разработки. Также
-поддерживается способ разработки известный как монорепозиторий. Монолитный
-способ разработки не исключён и является частным случаем.
+Rearguard - это среда сборки и разработки одностраничных приложений,
+мобильных и десктопных приложений (на базе проекта Cordova), сайтов. Инструмент
+поддерживает [**библиотека ориентированный дизайн**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/library_oriented_design.md) разработки, так же участвует как инструмент в [Software development methodology](https://gitlab.com/mitya-borodin/software-development-methodology).
+
+Поддерживается способ разработки известный как монорепозиторий.
+
+Монолитный способ разработки не исключён и является частным случаем.
 
 <a name="examples"></a>
 
@@ -77,7 +79,7 @@ Rearguard - это интрумент сборки и разработки са�
 - **has_dll: boolean** - говорит о том, что в текущем проекте есть dll_bundle;
 - **has_node_lib: boolean** - говорит о том, что в текущем проекте компилируется версия для использования в среде node.js;
 - **has_browser_lib: boolean** - говорит о том, что в текущем проекте есть lib_bundle, который будет использоваться в браузерной среде;
-- **has_project: boolean** - говорит о том, что текущий проект можно использовать как самостоятельный. Сделать сборку из entry и залить на сервер.
+- **is_application: boolean** - говорит о том, что текущий проект можно использовать как самостоятельный. Сделать сборку из entry и залить на сервер.
 - **publish_in_git: boolean** - говорит о том, что проект публикуется только в git, в npm registry его публиковать не нужно.
 
 #### Не версионируемые
@@ -128,8 +130,8 @@ npm install -D rearguard
 
 ### CLI
 
-- [**rearguard init** [ --dll | --browser_lib | --load_on_demand | --node_lib | --project ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
-- [**rearguard build** [ --project | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build.md)
+- [**rearguard init** [ --dll | --browser_lib | --load_on_demand | --node_lib | --application ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
+- [**rearguard build** [ --application | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build.md)
 - [**rearguard monorepo** [ --init | --install | --build | --link | --bootstrap | --release | -r | --test | --publish | --patch | --minor | --major ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/monorepo.md)
 - [**rearguard wds** [ --release | -r | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/wds.md)
 - [**rearguard sync** [ --watch ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync.md)
@@ -414,30 +416,145 @@ export default MyComponent;
 
 #### Подключение стилей из node_modules
 
+Файл `store/browserHistory`
+
+```typescript jsx
+import createHistory from "history/createBrowserHistory";
+
+export const browserHistory = createHistory();
+```
+
+Файл `pages/App`
+
+```typescript jsx
+import StyleContext from "isomorphic-style-loader/StyleContext";
+import "normalize.css";
+import React, { Component } from "react";
+import s from "./App.css";
+
+class App extends Component<any, never> {
+  public static contextType = StyleContext;
+
+  private removeCSS: () => void;
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.removeCSS = this.context.insertCss(s);
+  }
+
+  public componentWillUnmount() {
+    this.removeCSS();
+  }
+
+  public render() {
+    return React.Children.only(this.props.children);
+  }
+}
+
+export default App;
+```
+
+Файл `./router`
+
+```typescript jsx
+import React from "react";
+import { LoginPage } from "./pages/administration/LoginPage/LoginPage";
+import { UserAdminPage } from "./pages/administration/UserAdminPage/UserAdminPage";
+import { CommonPage } from "./pages/common/CommonPage";
+import { browserHistory } from "./store/browserHistory";
+
+export function router() {
+  const pathname: string = browserHistory.location.pathname;
+
+  switch (pathname) {
+    case "/login":
+      return <LoginPage />;
+    case "/admin":
+      return <UserAdminPage />;
+    case "/common":
+      return <CommonPage />;
+    default: {
+      browserHistory.replace("/event/flightReport", null);
+      return null;
+    }
+  }
+}
+```
+
 Файл `index.tsx`
 
 ```typescript jsx
-import s from "antd/dist/antd.css"; // Эти стили находятся вне context и они будут добавлены как есть.
+import { LocaleProvider } from "antd";
+import s from "antd/dist/antd.css";
+import enUS from "antd/lib/locale-provider/en_US";
+import StyleContext from "isomorphic-style-loader/StyleContext";
 import App from "pages/App";
 import React from "react";
 import ReactDOM from "react-dom";
+import { browserHistory } from "store/browserHistory";
 
-let container;
+let container: Element | null;
+const insertCss = (...styles: any[]) => {
+  const removeCss = styles.map((style_item: any) => style_item._insertCss());
 
-const render = (Component) => {
-  ReactDOM.render(<Component />, container);
+  return () => removeCss.forEach((dispose) => dispose());
 };
+
+const render = (Root) => {
+  const { router } = require("./router");
+  const Page = router();
+
+  if (Page) {
+    ReactDOM.render(
+      <StyleContext.Provider value={{ insertCss }}>
+        <LocaleProvider locale={enUS}>
+          <Root>{Page}</Root>
+        </LocaleProvider>
+      </StyleContext.Provider>,
+      container,
+    );
+  }
+};
+
+browserHistory.listen(() => {
+  render(App);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  style.antd._insertCss(); // Тут мы добавляем CSS на страницу.
+  style.antd._insertCss();
 
   render(App);
 });
 
-// Возможно вам понадобится текст CSS от подключенных внешних стилей и я рекомендую экспортировать этот объект стилей.
+declare var module: any;
+
+if (module.hot) {
+  module.hot.accept("./router", () => {
+    render(App);
+  });
+}
+
+declare var process: { env: { NODE_ENV: string } };
+
+if (process.env.NODE_ENV === "production") {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    });
+  }
+}
+
 export const style: { antd: any } = {
   antd: s,
 };

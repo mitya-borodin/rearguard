@@ -36,10 +36,10 @@ rearguard build --browser_lib --node_lib [ --dll | --load_on_demand | --both | -
 
 Результатом сборки будут директории lib_bindle, lib, и опционально dll_bundle. Директория lib будет содержать .js, .d.ts файлы. Сборка изоморфной библиотеки не делает сам код изоморфным, для того, чтобы код использовался на обоих платформах, необходимо реализовываеть его с учетом обоих платформ.
 
-## Сборка project
+## Сборка application
 
 ```bash
-rearguard build --project [ --dll | --both | --release | -r | --debug | -d ]
+rearguard build --application [ --dll | --both | --release | -r | --debug | -d ]
 ```
 
 Результатом сборки будет `index.html`, `main.js`, скопированные зависимости на один уровень с `index.html`. Директория в которую выкладываются файлы является `dist`.
