@@ -76,7 +76,7 @@ export async function build_intermediate_dependencies(
   }
 
   for (const CWD of CWD_list) {
-    await build(CWD);
+    await build(CWD, true);
   }
 
   console.log("");

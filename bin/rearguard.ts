@@ -45,6 +45,7 @@ const {
 
   // state
   force = false,
+  needUpdateBuildTime = false,
 
   // check_deps_on_npm
   install_deps = false,
@@ -211,6 +212,7 @@ if (
 
       // Состояние запуска
       process.env.REARGUARD_FORCE = force ? "true" : "false";
+      process.env.REARGUARD_NEED_UPDATE_BUILD_TIME = needUpdateBuildTime ? "true" : "false";
 
       // check_deps_n_npm
       process.env.REARGUARD_INSTALL_DEPS = install_deps ? "true" : "false";

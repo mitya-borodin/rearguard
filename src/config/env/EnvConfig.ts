@@ -40,6 +40,10 @@ export class EnvConfig implements IEnvConfig {
     return process.env.REARGUARD_FORCE === "true";
   }
 
+  get needUpdateBuildTime(): boolean {
+    return process.env.REARGUARD_NEED_UPDATE_BUILD_TIME === "true";
+  }
+
   get install_deps(): boolean {
     return process.env.REARGUARD_INSTALL_DEPS === "true";
   }

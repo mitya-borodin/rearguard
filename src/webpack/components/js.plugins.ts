@@ -282,14 +282,9 @@ export class HashWebpackPlugin {
         hash_key = "hash_prod";
       }
 
-      console.log("isDevelopment", this.envConfig.isDevelopment);
-      console.log("hash_key", hash_key);
-
       const cur_hash = this.buildStatusConfig[hash_key];
 
-      console.log("cur_hash !== hash", cur_hash !== hash);
-
-      if (cur_hash !== hash) {
+      if (cur_hash !== hash || this.envConfig.needUpdateBuildTime) {
         this.buildStatusConfig.last_build_time = moment();
       }
 

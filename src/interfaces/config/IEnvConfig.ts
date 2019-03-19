@@ -7,6 +7,7 @@ export interface IEnvConfig {
   isDebug: boolean;
   isWatch: boolean;
   force: boolean;
+  needUpdateBuildTime: boolean;
   install_deps: boolean;
   is_application: boolean;
   has_dll: boolean;
