@@ -1,5 +1,5 @@
 import { ChildProcess, exec, ExecException } from "child_process";
-import * as ora from "ora";
+import ora from "ora";
 
 export async function check_npm(): Promise<boolean> {
   return await new Promise<boolean>((resolve) => {

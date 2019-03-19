@@ -1,7 +1,7 @@
 import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as copy from "copy";
-import * as del from "del";
+import del from "del";
 import { existsSync } from "fs";
 import * as mkdirp from "mkdirp";
 import * as path from "path";

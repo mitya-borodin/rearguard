@@ -2,7 +2,7 @@ import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import * as spawn from "cross-spawn";
-import * as ora from "ora";
+import ora from "ora";
 import * as path from "path";
 import * as semver from "semver";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";

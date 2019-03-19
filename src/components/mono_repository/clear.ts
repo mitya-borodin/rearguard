@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import * as del from "del";
+import del from "del";
 import * as path from "path";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";

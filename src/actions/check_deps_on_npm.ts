@@ -2,7 +2,7 @@ import { getErrorMessage, isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { ChildProcess, exec, ExecException } from "child_process";
 import { execSync } from "child_process";
-import * as ora from "ora";
+import ora from "ora";
 import * as semver from "semver";
 import { isArray } from "util";
 import { check_npm } from "../components/check_npm";
