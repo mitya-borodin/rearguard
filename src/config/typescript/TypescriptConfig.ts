@@ -66,7 +66,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         traceResolution: isDebug, // Enable tracing of the name resolution process.
         skipLibCheck: true,
       },
-      include:[get_context()],
+      include: [get_context()],
       exclude: [
         "node_modules",
         ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isSync || this.envConfig.isBNS)
