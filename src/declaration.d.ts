@@ -7,7 +7,6 @@ declare module "terser-webpack-plugin";
 declare module "assets-webpack-plugin";
 declare module "prettier-package-json";
 declare module "workbox-build";
-declare module "clean-webpack-plugin";
 declare module "html-webpack-plugin" {
   // Type definitions for html-webpack-plugin 3.2
   // Project: https://github.com/jantimon/html-webpack-plugin
