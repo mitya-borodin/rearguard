@@ -8,6 +8,18 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.9 (2019-03-22)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- deferred_module_list.ts add to .gitignore;
+
+BUG FIXES:
+
 ## 4.5.3 (2019-03-04)
 
 BREAKING CHANGES:
