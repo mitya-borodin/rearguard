@@ -17,6 +17,7 @@ FEATURES:
 IMPROVEMENTS:
 
 - deferred_module_list.ts add to .gitignore;
+- deferred_module_list.ts processed throught prettirejs;
 
 BUG FIXES:
 

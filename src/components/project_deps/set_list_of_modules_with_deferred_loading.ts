@@ -1,5 +1,6 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
+import * as prettier from "prettier";
 import { DEFERRED_MODULE_LIST } from "../../const";
 import { dll_entry_name, lib_entry_name } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
@@ -14,7 +15,7 @@ export async function set_list_of_modules_with_deferred_loading(
   rearguardConfig: IRearguardConfig,
 ): Promise<void> {
   const bundles_info: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
-  let file: string = "/* tslint:disable */\r";
+  let source: string = "/* tslint:disable */\r";
   let need_write = false;
 
   for (const info of bundles_info) {
@@ -25,25 +26,25 @@ export async function set_list_of_modules_with_deferred_loading(
       const lib_public_path = require(info.assets.lib)[lib_name].js;
 
       if (info.has_dll && info.has_browser_lib) {
-        file +=
-          `export const ${info.bundle_name} = ` +
+        source +=
+          `export const ${info.bundle_name}: { dll: string[], lib: string[] } = ` +
           `{ dll: [ "${dll_name}" , "${dll_public_path}" ], lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
 
         need_write = true;
       }
 
       if (!info.has_dll && info.has_browser_lib) {
-        file += `export const ${info.bundle_name} = { lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
+        source += `export const ${info.bundle_name} = { lib: [ "${lib_name}", "${lib_public_path}" ] } \r`;
 
         need_write = true;
       }
     }
   }
 
-  file += "/* tslint:enable */\r\n";
+  source += "/* tslint:enable */\r\n";
 
   if (need_write) {
-    writeFileSync(resolve(process.cwd(), "src", DEFERRED_MODULE_LIST), file, { encoding: "utf-8" });
+    writeFileSync(resolve(process.cwd(), "src", DEFERRED_MODULE_LIST), prettier.format(source), { encoding: "utf-8" });
   }
 }
 
