@@ -12,6 +12,8 @@ import { main_WS_config } from "../webpack/webpack.config.main";
 
 let watchDestroy: () => void;
 
+let isRuning = false;
+
 async function wds() {
   await build_intermediate_dependencies(envConfig, rearguardConfig);
 
@@ -27,13 +29,23 @@ async function wds() {
   );
 
   watch_deps_event_emitter.on("SYNCED", async () => {
-    watchDestroy();
+    if (!isRuning) {
+      isRuning = true;
 
-    await build_intermediate_dependencies(envConfig, rearguardConfig);
+      watchDestroy();
 
-    watchDestroy = await watch_deps(envConfig, rearguardConfig);
+      await build_intermediate_dependencies(envConfig, rearguardConfig);
 
-    server.middleware.invalidate();
+      watchDestroy = await watch_deps(envConfig, rearguardConfig);
+
+      server.middleware.invalidate();
+
+      server.middleware.waitUntilValid(() => {
+        isRuning = false;
+      });
+    } else {
+      console.error(`[ WDS ][ SYNCED ][ ERROR ]`);
+    }
   });
 
   server.listen(port, host, () => {

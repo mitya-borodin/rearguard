@@ -8,6 +8,18 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.13 (2019-04-01)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Do not run handling change deps if current procces dose't done;
+
+BUG FIXES:
+
 ## 4.5.12 (2019-04-01)
 
 BREAKING CHANGES:
