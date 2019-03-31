@@ -44,7 +44,9 @@ export async function set_list_of_modules_with_deferred_loading(
   source += "/* tslint:enable */\r\n";
 
   if (need_write) {
-    writeFileSync(resolve(process.cwd(), "src", DEFERRED_MODULE_LIST), prettier.format(source), { encoding: "utf-8" });
+    writeFileSync(resolve(process.cwd(), "src", DEFERRED_MODULE_LIST), prettier.format(source).trim(), {
+      encoding: "utf-8",
+    });
   }
 }
 

@@ -47,11 +47,11 @@ export class VersionableConfig implements IVersionableConfig {
       }
     }
 
-    const pkg = JSON.parse(prettier_package_json.format(this.pkg));
+    const pkg = JSON.parse(prettier_package_json.format(this.pkg).trim());
 
     pkg.rearguard = sorted_rearguard;
 
-    fs.writeFileSync(this.config_path, JSON.stringify(pkg, null, 2), { encoding: "utf-8" });
+    fs.writeFileSync(this.config_path, JSON.stringify(pkg, null, 2).trim(), { encoding: "utf-8" });
   }
 
   public get pkg(): { [key: string]: any } {
@@ -92,7 +92,7 @@ export class VersionableConfig implements IVersionableConfig {
       try {
         const pkg = JSON.parse(fs.readFileSync(this.config_path).toString());
 
-        fs.writeFileSync(this.config_path, prettier_package_json.format({ ...pkg, ...fields }));
+        fs.writeFileSync(this.config_path, prettier_package_json.format({ ...pkg, ...fields }).trim());
       } catch (error) {
         console.error(error);
 

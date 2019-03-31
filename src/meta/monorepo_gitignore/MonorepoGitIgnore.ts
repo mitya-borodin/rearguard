@@ -16,7 +16,7 @@ export class MonorepoGitIgnore implements IMetaFile {
     const gitignore = ["registry_credentials.json"];
 
     if (!hasFile || envConfig.force || force) {
-      fs.writeFileSync(path.resolve(process.cwd(), ".gitignore"), gitignore.join("\r\n"));
+      fs.writeFileSync(path.resolve(process.cwd(), ".gitignore"), gitignore.join("\r\n").trim());
 
       if (hasFile && (envConfig.force || force)) {
         console.log(chalk.yellow(`[ META_FILE ][ FORCE_INIT ][ ${dest} ]`));

@@ -17,9 +17,13 @@ import { sync_with_linked_modules } from "./project_deps/sync_with_linked_module
 let global_modules_watcher: chokidar.FSWatcher | void;
 let local_modules_watcher: chokidar.FSWatcher | void;
 let sync_project_deps: string | void;
+
 export const watch_deps_event_emitter = new EventEmitter();
 
 async function doSync(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+  console.log(chalk.bold.yellow(`[ WATCH ][ DO_SYNC ][ START ]`));
+  console.log("");
+
   const cur_sync_project_deps = rearguardConfig.sync_project_deps.join(", ");
 
   if (sync_project_deps !== cur_sync_project_deps) {
@@ -33,9 +37,17 @@ async function doSync(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) 
     await delete_bundles(envConfig, rearguardConfig);
     await copy_bundles(envConfig);
   }
+
+  console.log(chalk.bold.yellow(`[ WATCH ][ DO_SYNC ][ END ]`));
+  console.log("");
 }
 
-export function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+export async function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): Promise<() => void> {
+  console.log(chalk.bold.yellow(`[ WATCH ][ INIT ]`));
+  console.log("");
+
+  sync_project_deps = rearguardConfig.sync_project_deps.join(", ");
+
   if (global_modules_watcher) {
     global_modules_watcher.close();
   }
@@ -43,10 +55,8 @@ export function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardCon
     local_modules_watcher.close();
   }
 
-  sync_project_deps = rearguardConfig.sync_project_deps.join(", ");
-
-  const global_modules = [];
-  const local_modules = [];
+  let global_modules: any[] = [];
+  let local_modules = [];
 
   /////////////////////
   //
@@ -91,25 +101,67 @@ export function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardCon
     ignoreInitial: true,
   };
 
-  local_modules_watcher = chokidar.watch(local_modules, options);
+  if (local_modules.length > 0) {
+    local_modules_watcher = chokidar.watch(local_modules, options);
 
-  local_modules_watcher.on("all", async (type: string, watched_file: string) => {
-    await doSync(envConfig, rearguardConfig);
+    await new Promise((resolve, reject) => {
+      if (local_modules_watcher) {
+        local_modules_watcher.on("ready", resolve);
+      } else {
+        reject("[ WATCH ][ ERROR ][ WATCHRE NOT FOUND ]");
+      }
+    });
 
-    watch_deps_event_emitter.emit("SYNCED");
-  });
-
-  global_modules_watcher = chokidar.watch(global_modules, options);
-
-  global_modules_watcher.on("all", async (type: string, watched_file: string) => {
-    const { status } = new BuildStatusConfig(watched_file);
-
-    if (status === "done") {
+    local_modules_watcher.on("all", async (type: string, watched_file: string) => {
       await doSync(envConfig, rearguardConfig);
 
       watch_deps_event_emitter.emit("SYNCED");
+    });
+  }
+
+  if (global_modules.length > 0) {
+    global_modules_watcher = chokidar.watch(global_modules, options);
+
+    await new Promise((resolve, reject) => {
+      if (global_modules_watcher) {
+        global_modules_watcher.on("ready", resolve);
+      } else {
+        reject("[ WATCH ][ ERROR ][ WATCHRE NOT FOUND ]");
+      }
+    });
+
+    global_modules_watcher.on("all", async (type: string, watched_file: string) => {
+      const { status } = new BuildStatusConfig(watched_file);
+
+      if (status === "done") {
+        await doSync(envConfig, rearguardConfig);
+
+        watch_deps_event_emitter.emit("SYNCED");
+      }
+    });
+  }
+
+  console.log(chalk.bold.yellow(`[ WATCH ][ READY ]`));
+  console.log("");
+
+  return () => {
+    console.log(chalk.bold.red(`[ WATCH ][ DESTROY ]`));
+    console.log("");
+
+    if (global_modules_watcher) {
+      global_modules_watcher.close();
+      global_modules_watcher = undefined;
     }
-  });
+    if (local_modules_watcher) {
+      local_modules_watcher.close();
+      local_modules_watcher = undefined;
+    }
+
+    sync_project_deps = undefined;
+
+    global_modules = [];
+    local_modules = [];
+  };
 }
 
 // tslint:enable:variable-name

@@ -220,7 +220,7 @@ export async function initProject() {
 
   const cur_pkg = require(pkg_path);
 
-  fs.writeFileSync(pkg_path, prettier_package_json.format({ ...cur_pkg, ...update_for_pkg }));
+  fs.writeFileSync(pkg_path, prettier_package_json.format({ ...cur_pkg, ...update_for_pkg }).trim());
 
   // Config file
   typescriptConfig.init(true);

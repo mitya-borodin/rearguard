@@ -10,29 +10,36 @@ import { wdsConfig } from "../config/wds";
 import { get_WDS_config } from "../webpack/components/get_WDS_config";
 import { main_WS_config } from "../webpack/webpack.config.main";
 
+let watchDestroy: () => void;
+
 async function wds() {
   await build_intermediate_dependencies(envConfig, rearguardConfig);
 
   await initProject();
 
-  watch_deps(envConfig, rearguardConfig);
+  watchDestroy = await watch_deps(envConfig, rearguardConfig);
 
   const { host, port } = wdsConfig;
+
   const server: any = new WDS(
     webpack(main_WS_config(envConfig, rearguardConfig)),
     get_WDS_config(envConfig, rearguardConfig),
   );
 
+  watch_deps_event_emitter.on("SYNCED", async () => {
+    watchDestroy();
+
+    await build_intermediate_dependencies(envConfig, rearguardConfig);
+
+    watchDestroy = await watch_deps(envConfig, rearguardConfig);
+
+    server.middleware.invalidate();
+  });
+
   server.listen(port, host, () => {
     console.log(``);
     console.log(chalk.bold.cyanBright(`[ WDS ][ LAUNCHED ]`));
     console.log(chalk.cyan(`[ LAUNCHED: https://${host}:${port} ]`));
-
-    watch_deps_event_emitter.on("SYNCED", async () => {
-      await build_intermediate_dependencies(envConfig, rearguardConfig);
-
-      server.middleware.invalidate();
-    });
   });
 }
 

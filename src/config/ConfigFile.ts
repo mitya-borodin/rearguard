@@ -43,16 +43,16 @@ export class ConfigFile implements IConfigFile {
           if (isObject(source_config)) {
             const config = defaultsDeep(source_config, this.default_config);
 
-            fs.writeFileSync(this.config_path, JSON.stringify(config, null, 2));
+            fs.writeFileSync(this.config_path, JSON.stringify(config, null, 2).trim());
 
             return config;
           }
 
-          fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2));
+          fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2).trim());
 
           return this.default_config;
         } else {
-          fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2));
+          fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2).trim());
 
           console.log(chalk.yellow(`[ CONFIG_FILE ][ FORCE_INIT ][ ${this.config_path} ]`));
 
@@ -69,7 +69,7 @@ export class ConfigFile implements IConfigFile {
         return this.init();
       }
     } else {
-      fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2));
+      fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2).trim());
 
       console.log(chalk.greenBright(`[ CONFIG_FILE ][ CREATE ] ${this.config_path}`));
 

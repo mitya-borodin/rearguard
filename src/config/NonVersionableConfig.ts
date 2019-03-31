@@ -21,7 +21,7 @@ export class NonVersionableConfig implements IConfig {
       try {
         return JSON.parse(fs.readFileSync(this.config_path).toString());
       } catch (error) {
-        fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2));
+        fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2).trim());
 
         console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
         console.log("");
@@ -29,7 +29,7 @@ export class NonVersionableConfig implements IConfig {
         return {};
       }
     } else {
-      fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2));
+      fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2).trim());
 
       console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
       console.log("");
@@ -39,7 +39,7 @@ export class NonVersionableConfig implements IConfig {
   }
 
   public set config(fields: { [key: string]: any }) {
-    fs.writeFileSync(this.config_path, JSON.stringify({ ...this.config, ...fields }, null, 2));
+    fs.writeFileSync(this.config_path, JSON.stringify({ ...this.config, ...fields }, null, 2).trim());
   }
 }
 

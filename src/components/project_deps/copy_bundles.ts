@@ -37,10 +37,12 @@ export async function copy_bundles(envConfig: IEnvConfig) {
         );
 
         if (has_dll || has_browser_lib) {
+          // ! Копирует DLL_BUNDLE
           await copy_bundle(envConfig, module_path, DLL_BUNDLE_DIR_NAME, pkg.name);
         }
 
         if (has_browser_lib) {
+          // ! Копирует LIB_BUNDLE
           await copy_bundle(envConfig, module_path, LIB_BUNDLE_DIR_NAME, pkg.name);
         }
       }
