@@ -8,6 +8,19 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.12 (2019-04-01)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Add trim();
+- Turn off watching deps before build intermediate deps and turn on before invalidate compiler;
+
+BUG FIXES:
+
 ## 4.5.9 (2019-03-22)
 
 BREAKING CHANGES:
