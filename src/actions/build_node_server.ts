@@ -3,35 +3,45 @@ import * as spawn from "cross-spawn";
 import * as moment from "moment";
 import * as path from "path";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
-import { copy_back_end_deps } from "../components/copy_back_end_deps";
+import { prepare_assembly_for_deployment } from "../components/prepare_assembly_for_deployment";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
+import { show_docker_commands } from "../components/show_docker_commands";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
 import { rearguardConfig } from "../config/rearguard";
 import { tsLintConfig } from "../config/tslint";
 import { typescriptConfig } from "../config/typescript";
+import { DIST_DIR_NAME } from "../const";
+import { backEndDockerfile } from "../meta/backEndDockerfile";
 import { dockerIgnore } from "../meta/dockerignore";
 import { editorConfig } from "../meta/editorConfig";
+import { examples } from "../meta/examples";
 import { gitIgnore } from "../meta/gitignore";
 import { npmrc } from "../meta/Npmrc";
 
 async function build_node_server() {
   await build_intermediate_dependencies(envConfig, rearguardConfig);
 
-  // Config file
+  // ! Config file
   typescriptConfig.init(true);
   tsLintConfig.init(true);
   editorConfig.init(envConfig, true);
   prettierConfig.init(true);
   npmrc.init(envConfig, true);
 
-  // Meta files init
+  // ! Meta files init
   dockerIgnore.init(envConfig, true);
   gitIgnore.init(envConfig, true);
+
+  // ! Docker config
+  backEndDockerfile.init(envConfig);
+
+  // ! Examples
+  examples.init(envConfig, true);
 
   console.log("");
 
@@ -52,7 +62,7 @@ async function build_node_server() {
       "--rootDir",
       path.resolve(process.cwd(), ""),
       "--outDir",
-      path.resolve(process.cwd(), "dist"),
+      path.resolve(process.cwd(), DIST_DIR_NAME),
       "--module",
       "commonjs",
     ],
@@ -63,7 +73,7 @@ async function build_node_server() {
     },
   );
 
-  copy_back_end_deps(envConfig, rearguardConfig);
+  prepare_assembly_for_deployment(rearguardConfig, DIST_DIR_NAME);
 
   // ! Обработка сигнала процесса
   if (result.signal) {
@@ -93,6 +103,8 @@ async function build_node_server() {
   console.log("");
   console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
   console.log("");
+
+  show_docker_commands(rearguardConfig);
 }
 
 build_node_server();

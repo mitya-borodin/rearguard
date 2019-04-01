@@ -1,13 +1,14 @@
 import { isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
+import * as mkdirp from "mkdirp";
 import * as path from "path";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IMetaFile } from "../interfaces/metaFile/IMetaFile";
 
 export class MetaFile implements IMetaFile {
-  private srcFile: string;
-  private destFile: string;
+  protected srcFile: string;
+  protected destFile: string;
 
   constructor(destFile: string, srcFile?: string) {
     this.destFile = destFile;
@@ -18,6 +19,8 @@ export class MetaFile implements IMetaFile {
     const src = path.resolve(__dirname, "../../../templates", this.srcFile);
     const dest = path.resolve(process.cwd(), this.destFile);
     const hasFile = fs.existsSync(dest);
+
+    mkdirp.sync(path.dirname(dest));
 
     if (!hasFile || envConfig.force || force) {
       fs.copyFileSync(src, dest);

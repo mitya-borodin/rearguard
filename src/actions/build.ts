@@ -6,10 +6,14 @@ import * as webpack from "webpack";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
 import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
+import { show_docker_commands } from "../components/show_docker_commands";
 import { create_workbox } from "../components/workbox";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
+import { examples } from "../meta/examples";
+import { frontEndDockerfile } from "../meta/frontEndDockerfile";
+import { nginxConfig } from "../meta/nginxConfig";
 import { get_stats } from "../webpack/components/get_stats";
 import { dll_WP_config } from "../webpack/webpack.config.dll";
 import { library_WP_config } from "../webpack/webpack.config.lib";
@@ -117,6 +121,12 @@ async function build() {
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ START ]`));
     const startTime = moment();
 
+    // ! Docker config
+    frontEndDockerfile.init(envConfig);
+    // ! Nginx config
+    nginxConfig.init(envConfig);
+    // ! Examples
+    examples.init(envConfig, true);
     // Сборка front-end проекта.
 
     await new Promise((resolve, reject) => {
@@ -138,6 +148,8 @@ async function build() {
     console.log("");
     console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
     console.log("");
+
+    show_docker_commands(rearguardConfig);
   }
 }
 

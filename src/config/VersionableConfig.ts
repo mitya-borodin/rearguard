@@ -16,7 +16,6 @@ const field_order = [
   "output",
   "post_css_plugins_path",
   "sync_project_deps",
-  "back_end_deps",
   "is_application",
   "is_back_end",
   "has_dll",

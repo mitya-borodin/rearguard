@@ -234,45 +234,6 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { sync_project_deps };
   }
 
-  public get back_end_deps(): string[] {
-    const { back_end_deps: a_back_end_deps } = this.config;
-    const back_end_deps: string[] = [];
-    let has_error = false;
-
-    if (isArray(a_back_end_deps)) {
-      for (const i_s of a_back_end_deps) {
-        if (isString(i_s)) {
-          back_end_deps.push(i_s);
-        } else {
-          console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`));
-
-          has_error = true;
-        }
-      }
-
-      if (!has_error) {
-        return back_end_deps;
-      }
-    }
-
-    console.log(
-      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ back_end_deps ][ must be not empty array of string ]`),
-    );
-
-    this.config = { back_end_deps };
-
-    console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ back_end_deps ][ assign to [ ${back_end_deps.join(", ")} ] ]`),
-    );
-    console.log("");
-
-    return this.back_end_deps;
-  }
-
-  public set back_end_deps(back_end_deps: string[]) {
-    this.config = { back_end_deps };
-  }
-
   /**
    * Среда может содержать три флага:
    * has_dll: boolean; - говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
