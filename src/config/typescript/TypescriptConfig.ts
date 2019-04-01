@@ -30,7 +30,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         target: "es6",
         jsx: "react",
         lib: ["dom", "es6", "DOM.Iterable", "ScriptHost", "es7"],
-        module: this.envConfig.isSync || this.envConfig.isBNS ? "commonjs" : "es6",
+        module: this.envConfig.isSync || this.envConfig.isBNS || this.envConfig.isSNS ? "commonjs" : "es6",
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
@@ -66,7 +66,7 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         traceResolution: isDebug, // Enable tracing of the name resolution process.
         skipLibCheck: true,
       },
-      include: [get_context()],
+      include: [get_context(), path.resolve(get_context(), "../bin")],
       exclude: [
         "node_modules",
         ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isSync || this.envConfig.isBNS)

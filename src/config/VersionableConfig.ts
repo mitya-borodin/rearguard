@@ -16,10 +16,12 @@ const field_order = [
   "output",
   "post_css_plugins_path",
   "sync_project_deps",
+  "back_end_deps",
+  "is_application",
+  "is_back_end",
   "has_dll",
   "has_browser_lib",
   "load_on_demand",
-  "is_application",
   "has_node_lib",
   "publish_in_git",
 ];

@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
+import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { watch_deps } from "../components/watch_deps";
@@ -32,6 +33,7 @@ async function sync() {
   console.log("");
 
   await install_declared_deps(envConfig);
+  await install_dev_deps(envConfig);
   await ordering_project_deps(envConfig);
   await sync_with_linked_modules(envConfig);
 

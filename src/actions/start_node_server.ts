@@ -1,14 +1,11 @@
 import chalk from "chalk";
+import { execSync } from "child_process";
 import * as spawn from "cross-spawn";
-import * as moment from "moment";
-import * as path from "path";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
-import { copy_back_end_deps } from "../components/copy_back_end_deps";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
 import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
-import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
 import { rearguardConfig } from "../config/rearguard";
@@ -19,7 +16,7 @@ import { editorConfig } from "../meta/editorConfig";
 import { gitIgnore } from "../meta/gitignore";
 import { npmrc } from "../meta/Npmrc";
 
-async function build_node_server() {
+async function start_node_server() {
   await build_intermediate_dependencies(envConfig, rearguardConfig);
 
   // Config file
@@ -40,37 +37,37 @@ async function build_node_server() {
   await ordering_project_deps(envConfig);
   await sync_with_linked_modules(envConfig);
 
-  console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ START ]`));
+  console.log(chalk.bold.blue(`[ START_NODE_SERVER ]`));
   console.log("");
 
-  const startTime = moment();
-  const result = spawn.sync(
-    "tsc",
-    [
-      "--project",
-      path.resolve(process.cwd(), "tsconfig.json"),
-      "--rootDir",
-      path.resolve(process.cwd(), ""),
-      "--outDir",
-      path.resolve(process.cwd(), "dist"),
-      "--module",
-      "commonjs",
-    ],
-    {
-      cwd: process.cwd(),
-      encoding: "utf8",
-      stdio: "inherit",
-    },
-  );
+  // tslint:disable-next-line: variable-name
+  const tslint_command = `tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
 
-  copy_back_end_deps(envConfig, rearguardConfig);
+  console.log(chalk.white(tslint_command));
+  console.log("");
 
-  // ! Обработка сигнала процесса
+  execSync(tslint_command, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    stdio: "inherit",
+  });
+
+  // tslint:disable-next-line: variable-name
+  const ts_node_dev_command = `ts-node-dev --prefer-ts --type-check --respawn ./bin/www.ts`;
+
+  console.log(chalk.white(ts_node_dev_command));
+  console.log("");
+
+  const result = spawn.sync("ts-node-dev", ["--prefer-ts", "--type-check", "--respawn", "./bin/www.ts"], {
+    encoding: "utf8",
+    stdio: "inherit",
+  });
+
   if (result.signal) {
     if (result.signal === "SIGKILL") {
       console.log(
-        chalk.bold.red(
-          "The tsc failed because the process exited too early. " +
+        chalk.red(
+          "The build failed because the process exited too early. " +
             "This probably means the system ran out of memory or someone called `kill -9` on the process.",
         ),
       );
@@ -79,20 +76,18 @@ async function build_node_server() {
     } else if (result.signal === "SIGTERM") {
       console.log(
         chalk.bold.red(
-          "The tsc failed because the process exited too early. " +
+          "The build failed because the process exited too early. " +
             "Someone might have called `kill` or `killall`, or the system could be shutting down.",
         ),
       );
 
       process.exit(1);
     }
+
+    process.exit(0);
   }
 
-  buildStatusConfig.last_build_time = moment();
-
-  console.log("");
-  console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
   console.log("");
 }
 
-build_node_server();
+start_node_server();

@@ -29,6 +29,7 @@ const {
   browser_lib = false,
   node_lib = false,
   load_on_demand = false,
+  back_end = false,
 
   // monorepo
   init = false,
@@ -70,16 +71,17 @@ if (
   action === "check_deps_on_npm" ||
   action === "wds" ||
   action === "build_node_server" ||
+  action === "start_node_server" ||
   action === "build" ||
   action === "monorepo"
 ) {
   console.log("");
 
   if (action === "init") {
-    if (!(application || dll || browser_lib || node_lib)) {
+    if (!(application || dll || browser_lib || node_lib || back_end)) {
       console.log(
         chalk.bold.green(
-          `You should use: "rearguard init [ --application | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --application | --back_end | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -89,7 +91,7 @@ if (
     if (load_on_demand) {
       console.log(
         chalk.bold.red(
-          `You should use: "rearguard init [ --application | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
+          `You should use: "rearguard init [ --application | --back_end | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
         ),
       );
 
@@ -196,6 +198,7 @@ if (
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_SYNC = action === "sync" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER = action === "build_node_server" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_START_NODE_SERVER = action === "start_node_server" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
 
@@ -205,6 +208,7 @@ if (
       process.env.REARGUARD_DEBUG = debug ? "true" : "false";
       process.env.REARGUARD_WATCH = watch ? "true" : "false";
       process.env.REARGUARD_IS_APPLICATION = application ? "true" : "false";
+      process.env.REARGUARD_IS_BACK_END = back_end ? "true" : "false";
       process.env.REARGUARD_DLL = dll ? "true" : "false";
       process.env.REARGUARD_NODE_LIB = node_lib ? "true" : "false";
       process.env.REARGUARD_BROWSER_LIB = browser_lib ? "true" : "false";

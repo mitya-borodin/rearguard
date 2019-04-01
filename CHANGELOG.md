@@ -8,6 +8,20 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.14 (2019-04-01)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+- Add command `rearguard start_node_server`;
+- Add command `rearguard init --back_end`;
+- Add copy deps for back-end from rearguard.back_end_deps;
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
 ## 4.5.13 (2019-04-01)
 
 BREAKING CHANGES:

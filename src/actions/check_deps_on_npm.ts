@@ -7,6 +7,7 @@ import * as semver from "semver";
 import { isArray } from "util";
 import { check_npm } from "../components/check_npm";
 import { install_declared_deps } from "../components/project_deps/install_declared_deps";
+import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { envConfig as instance_of_EnvConfig } from "../config/env";
@@ -111,6 +112,7 @@ async function checker(
 
 async function check_deps_on_npm(envConfig: IEnvConfig): Promise<void> {
   await install_declared_deps(envConfig);
+  await install_dev_deps(envConfig);
 
   try {
     const { sync_project_deps } = rearguardConfig;

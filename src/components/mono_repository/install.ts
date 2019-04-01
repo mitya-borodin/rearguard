@@ -18,39 +18,37 @@ export async function install(CWD: string) {
 
   process.env.NODE_ENV = "development";
 
-  const wasInstalled: boolean = await install_declared_deps(envConfig, CWD);
+  await install_declared_deps(envConfig, CWD);
 
-  if (!wasInstalled) {
-    const result = spawn.sync("npm", ["install"], {
-      cwd: CWD,
-      encoding: "utf8",
-      stdio: "inherit",
-    });
+  const result = spawn.sync("npm", ["install"], {
+    cwd: CWD,
+    encoding: "utf8",
+    stdio: "inherit",
+  });
 
-    // ! Обработка сигнала.
-    if (result.signal) {
-      if (result.signal === "SIGKILL") {
-        console.log(
-          chalk.red(
-            "The build failed because the process exited too early. " +
-              "This probably means the system ran out of memory or someone called `kill -9` on the process.",
-          ),
-        );
+  // ! Обработка сигнала.
+  if (result.signal) {
+    if (result.signal === "SIGKILL") {
+      console.log(
+        chalk.red(
+          "The build failed because the process exited too early. " +
+            "This probably means the system ran out of memory or someone called `kill -9` on the process.",
+        ),
+      );
 
-        process.exit(1);
-      } else if (result.signal === "SIGTERM") {
-        console.log(
-          chalk.bold.red(
-            "The build failed because the process exited too early. " +
-              "Someone might have called `kill` or `killall`, or the system could be shutting down.",
-          ),
-        );
+      process.exit(1);
+    } else if (result.signal === "SIGTERM") {
+      console.log(
+        chalk.bold.red(
+          "The build failed because the process exited too early. " +
+            "Someone might have called `kill` or `killall`, or the system could be shutting down.",
+        ),
+      );
 
-        process.exit(1);
-      }
-
-      process.exit(0);
+      process.exit(1);
     }
+
+    process.exit(0);
   }
 
   process.env.NODE_ENV = NODE_ENV;

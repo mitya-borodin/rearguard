@@ -234,6 +234,45 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     this.config = { sync_project_deps };
   }
 
+  public get back_end_deps(): string[] {
+    const { back_end_deps: a_back_end_deps } = this.config;
+    const back_end_deps: string[] = [];
+    let has_error = false;
+
+    if (isArray(a_back_end_deps)) {
+      for (const i_s of a_back_end_deps) {
+        if (isString(i_s)) {
+          back_end_deps.push(i_s);
+        } else {
+          console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`));
+
+          has_error = true;
+        }
+      }
+
+      if (!has_error) {
+        return back_end_deps;
+      }
+    }
+
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ back_end_deps ][ must be not empty array of string ]`),
+    );
+
+    this.config = { back_end_deps };
+
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ back_end_deps ][ assign to [ ${back_end_deps.join(", ")} ] ]`),
+    );
+    console.log("");
+
+    return this.back_end_deps;
+  }
+
+  public set back_end_deps(back_end_deps: string[]) {
+    this.config = { back_end_deps };
+  }
+
   /**
    * Среда может содержать три флага:
    * has_dll: boolean; - говорит, о том, что в директории dll_bundle/%(package.json).name% собран бандл и manifest.json;
@@ -334,6 +373,29 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
   public set is_application(is_application: boolean) {
     this.config = { is_application };
+  }
+
+  // IS_BACK_END
+  // Говорит о том что это back-end;
+  public get is_back_end(): boolean {
+    const { is_back_end } = this.config;
+
+    if (isBoolean(is_back_end)) {
+      return is_back_end;
+    }
+
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_back_end ][ must be a boolean ]`));
+
+    this.config = { is_back_end: false };
+
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_back_end ][ assign to 'false' ]`));
+    console.log("");
+
+    return this.is_back_end;
+  }
+
+  public set is_back_end(is_back_end: boolean) {
+    this.config = { is_back_end };
   }
 
   // LOAD_ON_DEMAND

@@ -34,10 +34,13 @@ export async function install_declared_deps(envConfig: IEnvConfig, CWD: string =
         }
 
         if (installList.length > 0) {
-          console.log(chalk.white(`npm install ${installList.join(" ")}`));
+          const command = `npm install ${installList.join(" ")}`;
+
+          console.log(chalk.white(command));
           console.log("");
 
-          execSync(`npm install ${installList.join(" ")}`, {
+          execSync(command, {
+            cwd: process.cwd(),
             encoding: "utf8",
             stdio: "inherit",
           });

@@ -3,6 +3,7 @@ export interface IEnvConfig {
   isWDS: boolean;
   isSync: boolean;
   isBNS: boolean;
+  isSNS: boolean;
   isBuild: boolean;
   isDebug: boolean;
   isWatch: boolean;
@@ -10,6 +11,7 @@ export interface IEnvConfig {
   needUpdateBuildTime: boolean;
   install_deps: boolean;
   is_application: boolean;
+  is_back_end: boolean;
   has_dll: boolean;
   has_node_lib: boolean;
   has_browser_lib: boolean;

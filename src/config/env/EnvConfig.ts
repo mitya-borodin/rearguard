@@ -23,6 +23,9 @@ export class EnvConfig implements IEnvConfig {
   get isBNS(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER === "true";
   }
+  get isSNS(): boolean {
+    return process.env.REARGUARD_LAUNCH_IS_START_NODE_SERVER === "true";
+  }
 
   get isBuild(): boolean {
     return process.env.REARGUARD_LAUNCH_IS_BUILD === "true";
@@ -49,6 +52,9 @@ export class EnvConfig implements IEnvConfig {
   }
   get is_application(): boolean {
     return process.env.REARGUARD_IS_APPLICATION === "true";
+  }
+  get is_back_end(): boolean {
+    return process.env.REARGUARD_IS_BACK_END === "true";
   }
 
   get has_dll(): boolean {

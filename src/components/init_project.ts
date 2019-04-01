@@ -20,6 +20,7 @@ import { npmrc } from "./../meta/Npmrc/index";
 import { copy_bundles } from "./project_deps/copy_bundles";
 import { delete_bundles } from "./project_deps/delete_bundles";
 import { install_declared_deps } from "./project_deps/install_declared_deps";
+import { install_dev_deps } from "./project_deps/install_dev_deps";
 import { ordering_project_deps } from "./project_deps/ordering_project_deps";
 import { set_list_of_modules_with_deferred_loading } from "./project_deps/set_list_of_modules_with_deferred_loading";
 import { sync_with_linked_modules } from "./project_deps/sync_with_linked_modules";
@@ -50,26 +51,29 @@ export async function initProject() {
     rearguardConfig.has_node_lib = envConfig.has_node_lib;
     rearguardConfig.load_on_demand = envConfig.load_on_demand;
     rearguardConfig.is_application = envConfig.is_application;
+    rearguardConfig.is_back_end = envConfig.is_back_end;
   }
 
-  const files: string[] = [];
+  if (!rearguardConfig.is_back_end) {
+    const files: string[] = [];
 
-  if (rearguardConfig.has_dll) {
-    files.push(DLL_BUNDLE_DIR_NAME);
+    if (rearguardConfig.has_dll) {
+      files.push(DLL_BUNDLE_DIR_NAME);
+    }
+
+    if (rearguardConfig.has_browser_lib) {
+      files.push(LIB_BUNDLE_DIR_NAME);
+    }
+
+    if (rearguardConfig.has_node_lib || rearguardConfig.has_browser_lib) {
+      files.push(LIB_DIR_NAME);
+    }
+
+    console.log(chalk.green(`[ FILES ][ ${files.join(", ")} ]`));
+    console.log("");
+
+    update_for_pkg.files = files;
   }
-
-  if (rearguardConfig.has_browser_lib) {
-    files.push(LIB_BUNDLE_DIR_NAME);
-  }
-
-  if (rearguardConfig.has_node_lib || rearguardConfig.has_browser_lib) {
-    files.push(LIB_DIR_NAME);
-  }
-
-  console.log(chalk.green(`[ FILES ][ ${files.join(", ")} ]`));
-  console.log("");
-
-  update_for_pkg.files = files;
 
   /**
    * ! INIT ENTRY FILES
@@ -79,46 +83,62 @@ export async function initProject() {
 
   mkdirp.sync(src);
 
-  if (rearguardConfig.has_browser_lib || rearguardConfig.is_application) {
-    const entry = path.resolve(src, rearguardConfig.entry);
+  if (rearguardConfig.is_back_end) {
+    const bin = path.resolve(process.cwd(), "bin");
+    const www = path.resolve(bin, "www.ts");
 
-    if (!fs.existsSync(entry)) {
-      fs.writeFileSync(entry, `// Точка входа в проект;\n`);
+    mkdirp.sync(bin);
 
-      console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${entry} ]`));
+    if (!fs.existsSync(www)) {
+      fs.writeFileSync(www, `console.trace("Точка входа в приложение!");`);
+
+      console.log(chalk.green(`[ BACK_END ][ ENTRY_POINT ][ INIT ][ ${www} ]`));
       console.log("");
     }
   }
 
-  if (rearguardConfig.has_dll) {
-    const dll_entry = path.resolve(src, rearguardConfig.dll_entry);
+  if (!rearguardConfig.is_back_end) {
+    if (rearguardConfig.has_browser_lib || rearguardConfig.is_application) {
+      const entry = path.resolve(src, rearguardConfig.entry);
 
-    if (!fs.existsSync(dll_entry)) {
-      fs.writeFileSync(dll_entry, `// В этом файле указываются импорты пакетов, которые необходимо вынести в dll;\n`);
+      if (!fs.existsSync(entry)) {
+        fs.writeFileSync(entry, `// Точка входа в проект;\n`);
 
-      console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${dll_entry} ]`));
-      console.log("");
+        console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${entry} ]`));
+        console.log("");
+      }
     }
-  }
 
-  if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
-    const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
+    if (rearguardConfig.has_dll) {
+      const dll_entry = path.resolve(src, rearguardConfig.dll_entry);
 
-    if (!fs.existsSync(lib_entry)) {
-      fs.writeFileSync(lib_entry, `// Точка экспорта API из библиотеки;\n`);
+      if (!fs.existsSync(dll_entry)) {
+        fs.writeFileSync(dll_entry, `// В этом файле указываются импорты пакетов, которые необходимо вынести в dll;\n`);
 
-      console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${lib_entry} ]`));
-      console.log("");
+        console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${dll_entry} ]`));
+        console.log("");
+      }
     }
-  }
 
-  if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
-    const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
-    const basename = path.basename(lib_entry, ".ts");
+    if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
+      const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
 
-    update_for_pkg.main = `${LIB_DIR_NAME}/${basename}.js`;
-    update_for_pkg.module = `${LIB_DIR_NAME}/${basename}.js`;
-    update_for_pkg.types = `${LIB_DIR_NAME}/${basename}.d.ts`;
+      if (!fs.existsSync(lib_entry)) {
+        fs.writeFileSync(lib_entry, `// Точка экспорта API из библиотеки;\n`);
+
+        console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${lib_entry} ]`));
+        console.log("");
+      }
+    }
+
+    if (rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib) {
+      const lib_entry = path.resolve(src, rearguardConfig.lib_entry);
+      const basename = path.basename(lib_entry, ".ts");
+
+      update_for_pkg.main = `${LIB_DIR_NAME}/${basename}.js`;
+      update_for_pkg.module = `${LIB_DIR_NAME}/${basename}.js`;
+      update_for_pkg.types = `${LIB_DIR_NAME}/${basename}.d.ts`;
+    }
   }
 
   /**
@@ -146,81 +166,88 @@ export async function initProject() {
     }
   }
 
-  /**
-   * ! BUILD_SCRIPTS
-   */
+  if (!rearguardConfig.is_back_end) {
+    /**
+     * ! BUILD_SCRIPTS
+     */
 
-  const args: string[] = [];
-
-  if (rearguardConfig.has_dll) {
-    args.push("--dll");
-  }
-
-  if (rearguardConfig.has_browser_lib) {
-    args.push("--browser_lib");
-  }
-
-  if (rearguardConfig.has_node_lib) {
-    args.push("--node_lib");
-  }
-
-  update_for_pkg.scripts.build = "rearguard build " + args.join(" ");
-  update_for_pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
-  update_for_pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
-
-  /**
-   * ! START
-   */
-
-  if (rearguardConfig.is_application) {
-    update_for_pkg.scripts.start = "rearguard wds";
-    update_for_pkg.scripts["start:release"] = "rearguard wds -r";
+    const args: string[] = [];
 
     if (rearguardConfig.has_dll) {
-      if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
-        update_for_pkg.scripts.build = update_for_pkg.scripts.build.replace("--dll", "");
-        update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace("--dll", "");
-        update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace("--dll", "");
+      args.push("--dll");
+    }
+
+    if (rearguardConfig.has_browser_lib) {
+      args.push("--browser_lib");
+    }
+
+    if (rearguardConfig.has_node_lib) {
+      args.push("--node_lib");
+    }
+
+    update_for_pkg.scripts.build = "rearguard build " + args.join(" ");
+    update_for_pkg.scripts["build:release"] = "rearguard build -r " + args.join(" ");
+    update_for_pkg.scripts["build:both"] = "rearguard build --both " + args.join(" ");
+
+    /**
+     * ! START
+     */
+
+    if (rearguardConfig.is_application) {
+      update_for_pkg.scripts.start = "rearguard wds";
+      update_for_pkg.scripts["start:release"] = "rearguard wds -r";
+
+      if (rearguardConfig.has_dll) {
+        if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
+          update_for_pkg.scripts.build = update_for_pkg.scripts.build.replace("--dll", "");
+          update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace("--dll", "");
+          update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace("--dll", "");
+        }
+
+        update_for_pkg.scripts.dll = "rearguard build --dll";
+        update_for_pkg.scripts["dll:release"] = "rearguard build --dll -r";
       }
 
-      update_for_pkg.scripts.dll = "rearguard build --dll";
-      update_for_pkg.scripts["dll:release"] = "rearguard build --dll -r";
+      if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
+        update_for_pkg.scripts.build += "--application";
+        update_for_pkg.scripts["build:release"] += "--application";
+        update_for_pkg.scripts["build:both"] += "--application";
+      }
+    } else {
+      delete update_for_pkg.scripts.start;
+      delete update_for_pkg.scripts["start:release"];
+
+      delete update_for_pkg.scripts.dll;
+      delete update_for_pkg.scripts["dll:release"];
     }
 
-    if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
-      update_for_pkg.scripts.build += "--application";
-      update_for_pkg.scripts["build:release"] += "--application";
-      update_for_pkg.scripts["build:both"] += "--application";
+    if (!rearguardConfig.is_application && rearguardConfig.has_browser_lib) {
+      update_for_pkg.scripts.start = "rearguard wds";
+      update_for_pkg.scripts["start:release"] = "rearguard wds -r";
+    }
+
+    update_for_pkg.scripts.check_deps_on_npm = "rearguard check_deps_on_npm";
+    update_for_pkg.scripts["check_deps_on_npm:install"] = "rearguard check_deps_on_npm --install_deps";
+
+    /**
+     * ! PRE_PUBLISH_ONLY
+     */
+
+    if (!rearguardConfig.has_dll && !rearguardConfig.has_browser_lib && rearguardConfig.has_node_lib) {
+      update_for_pkg.scripts.prepublishOnly = "npm run build:release";
+    } else {
+      update_for_pkg.scripts.prepublishOnly = "npm run build:both";
     }
   } else {
-    delete update_for_pkg.scripts.start;
-    delete update_for_pkg.scripts["start:release"];
-
-    delete update_for_pkg.scripts.dll;
-    delete update_for_pkg.scripts["dll:release"];
-  }
-
-  if (!rearguardConfig.is_application && rearguardConfig.has_browser_lib) {
-    update_for_pkg.scripts.start = "rearguard wds";
-    update_for_pkg.scripts["start:release"] = "rearguard wds -r";
-  }
-
-  update_for_pkg.scripts.check_deps_on_npm = "rearguard check_deps_on_npm";
-  update_for_pkg.scripts["check_deps_on_npm:install"] = "rearguard check_deps_on_npm --install_deps";
-
-  /**
-   * ! PRE_PUBLISH_ONLY
-   */
-
-  if (!rearguardConfig.has_dll && !rearguardConfig.has_browser_lib && rearguardConfig.has_node_lib) {
-    update_for_pkg.scripts.prepublishOnly = "npm run build:release";
-  } else {
-    update_for_pkg.scripts.prepublishOnly = "npm run build:both";
+    update_for_pkg.scripts.start = "rearguard start_node_server";
+    update_for_pkg.scripts.build = "rearguard build_node_server";
   }
 
   const cur_pkg = require(pkg_path);
 
-  fs.writeFileSync(pkg_path, prettier_package_json.format({ ...cur_pkg, ...update_for_pkg }).trim());
+  const pkg_text = prettier_package_json.format({ ...cur_pkg, ...update_for_pkg });
+
+  fs.writeFileSync(pkg_path, pkg_text.trim());
 
   // Config file
   typescriptConfig.init(true);
@@ -233,26 +260,31 @@ export async function initProject() {
   editorConfig.init(envConfig, true);
   npmrc.init(envConfig, true);
 
-  if (rearguardConfig.is_application || rearguardConfig.has_browser_lib) {
-    prePublish.init(envConfig, true);
-    typings.init(envConfig, true);
-    postcssPlugins.init(envConfig);
+  if (!rearguardConfig.is_back_end) {
+    if (rearguardConfig.is_application || rearguardConfig.has_browser_lib) {
+      prePublish.init(envConfig, true);
+      typings.init(envConfig, true);
+      postcssPlugins.init(envConfig);
+    }
   }
 
   console.log("");
 
   await install_declared_deps(envConfig);
+  await install_dev_deps(envConfig);
   await ordering_project_deps(envConfig);
   await sync_with_linked_modules(envConfig);
 
-  if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
-    await delete_bundles(envConfig, rearguardConfig);
-    await copy_bundles(envConfig);
+  if (!rearguardConfig.is_back_end) {
+    if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
+      await delete_bundles(envConfig, rearguardConfig);
+      await copy_bundles(envConfig);
+    }
+
+    set_list_of_modules_with_deferred_loading(envConfig, rearguardConfig);
   }
 
   rearguardConfig.order_config_fields();
-
-  set_list_of_modules_with_deferred_loading(envConfig, rearguardConfig);
 
   console.log(chalk.bold.magenta(`============================================`));
   console.log("");
