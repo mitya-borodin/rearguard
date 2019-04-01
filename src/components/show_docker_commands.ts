@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 
 export function show_docker_commands(rearguardConfig: IRearguardConfig) {
-  const { pkg } = rearguardConfig;
+  const { pkg, docker_org_name } = rearguardConfig;
 
   console.log(chalk.bold.magenta(`========================================`));
   console.log("");
@@ -10,11 +10,13 @@ export function show_docker_commands(rearguardConfig: IRearguardConfig) {
   console.log("");
 
   console.log(chalk.bold.magenta(`[ BUILD IMAGE ]`));
-  console.log(chalk.bold.cyan(`docker build --no-cache -f ./build/Dockerfile -t example/${pkg.name}:${pkg.version} .`));
+  console.log(
+    chalk.bold.cyan(`docker build --no-cache -f ./build/Dockerfile -t ${docker_org_name}/${pkg.name}:${pkg.version} .`),
+  );
   console.log("");
 
   console.log(chalk.bold.magenta(`[ PUSH IMAGE ]`));
-  console.log(chalk.bold.cyan(`docker push example/${pkg.name}:${pkg.version}`));
+  console.log(chalk.bold.cyan(`docker push ${docker_org_name}/${pkg.name}:${pkg.version}`));
   console.log("");
 
   console.log(chalk.bold.magenta(`[ DOCKER-COMPOSE.YML EXAMPLE ]`));

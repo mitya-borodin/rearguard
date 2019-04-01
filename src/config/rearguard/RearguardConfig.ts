@@ -1,8 +1,6 @@
-import { isArray, isBoolean, isDate, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { snakeCase } from "lodash";
-import * as moment from "moment";
-import { Moment } from "moment";
 import * as path from "path";
 import { BUNDLE_SUB_DIR } from "../../const";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
@@ -35,6 +33,23 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     console.log("");
 
     return this.context;
+  }
+
+  public get docker_org_name(): string {
+    const { docker_org_name } = this.config;
+
+    if (isString(docker_org_name) && docker_org_name.length > 0) {
+      return docker_org_name;
+    }
+
+    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ docker_org_name ][ must be a non empty string ]`));
+
+    this.config = { docker_org_name: "docker_org_name" };
+
+    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ docker_org_name ][ assign to 'docker_org_name' ]`));
+    console.log("");
+
+    return this.docker_org_name;
   }
 
   public get entry(): string {

@@ -14,7 +14,13 @@ BREAKING CHANGES:
 
 FEATURES:
 
-- Add copy deps for back-end from rearguard.back_end_deps;
+- Added template for front-end Dockerfile;
+- Added template for back-end Dockerfile;
+- Added template for front-end-end Nginx config;
+- Added tips for deploying after build;
+- Implemented preparing node server code before build docker image;
+- Added examples directory with docker-compose.yml example;
+- Added field for readguard, rearguard.docker_org_name;
 
 IMPROVEMENTS:
 

@@ -23,6 +23,7 @@ const field_order = [
   "load_on_demand",
   "has_node_lib",
   "publish_in_git",
+  "docker_org_name",
 ];
 
 export class VersionableConfig implements IVersionableConfig {

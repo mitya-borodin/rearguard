@@ -17,4 +17,5 @@ export interface IRearguardConfig extends IVersionableConfig {
   is_back_end: boolean;
   load_on_demand: boolean;
   publish_in_git: boolean;
+  docker_org_name: string;
 }
