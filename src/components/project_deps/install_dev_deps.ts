@@ -24,7 +24,7 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
       const devDeps: string[] = Object.keys(pkg.devDependencies || {});
       const installList: string[] = [];
 
-      for (const depName of ["typescript", "tslib", "tslint", "ts-node-dev", "prettier", "husky"]) {
+      for (const depName of ["typescript", "tslib", "tslint", "ts-node-dev", "prettier", "husky", "@types/node"]) {
         if (!devDeps.includes(depName)) {
           installList.push(depName);
         }
