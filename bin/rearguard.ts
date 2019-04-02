@@ -77,80 +77,6 @@ if (
 ) {
   console.log("");
 
-  if (action === "init") {
-    if (!(application || dll || browser_lib || node_lib || back_end)) {
-      console.log(
-        chalk.bold.green(
-          `You should use: "rearguard init [ --application | --back_end | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
-        ),
-      );
-
-      process.exit(1);
-    }
-  } else {
-    if (load_on_demand) {
-      console.log(
-        chalk.bold.red(
-          `You should use: "rearguard init [ --application | --back_end | --dll | --browser_lib | --node_lib | --load_on_demand | --force ]";`,
-        ),
-      );
-
-      process.exit(1);
-    }
-    if (
-      action !== "monorepo" &&
-      (init || install || build || link || bootstrap || clear || test || publish || patch || minor || major)
-    ) {
-      console.log(
-        chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]" is not valid;`,
-        ),
-      );
-      console.log(
-        chalk.bold.green(
-          `You should use: "rearguard monorepo [ --init | --install | --build | --link | --bootstrap | --sync | --test | --publish | --patch | --minor | --major ]";`,
-        ),
-      );
-
-      process.exit(1);
-    }
-
-    if (action === "monorepo" && !publish && (patch || minor || major)) {
-      console.log(
-        chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --patch | --minor | --major ]" is not valid without [ --publish ];`,
-        ),
-      );
-      console.log(chalk.bold.green(`You should use: "rearguard monorepo --publish [ --patch | --minor | --major ]";`));
-
-      process.exit(1);
-    }
-
-    if (action !== "build" && (dll || node_lib || browser_lib || application || both)) {
-      console.log(
-        chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} [ --dll | --node_lib | --browser_lib | --application ]" is not valid;`,
-        ),
-      );
-      console.log(chalk.bold.green(`You should use: "rearguard ${action} [ --debug | -d ]";`));
-
-      process.exit(1);
-    }
-
-    if (action === "build" && both && release) {
-      console.log(
-        chalk.bold.red(
-          `I am really sorry but this configuration: "rearguard ${action} --both [ --release | -r ]" is not correct;`,
-        ),
-      );
-      console.log(
-        chalk.bold.green(`You should use: "rearguard ${action} [ --release | -r ]" or "rearguard ${action} --both";`),
-      );
-
-      process.exit(1);
-    }
-  }
-
   const launchPath: string = resolve(__dirname, "../src/actions", `${action}.js`);
 
   if (existsSync(launchPath)) {
@@ -288,12 +214,6 @@ if (
       ),
     );
   }
-} else {
-  console.log(
-    chalk.bold.green("You should use: rearguard init;"),
-    chalk.bold.green("You should use: rearguard sync [ --watch ];"),
-    chalk.bold.green("You should use: rearguard [ wds | build | monorepo ] [ --release | -r | --debug | -d ];"),
-  );
 }
 
 // tslint:enable:max-line-length
