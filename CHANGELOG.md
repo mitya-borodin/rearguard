@@ -8,6 +8,18 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.16 (2019-04-02)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Removed useless validation of startup commands;
+
+BUG FIXES:
+
 ## 4.5.15 (2019-04-01)
 
 BREAKING CHANGES:
