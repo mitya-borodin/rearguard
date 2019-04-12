@@ -8,6 +8,19 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.17 (2019-04-12)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Remove `dist` diretory before build server;
+- Install `tslib` if it not installed how production deps;
+
+BUG FIXES:
+
 ## 4.5.16 (2019-04-02)
 
 BREAKING CHANGES:

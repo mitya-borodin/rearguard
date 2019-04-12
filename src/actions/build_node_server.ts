@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import * as spawn from "cross-spawn";
+import del from "del";
 import * as moment from "moment";
 import * as path from "path";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
@@ -24,6 +25,7 @@ import { gitIgnore } from "../meta/gitignore";
 import { npmrc } from "../meta/Npmrc";
 
 async function build_node_server() {
+  console.log("");
   await build_intermediate_dependencies(envConfig, rearguardConfig);
 
   // ! Config file
@@ -52,6 +54,13 @@ async function build_node_server() {
 
   console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ START ]`));
   console.log("");
+
+  // ! REMOVE DIST DIRECTORY
+  const paths = await del([path.resolve(process.cwd(), DIST_DIR_NAME)]);
+
+  for (const item of paths) {
+    console.log(chalk.gray(`[ ${rearguardConfig.pkg.name} ][ REMOVE ][ ${item} ]`));
+  }
 
   const startTime = moment();
   const result = spawn.sync(

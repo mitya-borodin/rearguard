@@ -22,16 +22,26 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
       //
       /////////////////////
       const devDeps: string[] = Object.keys(pkg.devDependencies || {});
-      const installList: string[] = [];
+      const installDevDepsList: string[] = [];
 
       for (const depName of ["typescript", "tslint", "ts-node-dev", "prettier", "husky", "@types/node"]) {
         if (!devDeps.includes(depName)) {
-          installList.push(depName);
+          installDevDepsList.push(depName);
         }
       }
 
-      if (installList.length > 0) {
-        const command = `npm install -D ${installList.join(" ")}`;
+      const deps: string[] = Object.keys(pkg.dependencies || {});
+      const installDepsList: string[] = [];
+
+      for (const depName of ["tslib"]) {
+        if (!deps.includes(depName)) {
+          installDepsList.push(depName);
+        }
+      }
+
+      if (installDevDepsList.length > 0) {
+        // tslint:disable-next-line: variable-name
+        const command = `npm install -D ${installDevDepsList.join(" ")}`;
 
         console.log(chalk.white(command));
         console.log(chalk.white("npm install"));
@@ -42,7 +52,31 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
           encoding: "utf8",
           stdio: "inherit",
         });
+      } else {
+        console.log(chalk.white(`Dev dependencies alredy installed`));
 
+        console.log("");
+      }
+
+      if (installDepsList.length > 0) {
+        const command = `npm install ${installDepsList.join(" ")}`;
+
+        console.log(chalk.white(command));
+        console.log(chalk.white("npm install"));
+        console.log("");
+
+        execSync(command, {
+          cwd: process.cwd(),
+          encoding: "utf8",
+          stdio: "inherit",
+        });
+      } else {
+        console.log(chalk.white(`Dependencies alredy installed`));
+
+        console.log("");
+      }
+
+      if (installDevDepsList.length > 0 || installDepsList.length > 0) {
         execSync("npm install", {
           cwd: process.cwd(),
           encoding: "utf8",
@@ -52,10 +86,6 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
         console.log("");
 
         return true;
-      } else {
-        console.log(chalk.white(`Dependencies alredy installed`));
-
-        console.log("");
       }
     }
 
