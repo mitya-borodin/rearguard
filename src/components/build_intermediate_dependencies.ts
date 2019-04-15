@@ -18,64 +18,73 @@ export async function build_intermediate_dependencies(
   console.log(chalk.bold.white(`[ FROM: ${rearguardConfig.pkg.name} ]`));
   console.log("");
 
+  // ! CUR_DEPENDECIES_LIST
   const cur_dep_list = rearguardConfig.sync_project_deps;
-  const CWD_list: string[] = [];
+  // ! REBUIL_LIST
+  const target_modules: string[] = [];
 
-  for (const i_dep_name of cur_dep_list) {
-    const i_local_dep = envConfig.resolveLocalModule(i_dep_name);
-    const i_global_dep = envConfig.resolveGlobalModule(i_dep_name);
+  for (const cur_dep_name of cur_dep_list) {
+    const cur_local_dep = envConfig.resolveLocalModule(cur_dep_name);
+    const cur_global_dep = envConfig.resolveGlobalModule(cur_dep_name);
 
-    if (fs.existsSync(i_global_dep)) {
-      const i_rearguardConfig = new RearguardConfig(envConfig, path.resolve(i_global_dep, "package.json"));
-      const i_buildStatusConfig = new BuildStatusConfig(path.resolve(i_global_dep, NON_VERSIONABLE_CONFIG_FILE_NAME));
-      const i_deps = i_rearguardConfig.sync_project_deps;
-      const i_has_last_build_time = i_buildStatusConfig.has_last_build_time;
+    if (fs.existsSync(cur_global_dep)) {
+      // ! GET_CONFIG_FILEs
+      const cur_rearguardConfig = new RearguardConfig(envConfig, path.resolve(cur_global_dep, "package.json"));
+      const cur_buildStatusConfig = new BuildStatusConfig(
+        path.resolve(cur_global_dep, NON_VERSIONABLE_CONFIG_FILE_NAME),
+      );
+      // ! GET_BUILD_INFORMATION
+      const cur_deps = cur_rearguardConfig.sync_project_deps;
+      const cur_has_last_build_time = cur_buildStatusConfig.has_last_build_time;
 
-      if (i_has_last_build_time) {
-        const i_build_time = i_buildStatusConfig.last_build_time;
+      if (cur_has_last_build_time) {
+        const cur_build_time = cur_buildStatusConfig.last_build_time;
 
-        for (let k = i_deps.length - 1; k >= 0; k--) {
-          const k_dep_name = i_deps[k];
+        for (let k = cur_deps.length - 1; k >= 0; k--) {
+          const k_dep_name = cur_deps[k];
           const k_global_dep = envConfig.resolveGlobalModule(k_dep_name);
 
           if (fs.existsSync(k_global_dep)) {
+            // ? GET_TARGET_CONFIG
             const k_buildStatusConfig = new BuildStatusConfig(
               path.resolve(k_global_dep, NON_VERSIONABLE_CONFIG_FILE_NAME),
             );
+            // ? GET_TARGET_BUILD_INFORMATION
             const k_has_last_build_time = k_buildStatusConfig.has_last_build_time;
 
             if (k_has_last_build_time) {
               const k_build_time = k_buildStatusConfig.last_build_time;
 
-              if (i_build_time.isSameOrBefore(k_build_time)) {
-                CWD_list.push(i_global_dep);
+              // * CUR_BUILD_TIME <= TARGET_BUILD_TIME
+              if (cur_build_time.isSameOrBefore(k_build_time)) {
+                target_modules.push(cur_global_dep);
                 break;
               }
-            } else if (!CWD_list.includes(i_global_dep)) {
-              CWD_list.push(i_global_dep);
+            } else if (!target_modules.includes(cur_global_dep)) {
+              target_modules.push(cur_global_dep);
             }
           } else {
             console.log(chalk.bold.grey(`[ GLOBAL_MODULE: ${k_dep_name} ][ NOT_FOUND ]`));
           }
         }
-      } else if (!CWD_list.includes(i_global_dep)) {
-        CWD_list.push(i_global_dep);
+      } else if (!target_modules.includes(cur_global_dep)) {
+        target_modules.push(cur_global_dep);
       }
-    } else if (fs.existsSync(i_local_dep)) {
-      console.log(chalk.grey(`[ MODULE: ${i_dep_name} ][ LOCAL_INSTALED ]`));
+    } else if (fs.existsSync(cur_local_dep)) {
+      console.log(chalk.grey(`[ MODULE: ${cur_dep_name} ][ LOCAL_INSTALED ]`));
     } else {
-      console.log(chalk.grey(`[ MODULE: ${i_dep_name} ][ NOT_FOUND ]`));
+      console.log(chalk.grey(`[ MODULE: ${cur_dep_name} ][ NOT_FOUND ]`));
     }
   }
 
-  if (CWD_list.length > 0) {
-    console.log(chalk.bold.yellowBright(`[ TARGET_LIST ]`));
-    console.log(chalk.bold.yellowBright(JSON.stringify(CWD_list, null, 2)));
+  if (target_modules.length > 0) {
+    console.log(chalk.bold.yellowBright(`[ TARGET_MODULES ]`));
+    console.log(chalk.bold.yellowBright(JSON.stringify(target_modules, null, 2)));
   } else {
     console.log(chalk.grey(`[ HAVE_NOT_TARGETS ]`));
   }
 
-  for (const CWD of CWD_list) {
+  for (const CWD of target_modules) {
     await build(CWD, true);
   }
 

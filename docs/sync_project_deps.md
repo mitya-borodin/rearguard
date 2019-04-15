@@ -1,10 +1,9 @@
 # sync_project_deps
 
-Это массив в котором указаны **имена пакетов** которые являются зависимостями библиотеки либо проекта. Причем порядок следования зависимостей в этом массиве очень важен, исходя из него подключаются скрипты в index.html.
+This is an array containing **package names** which are library or project dependencies. Moreover, the sequence of dependencies in this array is very important, on the basis of which the scripts are connected to index.html.
+Since order is extremely important it is controlled automatically, rearguard looks for dependencies in two places:
 
-Так как порядок черезвычайно важен он контролируется автоматически, rearguard ищет зависимости в двух местах:
+1. Global node_modules.
+2. Local node_modules.
 
-1. Глобальный node_modules.
-2. Локальный node_modules.
-
-После чего рекурсивно анализирует зависимости и выясняет в каком порядке должны следовать зависимостив массиве.
+After that, it recursively analyzes dependencies and finds out in which order the dependencies in the array should follow.

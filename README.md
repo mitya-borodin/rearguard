@@ -1,30 +1,31 @@
 # Rearguard
 
-- [Что такое rearguard?](#whatIsIt)
-- [Примеры использования](#examples)
-- [Технологии](#tech)
-- [Настройки](#settings)
-- [Установка](#install)
+- [What is it rearguard ?](#whatIsIt)
+- [Examples](#examples)
+- [Technology](#tech)
+- [Settings](#settings)
+- [Install](#install)
 - [CLI](#cli)
-- [Структура проекта](#structure)
-- [Пример работы modules](#modules)
-- [Пример работы c CSS](#css)
+- [Project structure](#structure)
+- [Modules work example](#modules)
+- [CSS work example](#css)
 
 <a name="whatIsIt"></a>
 
-### Что такое rearguard?
+## What is it rearguard
 
-Rearguard - это среда сборки и разработки одностраничных приложений,
-мобильных и десктопных приложений (на базе проекта Cordova), сайтов. Инструмент
-поддерживает [**библиотека ориентированный дизайн**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/library_oriented_design.md) разработки, так же участвует как инструмент в [Software development methodology](https://gitlab.com/mitya-borodin/software-development-methodology).
+Rearguard - This is a one-page application build and development environment.
+Mobile and desktop applications (based on the Cordova project), sites.
+Tool supports [**library oriented design**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/library_oriented_design.md) development,
+is also involved as a tool in [Software development methodology](https://gitlab.com/mitya-borodin/software-development-methodology).
 
-Поддерживается способ разработки известный как монорепозиторий.
+A development method known as a mono-repository is supported.
 
-Монолитный способ разработки не исключён и является частным случаем.
+Monolithic way of development is not excluded and is a special case.
 
 <a name="examples"></a>
 
-### Примеры использования
+## Examples
 
 - [@borodindmitriy/vendors](https://www.npmjs.com/package/@borodindmitriy/vendors)
 - [@borodindmitriy/interfaces](https://www.npmjs.com/package/@borodindmitriy/interfaces)
@@ -33,11 +34,11 @@ Rearguard - это среда сборки и разработки одност�
 - [@borodindmitriy/deferred_module_test](https://www.npmjs.com/package/@borodindmitriy/deferred_module_test)
 - [@borodindmitriy/front-end-lib](https://www.npmjs.com/package/@borodindmitriy/front-end-lib)
 - [@borodindmitriy/back-end-lib](https://www.npmjs.com/package/@borodindmitriy/back-end-lib)
-- [home-tracker](https://gitlab.com/home-tracker) - Проект реализует приложение для взаимодействия между владельцами квартир и управляющей компании. Для реализации используется **rearguard** и **successful software design**.
+- [home-tracker](https://gitlab.com/home-tracker) - The project is implementing an application for interaction between apartment owners and the management company. **rearguard** and **successful software design** are used for implementation.
 
 <a name="tech"></a>
 
-#### Технологии
+### Technology
 
 - OOP
 - SOLID
@@ -52,75 +53,74 @@ Rearguard - это среда сборки и разработки одност�
 - Node.js
 - MongoDB
 - Express
-- React server rendering
 - Cordova
-- Java
-- Swift
 
-Данный список технологий используется для создания сайтов, одностраничных
-приложений, мобильных и настольных приложений основанных на проекте Cordova.
+This list of technologies is used to create single-page sites.
+Mobile and desktop applications based on the Cordova project.
 
 <a name="settings"></a>
 
-### Настройки
+## Settings
 
-#### Версионируемые
+### Versioned
 
-Все версионируемые настройки находятся в поле rearguard: {/_ поля настроек _/}, внутри package.json.
+All versioned settings are in the rearguard field: {/_ settings fields _/}, inside package.json.
 
-- **context: string** - директория контекста, указывается относительно текущей рабочей директории.
-- **entry: string** - точка входа в проект, используется для сборки (проекта) и/или разработки (проекта, библиотеки). Точка входа в проект не имеет экспортов API.
-- **dll_entry: string** - точка входа для DLL, в результате будет собран dll_bindle и manifest.json.
-- **lib_entry: string** - точка выхода API библиотеки, в результате будет собран lib_bundle для подключения в браузере и скомпилированы соответсвующие директории в директорию lib для использования d.ts файлов в IDE и js файлов в среде node.js.
-- **modules: string[]** - список директорий внутри context, которые можно считать модулями. Позволяет писать не относительные и не абсолютные пути. Но если вы создаете библиотеку то вам необходимо использовать абсолютные пути.
-- **output: { path: string; publicPath: string }** - указывается директория в которую вываливать результат сборки проекта, а так же публичный путь для доступа к файлам из браузера.
-- **post_css_plugins_path: string** - указывает на файл с module.exports = [ /*подключенные плагины для post_css*/ ], отновительно текущей рабочей директории.
-- **sync_project_deps: string[]** - список названий модулей, которые необходимо подключить к проекту. В частности какие dll_bundle и lib_bundle необходимо подключить в браузер. Так же каждый из указанных модулей ищется в глобальном node_modules и копируется в локальный при изменении модуля по линку. Эта настройка позволяет осуществлять сборку и разработку текущего проекта или библиотеки, а так же разработку зависимого модуля.
-- **has_dll: boolean** - говорит о том, что в текущем проекте есть dll_bundle;
-- **has_node_lib: boolean** - говорит о том, что в текущем проекте компилируется версия для использования в среде node.js;
-- **has_browser_lib: boolean** - говорит о том, что в текущем проекте есть lib_bundle, который будет использоваться в браузерной среде;
-- **is_application: boolean** - говорит о том, что текущий проект можно использовать как самостоятельный. Сделать сборку из entry и залить на сервер.
-- **publish_in_git: boolean** - говорит о том, что проект публикуется только в git, в npm registry его публиковать не нужно.
+- **context: string** - context directory, relative to the current working directory.
+- **entry: string** - entry point to the project, used for assembly (project) and / or development (project, library). The project entry point has no API exports.
+- **dll_entry: string** - entry point for the DLL, as a result, dll_bindle and manifest.json will be compiled.
+- **lib_entry: string** - library API exit point, as a result, lib_bundle will be built to connect to the browser and compile the corresponding directories to the lib directory to use the d.ts files in the IDE and js files in the node.js environment.
+- **modules: string[]** - a list of directories within the context that can be considered modules. Allows you to write not relative and not absolute paths. But if you create a library then you need to use absolute paths.
+- **output: { path: string; publicPath: string }** - specify the directory in which to dump the result of the project assembly, as well as the public path to access files from the browser.
+- **post_css_plugins_path: string** - points to a file with module.exports = [/* connected plugins for post_css */], relative to the current working directory.
+- **sync_project_deps: string[]** - list of module names to be connected to the project. In particular, what dll_bundle and lib_bundle need to be connected to the browser. Also, each of the specified modules is searched in the global node_modules and is copied to the local one when the module is changed by a link. This setting allows you to build and develop the current project or library, as well as the development of the dependent module.
+- **has_dll: boolean** - says that there is a dll_bundle in the current project;
+- **has_node_lib: boolean** - says that the current project is compiling a version for use in the node.js environment;
+- **has_browser_lib: boolean** - says that the current project has lib_bundle that will be used in the browser environment;
+- **is_application: boolean** - says that the current project can be used as an independent. Make the assembly from the entry and upload to the server.
+- **is_back_end: boolean** - says that the current project is a back-end application and not a library, and works as an independent process.
+- **publish_in_git: boolean** - says that the project is published only in git, it is not necessary to publish it in the npm registry.
+- **docker_org_name: string** - organization name in the docker registry.
 
-#### Не версионируемые
+### Non-versioned
 
-Все не версионируемые настройки находятся в файле rearguard.json.
+All non-versioned settings are in the rearguard.json file.
 
-- **analyze: { port: 10000 (значение по умолчанию) }** - декларируется порт для средства анализа бандла.
-- **status: "init"(значение по умолчанию)** - статус сборки проекта бывает «init», «in_progress», «done». Прослушивая эту настройку можно понять на какой стадии находится сборка проекта.
-- **wds: { host: string, port: string, proxy: { [key: string]: any } }** - настройки для webpack-dev-server.
+- **analyze: { port: 10000 (default value) }** - A port is declared for the bundle analysis tool.
+- **status: "init"(default value)** - the project build status is “init”, “in_progress”, “done”. Listening to this setting, you can understand at what stage is the assembly of the project.
+- **wds: { host: string, port: string, proxy: { [key: string]: any } }** - settings for webpack-dev-server.
 
-#### Мета
+### Meta
 
-Все мета файлы являются автоматически генерируемыми. Внесение изменений в эти файлы только через pull request;
+All meta files are automatically generated. Changes to these files only through pull request;
 
-- **monorepo.json** - содержит { modules: string }, указывает на директорию в которой находится модули.
-- **.prettierrc** - содержит настройки для prettier.io.
-- **tslint.json** - содержит настройки для tsLint.
-- **tsconfig.json** - содержит настройки для typescript.
-- **.npmrc** - содержит настройки для npm.
-- **pre_publish.sh** - содержит набор действий для проверки пакета перед публикацией.
-- **typings.d.ts** - содержит декларацию типов для модулей с расширениями отличающиеся от ts;
-- **.dockerignore** - содержит информацию о том, какие директории и файлы убрать из контекста докера.
-- **.editorconfig** - определяет настройки табуляции для IDE.
-- **.gitignore** - указывает какие файлы и директории не версионируются.
-- **postcss.config.js** - файл в который подключаются плагины для post_css.
+- **monorepo.json** - contains { modules: string }, points to the directory in which the modules are located.
+- **.prettierrc** - contains settings for prettier.io.
+- **tslint.json** - contains settings for tsLint.
+- **tsconfig.json** - contains settings for typescript.
+- **.npmrc** - contains settings for npm.
+- **pre_publish.sh** - contains a set of actions to check the package before publishing.
+- **typings.d.ts** - contains a type declaration for modules with extensions other than ts.
+- **.dockerignore** - contains information about which directories and files to remove from the context of the docker.
+- **.editorconfig** - defines tab settings for IDE.
+- **.gitignore** - indicates which files and directories are not versioned.
+- **postcss.config.js** - The file in which plug-ins for post_css are connected.
 
 <a name="install"></a>
 
-### Установка
+## Install
 
-Пакет можно установить как локально так и глобально. Это зависит от ваших предпочтений. Установка глобально экономит
-место на диске, но у вас будет одна версия на все проекты, что в общем не плохо. Но и у локальной установки есть
-плюсы: она позволят вам использовать конкретную версию для проекта.
+The package can be installed both locally and globally. It depends on your preference. Installation saves globally
+disk space, but you will have one version for all projects, which is generally not bad. But the local installation also has
+Pros: it will allow you to use a specific version for the project.
 
-Глобально, для использования сразу в нескольких проектах.
+Globally, for use in multiple projects.
 
 ```sh
 npm install -g rearguard
 ```
 
-Локально, в проект и сохранением точной версии.
+Locally, in the project and saving the exact version.
 
 ```sh
 npm install -D rearguard
@@ -128,33 +128,43 @@ npm install -D rearguard
 
 <a name="cli"></a>
 
-### CLI
+## CLI
 
-- [**rearguard init** [ --dll | --browser_lib | --load_on_demand | --node_lib | --application ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
+- [**rearguard init** [ --dll | --browser_lib | --load_on_demand | --node_lib | --application | --back_end ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
 - [**rearguard build** [ --application | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build.md)
-- [**rearguard monorepo** [ --init | --install | --build | --link | --bootstrap | --release | -r | --test | --publish | --patch | --minor | --major ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/monorepo.md)
+- [**rearguard monorepo** [ --init | --install | --build | --link | --bootstrap | --release | -r | --both | --test | --publish | --patch | --minor | --major ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/monorepo.md)
 - [**rearguard wds** [ --release | -r | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/wds.md)
 - [**rearguard sync** [ --watch ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync.md)
+- [**rearguard start_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/start_node_server.md)
 - [**rearguard build_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build_node_server.md)
 
 <a name="structure"></a>
 
-### Структуры
+## Project structure
 
-- static - статические файлы (fonts, images, audio, video)
-- services - Сервисы для работы с внешними ресурсами (CRUD HTTP, REST, GraphQL, IndexedDB, WS)
-- stores - Каталог хранилищ
-- library - каталог содержащий классы, интерфейсы, утилиты, для текущего проекта.
-- typings.d.ts - Декларация для не TS модулей
-- vars - CSS переменные и JS переменные
-- vendors.ts - Информация для составления dll_bundle
-- lib_exports.ts - Точка экспорта, классов, интерфейсов, функций, констант, enums и так далее
-- index.tsx - Точка входа для запуска в браузере. Применяется для разработки и сборки результата
-- **DLL - динамически подклюбчаемые зависимости, которые анализиуер webpack через manifest.json**
-- **Library - собранный js файл содержащий экспорт наружу определнного API, это могут быть как UI компоненты, классы, функции, константы, enums, интерфейсы**
-- **Master-project - проект который подключает все зависимости, именно этот проект собирается дла развертывания**
-- **Master-project - может быть реализовал как монолитный проект, проект подключающий библиотеки (ui-library, classes-library, dll-packe, slave-project, и прочие)**
-- **Slave-project - может иметь собственную реализацию UI и бизнес логику. Так же как и master-project может подключать любые библиотеки.**
+- **implementation** - Catalog containing implementations of system objects.
+- **interfaces** - Catalog containing interfaces of system objects.
+- adapter - Catalog of adapters.
+- aggregate - Catalog of aggregates.
+- filter - Catalog of filters.
+- form - Catalog of forms.
+- repository - Catalog of repositories.
+- service - Catalog of services.
+- transports - Objects for working with external resources (CRUD HTTP, REST, GraphQL, IndexedDB, WS).
+- static - UI resources (fonts, images, audio, video).
+- pages - Catalog of pages.
+- library - Directory containing classes, interfaces, utilities for the current project.
+- vars - CSS and JS variables.
+- router.tsx - Contains the implementation of the logic of the router.
+- index.tsx - Entry point to run in the browser. Used to design and build the result.
+- typings.d.ts - Declaration for non-TS modules.
+- vendors.ts - Information to compile dll_bundle.
+- lib_exports.ts - Point of export, classes, interfaces, functions, constants, enums, and so on.
+- **DLL - dynamic dependencies that are analyzed by webpack via manifest.json**.
+- **Library - compiled js file containing export to the outside of the defined API, it can be as UI components, classes, functions, constants, enums, interfaces**.
+- **Master-project - a project that connects all dependencies, this particular project is going to be deployed**.
+- **Master-project - can be implemented as a monolithic project, a project connecting libraries (ui-library, classes-library, dll-packe, slave-project, и прочие)**.
+- **Slave-project - may have its own implementation of UI and business logic. As well as the master-project can connect any library.**
 
 ### Monolithic project structure or master-project or slave project
 
@@ -163,28 +173,32 @@ monolit-project || master-project || slave-project
 ├── package.json
 └── src - context
     ├── decorators
-    ├── adapters
-    ├── components
-    ├── compositions
-    ├── static
-    ├── interfaces
-    ├── pages
+    ├── components - UI part of the project
+    ├── compositions - UI part of the project
+    ├── static - UI resources
+    ├── vars - UI variables
+    ├── pages - Application pages
+    ├── adapters - Adapts the business logic interface to the UI interface
+    ├── implementation - Implementation of business logic
+    │   ├── aggregate
+    │   ├── filter
+    │   ├── form
+    │   ├── repository
+    │   ├── service
+    │   └── transports
+    ├── interfaces - Interfaces of business logic
+    │   ├── aggregate
+    │   ├── filter
+    │   ├── form
+    │   ├── repository
+    │   ├── service
+    │   └── transports
     ├── library
-    │   ├── utils
-    │   ├── interfaces
-    |   |   ├── stores
-    |   |   ├── repositoryes
-    |   |   ├── form
-    |   ├── stores
-    |   ├── repositoryes
-    |   ├── form
-    ├── services
-    ├── stores
+    ├── router.ts - Implementations routing logic
+    ├── index.tsx - Entry point, can be changed into configuration
     ├── typings.d.ts
-    ├── vars
-    ├── vendors.ts
-    ├── lib_exports.ts
-    └── index.tsx
+    ├── vendors.ts - Entry point for DLL, can be changed into configuration
+    └── lib_exports.ts - Export point for API, can be changed into configuration
 ```
 
 ### DLL package structure
@@ -193,7 +207,7 @@ monolit-project || master-project || slave-project
 dll-package
 ├── package.json
 └── src - context
-    └── vendors.ts
+    └── vendors.ts - Entry point for DLL, can be changed into configuration
 ```
 
 ### Ui library structure
@@ -203,19 +217,17 @@ ui-library
 ├── package.json
 └── src - context
     ├── decorators
-    ├── adapters
-    ├── components
-    ├── compositions
-    ├── static
-    ├── interfaces
-    ├── pages
-    ├── stores
-    |   └── browserHistory - экспортирует объект истории.
-    ├── vars
+    ├── components - UI part of the project
+    ├── compositions - UI part of the project
+    ├── static - UI resources
+    ├── vars - UI variables
+    ├── pages - Application pages
+    ├── adapters - Contains stub objects
+    ├── router.ts - Implementations routing logic
+    ├── index.tsx - Entry point, can be changed into configuration
     ├── typings.d.ts
-    ├── vendors.ts
-    ├── lib_exports.ts
-    └── index.tsx
+    ├── vendors.ts - Entry point for DLL, can be changed into configuration
+    └── lib_exports.ts - Export point for API, can be changed into configuration
 ```
 
 ### Class Library Structure
@@ -224,15 +236,13 @@ ui-library
 classes-library
 ├── package.json
 └── src - context
-    ├── architecture
-    |   ├── implementations
-    |   ├── interfaces
-    ├── enums
-    ├── helpers
-    ├── lists
-    ├── utils
-    ├── vendors.ts
-    └── lib_exports.ts
+    ├── implementation - Implementation of classes
+    ├── interfaces - Interfaces of classes
+    ├── library
+    ├── index.tsx - Entry point, can be changed into configuration
+    ├── typings.d.ts
+    ├── vendors.ts - Entry point for DLL, can be changed into configuration
+    └── lib_exports.ts - Export point for API, can be changed into configuration
 ```
 
 ### Master-project structure
@@ -242,34 +252,40 @@ master-project
 ├── package.json
 └── src - context
     ├── decorators
-    ├── adapters
-    ├── interfaces
-    ├── pages
+    ├── vars - UI variables
+    ├── pages - Application pages
+    ├── adapters - Adapts the business logic interface to the UI interface
+    ├── implementation - Implementation of business logic
+    │   ├── aggregate
+    │   ├── filter
+    │   ├── form
+    │   ├── repository
+    │   ├── service
+    │   └── transports
+    ├── interfaces - Interfaces of business logic
+    │   ├── aggregate
+    │   ├── filter
+    │   ├── form
+    │   ├── repository
+    │   ├── service
+    │   └── transports
     ├── library
-    │   ├── utils
-    │   ├── interfaces
-    |   |   ├── stores
-    |   |   ├── repositoryes
-    |   |   ├── form
-    |   ├── stores
-    |   ├── repositoryes
-    |   ├── form
-    ├── services
-    ├── stores
+    ├── router.ts - Implementations routing logic
+    ├── index.tsx - Entry point, can be changed into configuration
     ├── typings.d.ts
-    ├── vendors.ts
-    └── index.tsx
+    ├── vendors.ts - Entry point for DLL, can be changed into configuration
+    └── lib_exports.ts - Export point for API, can be changed into configuration
 ```
 
 <a name="modules"></a>
 
-### Пример работы modules
+## Modules work example
 
-**outSideProjectFromGitSubmodule** - этот проект разрабатывается отдельно, например, это проект с версткой.
+**outSideProjectFromGitSubmodule** - This project is developed separately, for example, it is a project with HTM, CSS and other static files.
 
-**my-app** - этот проект нуждается в компонентах, которые разрабатываются в проекте `outSideProjectFromGitSubmodule`.
+**my-app** - This project needs components that are developed in the project `outSideProjectFromGitSubmodule`.
 
-Одним из вариантов доставки компонентов из `outSideProjectFromGitSubmodule` в `my-app`, является подключение `outSideProjectFromGitSubmodule` как git submodule в `my-app`.
+One of the options for the delivery of components from `outSideProjectFromGitSubmodule` to `my-app`, is the connection `outSideProjectFromGitSubmodule` like git submodule in `my-app`.
 
 ```
 my-app
@@ -300,7 +316,7 @@ export {default as Component3} from 'components/Component3'
 export {default as Component4} from 'components/Component4'
 ```
 
-Добавим `src` как директорию в которой webpack будер искать модули:
+Add `src` as the directory in which webpack buder to look for modules:
 
 ```json
 {
@@ -308,19 +324,19 @@ export {default as Component4} from 'components/Component4'
 }
 ```
 
-Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
+Now to get the `export.jsx` you need to write the following import in the`Component2.jsx` file:
 
 ```ecmascript 6
 import { Component3 } from 'outSideProjectFromGitSubmodule/src/export'
 ```
 
-Или получить `Component4` без использования `export.jsx`
+Or get `Component4` without using `export.jsx`
 
 ```ecmascript 6
 import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4'
 ```
 
-Добавим ещё одну директорию `src/outSideProjectFromGitSubmodule/src` из (git submodule) в котором имеются интересующие нас компоненты.
+Add another directory `src/outSideProjectFromGitSubmodule/src` from (git submodule) which contains the components we are interested in.
 
 ```json
 {
@@ -328,19 +344,19 @@ import Component4 from 'outSideProjectFromGitSubmodule/src/components/Component4
 }
 ```
 
-Теперь для получения `export.jsx` необходимо в файле `Component2.jsx` написать следующий импорт:
+Now to get the `export.jsx` you need to write the following import in the `Component2.jsx` file:
 
 ```ecmascript 6
 import { Component3 } from 'export'
 ```
 
-Или получить `Component4` без использования `export.jsx`
+Or get `Component4` without using `export.jsx`
 
 ```ecmascript 6
 import Component4  from 'components/Component4'
 ```
 
-Или даже так:
+Or even like this:
 
 ```json
 {
@@ -348,7 +364,7 @@ import Component4  from 'components/Component4'
 }
 ```
 
-И получить `Component4` по одному только имени
+And get `Component4` by name only
 
 ```ecmascript 6
 import Component4  from 'Component4'
@@ -356,31 +372,31 @@ import Component4  from 'Component4'
 
 <a name="css"></a>
 
-### Работа с CSS
+## CSS work example
 
-#### Внешние стили
+### Externals styles
 
-Все стили котрые не находятся внутри директории **context** будут загружены без изменений используя:
+All styles that are not inside the **context** directory will be loaded unchanged using:
 
 - isomorphic-style-loader
 - css-loader
 
-#### Модульные стили
+### Modular styles
 
-Стили находящиеся внутри **context** будут обработаны через плагины PostCSS и загруженны как модули. Список загрузчиков:
+The styles inside the **context** will be processed through PostCSS plugins and loaded as modules. List of loaders:
 
 - isomorphic-style-loader
 - css-loader
 - postcss-loader
 
-#### isomorphic-style-loader
+### isomorphic-style-loader
 
-Таким образом импортируются стили.
+Thus styles are imported.
 
-HOC withStyles - необходим для того чтобы при componentWillMount стили оказались на странице, а при componentWillUnmount
-они были удалены со страницы.
+HOC withStyles - is needed so that when componentWillMount styles appear on the page, and when componentWillUnmount
+they have been removed from the page.
 
-Файл `MyComponent.css`
+File `MyComponent.css`
 
 ```css
 .root {
@@ -388,7 +404,7 @@ HOC withStyles - необходим для того чтобы при componentW
 }
 ```
 
-Файл `MyComponent.tsx`
+File `MyComponent.tsx`
 
 ```typescript jsx
 import React, { Component } from "react";
@@ -405,16 +421,16 @@ class MyComponent extends Component<any, any> {
 export default MyComponent;
 ```
 
-Объект style содержит:
+The style object contains:
 
-- Имена CSS классов
-- Метод \_getCss(), который возвращает текст CSS который вставлен на страницу.
-- Метод \_insertCss() - который добавляет CSS на страницу и возвращает метод удаления CSS со страницы.
-- Метод \_getContent() - который возвращает объект, где ключи это имена классов, а значения это "модульные" имена классов.
+- CSS class names
+- Method \_getCss(), which returns the CSS text that is inserted on the page.
+- Method \_insertCss() - which adds CSS to the page and returns a method to remove CSS from the page.
+- The \_getContent() method - which returns an object, where keys are class names, and values are "modular" class names.
 
 Внутри withStyles используются эти методы для добавления и удаления CSS из head.
 
-#### Подключение стилей из node_modules
+### Connecting styles from node_modules
 
 Файл `store/browserHistory`
 
@@ -428,7 +444,7 @@ export const browserHistory = createHistory();
 
 ```typescript jsx
 import StyleContext from "isomorphic-style-loader/StyleContext";
-import "normalize.css";
+import normalize from "normalize.css";
 import React, { Component } from "react";
 import s from "./App.css";
 
@@ -440,7 +456,7 @@ class App extends Component<any, never> {
   constructor(props, context) {
     super(props, context);
 
-    this.removeCSS = this.context.insertCss(s);
+    this.removeCSS = this.context.insertCss(normalize, s);
   }
 
   public componentWillUnmount() {
@@ -560,11 +576,11 @@ export const style: { antd: any } = {
 };
 ```
 
-#### Создание HTML отчета в браузере
+### Creating HTML report in the browser
 
-Ниже я приведу пример того как можно использовать isomorphic-style-loader для получения css текста и создания html файла.
+Below I will give an example of how you can use the isomorphic-style-loader to get css text and create an html file.
 
-файл `ReportTable.css`
+file `ReportTable.css`
 
 ```css
 .root :global(.ant-table-body) {
@@ -590,7 +606,7 @@ export const style: { antd: any } = {
 }
 ```
 
-Файл `ReportTable.tsx`
+File `ReportTable.tsx`
 
 ```typescript jsx
 import React, { PureComponent } from "react";
@@ -634,7 +650,7 @@ export const style: any = s;
 export default ReportTable;
 ```
 
-Файл `ReportSmart.tsx`
+File `ReportSmart.tsx`
 
 ```typescript jsx
 import * as root from "index"; // Файл из предидущего примера (index.tsx).
@@ -681,7 +697,7 @@ class ReportSmart extends Component<any, any> {
 export default ReportSmart;
 ```
 
-И в итоге мы порлучаем HTML файл `report.html` который содержит HTML полученый в результате рендера компонента
-ReportTable и необходимый для него css текст, из внешнего пакета "antd/dist/antd.css" и модульного css самого компонента.
+As a result, we corrupt the HTML file `report.html` which contains the HTML resulting from the component render.
+ReportTable and the necessary css text for it, from the external package `antd/dist/antd.css` and the modular css of the component itself.
 
-Вопросы и предложения можно написать в issue или непосредственно мне: [Dmitriy Borodin](http://borodin.site)
+Questions and suggestions can be written in the issue or directly to me: [Dmitriy Borodin](http://borodin.site)

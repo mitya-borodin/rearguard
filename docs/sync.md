@@ -1,7 +1,7 @@
 # rearguard sync
 
-Процедура синхронизации зависимостей из глобального node_modules с локальным node_modules;
-Может быть запущена как фоновый процесс который отслеживает измнения в зависимых модулях, и выполняется по мере изменения.
+The procedure for synchronization of dependencies from the global node_modules with the local node_modules;
+It can be run as a background process that tracks changes in dependent modules, and runs as it changes.
 
 ```bash
 rearguard sync [ --watch ]

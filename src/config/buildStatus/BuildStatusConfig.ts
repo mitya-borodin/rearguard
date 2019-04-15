@@ -8,6 +8,8 @@ import { NonVersionableConfig } from "../NonVersionableConfig";
 // tslint:disable: variable-name
 
 export class BuildStatusConfig extends NonVersionableConfig implements IBuildStatusConfig {
+  // ! BUILD STATUS
+  // ! Текущее состояние сборки.
   get status(): "init" | "in_progress" | "done" {
     const { status } = this.config;
 
@@ -18,6 +20,14 @@ export class BuildStatusConfig extends NonVersionableConfig implements IBuildSta
     this.config = { status: "init" };
 
     return this.status;
+  }
+
+  public start(): void {
+    this.config = { status: "in_progress" };
+  }
+
+  public end(): void {
+    this.config = { status: "done" };
   }
 
   // ! BUILD_HASH
@@ -83,14 +93,6 @@ export class BuildStatusConfig extends NonVersionableConfig implements IBuildSta
     const { last_build_time } = this.config;
 
     return !!isDate(last_build_time);
-  }
-
-  public start(): void {
-    this.config = { status: "in_progress" };
-  }
-
-  public end(): void {
-    this.config = { status: "done" };
   }
 }
 

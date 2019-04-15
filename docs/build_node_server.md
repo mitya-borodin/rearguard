@@ -1,8 +1,14 @@
 # rearguard build_node_server
 
-Процедура сборки серверного проекта взята по контроль rearguard для того, чтобы контролировать конфигураци запуска и окружения.
+The build procedure of the server project is taken over the rearguard control in order to control the launch configuration and environment.
 
-Фактически выполняется синхронное создание процесса:
+Runs all necessary procedures:
+
+- Write configuration files.
+- Install the required dependencies.
+- Synchronization with global modules.
+- Run tslint;
+- Build via tsc.
 
 ```javascript
 spawn.sync(
@@ -24,3 +30,6 @@ spawn.sync(
   },
 );
 ```
+
+- Preparing the `dist` directory to build a docker image.
+- The output of commands prompts to create an image and its deployment.

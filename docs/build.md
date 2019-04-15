@@ -1,47 +1,47 @@
 # rearguard build
 
-Сборка - основная задача этой системы. Превращает исходный код в файлы для использования другими библиотеками, а также для развертывания.
+Assembly - the main task of this system. Turns source code into files for use by other libraries, as well as for deployment.
 
-## Общие параметры запуска
+## General startup options
 
-- --release | -r - выставляет настройки для сборки в `production` режиме.
-- --debug | -d - выводит всю возможную информацию о графе зависимостей, которая доступна для webpack, а также запускает WEB интерфейс в котором можно узнать о содержимом бандла.
-- --both - в едином процессе собирает как `development` так и `production`.
+- --release | -r - sets the settings for the build in `production` mode.
+- --debug | -d - displays all possible information about the dependency graph, which is available for the webpack, and also launches the WEB interface in which you can learn about the contents of the bundle.
+- --both - in a single process, collects both `development` and`production`.
 
-## Сборка browser library
+## Build browser library
 
 ```bash
 rearguard build --browser_lib [ --dll | --load_on_demand | --both | --release | -r | --debug | -d ]
 ```
 
-Результатом сборки будет lib_bundle и опционально dll_bundle, а так же директория lib с .d.ts файлами которые описывают то, что экспортируется из библиотеки.
+The result of the build will be lib_bundle and optionally dll_bundle, as well as the lib directory with .d.ts files that describe what is exported from the library.
 
-Данный пакет можно бует использовать только в браузерных приложениях.
+This package can be used only in browser applications.
 
-## Сборка node library
+## Build node library
 
 ```bash
 rearguard build --node_lib [ --both | --release | -r | --debug | -d ]
 ```
 
-Результатом сборки будет директория lib содержашая .d.ts и .js файлы.
+The result of the build will be the lib directory containing the .d.ts and .js files.
 
-Данный пакет можно бует использовать только в node.js приложениях.
+This package can be used only in node.js applications.
 
-## Сборка isomorphic library
+## Build isomorphic library
 
 ```bash
 rearguard build --browser_lib --node_lib [ --dll | --load_on_demand | --both | --release | -r | --debug | -d ]
 ```
 
-Результатом сборки будут директории lib_bindle, lib, и опционально dll_bundle. Директория lib будет содержать .js, .d.ts файлы. Сборка изоморфной библиотеки не делает сам код изоморфным, для того, чтобы код использовался на обоих платформах, необходимо реализовываеть его с учетом обоих платформ.
+The result of the build will be the lib_bindle, lib, and optionally dll_bundle directories. The lib directory will contain .js, .d.ts files. Building an isomorphic library does not make the code itself isomorphic, in order for the code to be used on both platforms, it is necessary to implement it taking into account both platforms.
 
-## Сборка application
+## Assembly application
 
 ```bash
 rearguard build --application [ --dll | --both | --release | -r | --debug | -d ]
 ```
 
-Результатом сборки будет `index.html`, `main.js`, скопированные зависимости на один уровень с `index.html`. Директория в которую выкладываются файлы является `dist`.
+The result of the build is `index.html`,`main.js`, the dependencies copied to the same level as `index.html`. The directory in which the files are laid out is `dist`.
 
-Результат сборки можно использовать только для развертывания на WEB сервере.
+The result of the assembly can only be used for deployment on a WEB server.

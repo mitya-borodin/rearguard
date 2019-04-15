@@ -1,47 +1,47 @@
 # rearguard monorepo
 
-Инструмент для работы с [**"моно репозиторием"**](https://gitlab.com/mitya-borodin/base-code). Это такие репозитории которые включают несколько проектов.
+Tool to work with [**"mono repository"**](https://gitlab.com/mitya-borodin/base-code). These are repositories that include several projects.
 
-Этот инструмент нужен для того, чтобы выполнять групповые действия над всеми пакетами внутри этого репозитория.
+This tool is needed to perform group actions on all packages within this repository.
 
-Так как пакеты имеют зависимости друг от друга, то выполнять действия нужно в сторогом порядке от независимых до имеющих наибольшее число зависимостей.
+Since packages have dependencies on each other, then you need to perform actions in a strict order, from independent to those with the largest number of dependencies.
 
-Для того, чтобы понять в каком порядке выполнять действия, необходимо зайти в каждый модуль и построить [**sync_project_deps**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync_project_deps.md).
-После чего можно выполнять действия над модулями в правильном порядке.
+In order to understand in what order to perform the actions, it is necessary to go into each module and build [**sync_project_deps**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync_project_deps.md).
+Then you can perform actions on the modules in the correct order.
 
-И так, у нас имеется список модулей по которому необходимо пройтись. Далее переходим к доступным действиям.
+And so, we have a list of modules for which you need to go. Next, go to the available actions.
 
-## Действия
+## Actions
 
 ### rearguard monorepo --init
 
-- Создается конфигарационный фал monorepo.json, в котором указывается в какой директрии находятся модули.
-- Создается файл .gitignore
+- A configuration file monorepo.json is created, which indicates in which directory the modules are located.
+- File is created .gitignore
 
 ### rearguard monorepo --install
 
-- Проходит по модулям и запускает скрипт npm install, в синхронном режиме.
+- Passes through the modules and runs the npm install script, in synchronous mode.
 
 ### rearguard monorepo --build
 
-- Проходит по модулям и запускает скрипт npm run build, в синхронном режиме.
+- Passes through the modules and runs the npm run build script, in synchronous mode.
 
 ### rearguard monorepo --link
 
-- Проходит по модулям и запускает скрипт npm link, в синхронном режиме.
+- Passes through the modules and runs the npm link script, in synchronous mode.
 
 ### rearguard monorepo --bootstrap
 
-- Проходит по модулям и запускает набор скриптов (clear, npm install, npm run build, npm run link), в синхронном режиме.
+- Passes through the modules and runs a set of scripts (clear, npm install, npm run build, npm run link), in synchronous mode.
 
 ### rearguard monorepo --build --release | -r
 
-- Проходит по модулям и запускает скрипт npm run build:both, в синхронном режиме.
+- Passes through the modules and runs the script npm run build: both, in synchronous mode.
 
 ### rearguard monorepo --test
 
-- Проходит по модулям и запускает скрипт npm run test, в синхронном режиме.
+- Passes through the modules and runs the npm run test script, in synchronous mode.
 
 ### rearguard monorepo --publish [ --patch | --minor | --major ]
 
-- Проходит по всем модулям, обновляет версию в зависимости от флага. По умолчанию флаг --patch. После чего выполняется npm publish.
+- Passes through all modules, updates the version depending on the flag. The default is the --patch flag. Then npm publish is executed.

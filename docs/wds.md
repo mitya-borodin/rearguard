@@ -2,9 +2,9 @@
 
 wds - webpack-dev-server;
 
-Выполняет запуск сборку в режиме разработки используя точку входа `src/${entry}`;
+Runs a build in development mode using the entry point `src/$ {entry}`;
 
-Запустить wds можно как в `development` так и в `production` режиме.
+You can run wds in both `development` and in`production` mode.
 
 ```bash
 rearguard wds [ --release | -r | --debug | -d ]

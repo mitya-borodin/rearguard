@@ -8,6 +8,18 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.5.18 (2019-04-15)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Translated bigger part of documentation;
+
+BUG FIXES:
+
 ## 4.5.17 (2019-04-12)
 
 BREAKING CHANGES:

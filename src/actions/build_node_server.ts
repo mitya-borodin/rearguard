@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { execSync } from "child_process";
 import * as spawn from "cross-spawn";
 import del from "del";
 import * as moment from "moment";
@@ -62,7 +63,22 @@ async function build_node_server() {
     console.log(chalk.gray(`[ ${rearguardConfig.pkg.name} ][ REMOVE ][ ${item} ]`));
   }
 
+  console.log("");
+
   const startTime = moment();
+
+  // tslint:disable-next-line: variable-name
+  const tslint_command = `tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
+
+  console.log(chalk.white(tslint_command));
+  console.log("");
+
+  execSync(tslint_command, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    stdio: "inherit",
+  });
+
   const result = spawn.sync(
     "tsc",
     [
