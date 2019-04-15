@@ -59,7 +59,7 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
       }
 
       if (installDepsList.length > 0) {
-        const command = `npm install ${installDepsList.join(" ")}`;
+        const command = `npm install -E ${installDepsList.join(" ")}`;
 
         console.log(chalk.white(command));
         console.log(chalk.white("npm install"));
