@@ -41,7 +41,7 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
 
       if (installDevDepsList.length > 0) {
         // tslint:disable-next-line: variable-name
-        const command = `npm install -D ${installDevDepsList.join(" ")}`;
+        const command = `npm install -D -E ${installDevDepsList.join(" ")}`;
 
         console.log(chalk.white(command));
         console.log(chalk.white("npm install"));
@@ -59,7 +59,7 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
       }
 
       if (installDepsList.length > 0) {
-        const command = `npm install -E ${installDepsList.join(" ")}`;
+        const command = `npm install -S -E ${installDepsList.join(" ")}`;
 
         console.log(chalk.white(command));
         console.log(chalk.white("npm install"));

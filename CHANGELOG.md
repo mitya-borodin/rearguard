@@ -1,10 +1,12 @@
-## Next Release
+# 4.5.20 (2019-04-22)
 
 BREAKING CHANGES:
 
 FEATURES:
 
 IMPROVEMENTS:
+
+- Added flag -S to npm install;
 
 BUG FIXES:
 
