@@ -1,4 +1,16 @@
-# 4.6.0 (2019-05-13)
+# 4.6.1 (2019-05-13)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Added info to docs;
+
+BUG FIXES:
+
+## 4.6.0 (2019-05-13)
 
 BREAKING CHANGES:
 
