@@ -137,6 +137,7 @@ npm install -D rearguard
 - [**rearguard sync** [ --watch ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync.md)
 - [**rearguard start_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/start_node_server.md)
 - [**rearguard build_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build_node_server.md)
+- **rearguard test** - run `*.spec.ts` files into `tests` directory;
 
 <a name="structure"></a>
 
