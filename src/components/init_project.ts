@@ -243,6 +243,9 @@ export async function initProject() {
     update_for_pkg.scripts.build = "rearguard build_node_server";
   }
 
+  // ! TEST SCRIPT
+  update_for_pkg.scripts.test = "rearguard test";
+
   const cur_pkg = require(pkg_path);
 
   const pkg_text = prettier_package_json.format({ ...cur_pkg, ...update_for_pkg });

@@ -73,6 +73,7 @@ if (
   action === "build_node_server" ||
   action === "start_node_server" ||
   action === "build" ||
+  action === "test" ||
   action === "monorepo"
 ) {
   console.log("");

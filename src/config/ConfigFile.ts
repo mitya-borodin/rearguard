@@ -2,6 +2,7 @@ import { isObject, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import { defaultsDeep } from "lodash";
+import * as mkdirp from "mkdirp";
 import * as path from "path";
 import { IConfigFile } from "../interfaces/config/IConfigFile";
 import { envConfig } from "./env";
@@ -69,6 +70,8 @@ export class ConfigFile implements IConfigFile {
         return this.init();
       }
     } else {
+      mkdirp.sync(path.dirname(this.config_path));
+
       fs.writeFileSync(this.config_path, JSON.stringify(this.default_config, null, 2).trim());
 
       console.log(chalk.greenBright(`[ CONFIG_FILE ][ CREATE ] ${this.config_path}`));

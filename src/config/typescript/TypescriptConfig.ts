@@ -1,5 +1,5 @@
 import * as path from "path";
-import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
+import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME, TS_CONFIG_FILE_NAME } from "../../const";
 import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
@@ -9,10 +9,10 @@ import { rearguardConfig } from "../rearguard";
 // tslint:disable:variable-name object-literal-sort-keys
 
 export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFile {
-  private envConfig: IEnvConfig;
+  protected envConfig: IEnvConfig;
 
-  constructor(envConfig: IEnvConfig) {
-    super("tsconfig.json");
+  constructor(envConfig: IEnvConfig, file_name: string = TS_CONFIG_FILE_NAME) {
+    super(file_name);
 
     this.envConfig = envConfig;
   }

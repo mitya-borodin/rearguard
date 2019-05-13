@@ -1,4 +1,18 @@
-# 4.5.20 (2019-04-22)
+# 4.6.0 (2019-05-13)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+- Implement test environment;
+
+IMPROVEMENTS:
+
+- Make dir for config paths if it not exist;
+
+BUG FIXES:
+
+## 4.5.20 (2019-04-22)
 
 BREAKING CHANGES:
 

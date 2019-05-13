@@ -21,10 +21,24 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
       // * START OF PROCEDURE
       //
       /////////////////////
+
+      // ! Install dev dependencies
       const devDeps: string[] = Object.keys(pkg.devDependencies || {});
       const installDevDepsList: string[] = [];
 
-      for (const depName of ["typescript", "tslint", "ts-node-dev", "prettier", "husky", "@types/node"]) {
+      for (const depName of [
+        "typescript",
+        "tslint",
+        "ts-node-dev",
+        "ts-node",
+        "prettier",
+        "husky",
+        "mocha",
+        "chai",
+        "@types/node",
+        "@types/mocha",
+        "@types/chai",
+      ]) {
         if (!devDeps.includes(depName)) {
           installDevDepsList.push(depName);
         }
@@ -58,6 +72,7 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
         console.log("");
       }
 
+      // ! Install dependencies
       if (installDepsList.length > 0) {
         const command = `npm install -S -E ${installDepsList.join(" ")}`;
 
