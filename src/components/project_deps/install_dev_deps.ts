@@ -9,51 +9,53 @@ import { check_npm } from "../check_npm";
 export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = process.cwd()): Promise<boolean> {
   try {
     const { pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
-
+    let npmIsAvailable: boolean = false;
     console.log(chalk.bold.blue(`[ INSTALL_DEV_DEPS ][ START ]`));
     console.log("");
 
-    const npmIsAvailable: boolean = await check_npm();
+    /////////////////////
+    //
+    // * START OF PROCEDURE
+    //
+    /////////////////////
 
-    if (npmIsAvailable) {
-      /////////////////////
-      //
-      // * START OF PROCEDURE
-      //
-      /////////////////////
+    // ! Install dev dependencies
+    const devDeps: string[] = Object.keys(pkg.devDependencies || {});
+    const installDevDepsList: string[] = [];
 
-      // ! Install dev dependencies
-      const devDeps: string[] = Object.keys(pkg.devDependencies || {});
-      const installDevDepsList: string[] = [];
+    for (const depName of [
+      "typescript",
+      "tslint",
+      "ts-node-dev",
+      "ts-node",
+      "prettier",
+      "husky",
+      "mocha",
+      "chai",
+      "@types/node",
+      "@types/mocha",
+      "@types/chai",
+    ]) {
+      if (!devDeps.includes(depName)) {
+        installDevDepsList.push(depName);
+      }
+    }
 
-      for (const depName of [
-        "typescript",
-        "tslint",
-        "ts-node-dev",
-        "ts-node",
-        "prettier",
-        "husky",
-        "mocha",
-        "chai",
-        "@types/node",
-        "@types/mocha",
-        "@types/chai",
-      ]) {
-        if (!devDeps.includes(depName)) {
-          installDevDepsList.push(depName);
-        }
+    const deps: string[] = Object.keys(pkg.dependencies || {});
+    const installDepsList: string[] = [];
+
+    for (const depName of ["tslib"]) {
+      if (!deps.includes(depName)) {
+        installDepsList.push(depName);
+      }
+    }
+
+    if (installDevDepsList.length > 0) {
+      if (!npmIsAvailable) {
+        npmIsAvailable = await check_npm();
       }
 
-      const deps: string[] = Object.keys(pkg.dependencies || {});
-      const installDepsList: string[] = [];
-
-      for (const depName of ["tslib"]) {
-        if (!deps.includes(depName)) {
-          installDepsList.push(depName);
-        }
-      }
-
-      if (installDevDepsList.length > 0) {
+      if (npmIsAvailable) {
         // tslint:disable-next-line: variable-name
         const command = `npm install -D -E ${installDevDepsList.join(" ")}`;
 
@@ -66,14 +68,20 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
           encoding: "utf8",
           stdio: "inherit",
         });
-      } else {
-        console.log(chalk.white(`Dev dependencies alredy installed`));
+      }
+    } else {
+      console.log(chalk.white(`Dev dependencies alredy installed`));
 
-        console.log("");
+      console.log("");
+    }
+
+    // ! Install dependencies
+    if (installDepsList.length > 0) {
+      if (!npmIsAvailable) {
+        npmIsAvailable = await check_npm();
       }
 
-      // ! Install dependencies
-      if (installDepsList.length > 0) {
+      if (npmIsAvailable) {
         const command = `npm install -S -E ${installDepsList.join(" ")}`;
 
         console.log(chalk.white(command));
@@ -85,13 +93,19 @@ export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = proc
           encoding: "utf8",
           stdio: "inherit",
         });
-      } else {
-        console.log(chalk.white(`Dependencies alredy installed`));
+      }
+    } else {
+      console.log(chalk.white(`Dependencies alredy installed`));
 
-        console.log("");
+      console.log("");
+    }
+
+    if (installDevDepsList.length > 0 || installDepsList.length > 0) {
+      if (!npmIsAvailable) {
+        npmIsAvailable = await check_npm();
       }
 
-      if (installDevDepsList.length > 0 || installDepsList.length > 0) {
+      if (npmIsAvailable) {
         execSync("npm install", {
           cwd: process.cwd(),
           encoding: "utf8",

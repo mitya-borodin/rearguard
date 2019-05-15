@@ -14,26 +14,26 @@ export async function install_declared_deps(envConfig: IEnvConfig, CWD: string =
       console.log(chalk.bold.blue(`===========INSTALL_DECLARED_DEPS============`));
       console.log("");
 
-      const npmIsAvailable: boolean = await check_npm();
+      /////////////////////
+      //
+      // * START OF PROCEDURE
+      //
+      /////////////////////
+      const deps: string[] = Object.keys(pkg.dependencies || {});
+      const devDeps: string[] = Object.keys(pkg.devDependencies || {});
+      const peerDeps: string[] = Object.keys(pkg.peerDependencies || {});
+      const installList: string[] = [];
 
-      if (npmIsAvailable) {
-        /////////////////////
-        //
-        // * START OF PROCEDURE
-        //
-        /////////////////////
-        const deps: string[] = Object.keys(pkg.dependencies || {});
-        const devDeps: string[] = Object.keys(pkg.devDependencies || {});
-        const peerDeps: string[] = Object.keys(pkg.peerDependencies || {});
-        const installList: string[] = [];
-
-        for (const depName of sync_project_deps) {
-          if (!deps.includes(depName) && !devDeps.includes(depName) && !peerDeps.includes(depName)) {
-            installList.push(depName);
-          }
+      for (const depName of sync_project_deps) {
+        if (!deps.includes(depName) && !devDeps.includes(depName) && !peerDeps.includes(depName)) {
+          installList.push(depName);
         }
+      }
 
-        if (installList.length > 0) {
+      if (installList.length > 0) {
+        const npmIsAvailable: boolean = await check_npm();
+
+        if (npmIsAvailable) {
           const command = `npm install ${installList.join(" ")}`;
 
           console.log(chalk.white(command));
@@ -48,11 +48,11 @@ export async function install_declared_deps(envConfig: IEnvConfig, CWD: string =
           console.log("");
 
           return true;
-        } else {
-          console.log(chalk.white(`Dependencies alredy installed`));
-
-          console.log("");
         }
+      } else {
+        console.log(chalk.white(`Dependencies alredy installed`));
+
+        console.log("");
       }
 
       /////////////////////
