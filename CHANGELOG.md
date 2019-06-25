@@ -1,4 +1,16 @@
-# 4.6.1 (2019-05-13)
+# 4.6.3 (2019-06-25)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
+- Fix the bug with build list of modules with deferred loading;
+
+## 4.6.1 (2019-05-13)
 
 BREAKING CHANGES:
 
