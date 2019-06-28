@@ -2,7 +2,7 @@
 
 declare module "*.css" {
   interface IClassNames {
-    [ className: string ]: any;
+    [className: string]: any;
   }
 
   const classNames: IClassNames;
@@ -84,6 +84,18 @@ declare module "*.woff" {
 }
 
 declare module "*.woff2" {
+  const path: string;
+
+  export = path;
+}
+
+declare module "*.csv" {
+  const path: string;
+
+  export = path;
+}
+
+declare module "*.text" {
   const path: string;
 
   export = path;

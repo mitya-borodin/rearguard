@@ -64,6 +64,10 @@ export function general_WP_config(
           },
           test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         },
+        {
+          test: /\.(text|csv)(\?.*)?$/,
+          use: "raw-loader",
+        },
         ...cssLoaders(),
         ...rules,
       ],

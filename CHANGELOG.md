@@ -1,4 +1,17 @@
-# 4.6.3 (2019-06-25)
+# 4.6.7 (2019-06-28)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+- Added raw-loader;
+- Added new type declaration into typing.d.ts for csv, text.
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
+## 4.6.3 (2019-06-25)
 
 BREAKING CHANGES:
 
