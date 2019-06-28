@@ -14,6 +14,8 @@ export default (): webpack.Rule[] => {
       loader: "tslint-loader",
       options: {
         configFile: tsLintConfig.config_path,
+        context: get_context(),
+        experimentalFileCaching: false,
       },
       test,
     },
@@ -25,6 +27,8 @@ export default (): webpack.Rule[] => {
           loader: "ts-loader",
           options: {
             configFile: typescriptConfig.config_path,
+            context: get_context(),
+            experimentalFileCaching: false,
           },
         },
       ],

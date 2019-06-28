@@ -20,9 +20,11 @@ export default (): webpack.Rule[] => {
       loader: "css-loader",
       options: {
         importLoaders: 1,
-        localIdentName: isDevelopment ? "[path][local][hash:base64:4]" : "[hash:base64:32]",
         // CSS Modules https://github.com/css-modules/css-modules
-        modules: true,
+        modules: {
+          localIdentName: isDevelopment ? "[path][local][hash:base64:4]" : "[hash:base64:32]",
+          mode: "local",
+        },
         sourceMap: isDebug,
       },
     },

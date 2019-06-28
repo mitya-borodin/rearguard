@@ -5,7 +5,7 @@ export function get_stats(envConfig: IEnvConfig): any {
   return envConfig.isDebug
     ? "verbose"
     : {
-        assets: true,
+        assets: false,
         colors: true,
         context: get_context(),
         hash: true,

@@ -14,7 +14,6 @@ export function get_WDS_config(envConfig: IEnvConfig, rearguardConfig: IRearguar
   const { output } = rearguardConfig;
 
   return {
-    bonjour: true,
     compress: true,
     contentBase: [path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME), path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME)],
     watchContentBase: false,
@@ -28,7 +27,6 @@ export function get_WDS_config(envConfig: IEnvConfig, rearguardConfig: IRearguar
     historyApiFallback: true,
     hot: true,
     https: true,
-    open: true,
     overlay: false,
     proxy,
     publicPath: output.publicPath,

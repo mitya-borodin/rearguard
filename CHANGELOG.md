@@ -1,4 +1,17 @@
-# 4.6.7 (2019-06-28)
+# 4.7.0 (2019-06-29)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Update dependencies;
+- Update cofigurations for new deps;
+
+BUG FIXES:
+
+## 4.6.7 (2019-06-28)
 
 BREAKING CHANGES:
 
