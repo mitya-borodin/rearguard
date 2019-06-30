@@ -202,7 +202,7 @@ if (
         process.exit(0);
       }
 
-      process.exit(result.status || 1);
+      process.exit(result.status === null ? 0 : result.status);
     } else {
       console.log(chalk.bold.red(`[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`));
 

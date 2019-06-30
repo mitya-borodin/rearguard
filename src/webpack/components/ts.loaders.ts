@@ -14,8 +14,7 @@ export default (): webpack.Rule[] => {
       loader: "tslint-loader",
       options: {
         configFile: tsLintConfig.config_path,
-        context: get_context(),
-        experimentalFileCaching: false,
+        tsConfigFile: typescriptConfig.config_path,
       },
       test,
     },
