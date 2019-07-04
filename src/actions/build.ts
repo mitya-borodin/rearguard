@@ -8,6 +8,7 @@ import { initProject } from "../components/init_project";
 import { copy_bundles_to_dist } from "../components/project_deps/copy_bundles_to_dist";
 import { show_docker_commands } from "../components/show_docker_commands";
 import { create_workbox } from "../components/workbox";
+import { tsc_bin } from "../config/bin";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { rearguardConfig } from "../config/rearguard";
@@ -26,7 +27,7 @@ async function build_node_lib() {
   const startTime = moment();
 
   const result = spawn.sync(
-    "tsc",
+    tsc_bin,
     [
       "--project",
       path.resolve(process.cwd(), "tsconfig.json"),
@@ -44,6 +45,12 @@ async function build_node_lib() {
       stdio: "inherit",
     },
   );
+
+  if (result.error) {
+    console.error(result.error);
+
+    process.exit(1);
+  }
 
   // ! Обработка сигнала.
   if (result.signal) {

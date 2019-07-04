@@ -6,6 +6,7 @@ import { install_declared_deps } from "../components/project_deps/install_declar
 import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
+import { tslint_bin, tsNodeDev_bin } from "../config/bin";
 import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
 import { rearguardConfig } from "../config/rearguard";
@@ -41,7 +42,7 @@ async function start_node_server() {
   console.log("");
 
   // tslint:disable-next-line: variable-name
-  const tslint_command = `tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
+  const tslint_command = `${tslint_bin} -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
 
   console.log(chalk.white(tslint_command));
   console.log("");
@@ -53,12 +54,12 @@ async function start_node_server() {
   });
 
   // tslint:disable-next-line: variable-name
-  const ts_node_dev_command = `ts-node-dev --prefer-ts --type-check --respawn ./bin/www.ts`;
+  const ts_node_dev_command = `${tsNodeDev_bin} --prefer-ts --type-check --respawn ./bin/www.ts`;
 
   console.log(chalk.white(ts_node_dev_command));
   console.log("");
 
-  const result = spawn.sync("ts-node-dev", ["--prefer-ts", "--type-check", "--respawn", "./bin/www.ts"], {
+  const result = spawn.sync(tsNodeDev_bin, ["--prefer-ts", "--type-check", "--respawn", "./bin/www.ts"], {
     encoding: "utf8",
     stdio: "inherit",
   });

@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import * as spawn from "cross-spawn";
 import * as path from "path";
+import { mocha_bin } from "../config/bin";
 import { typescriptTestConfig } from "../config/typescript";
 import { TESTS_DIR_NAME } from "../const";
 import { sync } from "./sync/index";
@@ -13,7 +14,7 @@ async function test() {
   const setup = path.resolve(__dirname, `../components/${TESTS_DIR_NAME}/setup.js`);
   const specs = path.resolve(process.cwd(), `${TESTS_DIR_NAME}/**/*.spec.ts`);
 
-  const result = spawn.sync(`mocha`, [`--require`, `${setup}`, `${specs}`], { encoding: "utf8", stdio: "inherit" });
+  const result = spawn.sync(mocha_bin, [`--require`, `${setup}`, `${specs}`], { encoding: "utf8", stdio: "inherit" });
 
   if (result.signal) {
     if (result.signal === "SIGKILL") {

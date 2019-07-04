@@ -11,6 +11,7 @@ import { install_dev_deps } from "../components/project_deps/install_dev_deps";
 import { ordering_project_deps } from "../components/project_deps/ordering_project_deps";
 import { sync_with_linked_modules } from "../components/project_deps/sync_with_linked_modules";
 import { show_docker_commands } from "../components/show_docker_commands";
+import { tsc_bin, tslint_bin } from "../config/bin";
 import { buildStatusConfig } from "../config/buildStatus";
 import { envConfig } from "../config/env";
 import { prettierConfig } from "../config/prettier";
@@ -68,7 +69,7 @@ async function build_node_server() {
   const startTime = moment();
 
   // tslint:disable-next-line: variable-name
-  const tslint_command = `tslint -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
+  const tslint_command = `${tslint_bin} -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' --fix`;
 
   console.log(chalk.white(tslint_command));
   console.log("");
@@ -80,7 +81,7 @@ async function build_node_server() {
   });
 
   const result = spawn.sync(
-    "tsc",
+    tsc_bin,
     [
       "--project",
       path.resolve(process.cwd(), "tsconfig.json"),

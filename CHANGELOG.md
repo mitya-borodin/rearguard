@@ -1,4 +1,16 @@
-# 4.7.1 (2019-06-30)
+# 4.8.0 (2019-07-04)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+- Use bin from rearguard node_modules;
+
+BUG FIXES:
+
+## 4.7.1 (2019-07-04)
 
 BREAKING CHANGES:
 

@@ -30,21 +30,6 @@ export async function build(CWD: string, needUpdateBuildTime = false) {
         },
       );
     } else {
-      if (!envConfig.isDevelopment) {
-        result = spawn.sync(
-          "rearguard",
-          [
-            ...srcipts["build:release"].replace("rearguard ", "").split(" "),
-            ...(needUpdateBuildTime ? ["--needUpdateBuildTime"] : []),
-          ],
-          {
-            cwd: CWD,
-            encoding: "utf8",
-            stdio: "inherit",
-          },
-        );
-      }
-
       if (envConfig.isDevelopment) {
         result = spawn.sync(
           "rearguard",
@@ -59,6 +44,27 @@ export async function build(CWD: string, needUpdateBuildTime = false) {
           },
         );
       }
+
+      if (!envConfig.isDevelopment) {
+        result = spawn.sync(
+          "rearguard",
+          [
+            ...srcipts["build:release"].replace("rearguard ", "").split(" "),
+            ...(needUpdateBuildTime ? ["--needUpdateBuildTime"] : []),
+          ],
+          {
+            cwd: CWD,
+            encoding: "utf8",
+            stdio: "inherit",
+          },
+        );
+      }
+    }
+
+    if (result.error) {
+      console.error(result.error);
+
+      process.exit(1);
     }
 
     // ! Обработка сигнала.
