@@ -1,4 +1,16 @@
-# 4.8.0 (2019-07-04)
+# 4.8.1 (2019-07-04)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
+- Fix path to rearguard node_modules;
+
+## 4.8.0 (2019-07-04)
 
 BREAKING CHANGES:
 
