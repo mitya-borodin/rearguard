@@ -6,6 +6,18 @@ FEATURES:
 
 IMPROVEMENTS:
 
+- Added link operations before all operations into monorepo;
+
+BUG FIXES:
+
+## 4.7.1 (2019-06-30)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
 - Added tsConfig to ts-lint-loader;
 
 BUG FIXES:

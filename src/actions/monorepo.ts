@@ -27,6 +27,10 @@ async function monorepo() {
   for (const module_dir of dirs) {
     const module_path = resolve(root, module_dir);
 
+    if (envConfig.is_mono_bootstrap || envConfig.is_mono_link) {
+      await link(module_path);
+    }
+
     const { pkg } = new RearguardConfig(envConfig, resolve(module_path, "package.json"));
 
     module_map.set(pkg.name, module_path);
@@ -50,10 +54,6 @@ async function monorepo() {
 
     if (!envConfig.is_mono_bootstrap && envConfig.is_mono_build) {
       await build(module_path);
-    }
-
-    if (!envConfig.is_mono_bootstrap && envConfig.is_mono_link) {
-      await link(module_path);
     }
 
     if (envConfig.is_mono_bootstrap) {
