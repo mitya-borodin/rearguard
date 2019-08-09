@@ -1,4 +1,16 @@
-# 4.8.1 (2019-07-04)
+# 4.8.1 (2019-08-09)
+
+BREAKING CHANGES:
+
+FEATURES:
+
+IMPROVEMENTS:
+
+BUG FIXES:
+
+- Fix default value for WDS config;
+
+## 4.8.1 (2019-07-04)
 
 BREAKING CHANGES:
 

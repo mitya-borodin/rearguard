@@ -50,7 +50,7 @@ export class WDSConfig extends NonVersionableConfig implements IWDSConfig {
 
     this.wds = {
       proxy: {
-        "/service": "http://localhost:10000",
+        "/api": "http://localhost:10000",
         "/ws": {
           changeOrigin: true,
           target: "ws://localhost:10001",
