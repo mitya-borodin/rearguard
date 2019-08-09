@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { execSync } from "child_process";
 import * as spawn from "cross-spawn";
-import del from "del";
+import * as del from "del";
 import * as moment from "moment";
 import * as path from "path";
 import { build_intermediate_dependencies } from "../components/build_intermediate_dependencies";
@@ -107,7 +107,7 @@ async function build_node_server() {
       console.log(
         chalk.bold.red(
           "The tsc failed because the process exited too early. " +
-            "This probably means the system ran out of memory or someone called `kill -9` on the process.",
+          "This probably means the system ran out of memory or someone called `kill -9` on the process.",
         ),
       );
 
@@ -116,7 +116,7 @@ async function build_node_server() {
       console.log(
         chalk.bold.red(
           "The tsc failed because the process exited too early. " +
-            "Someone might have called `kill` or `killall`, or the system could be shutting down.",
+          "Someone might have called `kill` or `killall`, or the system could be shutting down.",
         ),
       );
 
