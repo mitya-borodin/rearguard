@@ -1,14 +1,44 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
     "rootDir": "./",
-    "strict": true,
-    "module": "commonjs",
-    "lib": ["es6", "webworker", "es7"],
-    "moduleResolution": "node",
-    "target": "es6",
+    "outDir": "./lib",
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "target": "es6",
+    "lib": [
+      "es6",
+      "es7"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noErrorTruncation": true,
+    /* Strict Type-Checking Options */
+    "strict": true
+    /*
+      Enable all strict type checking options.
+      Enabling --strict enables
+      --noImplicitAny,
+      --noImplicitThis,
+      --alwaysStrict,
+      --strictNullChecks,
+      --strictFunctionTypes
+      --strictPropertyInitialization.
+    */ ,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noImplicitAny": false /** Raise error on expressions and declarations with an implied any type. */,
+    "strictPropertyInitialization": false,
+    /* Debug Options */
+    "diagnostics": false, // Show diagnostic information.
+    "extendedDiagnostics": false, // Show verbose diagnostic information.
+    "traceResolution": false, // Enable tracing of the name resolution process.
+    "skipLibCheck": true,
+    /* Experimental Options */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   },
-  "include": ["src/**/*", "bin/**/*"]
+  "include": [
+    "src/**/*",
+    "bin/**/*"
+  ]
 }

@@ -130,14 +130,42 @@ npm install -D rearguard
 
 ## CLI
 
-- [**rearguard init** [ --dll | --browser_lib | --load_on_demand | --node_lib | --application | --back_end ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/init.md)
-- [**rearguard build** [ --application | --dll | --browser_lib | --node_lib | --release | -r | --both | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build.md)
-- [**rearguard monorepo** [ --init | --install | --build | --link | --bootstrap | --release | -r | --both | --test | --publish | --patch | --minor | --major ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/monorepo.md)
-- [**rearguard wds** [ --release | -r | --debug | -d ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/wds.md)
-- [**rearguard sync** [ --watch ]](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/sync.md)
-- [**rearguard start_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/start_node_server.md)
-- [**rearguard build_node_server**](https://gitlab.com/mitya-borodin/rearguard/blob/master/docs/build_node_server.md)
-- **rearguard test** - run `*.spec.ts` files into `tests` directory;
+### Project Initialization / Reinitialization
+
+- rearguard init browser app [ --force ]
+- rearguard init browser lib [ --force ]
+- rearguard init node app [ --force ]
+- rearguard init node lib [ --force ]
+
+### Develop mode
+
+- rearguard start [ --release | --debug ]
+
+### Build mode
+
+- rearguard build  [ --only_dev | --debug | --need_update_build_time ]
+
+### Testing mode
+
+- rearguard test [ --debug ]
+
+### Project Service
+
+- rearguard sync
+- rearguard check_deps_on_npm
+
+### Group service
+
+- rearguard group bootstrap [ --force | --only_dev | --debug ]
+- rearguard group clear
+- rearguard group init [ --force ]
+- rearguard group install
+- rearguard group build [ --only_dev | --debug ]
+- rearguard group link
+- rearguard group test [ --debug ]
+- rearguard group publish [ --patch | --minor | --major ]
+- rearguard group sync
+- rearguard group check_deps_on_npm
 
 <a name="structure"></a>
 
