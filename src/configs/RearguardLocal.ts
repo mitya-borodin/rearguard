@@ -1,7 +1,6 @@
-import { isArray, isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
-import { isMoment, Moment } from "moment";
+import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
-import { IRearguard } from "../interface/configs/IRearguard";
+import { isMoment, Moment } from "moment";
 import { IRearguardLocal } from "../interface/configs/IRearguardLocal";
 
 export class RearguardLocal implements IRearguardLocal {
