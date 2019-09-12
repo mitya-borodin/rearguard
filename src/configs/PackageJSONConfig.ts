@@ -10,17 +10,17 @@ import { Rearguard } from "./Rearguard";
 export class PackageJSONConfig implements IPackageJSONConfig {
   private CWD: string;
   private file_name: string;
-  private file: string;
+  private file_path: string;
 
   constructor(CWD: string = process.cwd()) {
     this.CWD = CWD;
     this.file_name = "package.json";
-    this.file = path.resolve(this.CWD, this.file_name);
+    this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
   public getPkg(): Readonly<IPackageJSON> {
-    if (fs.existsSync(this.file)) {
-      const content_of_pkg_file = fs.readFileSync(this.file, { encoding: "utf-8" });
+    if (fs.existsSync(this.file_path)) {
+      const content_of_pkg_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
 
       try {
         return new PackageJSON(JSON.parse(content_of_pkg_file));
@@ -29,6 +29,10 @@ export class PackageJSONConfig implements IPackageJSONConfig {
 
         process.exit(1);
       }
+    } else {
+      console.error(`File ${this.file_path} not found`);
+
+      process.exit(1);
     }
 
     return new PackageJSON({});
@@ -98,9 +102,11 @@ export class PackageJSONConfig implements IPackageJSONConfig {
     const newPkg: Readonly<IPackageJSON> = new PackageJSON(pkg);
 
     try {
-      if (fs.existsSync(this.file)) {
-        fs.writeFileSync(this.file, PPJ.format(newPkg), { encoding: "utf-8" });
+      if (fs.existsSync(this.file_path)) {
+        fs.writeFileSync(this.file_path, PPJ.format(newPkg), { encoding: "utf-8" });
       } else {
+        console.error(`File ${this.file_path} not found`);
+
         process.exit(1);
       }
     } catch (error) {

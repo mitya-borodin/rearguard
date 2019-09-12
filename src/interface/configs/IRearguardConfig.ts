@@ -1,5 +1,4 @@
 import { IPackageJSONConfig } from "./IPackageJSONConfig";
-import { IRearguard } from "./IRearguard";
 
 export interface IRearguardConfig extends IPackageJSONConfig {
   getContext(): string;
@@ -10,8 +9,8 @@ export interface IRearguardConfig extends IPackageJSONConfig {
     path: string;
     publicPath: string;
   };
-  getDeps(): string[];
+  getProjectDeps(): string[];
 
-  setRuntime(runtime: "browser" | "node"): IRearguardConfig;
+  setRuntime(runtime: "browser" | "node" | "isomorphic"): IRearguardConfig;
   setType(type: "app" | "lib"): IRearguardConfig;
 }
