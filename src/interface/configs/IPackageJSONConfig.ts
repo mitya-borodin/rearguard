@@ -1,5 +1,4 @@
 import { IDependencyMap, IPackageJSON, IScriptsMap } from "./IPackageJSON";
-import { IRearguardConfig } from "./IRearguardConfig";
 import { IRearguard } from "./IRearguard";
 
 export interface IPackageJSONConfig {
