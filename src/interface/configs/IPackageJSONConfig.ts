@@ -1,5 +1,6 @@
 import { IDependencyMap, IPackageJSON, IScriptsMap } from "./IPackageJSON";
 import { IRearguardConfig } from "./IRearguardConfig";
+import { IRearguard } from "./IRearguard";
 
 export interface IPackageJSONConfig {
   getPkg(): Readonly<IPackageJSON>;
@@ -8,15 +9,17 @@ export interface IPackageJSONConfig {
   getVersion(): string;
   getFiles(): string[];
 
-  getDependencies(): string[];
-  setDependencies(dependencies: IDependencyMap): Readonly<IDependencyMap>;
+  getDependencies(): Readonly<IDependencyMap>;
+  getDependencyList(): string[];
+  setDependencies(dependencies: IDependencyMap): Readonly<IPackageJSON>;
 
   getDevDependencies(): Readonly<IDependencyMap>;
-  setDevDependencies(devDependencies: IDependencyMap): Readonly<IDependencyMap>;
+  getDevDependencyList(): string[];
+  setDevDependencies(devDependencies: IDependencyMap): Readonly<IPackageJSON>;
 
   getScripts(): Readonly<IScriptsMap>;
-  setScripts(scripts: IScriptsMap): Readonly<IScriptsMap>;
+  setScripts(scripts: IScriptsMap): Readonly<IPackageJSON>;
 
-  getRearguard(): Readonly<IRearguardConfig>;
-  setRearguard(rearguard: IRearguardConfig): Readonly<IRearguardConfig>;
+  getRearguard(): Readonly<IRearguard>;
+  setRearguard(rearguard: IRearguard): Readonly<IPackageJSON>;
 }
