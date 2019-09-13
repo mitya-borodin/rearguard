@@ -1,7 +1,7 @@
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function build_executor(flags) {
+async function build_executor(flags: any) {
   console.log("BUILD__EXECUTOR", flags);
 }
 

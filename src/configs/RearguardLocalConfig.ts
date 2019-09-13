@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { IRearguardLocal } from "../interface/configs/IRearguardLocal";
-import { IRearguardLocalConfig } from "../interface/configs/IRearguardLocalConfig";
+import { IRearguardLocal } from "../interfaces/configs/IRearguardLocal";
+import { IRearguardLocalConfig } from "../interfaces/configs/IRearguardLocalConfig";
 import { RearguardLocal } from "./RearguardLocal";
 
 export class RearguardLocalConfig implements IRearguardLocalConfig {

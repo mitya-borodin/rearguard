@@ -2,11 +2,11 @@ import { init_component } from "../../../components/init";
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function app_executor(flags) {
+async function app_executor(flags: any) {
   await init_component({ browser: false, node: true, app: true, lib: false, force: flags.force });
 }
 
-async function lib_executor(flags) {
+async function lib_executor(flags: any) {
   await init_component({ browser: false, node: true, app: false, lib: true, force: flags.force });
 }
 

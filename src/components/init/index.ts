@@ -1,4 +1,4 @@
-import { IInitExecutorOptions } from "../../interface/executors/IInitExecutorOptions";
+import { IInitExecutorOptions } from "../../interfaces/executors/IInitExecutorOptions";
 import { init_browser_app } from "./init_browser_app";
 import { init_browser_lib } from "./init_browser_lib";
 import { init_isomorphic } from "./init_isomorphic";

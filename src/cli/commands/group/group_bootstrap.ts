@@ -1,7 +1,7 @@
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function group_bootstrap_executor(flags) {
+async function group_bootstrap_executor(flags: any) {
   console.log("GROUP_BOOTSTRAP____EXECUTOR", flags);
 }
 

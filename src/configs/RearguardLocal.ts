@@ -1,7 +1,7 @@
 import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
 import { isMoment, Moment } from "moment";
-import { IRearguardLocal } from "../interface/configs/IRearguardLocal";
+import { IRearguardLocal } from "../interfaces/configs/IRearguardLocal";
 
 export class RearguardLocal implements IRearguardLocal {
   public webpack_dev_server: {

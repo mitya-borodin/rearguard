@@ -1,7 +1,7 @@
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function group_init_executor(flags) {
+async function group_init_executor(flags: any) {
   console.log("group_init____EXECUTOR", flags);
 }
 

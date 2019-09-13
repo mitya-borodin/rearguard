@@ -1,7 +1,7 @@
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function group_link_executor(flags) {
+async function group_link_executor(flags: any) {
   console.log("group_link____EXECUTOR", flags);
 }
 

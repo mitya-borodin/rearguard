@@ -2,43 +2,42 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./lib",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "target": "es6",
-    "lib": [
-      "es6",
-      "es7"
-    ],
+    "lib": ["es6", "es7"],
     "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
-    "noErrorTruncation": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
     /* Strict Type-Checking Options */
-    "strict": true
+    "strict": true,
     /*
       Enable all strict type checking options.
       Enabling --strict enables
-      --noImplicitAny,
-      --noImplicitThis,
-      --alwaysStrict,
-      --strictNullChecks,
-      --strictFunctionTypes
-      --strictPropertyInitialization.
-    */ ,
+        --noImplicitAny,
+        --noImplicitThis,
+        --alwaysStrict,
+        --strictBindCallApply,
+        --strictNullChecks,
+        --strictFunctionTypes,
+        --strictPropertyInitialization.
+    */
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
-    "noImplicitAny": false /** Raise error on expressions and declarations with an implied any type. */,
-    "strictPropertyInitialization": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "suppressExcessPropertyErrors": true,
+
     /* Debug Options */
+    "pretty": true, // Stylize errors and messages using color and context.
     "diagnostics": false, // Show diagnostic information.
     "extendedDiagnostics": false, // Show verbose diagnostic information.
     "traceResolution": false, // Enable tracing of the name resolution process.
-    "skipLibCheck": true,
+    "noErrorTruncation": true,
+
     /* Experimental Options */
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true
   },
-  "include": [
-    "src/**/*",
-    "bin/**/*"
-  ]
+  "include": ["src/**/*", "bin/**/*"]
 }

@@ -1,7 +1,7 @@
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function sync_executor(flags) {
+async function sync_executor(flags: any) {
   console.log("SYNC____EXECUTOR", flags);
 }
 

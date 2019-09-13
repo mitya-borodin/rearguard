@@ -1,6 +1,6 @@
 import { defaultsDeep } from "lodash";
-import { IRearguard } from "../interface/configs/IRearguard";
-import { IRearguardConfig } from "../interface/configs/IRearguardConfig";
+import { IRearguard } from "../interfaces/configs/IRearguard";
+import { IRearguardConfig } from "../interfaces/configs/IRearguardConfig";
 import { PackageJSONConfig } from "./PackageJSONConfig";
 import { Rearguard } from "./Rearguard";
 

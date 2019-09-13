@@ -1,5 +1,5 @@
 import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
-import { IRearguard } from "../interface/configs/IRearguard";
+import { IRearguard } from "../interfaces/configs/IRearguard";
 
 export class Rearguard implements IRearguard {
   public webpack: {
@@ -60,6 +60,8 @@ export class Rearguard implements IRearguard {
       },
     };
 
+    this.postcss_plugins = "";
+
     if (isObject(data.webpack)) {
       for (const fieldName of ["context", "entry", "dll_entry", "lib_entry"]) {
         if (isString(data.webpack[fieldName])) {
@@ -116,6 +118,10 @@ export class Rearguard implements IRearguard {
           }
         }
       }
+    }
+
+    if (isString(data.postcss_plugins)) {
+      this.postcss_plugins = data.postcss_plugins;
     }
   }
 }

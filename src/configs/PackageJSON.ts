@@ -11,8 +11,8 @@ import {
   IPublishConfig,
   IRepository,
   IScriptsMap,
-} from "../interface/configs/IPackageJSON";
-import { IRearguard } from "../interface/configs/IRearguard";
+} from "../interfaces/configs/IPackageJSON";
+import { IRearguard } from "../interfaces/configs/IRearguard";
 import { Rearguard } from "./Rearguard";
 
 export class PackageJSON implements IPackageJSON {

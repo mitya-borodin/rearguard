@@ -2,7 +2,7 @@ import { init_component } from "../../../components/init";
 import { Command } from "../../common/implementation/Command";
 import { ICommand } from "../../common/interfaces/ICommand";
 
-async function isomorphic_executor(flags) {
+async function isomorphic_executor(flags: any) {
   await init_component({ browser: true, node: true, app: false, lib: true, force: flags.force });
 }
 

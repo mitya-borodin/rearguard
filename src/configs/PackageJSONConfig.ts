@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { IDependencyMap, IPackageJSON, IScriptsMap } from "../interface/configs/IPackageJSON";
-import { IPackageJSONConfig } from "../interface/configs/IPackageJSONConfig";
-import { IRearguard } from "../interface/configs/IRearguard";
+import { IDependencyMap, IPackageJSON, IScriptsMap } from "../interfaces/configs/IPackageJSON";
+import { IPackageJSONConfig } from "../interfaces/configs/IPackageJSONConfig";
+import { IRearguard } from "../interfaces/configs/IRearguard";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
 
