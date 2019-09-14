@@ -35,8 +35,8 @@ export class Rearguard implements IRearguard {
   constructor(data: Partial<IRearguard>) {
     this.webpack = {
       context: "src",
-      entry: "index.tsx",
       dll_entry: "vendors.ts",
+      entry: "index.tsx",
       lib_entry: "export.ts",
       modules: ["src"],
       output: {
@@ -60,7 +60,7 @@ export class Rearguard implements IRearguard {
       },
     };
 
-    this.postcss_plugins = "";
+    this.postcss_plugins = "postcss.config.js";
 
     if (isObject(data.webpack)) {
       for (const fieldName of ["context", "entry", "dll_entry", "lib_entry"]) {
@@ -70,6 +70,8 @@ export class Rearguard implements IRearguard {
       }
 
       if (isArray(data.webpack.modules)) {
+        this.webpack.modules = [];
+
         for (const module of data.webpack.modules) {
           this.webpack.modules.push(module);
         }

@@ -189,9 +189,9 @@ export class PackageJSON implements IPackageJSON {
     }
 
     for (const fieldName of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) {
-      const result = {};
-
       if (isObject(data[fieldName])) {
+        const result = {};
+
         for (const key in data[fieldName]) {
           if (data[fieldName].hasOwnProperty(key)) {
             if (isString(key) && isString(data[fieldName][key])) {
@@ -199,9 +199,8 @@ export class PackageJSON implements IPackageJSON {
             }
           }
         }
+        this[fieldName] = result;
       }
-
-      this[fieldName] = result;
     }
 
     for (const fieldName of ["bundledDependencies", "os", "cpu"]) {

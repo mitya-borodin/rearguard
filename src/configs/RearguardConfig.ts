@@ -32,6 +32,10 @@ export class RearguardConfig extends PackageJSONConfig implements IRearguardConf
     return this.getRearguard().project.deps;
   }
 
+  public isPublishToGit(): boolean {
+    return this.getRearguard().distribution.publish_to_git;
+  }
+
   public setRuntime(runtime: "browser" | "node" | "isomorphic"): IRearguardConfig {
     const update: object = defaultsDeep(this.getRearguard(), { project: { runtime } });
     const rearguard: Readonly<IRearguard> = new Rearguard(update);

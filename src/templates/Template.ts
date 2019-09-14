@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { mkdir } from "../helpers/mkdir";
 import { ITemplate } from "../interfaces/templates/ITemplate";
 
 export class Template implements ITemplate {
@@ -21,19 +22,35 @@ export class Template implements ITemplate {
     this.sourceFileName = sourceFileName;
     this.destinationFileName = destinationFileName;
 
-    this.sourceFilePath = path.resolve(path.dirname(sourceDir), this.sourceFileName);
-    this.destinationFilePath = path.resolve(path.dirname(this.CWD), this.destinationFileName);
+    this.sourceFilePath = path.resolve(sourceDir, this.sourceFileName);
+    this.destinationFilePath = path.resolve(this.CWD, this.destinationFileName);
 
     this.sourceContent = "";
+
+    console.log(this.sourceFilePath, fs.existsSync(this.sourceFilePath));
 
     if (fs.existsSync(this.sourceFilePath)) {
       this.sourceContent = fs.readFileSync(this.sourceFilePath, { encoding: "utf-8" });
     }
   }
 
-  public render(templateData: { [key: string]: any }): void {
+  public async render(templateData: { [key: string]: any } = { force: false }): Promise<void> {
+    const targetDir: string = path.dirname(this.destinationFilePath);
+
+    // console.log(targetDir, this.sourceContent);
+
+    if (!fs.existsSync(targetDir)) {
+      await mkdir(targetDir);
+    }
+
     if (fs.existsSync(this.CWD)) {
-      fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
+      if (this.isExistDestFile()) {
+        if (templateData.force) {
+          fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
+        }
+      } else {
+        fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
+      }
     }
   }
 

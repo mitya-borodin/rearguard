@@ -11,6 +11,8 @@ export interface IRearguardConfig extends IPackageJSONConfig {
   };
   getProjectDeps(): string[];
 
+  isPublishToGit(): boolean;
+
   setRuntime(runtime: "browser" | "node" | "isomorphic"): IRearguardConfig;
   setType(type: "app" | "lib"): IRearguardConfig;
 }
