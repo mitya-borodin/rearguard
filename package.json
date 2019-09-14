@@ -35,6 +35,11 @@
     "build": "npm run lint && tsc",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "@borodindmitriy/isomorphic": "3.0.4",
     "@borodindmitriy/utils": "3.0.4",
@@ -104,7 +109,9 @@
     "@types/webpack-bundle-analyzer": "2.13.2",
     "@types/webpack-dev-server": "3.1.7",
     "ejs": "2.7.1",
-    "np": "5.1.0"
+    "husky": "3.0.5",
+    "np": "5.1.0",
+    "pretty-quick": "1.11.1"
   },
   "description": "Ultimate build and dev tool for create web site, SPA, mobile and desktop application powered by Cordova project. This tool support library oriented paradigm.",
   "keywords": [
