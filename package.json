@@ -33,11 +33,14 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "npm run lint && tsc",
-    "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'"
+    "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'",
+    "templates": "node ./tools/copyTemplateFiles.js",
+    "prepublish": "npm run template",
+    "prestart": "npm run template"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "pretty-quick --staged && npm run templates"
     }
   },
   "dependencies": {
@@ -111,7 +114,8 @@
     "ejs": "2.7.1",
     "husky": "3.0.5",
     "np": "5.1.0",
-    "pretty-quick": "1.11.1"
+    "pretty-quick": "1.11.1",
+    "recursive-copy": "2.0.10"
   },
   "description": "Ultimate build and dev tool for create web site, SPA, mobile and desktop application powered by Cordova project. This tool support library oriented paradigm.",
   "keywords": [

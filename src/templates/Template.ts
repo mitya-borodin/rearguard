@@ -27,7 +27,7 @@ export class Template implements ITemplate {
 
     this.sourceContent = "";
 
-    console.log(this.sourceFilePath, fs.existsSync(this.sourceFilePath));
+    console.log(sourceDir, fs.existsSync(this.sourceFilePath));
 
     if (fs.existsSync(this.sourceFilePath)) {
       this.sourceContent = fs.readFileSync(this.sourceFilePath, { encoding: "utf-8" });

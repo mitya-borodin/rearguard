@@ -2,6 +2,7 @@
 declare module "workbox-webpack-plugin";
 declare module "node-object-hash";
 declare module "copy";
+declare module "recursive-copy";
 declare module "terser-webpack-plugin";
 declare module "assets-webpack-plugin";
 declare module "prettier-package-json";
