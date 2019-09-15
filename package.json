@@ -35,8 +35,8 @@
     "build": "npm run lint && tsc",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'",
     "templates": "node ./tools/copyTemplateFiles.js",
-    "prepublish": "npm run template",
-    "prestart": "npm run template"
+    "prepublish": "npm run templates",
+    "prestart": "npm run templates"
   },
   "husky": {
     "hooks": {
