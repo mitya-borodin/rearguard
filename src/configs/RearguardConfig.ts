@@ -1,10 +1,8 @@
 import { defaultsDeep } from "lodash";
-import { IRearguard } from "../interfaces/configs/IRearguard";
-import { IRearguardConfig } from "../interfaces/configs/IRearguardConfig";
 import { PackageJSONConfig } from "./PackageJSONConfig";
 import { Rearguard } from "./Rearguard";
 
-export class RearguardConfig extends PackageJSONConfig implements IRearguardConfig {
+export class RearguardConfig extends PackageJSONConfig {
   public getContext(): string {
     return this.getRearguard().webpack.context;
   }
@@ -36,18 +34,22 @@ export class RearguardConfig extends PackageJSONConfig implements IRearguardConf
     return this.getRearguard().distribution.publish_to_git;
   }
 
-  public setRuntime(runtime: "browser" | "node" | "isomorphic"): IRearguardConfig {
+  public isOverwriteTSLintConfig(): boolean {
+    return !this.getRearguard().configs.noOverwriteTSLintConfig;
+  }
+
+  public setRuntime(runtime: "browser" | "node" | "isomorphic"): RearguardConfig {
     const update: object = defaultsDeep(this.getRearguard(), { project: { runtime } });
-    const rearguard: Readonly<IRearguard> = new Rearguard(update);
+    const rearguard: Readonly<Rearguard> = new Rearguard(update);
 
     this.setRearguard(rearguard);
 
     return this;
   }
 
-  public setType(type: "app" | "lib"): IRearguardConfig {
+  public setType(type: "app" | "lib"): RearguardConfig {
     const update: object = defaultsDeep(this.getRearguard(), { project: { type } });
-    const rearguard: Readonly<IRearguard> = new Rearguard(update);
+    const rearguard: Readonly<Rearguard> = new Rearguard(update);
 
     this.setRearguard(rearguard);
 

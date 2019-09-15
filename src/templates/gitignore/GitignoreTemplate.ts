@@ -1,14 +1,16 @@
 import * as ejs from "ejs";
 import * as fs from "fs";
-import { ITemplate } from "../../interfaces/templates/ITemplate";
 import { Template } from "../Template";
 
-export class GitignoreTemplate extends Template implements ITemplate {
+// TODO Add logging;
+export class GitignoreTemplate extends Template {
   public async render(templateData: {
     publish_to_git: boolean;
     list_for_load_on_demand: string;
     force: boolean;
   }): Promise<void> {
+    await this.createTargetDir();
+
     if (fs.existsSync(this.CWD)) {
       const renderedContent: string = ejs.render(this.sourceContent, templateData);
 

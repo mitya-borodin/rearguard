@@ -1,7 +1,6 @@
 import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
-import { IRearguard } from "../interfaces/configs/IRearguard";
 
-export class Rearguard implements IRearguard {
+export class Rearguard {
   public webpack: {
     context: string;
     entry: string;
@@ -30,9 +29,13 @@ export class Rearguard implements IRearguard {
     };
   };
 
+  public configs: {
+    noOverwriteTSLintConfig: boolean;
+  };
+
   public postcss_plugins: string;
 
-  constructor(data: Partial<IRearguard>) {
+  constructor(data: any) {
     this.webpack = {
       context: "src",
       dll_entry: "vendors.ts",
@@ -58,6 +61,10 @@ export class Rearguard implements IRearguard {
       docker: {
         org_namespace: "org_namespace",
       },
+    };
+
+    this.configs = {
+      noOverwriteTSLintConfig: false,
     };
 
     this.postcss_plugins = "postcss.config.js";
@@ -118,6 +125,14 @@ export class Rearguard implements IRearguard {
           if (isString(data.distribution.docker[fieldName])) {
             this.distribution.docker[fieldName] = data.distribution.docker[fieldName];
           }
+        }
+      }
+    }
+
+    if (isObject(data.configs)) {
+      for (const item of ["noOverwriteTSLintConfig"]) {
+        if (isBoolean(data.configs[item])) {
+          this.configs[item] = data.configs[item];
         }
       }
     }

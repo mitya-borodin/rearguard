@@ -1,11 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { IRearguardLocal } from "../interfaces/configs/IRearguardLocal";
-import { IRearguardLocalConfig } from "../interfaces/configs/IRearguardLocalConfig";
 import { RearguardLocal } from "./RearguardLocal";
 
-export class RearguardLocalConfig implements IRearguardLocalConfig {
+export class RearguardLocalConfig {
   private CWD: string;
   private file_name: string;
   private file_path: string;
@@ -16,7 +14,7 @@ export class RearguardLocalConfig implements IRearguardLocalConfig {
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
-  public getConfig(): Readonly<IRearguardLocal> {
+  public getConfig(): Readonly<RearguardLocal> {
     if (fs.existsSync(this.file_path)) {
       const content_of_rc_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
 
@@ -36,8 +34,8 @@ export class RearguardLocalConfig implements IRearguardLocalConfig {
     return new RearguardLocal({});
   }
 
-  public setConfig(config: IRearguardLocal): Readonly<IRearguardLocal> {
-    const newConfig: Readonly<IRearguardLocal> = new RearguardLocal(config);
+  public setConfig(config: RearguardLocal): Readonly<RearguardLocal> {
+    const newConfig: Readonly<RearguardLocal> = new RearguardLocal(config);
 
     try {
       if (fs.existsSync(this.file_path)) {

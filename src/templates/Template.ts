@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import { mkdir } from "../helpers/mkdir";
-import { ITemplate } from "../interfaces/templates/ITemplate";
 
-export class Template implements ITemplate {
+// TODO Add logging;
+export class Template {
   protected CWD: string;
   protected sourceFileName: string;
   protected sourceFilePath: string;
@@ -27,21 +27,13 @@ export class Template implements ITemplate {
 
     this.sourceContent = "";
 
-    console.log(sourceDir, fs.existsSync(this.sourceFilePath));
-
     if (fs.existsSync(this.sourceFilePath)) {
       this.sourceContent = fs.readFileSync(this.sourceFilePath, { encoding: "utf-8" });
     }
   }
 
   public async render(templateData: { [key: string]: any } = { force: false }): Promise<void> {
-    const targetDir: string = path.dirname(this.destinationFilePath);
-
-    // console.log(targetDir, this.sourceContent);
-
-    if (!fs.existsSync(targetDir)) {
-      await mkdir(targetDir);
-    }
+    await this.createTargetDir();
 
     if (fs.existsSync(this.CWD)) {
       if (this.isExistDestFile()) {
@@ -56,5 +48,11 @@ export class Template implements ITemplate {
 
   public isExistDestFile(): boolean {
     return fs.existsSync(this.destinationFilePath);
+  }
+
+  public async createTargetDir(): Promise<void> {
+    const targetDir: string = path.dirname(this.destinationFilePath);
+
+    await mkdir(targetDir);
   }
 }

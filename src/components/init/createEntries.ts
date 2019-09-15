@@ -2,21 +2,34 @@ import * as fs from "fs";
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
-import { IRearguardConfig } from "../../interfaces/configs/IRearguardConfig";
 
+// TODO Add logging;
 export const createEntries = async (CWD: string): Promise<void> => {
-  const rearguardConfig: IRearguardConfig = new RearguardConfig(CWD);
+  const rearguardConfig = new RearguardConfig(CWD);
 
-  const context: string = rearguardConfig.getContext();
-  const entry: string = rearguardConfig.getEntry();
-  const libEntry: string = rearguardConfig.getLibEntry();
-  const dllEntry: string = rearguardConfig.getDllEntry();
+  const context = rearguardConfig.getContext();
+  const entry = rearguardConfig.getEntry();
+  const libEntry = rearguardConfig.getLibEntry();
+  const dllEntry = rearguardConfig.getDllEntry();
 
-  await mkdir(path.resolve(CWD, context));
+  const contextPath = path.resolve(CWD, context);
+  const entryPath = path.resolve(contextPath, entry);
+  const libEntryPath = path.resolve(contextPath, libEntry);
+  const dllEntryPath = path.resolve(contextPath, dllEntry);
 
-  if (fs.existsSync(path.resolve(CWD, context))) {
-    fs.writeFileSync(path.resolve(CWD, context, entry), `console.log("Entry point for launch in browser");`);
-    fs.writeFileSync(path.resolve(CWD, context, libEntry), `// Entry point for export library API`);
-    fs.writeFileSync(path.resolve(CWD, context, dllEntry), `// Entry point for collect vendors deps into dll library`);
+  await mkdir(contextPath);
+
+  if (fs.existsSync(contextPath)) {
+    if (!fs.existsSync(contextPath)) {
+      fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");`);
+    }
+
+    if (!fs.existsSync(libEntryPath)) {
+      fs.writeFileSync(libEntryPath, `// Entry point for export library API`);
+    }
+
+    if (!fs.existsSync(dllEntryPath)) {
+      fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library`);
+    }
   }
 };

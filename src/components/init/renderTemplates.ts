@@ -1,31 +1,21 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { IRearguardConfig } from "../../interfaces/configs/IRearguardConfig";
-import {
-  backEndDockerfileTemplate,
-  dockerComposeExampleTemplate,
-  dockerIgnoreTemplate,
-  frontEndDockerfileTemplate,
-} from "../../templates/docker";
+import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
 import { editorConfigTemplate } from "../../templates/editorConfig";
 import { gitignoreTemplate } from "../../templates/gitignore";
-import { nginxTemplate } from "../../templates/nginx";
 import { npmRcTemplate } from "../../templates/npmRc";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
+import { tsLintTemplate } from "../../templates/tsLint";
 import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
 
+// TODO Add logging;
 export const renderTemplates = async (CWD: string, options: { force: boolean }) => {
-  const rearguardConfig: IRearguardConfig = new RearguardConfig(CWD);
-  const publish_to_git: boolean = rearguardConfig.isPublishToGit();
+  const rearguardConfig = new RearguardConfig(CWD);
+  const publish_to_git = rearguardConfig.isPublishToGit();
 
-  // TODO Set name of list_for_load_on_demand file;
-  await gitignoreTemplate.render({ publish_to_git, list_for_load_on_demand: "", ...options });
-  await dockerIgnoreTemplate.render(options);
-  await backEndDockerfileTemplate.render(options);
-  await frontEndDockerfileTemplate.render(options);
-  await dockerComposeExampleTemplate.render(options);
-  await nginxTemplate.render(options);
+  await tsLintTemplate.render({ force: rearguardConfig.isOverwriteTSLintConfig() });
+  await gitignoreTemplate.render({ publish_to_git, list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND, ...options });
+  await postCSSConfigTemplate.render(options);
   await editorConfigTemplate.render(options);
   await npmRcTemplate.render(options);
-  await postCSSConfigTemplate.render(options);
   await typingNonTypescriptModulesTemplate.render(options);
 };

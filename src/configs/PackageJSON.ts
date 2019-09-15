@@ -7,15 +7,13 @@ import {
   IDependencyMap,
   IDirectories,
   IEngines,
-  IPackageJSON,
   IPublishConfig,
   IRepository,
   IScriptsMap,
 } from "../interfaces/configs/IPackageJSON";
-import { IRearguard } from "../interfaces/configs/IRearguard";
 import { Rearguard } from "./Rearguard";
 
-export class PackageJSON implements IPackageJSON {
+export class PackageJSON {
   public readonly name: string;
   public readonly version: string;
   public readonly description?: string;
@@ -44,9 +42,9 @@ export class PackageJSON implements IPackageJSON {
   public readonly preferGlobal?: boolean;
   public readonly private?: boolean;
   public readonly publishConfig?: IPublishConfig;
-  public readonly rearguard: IRearguard;
+  public readonly rearguard: Rearguard;
 
-  constructor(data: Partial<IPackageJSON>) {
+  constructor(data: any) {
     this.name = "";
     this.version = "1.0.0";
     this.homepage = "";

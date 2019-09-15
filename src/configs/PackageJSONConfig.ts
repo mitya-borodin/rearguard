@@ -1,13 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { IDependencyMap, IPackageJSON, IScriptsMap } from "../interfaces/configs/IPackageJSON";
-import { IPackageJSONConfig } from "../interfaces/configs/IPackageJSONConfig";
-import { IRearguard } from "../interfaces/configs/IRearguard";
+import { IDependencyMap, IScriptsMap } from "../interfaces/configs/IPackageJSON";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
 
-export class PackageJSONConfig implements IPackageJSONConfig {
+export class PackageJSONConfig {
   private CWD: string;
   private file_name: string;
   private file_path: string;
@@ -18,7 +16,7 @@ export class PackageJSONConfig implements IPackageJSONConfig {
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
-  public getPkg(): Readonly<IPackageJSON> {
+  public getPkg(): Readonly<PackageJSON> {
     if (fs.existsSync(this.file_path)) {
       const content_of_pkg_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
 
@@ -58,8 +56,8 @@ export class PackageJSONConfig implements IPackageJSONConfig {
     return Object.keys(this.getDependencies());
   }
 
-  public setDependencies(dependencies: IDependencyMap): Readonly<IPackageJSON> {
-    const newPkg: Readonly<IPackageJSON> = new PackageJSON({ ...this.getPkg(), dependencies });
+  public setDependencies(dependencies: IDependencyMap): Readonly<PackageJSON> {
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), dependencies });
 
     return this.setPkg(newPkg);
   }
@@ -72,8 +70,8 @@ export class PackageJSONConfig implements IPackageJSONConfig {
     return Object.keys(this.getDevDependencies());
   }
 
-  public setDevDependencies(devDependencies: IDependencyMap): Readonly<IPackageJSON> {
-    const newPkg: Readonly<IPackageJSON> = new PackageJSON({ ...this.getPkg(), devDependencies });
+  public setDevDependencies(devDependencies: IDependencyMap): Readonly<PackageJSON> {
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), devDependencies });
 
     return this.setPkg(newPkg);
   }
@@ -82,24 +80,24 @@ export class PackageJSONConfig implements IPackageJSONConfig {
     return this.getPkg().scripts || {};
   }
 
-  public setScripts(scripts: IScriptsMap): Readonly<IPackageJSON> {
-    const newPkg: Readonly<IPackageJSON> = new PackageJSON({ ...this.getPkg(), scripts });
+  public setScripts(scripts: IScriptsMap): Readonly<PackageJSON> {
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), scripts });
 
     return this.setPkg(newPkg);
   }
 
-  public getRearguard(): Readonly<IRearguard> {
+  public getRearguard(): Readonly<Rearguard> {
     return new Rearguard(this.getPkg().rearguard);
   }
 
-  public setRearguard(rearguard: IRearguard): Readonly<IPackageJSON> {
-    const newPkg: Readonly<IPackageJSON> = new PackageJSON({ ...this.getPkg(), rearguard: new Rearguard(rearguard) });
+  public setRearguard(rearguard: Rearguard): Readonly<PackageJSON> {
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), rearguard: new Rearguard(rearguard) });
 
     return this.setPkg(newPkg);
   }
 
-  private setPkg(pkg: Partial<IPackageJSON>): Readonly<IPackageJSON> {
-    const newPkg: Readonly<IPackageJSON> = new PackageJSON(pkg);
+  private setPkg(pkg: Partial<PackageJSON>): Readonly<PackageJSON> {
+    const newPkg: Readonly<PackageJSON> = new PackageJSON(pkg);
 
     try {
       if (fs.existsSync(this.file_path)) {

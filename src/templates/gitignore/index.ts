@@ -1,4 +1,3 @@
-import { ITemplate } from "../../interfaces/templates/ITemplate";
 import { GitignoreTemplate } from "./GitignoreTemplate";
 
-export const gitignoreTemplate: ITemplate = new GitignoreTemplate(".gitignore", ".gitignore", __dirname);
+export const gitignoreTemplate = new GitignoreTemplate(".gitignore", ".gitignore", __dirname);

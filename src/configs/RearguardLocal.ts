@@ -1,9 +1,8 @@
 import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
 import { isMoment, Moment } from "moment";
-import { IRearguardLocal } from "../interfaces/configs/IRearguardLocal";
 
-export class RearguardLocal implements IRearguardLocal {
+export class RearguardLocal {
   public webpack_dev_server: {
     host: string;
     port: number;
@@ -28,7 +27,7 @@ export class RearguardLocal implements IRearguardLocal {
     last_build_time: Moment;
   };
 
-  constructor(data: Partial<IRearguardLocal>) {
+  constructor(data: Partial<RearguardLocal>) {
     this.webpack_dev_server = {
       host: "localhost",
       port: 5000,

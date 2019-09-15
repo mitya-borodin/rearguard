@@ -9,6 +9,7 @@ const options = {
   },
 };
 
+// TODO Add logging;
 copy("src/templates", "lib/src/templates", options)
   .on(copy.events.COPY_FILE_START, function(copyOperation) {
     console.info("Copying file " + copyOperation.src + "...");
