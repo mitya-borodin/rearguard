@@ -1,11 +1,11 @@
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
-import { editorConfigTemplate } from "../../templates/editorConfig";
-import { gitignoreTemplate } from "../../templates/gitignore";
-import { npmRcTemplate } from "../../templates/npmRc";
-import { postCSSConfigTemplate } from "../../templates/postCssConfig";
-import { tsLintTemplate } from "../../templates/tsLint";
-import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
+import { RearguardConfig } from "../../../configs/RearguardConfig";
+import { LIST_OF_LOAD_ON_DEMAND } from "../../../const";
+import { editorConfigTemplate } from "../../../templates/editorConfig";
+import { gitignoreTemplate } from "../../../templates/gitignore";
+import { npmRcTemplate } from "../../../templates/npmRc";
+import { postCSSConfigTemplate } from "../../../templates/postCssConfig";
+import { tsLintTemplate } from "../../../templates/tsLint";
+import { typingNonTypescriptModulesTemplate } from "../../../templates/typingNonTypescriptModules";
 
 // TODO Add logging;
 export const renderTemplates = async (CWD: string, options: { force: boolean }) => {

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { mkdir } from "../../helpers/mkdir";
+import { RearguardConfig } from "../../../configs/RearguardConfig";
+import { mkdir } from "../../../helpers/mkdir";
 
 // TODO Add logging;
 export const createEntries = async (CWD: string): Promise<void> => {

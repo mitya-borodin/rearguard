@@ -119,8 +119,6 @@ export class Command implements ICommand {
         help = [...help, ...result_helps];
       }
     } else {
-      const flags_array: string = Array.from<string>(flags).join(" | ");
-
       if (flags.size > 0) {
         help.push(`${command_path} [ ${Array.from(flags).join(" | ")} ]`);
       } else {

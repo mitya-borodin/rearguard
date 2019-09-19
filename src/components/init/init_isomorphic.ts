@@ -2,8 +2,8 @@ import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { TypescriptConfig } from "../../configs/TypescriptConfig";
 import { TESTS_DIR_NAME } from "../../const";
-import { createEntries } from "./createEntries";
-import { renderTemplates } from "./renderTemplates";
+import { createEntries } from "./helpers/createEntries";
+import { renderTemplates } from "./helpers/renderTemplates";
 
 export async function init_isomorphic(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
