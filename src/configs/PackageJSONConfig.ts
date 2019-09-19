@@ -77,11 +77,12 @@ export class PackageJSONConfig {
   }
 
   public getScripts(): Readonly<IScriptsMap> {
-    return this.getPkg().scripts || {};
+    return this.getPkg().scripts;
   }
 
   public setScripts(scripts: IScriptsMap): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), scripts });
+    const curPkg = this.getPkg();
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...curPkg, scripts: { ...curPkg.scripts, ...scripts } });
 
     return this.setPkg(newPkg);
   }
