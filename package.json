@@ -32,16 +32,17 @@
   },
   "scripts": {
     "start": "tsc --watch",
-    "build": "npm run lint && tsc",
+    "build": "npm run lint && tsc && npm run templates",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'",
     "templates": "node ./tools/copyTemplateFiles.js",
     "make-prettier": "prettier --write '**/*.ts'",
-    "prepublish": "npm run templates",
+    "prepublish": "npm run lint && npm run templates",
     "prestart": "npm run templates"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && npm run templates"
+      "pre-commit": "pretty-quick --staged && npm run templates",
+      "pre-push": "npm run lint"
     }
   },
   "dependencies": {
