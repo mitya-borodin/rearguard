@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import del from "del";
+import * as del from "del";
 import { existsSync, readdirSync } from "fs";
 import { snakeCase } from "lodash";
 import * as path from "path";

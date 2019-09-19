@@ -36,13 +36,15 @@ export function general_WP_config(
 
   const externals: { [key: string]: any } = { ...lib_externals, ...a_externals };
 
-  console.log(chalk.bold.green("[ EXTERNALS ]"));
-  for (const key in externals) {
-    if (externals.hasOwnProperty(key)) {
-      const types = Object.keys(externals[key]);
+  if (Object.keys(externals).length > 0) {
+    console.log(chalk.bold.green("[ EXTERNALS ]"));
+    for (const key in externals) {
+      if (externals.hasOwnProperty(key)) {
+        const types = Object.keys(externals[key]);
 
-      for (const type of types) {
-        console.log(chalk.green(`[ ${key} ][ ${type} ][ ${externals[key][type]} ]`));
+        for (const type of types) {
+          console.log(chalk.green(`[ ${key} ][ ${type} ][ ${externals[key][type]} ]`));
+        }
       }
     }
   }
@@ -85,10 +87,10 @@ export function general_WP_config(
     },
     output: {
       // filename - шаблон имен файлов.
-      filename: isDevelopment ? "[name].js?[hash:8]" : "[chunkhash:32].js",
+      filename: isDevelopment ? "[name].js?[hash:8]" : "[hash:32].js",
       // Дописывает дополнительную информацию в bundle;
       pathinfo: isDebug,
-      chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[chunkhash:32].chunk.js",
+      chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[hash:32].chunk.js",
       // globalObject - непонятная хрень, после того, как все отлажу, то обязательно разберусь с этой настройкой.
       globalObject: "this",
       ...output,

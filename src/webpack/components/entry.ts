@@ -8,6 +8,8 @@ export default (entries: string[] = []): string | string[] | Entry | EntryFunc =
   const { entry } = rearguardConfig;
   const { port, host } = wdsConfig;
 
+  console.log(isWDS && isDevelopment);
+
   if (isWDS && isDevelopment) {
     return [
       `${envConfig.resolveDevModule("webpack-dev-server")}/client?https://${host}:${port}`,

@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import * as copy from "copy";
-import del from "del";
+import * as del from "del";
 import { existsSync } from "fs";
 import { snakeCase } from "lodash";
 import * as mkdirp from "mkdirp";
