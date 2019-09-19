@@ -1,8 +1,6 @@
 import { ITSLintConfigFile } from "../../interfaces/config/ITSLintConfigFile";
 import { ConfigFile } from "../ConfigFile";
 
-// tslint:disable:variable-name
-
 export class TSLintConfig extends ConfigFile implements ITSLintConfigFile {
   constructor() {
     super("tslint.json");
@@ -14,15 +12,11 @@ export class TSLintConfig extends ConfigFile implements ITSLintConfigFile {
       extends: ["tslint:recommended"],
       jsRules: {},
       rules: {
-        "max-classes-per-file": [false],
-        "member-access": true,
-        "no-console": false,
-        "no-var-requires": false,
-        "variable-name": false,
+        "no-console": [false],
+        "object-literal-sort-keys": [false],
+        "max-line-length": [true, 120],
       },
       rulesDirectory: [],
     };
   }
 }
-
-// tslint:enable:variable-name
