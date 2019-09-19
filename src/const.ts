@@ -1,9 +1,9 @@
 // export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
 export const DLL_MANIFEST_NAME = "manifest.json";
-export const ASSETS_NAME = "assets.json";
+export const ASSETS_MANIFEST_NAME = "assets.json";
 
 // ! DIR_NAMES
-export const DIST_DIR_NAME = "dist";
+export const DISTRIBUTIVE_DIR_NAME = "dist";
 export const DLL_BUNDLE_DIR_NAME = "dll_bundle";
 export const LIB_BUNDLE_DIR_NAME = "lib_bundle";
 export const LIB_DIR_NAME = "lib";

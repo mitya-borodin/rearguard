@@ -25,7 +25,10 @@ export async function get_list_of_ordered_modules(
 
   const modules = flatten_deps(envConfig, a_modules, a_root, a_module_map);
   const result: string[] = modules
-    .map((module) => ({ name: module, weight: get_module_weight(envConfig, module, 0, a_root, a_module_map) }))
+    .map((module) => ({
+      name: module,
+      weight: get_module_weight(envConfig, module, 0, a_root, a_module_map),
+    }))
     .sort((a, b) => (a.weight > b.weight ? 1 : -1))
     .map(({ name }) => name);
 

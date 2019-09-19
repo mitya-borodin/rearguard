@@ -62,7 +62,7 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
           console.log(
             chalk.red(
               `[ ERROR ]` +
-              `[ You haven't link in global node_modules ${global_path} or local node_modules ${local_path} ]`,
+                `[ You haven't link in global node_modules ${global_path} or local node_modules ${local_path} ]`,
             ),
           );
           console.log(

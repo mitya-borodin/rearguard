@@ -35,6 +35,7 @@
     "build": "npm run lint && tsc",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts' 'bin/**/*.ts' 'test/**/*.ts'",
     "templates": "node ./tools/copyTemplateFiles.js",
+    "make-prettier": "prettier --write '**/*.ts'",
     "prepublish": "npm run templates",
     "prestart": "npm run templates"
   },

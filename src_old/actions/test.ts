@@ -14,7 +14,10 @@ async function test() {
   const setup = path.resolve(__dirname, `../components/${TESTS_DIR_NAME}/setup.js`);
   const specs = path.resolve(process.cwd(), `${TESTS_DIR_NAME}/**/*.spec.ts`);
 
-  const result = spawn.sync(mocha_bin, [`--require`, `${setup}`, `${specs}`], { encoding: "utf8", stdio: "inherit" });
+  const result = spawn.sync(mocha_bin, [`--require`, `${setup}`, `${specs}`], {
+    encoding: "utf8",
+    stdio: "inherit",
+  });
 
   if (result.signal) {
     if (result.signal === "SIGKILL") {

@@ -97,7 +97,9 @@ async function checker(
                 ),
               );
 
-              rearguardConfig.pkg = { [key]: { ...rearguardConfig.pkg[key], [targetDepName]: version } };
+              rearguardConfig.pkg = {
+                [key]: { ...rearguardConfig.pkg[key], [targetDepName]: version },
+              };
 
               needInstall = true;
             }

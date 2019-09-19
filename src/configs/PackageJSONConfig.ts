@@ -91,7 +91,10 @@ export class PackageJSONConfig {
   }
 
   public setRearguard(rearguard: Rearguard): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), rearguard: new Rearguard(rearguard) });
+    const newPkg: Readonly<PackageJSON> = new PackageJSON({
+      ...this.getPkg(),
+      rearguard: new Rearguard(rearguard),
+    });
 
     return this.setPkg(newPkg);
   }

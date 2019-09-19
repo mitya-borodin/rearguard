@@ -5,7 +5,13 @@ import { init_isomorphic } from "./init_isomorphic";
 import { init_node_app } from "./init_node_app";
 import { init_node_lib } from "./init_node_lib";
 
-const defaultOptions: IInitExecutorOptions = { browser: false, node: false, app: false, lib: false, force: false };
+const defaultOptions: IInitExecutorOptions = {
+  browser: false,
+  node: false,
+  app: false,
+  lib: false,
+  force: false,
+};
 
 export async function init_component(options: IInitExecutorOptions = defaultOptions): Promise<void> {
   if (options.browser && !options.node) {

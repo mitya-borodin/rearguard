@@ -13,7 +13,11 @@ export const renderTemplates = async (CWD: string, options: { force: boolean }) 
   const publish_to_git = rearguardConfig.isPublishToGit();
 
   await tsLintTemplate.render({ force: rearguardConfig.isOverwriteTSLintConfig() });
-  await gitignoreTemplate.render({ publish_to_git, list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND, ...options });
+  await gitignoreTemplate.render({
+    publish_to_git,
+    list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
+    ...options,
+  });
   await postCSSConfigTemplate.render(options);
   await editorConfigTemplate.render(options);
   await npmRcTemplate.render(options);

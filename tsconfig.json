@@ -1,39 +1,51 @@
 {
   "compilerOptions": {
+    /* Basic Options */
     "rootDir": "./",
     "outDir": "./lib",
     "target": "es6",
-    "lib": ["es6", "es7"],
     "module": "commonjs",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "lib": ["es6", "es7"],
+    "allowJs": false,
+    "checkJs": false,
+    "jsx": "react",
+    "removeComments": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
 
     /* Strict Type-Checking Options */
     "strict": true,
-    /*
-      Enable all strict type checking options.
-      Enabling --strict enables
-        --noImplicitAny,
-        --noImplicitThis,
-        --alwaysStrict,
-        --strictBindCallApply,
-        --strictNullChecks,
-        --strictFunctionTypes,
-        --strictPropertyInitialization.
-    */
-    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
     "suppressExcessPropertyErrors": true,
 
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+
+    /* Source Map Options */
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+
     /* Debug Options */
-    "pretty": true, // Stylize errors and messages using color and context.
-    "diagnostics": false, // Show diagnostic information.
-    "extendedDiagnostics": false, // Show verbose diagnostic information.
-    "traceResolution": false, // Enable tracing of the name resolution process.
+    "diagnostics": false,
+    "extendedDiagnostics": false,
+    "traceResolution": false,
     "noErrorTruncation": true,
+    "pretty": true,
 
     /* Experimental Options */
     "experimentalDecorators": true,
