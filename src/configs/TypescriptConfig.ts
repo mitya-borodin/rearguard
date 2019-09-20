@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { defaultsDeep } from "lodash";
 import * as path from "path";
 import { TS_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
@@ -15,8 +16,8 @@ export class TypescriptConfig {
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
-  public init(): TypescriptConfig {
-    this.setTS(new Typescript());
+  public init(force = false): TypescriptConfig {
+    this.setTS(new Typescript(), force);
 
     return this;
   }
@@ -24,7 +25,7 @@ export class TypescriptConfig {
   public async setBaseUrl(baseUrl: string): Promise<TypescriptConfig> {
     const ts = await this.getTS();
 
-    this.setTS({ ...ts, baseUrl });
+    this.setTS(Typescript.merge(ts, { baseUrl }));
 
     return this;
   }
@@ -32,7 +33,7 @@ export class TypescriptConfig {
   public async setModule(module: "commonjs" | "es6"): Promise<TypescriptConfig> {
     const ts = await this.getTS();
 
-    this.setTS({ ...ts, module });
+    this.setTS(Typescript.merge(ts, { module }));
 
     return this;
   }
@@ -40,7 +41,7 @@ export class TypescriptConfig {
   public async setInclude(include: string[]): Promise<TypescriptConfig> {
     const ts = await this.getTS();
 
-    this.setTS({ ...ts, include });
+    this.setTS(Typescript.merge(ts, {}, { include }));
 
     return this;
   }
@@ -48,42 +49,62 @@ export class TypescriptConfig {
   public async setExclude(exclude: string[]): Promise<TypescriptConfig> {
     const ts = await this.getTS();
 
-    await this.setTS({ ...ts, exclude });
+    this.setTS(Typescript.merge(ts, {}, { exclude }));
 
     return this;
   }
 
   private async getTS(): Promise<Readonly<Typescript>> {
     if (fs.existsSync(this.file_path)) {
-      const content_of_pkg_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
-
-      try {
-        return new Typescript(JSON.parse(content_of_pkg_file));
-      } catch (error) {
-        console.error(error);
-
-        process.exit(1);
-      }
+      return new Typescript(this.read());
     } else {
       return await this.setTS(new Typescript());
     }
-
-    return new Typescript();
   }
 
-  private async setTS(ts: Typescript): Promise<Readonly<Typescript>> {
-    const typescript: Readonly<Typescript> = new Typescript(ts);
+  private async setTS(target: Typescript, force = false): Promise<Readonly<Typescript>> {
+    const origin: Readonly<Typescript> = await this.getTS();
 
     await mkdir(path.dirname(this.file_path));
 
     try {
-      fs.writeFileSync(this.file_path, JSON.stringify(typescript, null, 2), { encoding: "utf-8" });
+      if (fs.existsSync(this.file_path)) {
+        if (force) {
+          this.write(target);
+        } else {
+          this.write(new Typescript(defaultsDeep(origin, target)));
+        }
+      } else {
+        this.write(target);
+      }
     } catch (error) {
       console.error(error);
 
       process.exit(1);
     }
 
-    return typescript;
+    return target;
+  }
+
+  private read(): object {
+    try {
+      return JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
+    } catch (error) {
+      console.error(error);
+
+      process.exit(1);
+    }
+
+    return {};
+  }
+
+  private write(content: object): void {
+    try {
+      fs.writeFileSync(this.file_path, JSON.stringify(content, null, 2), { encoding: "utf-8" });
+    } catch (error) {
+      console.error(error);
+
+      process.exit(1);
+    }
   }
 }

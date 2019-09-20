@@ -30,6 +30,8 @@ export class Rearguard {
   };
 
   public configs: {
+    noOverwriteTSConfig: boolean;
+    noOverwriteTSTestConfig: boolean;
     noOverwriteTSLintConfig: boolean;
   };
 
@@ -64,6 +66,8 @@ export class Rearguard {
     };
 
     this.configs = {
+      noOverwriteTSConfig: false,
+      noOverwriteTSTestConfig: false,
       noOverwriteTSLintConfig: false,
     };
 
@@ -130,7 +134,11 @@ export class Rearguard {
     }
 
     if (isObject(data.configs)) {
-      for (const item of ["noOverwriteTSLintConfig"]) {
+      for (const item of [
+        "noOverwriteTSConfig",
+        "noOverwriteTSTestConfig",
+        "noOverwriteTSLintConfig",
+      ]) {
         if (isBoolean(data.configs[item])) {
           this.configs[item] = data.configs[item];
         }

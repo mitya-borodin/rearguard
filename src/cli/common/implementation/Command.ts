@@ -11,7 +11,8 @@ export class Command implements ICommand {
 
   constructor(
     name: string,
-    executor: Executor = async (flags?: { [key: string]: boolean }) => console.log("Executor", flags),
+    executor: Executor = async (flags?: { [key: string]: boolean }) =>
+      console.log("Executor", flags),
   ) {
     this.name = name;
     this.flags = new Set();
@@ -79,7 +80,7 @@ export class Command implements ICommand {
     commands: string[],
     prev_command_path?: string,
     prev_flags: Set<string> = new Set(),
-    skip_command_check: boolean = false,
+    skip_command_check = false,
   ): string[] {
     const [command_name, next_command_name, next_commands] = this.preparedCommands(commands);
 

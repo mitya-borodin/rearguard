@@ -1,27 +1,25 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
+import { defaultsDeep } from "lodash";
 
-export class Typescript {
-  public readonly compileOnSave: boolean;
+interface ICompilerOptions {
+  /* Basic Options */
+  target: string;
+  module: string;
+  lib: string[];
 
-  public readonly compilerOptions: {
-    /* Basic Options */
-    target: string;
-    module: string;
-    lib: string[];
+  allowJs: boolean;
+  checkJs: boolean;
 
-    allowJs: boolean;
-    checkJs: boolean;
+  jsx: string;
 
-    jsx: string;
+  removeComments: boolean;
 
-    removeComments: boolean;
+  skipLibCheck: boolean;
+  forceConsistentCasingInFileNames: boolean;
 
-    skipLibCheck: boolean;
-    forceConsistentCasingInFileNames: boolean;
-
-    /* Strict Type-Checking Options */
-    strict: boolean;
-    /*
+  /* Strict Type-Checking Options */
+  strict: boolean;
+  /*
       Enable all strict type checking options.
       Enabling --strict enables
       --noImplicitAny,
@@ -31,54 +29,65 @@ export class Typescript {
       --strictFunctionTypes
       --strictPropertyInitialization.
     */
-    noImplicitAny: boolean;
-    strictNullChecks: boolean;
-    noImplicitThis: boolean;
-    alwaysStrict: boolean;
-    strictFunctionTypes: boolean;
-    strictPropertyInitialization: boolean;
-    suppressImplicitAnyIndexErrors: boolean;
-    suppressExcessPropertyErrors: boolean;
+  noImplicitAny: boolean;
+  strictNullChecks: boolean;
+  noImplicitThis: boolean;
+  alwaysStrict: boolean;
+  strictFunctionTypes: boolean;
+  strictPropertyInitialization: boolean;
+  suppressImplicitAnyIndexErrors: boolean;
+  suppressExcessPropertyErrors: boolean;
 
-    /* Additional Checks */
-    noUnusedLocals: boolean;
-    noUnusedParameters: boolean;
-    noImplicitReturns: boolean;
-    noFallthroughCasesInSwitch: boolean;
+  /* Additional Checks */
+  noUnusedLocals: boolean;
+  noUnusedParameters: boolean;
+  noImplicitReturns: boolean;
+  noFallthroughCasesInSwitch: boolean;
 
-    /* Module Resolution Options */
-    moduleResolution: string;
-    baseUrl: string;
-    paths?: { [key: string]: any };
-    rootDirs?: string[];
-    typeRoots?: string[];
-    types?: string[];
-    allowSyntheticDefaultImports: boolean;
-    importHelpers: boolean;
+  /* Module Resolution Options */
+  moduleResolution: string;
+  baseUrl: string;
+  paths?: { [key: string]: any };
+  rootDirs?: string[];
+  typeRoots?: string[];
+  types?: string[];
+  allowSyntheticDefaultImports: boolean;
+  importHelpers: boolean;
 
-    /* Source Map Options */
-    sourceMap: boolean;
-    sourceRoot?: string;
-    mapRoot?: string;
-    inlineSourceMap: boolean;
-    inlineSources: boolean;
+  /* Source Map Options */
+  sourceMap: boolean;
+  sourceRoot?: string;
+  mapRoot?: string;
+  inlineSourceMap: boolean;
+  inlineSources: boolean;
 
-    /* Debug Options */
-    diagnostics: boolean;
-    extendedDiagnostics: boolean;
-    traceResolution: boolean;
-    noErrorTruncation: boolean;
-    pretty: boolean;
+  /* Debug Options */
+  diagnostics: boolean;
+  extendedDiagnostics: boolean;
+  traceResolution: boolean;
+  noErrorTruncation: boolean;
+  pretty: boolean;
 
-    /* Experimental Options */
-    experimentalDecorators: boolean;
-    emitDecoratorMetadata: boolean;
-  };
+  /* Experimental Options */
+  experimentalDecorators: boolean;
+  emitDecoratorMetadata: boolean;
+}
 
+export class Typescript {
+  public static merge(
+    origin: Typescript,
+    compilerOptions: Partial<ICompilerOptions> = {},
+    otherOptions: { compileOnSave?: boolean; include?: string[]; exclude?: string[] } = {},
+  ): Typescript {
+    return new Typescript(defaultsDeep(origin, { compilerOptions }, otherOptions));
+  }
+
+  public readonly compileOnSave: boolean;
+  public readonly compilerOptions: Readonly<ICompilerOptions>;
   public readonly include: string[];
   public readonly exclude: string[];
 
-  constructor(data?: any) {
+  constructor(data?: Partial<Typescript>) {
     this.compileOnSave = false;
 
     this.compilerOptions = {
@@ -102,7 +111,7 @@ export class Typescript {
       strictFunctionTypes: true,
       strictPropertyInitialization: true,
       suppressImplicitAnyIndexErrors: true,
-      suppressExcessPropertyErrors: true,
+      suppressExcessPropertyErrors: false,
 
       /* Additional Checks */
       noUnusedLocals: true,
@@ -156,7 +165,15 @@ export class Typescript {
           }
         }
 
-        for (const item of ["target", "module", "jsx", "moduleResolution", "baseUrl", "sourceRoot", "mapRoot"]) {
+        for (const item of [
+          "target",
+          "module",
+          "jsx",
+          "moduleResolution",
+          "baseUrl",
+          "sourceRoot",
+          "mapRoot",
+        ]) {
           if (isString(data.compilerOptions[item])) {
             this.compilerOptions[item] = data.compilerOptions[item];
           }

@@ -15,7 +15,7 @@ export async function set_list_of_modules_with_deferred_loading(
   rearguardConfig: IRearguardConfig,
 ): Promise<void> {
   const bundles_info: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
-  let source: string = "/* tslint:disable */\r";
+  let source = "/* tslint:disable */\r";
   let need_write = false;
 
   for (const info of bundles_info) {
@@ -47,9 +47,13 @@ export async function set_list_of_modules_with_deferred_loading(
   source += "/* tslint:enable */\r\n";
 
   if (need_write) {
-    writeFileSync(resolve(process.cwd(), "src", DEFERRED_MODULE_LIST), prettier.format(source).trim(), {
-      encoding: "utf-8",
-    });
+    writeFileSync(
+      resolve(process.cwd(), "src", DEFERRED_MODULE_LIST),
+      prettier.format(source).trim(),
+      {
+        encoding: "utf-8",
+      },
+    );
   }
 }
 

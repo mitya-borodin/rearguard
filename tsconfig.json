@@ -22,7 +22,7 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
-    "suppressExcessPropertyErrors": true,
+    "suppressExcessPropertyErrors": false,
 
     /* Additional Checks */
     "noUnusedLocals": true,

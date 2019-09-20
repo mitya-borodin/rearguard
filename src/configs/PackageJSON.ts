@@ -186,7 +186,12 @@ export class PackageJSON {
       }
     }
 
-    for (const fieldName of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) {
+    for (const fieldName of [
+      "dependencies",
+      "devDependencies",
+      "peerDependencies",
+      "optionalDependencies",
+    ]) {
       if (isObject(data[fieldName])) {
         const result = {};
 

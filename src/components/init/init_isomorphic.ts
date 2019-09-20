@@ -26,7 +26,9 @@ export async function init_isomorphic(options: { force: boolean }): Promise<void
 
   await createEntries(CWD);
   await defaultTemplates(CWD, options);
-  await typescriptConfig.init();
-  await typescriptForTestsConfig.init();
-  await tsLintTemplate.render({ force: rearguardConfig.isOverwriteTSLintConfig() || options.force });
+  await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || options.force);
+  await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || options.force);
+  await tsLintTemplate.render({
+    force: rearguardConfig.isOverwriteTSLintConfig() || options.force,
+  });
 }

@@ -61,7 +61,7 @@ async function search(depName: string): Promise<any[] | void> {
   });
 }
 
-let needInstall: boolean = false;
+let needInstall = false;
 
 async function checker(
   envConfig: IEnvConfig,

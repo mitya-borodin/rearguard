@@ -1,0 +1,13 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": ["plugin:@typescript-eslint/recommended", "eslint-config-prettier"],
+  "rules": {
+    "no-console": "off",
+    "variable-name": "off",
+    "object-literal-sort-keys": "off",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-use-before-define": "warn"
+  }
+}

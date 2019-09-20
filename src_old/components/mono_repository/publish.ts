@@ -19,7 +19,7 @@ export async function publish(envConfig: IEnvConfig, CWD: string) {
     // * INIT VALUES
     const cur_name = rearguardConfig.pkg.name;
     const cur_version = rearguardConfig.pkg.version;
-    let pub_version: string = "1.0.0";
+    let pub_version = "1.0.0";
     let was_published = false;
 
     console.log(chalk.bold.green(`[ ${cur_name} ][ PUBLISH ]`));

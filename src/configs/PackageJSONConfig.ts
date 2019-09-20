@@ -18,15 +18,7 @@ export class PackageJSONConfig {
 
   public getPkg(): Readonly<PackageJSON> {
     if (fs.existsSync(this.file_path)) {
-      const content_of_pkg_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
-
-      try {
-        return new PackageJSON(JSON.parse(content_of_pkg_file));
-      } catch (error) {
-        console.error(error);
-
-        process.exit(1);
-      }
+      return new PackageJSON(this.read());
     } else {
       console.error(`File ${this.file_path} not found`);
 
@@ -57,9 +49,7 @@ export class PackageJSONConfig {
   }
 
   public setDependencies(dependencies: IDependencyMap): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), dependencies });
-
-    return this.setPkg(newPkg);
+    return this.setPkg(new PackageJSON({ ...this.getPkg(), dependencies }));
   }
 
   public getDevDependencies(): Readonly<IDependencyMap> {
@@ -71,9 +61,7 @@ export class PackageJSONConfig {
   }
 
   public setDevDependencies(devDependencies: IDependencyMap): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...this.getPkg(), devDependencies });
-
-    return this.setPkg(newPkg);
+    return this.setPkg(new PackageJSON({ ...this.getPkg(), devDependencies }));
   }
 
   public getScripts(): Readonly<IScriptsMap> {
@@ -81,31 +69,23 @@ export class PackageJSONConfig {
   }
 
   public setScripts(scripts: IScriptsMap): Readonly<PackageJSON> {
-    const curPkg = this.getPkg();
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({ ...curPkg, scripts: { ...curPkg.scripts, ...scripts } });
+    const origin = this.getPkg();
 
-    return this.setPkg(newPkg);
+    return this.setPkg(new PackageJSON({ ...origin, scripts: { ...origin.scripts, ...scripts } }));
   }
 
   public getRearguard(): Readonly<Rearguard> {
-    return new Rearguard(this.getPkg().rearguard);
+    return this.getPkg().rearguard;
   }
 
   public setRearguard(rearguard: Rearguard): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON({
-      ...this.getPkg(),
-      rearguard: new Rearguard(rearguard),
-    });
-
-    return this.setPkg(newPkg);
+    return this.setPkg(new PackageJSON({ ...this.getPkg(), rearguard }));
   }
 
-  private setPkg(pkg: Partial<PackageJSON>): Readonly<PackageJSON> {
-    const newPkg: Readonly<PackageJSON> = new PackageJSON(pkg);
-
+  private setPkg(origin: Readonly<PackageJSON>): Readonly<PackageJSON> {
     try {
       if (fs.existsSync(this.file_path)) {
-        fs.writeFileSync(this.file_path, PPJ.format(newPkg), { encoding: "utf-8" });
+        this.write(origin);
       } else {
         console.error(`File ${this.file_path} not found`);
 
@@ -117,6 +97,28 @@ export class PackageJSONConfig {
       process.exit(1);
     }
 
-    return newPkg;
+    return origin;
+  }
+
+  private read(): object {
+    try {
+      return JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
+    } catch (error) {
+      console.error(error);
+
+      process.exit(1);
+    }
+
+    return {};
+  }
+
+  private write(origin: object): void {
+    try {
+      fs.writeFileSync(this.file_path, PPJ.format(origin), { encoding: "utf-8" });
+    } catch (error) {
+      console.error(error);
+
+      process.exit(1);
+    }
   }
 }

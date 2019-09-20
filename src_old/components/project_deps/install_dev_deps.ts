@@ -6,10 +6,13 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { check_npm } from "../check_npm";
 
-export async function install_dev_deps(envConfig: IEnvConfig, CWD: string = process.cwd()): Promise<boolean> {
+export async function install_dev_deps(
+  envConfig: IEnvConfig,
+  CWD: string = process.cwd(),
+): Promise<boolean> {
   try {
     const { pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
-    let npmIsAvailable: boolean = false;
+    let npmIsAvailable = false;
     console.log(chalk.bold.blue(`[ INSTALL_DEV_DEPS ][ START ]`));
     console.log("");
 

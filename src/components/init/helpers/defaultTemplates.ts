@@ -17,7 +17,7 @@ export const defaultTemplates = async (CWD: string, options: { force: boolean })
     list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
     ...options,
   });
-  await npmRcTemplate.render(options);
   await editorConfigTemplate.render(options);
+  await npmRcTemplate.render(options);
   await postCSSConfigTemplate.render(options);
 };

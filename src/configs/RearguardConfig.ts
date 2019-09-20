@@ -34,24 +34,26 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.getRearguard().distribution.publish_to_git;
   }
 
+  public isOverwriteTSConfig(): boolean {
+    return !this.getRearguard().configs.noOverwriteTSConfig;
+  }
+
+  public isOverwriteTSTestConfig(): boolean {
+    return !this.getRearguard().configs.noOverwriteTSTestConfig;
+  }
+
   public isOverwriteTSLintConfig(): boolean {
     return !this.getRearguard().configs.noOverwriteTSLintConfig;
   }
 
   public setRuntime(runtime: "browser" | "node" | "isomorphic"): RearguardConfig {
-    const update: object = defaultsDeep(this.getRearguard(), { project: { runtime } });
-    const rearguard: Readonly<Rearguard> = new Rearguard(update);
-
-    this.setRearguard(rearguard);
+    this.setRearguard(new Rearguard(defaultsDeep(this.getRearguard(), { project: { runtime } })));
 
     return this;
   }
 
   public setType(type: "app" | "lib"): RearguardConfig {
-    const update: object = defaultsDeep(this.getRearguard(), { project: { type } });
-    const rearguard: Readonly<Rearguard> = new Rearguard(update);
-
-    this.setRearguard(rearguard);
+    this.setRearguard(new Rearguard(defaultsDeep(this.getRearguard(), { project: { type } })));
 
     return this;
   }

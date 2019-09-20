@@ -13,7 +13,9 @@ const defaultOptions: IInitExecutorOptions = {
   force: false,
 };
 
-export async function init_component(options: IInitExecutorOptions = defaultOptions): Promise<void> {
+export async function init_component(
+  options: IInitExecutorOptions = defaultOptions,
+): Promise<void> {
   if (options.browser && !options.node) {
     if (options.app) {
       init_browser_app({ force: options.force });

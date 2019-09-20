@@ -1,5 +1,3 @@
-/* tslint:disable: max-classes-per-file */
-
 declare module "*.css" {
   interface IClassNames {
     [className: string]: any;
@@ -100,4 +98,3 @@ declare module "*.text" {
 
   export = path;
 }
-/* tslint:enable: max-classes-per-file */
