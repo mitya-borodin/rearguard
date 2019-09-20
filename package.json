@@ -33,7 +33,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "npm run lint && tsc && npm run templates",
-    "lint": "eslint 'src/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts' && eslint 'bin/**/*.ts'",
     "lint-fix": "eslint --fix 'src/**/*.ts'",
     "typecheck": "tsc --noEmit",
     "validate-prettiness": "prettier -c 'src/**/*.ts'",
