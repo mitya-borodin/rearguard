@@ -32,20 +32,21 @@
   },
   "scripts": {
     "start": "tsc --watch",
-    "build": "npm run lint && tsc && npm run templates",
-    "lint": "eslint 'src/**/*.ts' && eslint 'bin/**/*.ts'",
-    "lint-fix": "eslint --fix 'src/**/*.ts'",
+    "build": "npm run validate && tsc && npm run templates",
+    "lint": "eslint src/**/*.ts bin/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts bin/**/*.ts",
     "typecheck": "tsc --noEmit",
-    "validate-prettiness": "prettier -c 'src/**/*.ts' && prettier -c 'bin/**/*.ts'",
+    "validate-prettiness": "prettier -c src/**/*.ts bin/**/*.ts",
     "validate": "npm run lint && npm run typecheck && npm run validate-prettiness",
-    "make-prettier": "prettier --write 'src/**/*.ts' && prettier --write 'bin/**/*.ts'",
+    "make-prettier": "prettier --write src/**/*.ts bin/**/*.ts",
     "templates": "node ./tools/copyTemplateFiles.js",
-    "prepublish": "npm run validate && npm run templates",
-    "prestart": "npm run validate && npm run templates"
+    "prestart": "npm run validate && npm run templates",
+    "pretest": "npm run validate && npm run templates",
+    "prepublishOnly": "npm run validate && npm run templates"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && npm run templates",
+      "pre-commit": "pretty-quick --staged",
       "pre-push": "npm run validate"
     }
   },
