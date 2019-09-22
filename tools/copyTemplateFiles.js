@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const copy = require("recursive-copy");
 
 const options = {
   overwrite: true,
   dot: true,
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   filter: function(arg) {
     return arg.indexOf(".ts") === -1 || arg.indexOf("d.ts") !== -1;
   },

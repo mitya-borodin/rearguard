@@ -10,6 +10,7 @@ export const cli = (): void => {
   } else {
     const help = rearguard.getHelp(command);
 
+    // TODO Make beautiful logging;
     console.log(help);
   }
 };
