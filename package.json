@@ -36,9 +36,9 @@
     "lint": "eslint 'src/**/*.ts' && eslint 'bin/**/*.ts'",
     "lint-fix": "eslint --fix 'src/**/*.ts'",
     "typecheck": "tsc --noEmit",
-    "validate-prettiness": "prettier -c 'src/**/*.ts'",
+    "validate-prettiness": "prettier -c 'src/**/*.ts' && prettier -c 'bin/**/*.ts'",
     "validate": "npm run lint && npm run typecheck && npm run validate-prettiness",
-    "make-prettier": "prettier --write 'src/**/*.ts'",
+    "make-prettier": "prettier --write 'src/**/*.ts' && prettier --write 'bin/**/*.ts'",
     "templates": "node ./tools/copyTemplateFiles.js",
     "prepublish": "npm run validate && npm run templates",
     "prestart": "npm run validate && npm run templates"

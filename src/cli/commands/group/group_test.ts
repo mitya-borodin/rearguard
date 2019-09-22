@@ -1,10 +1,10 @@
-import { Command } from "../../common/implementation/Command";
-import { ICommand } from "../../common/interfaces/ICommand";
+import { Command } from "../../common/Command";
+import { Flags } from "../../common/Flags";
 
-async function group_test_executor(flags: any) {
+async function group_test_executor(flags: Flags = {}): Promise<void> {
   console.log("group_test____EXECUTOR", flags);
 }
 
-export const group_test: ICommand = new Command("test", group_test_executor);
+export const group_test = new Command("test", group_test_executor);
 
 group_test.addFlag("--debug");

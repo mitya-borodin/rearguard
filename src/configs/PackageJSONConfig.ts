@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { IDependencyMap, IScriptsMap } from "../interfaces/configs/IPackageJSON";
+import { DependencyMa, ScriptsMap } from "../interfaces/configs/PackageJSON";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
 
@@ -40,7 +40,7 @@ export class PackageJSONConfig {
     return this.getPkg().files;
   }
 
-  public getDependencies(): Readonly<IDependencyMap> {
+  public getDependencies(): Readonly<DependencyMa> {
     return this.getPkg().dependencies || {};
   }
 
@@ -48,11 +48,11 @@ export class PackageJSONConfig {
     return Object.keys(this.getDependencies());
   }
 
-  public setDependencies(dependencies: IDependencyMap): Readonly<PackageJSON> {
+  public setDependencies(dependencies: DependencyMa): Readonly<PackageJSON> {
     return this.setPkg(new PackageJSON({ ...this.getPkg(), dependencies }));
   }
 
-  public getDevDependencies(): Readonly<IDependencyMap> {
+  public getDevDependencies(): Readonly<DependencyMa> {
     return this.getPkg().devDependencies || {};
   }
 
@@ -60,15 +60,15 @@ export class PackageJSONConfig {
     return Object.keys(this.getDevDependencies());
   }
 
-  public setDevDependencies(devDependencies: IDependencyMap): Readonly<PackageJSON> {
+  public setDevDependencies(devDependencies: DependencyMa): Readonly<PackageJSON> {
     return this.setPkg(new PackageJSON({ ...this.getPkg(), devDependencies }));
   }
 
-  public getScripts(): Readonly<IScriptsMap> {
+  public getScripts(): Readonly<ScriptsMap> {
     return this.getPkg().scripts;
   }
 
-  public setScripts(scripts: IScriptsMap): Readonly<PackageJSON> {
+  public setScripts(scripts: ScriptsMap): Readonly<PackageJSON> {
     const origin = this.getPkg();
 
     return this.setPkg(new PackageJSON({ ...origin, scripts: { ...origin.scripts, ...scripts } }));

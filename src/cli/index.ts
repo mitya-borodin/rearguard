@@ -1,6 +1,6 @@
 import { rearguard } from "../cli/commands/root";
 
-export function cli() {
+export const cli = (): void => {
   const [, , ...other_argv] = process.argv;
   const command = ["rearguard", ...other_argv];
   const executor = rearguard.getExecutor(command);
@@ -12,4 +12,4 @@ export function cli() {
 
     console.log(help);
   }
-}
+};

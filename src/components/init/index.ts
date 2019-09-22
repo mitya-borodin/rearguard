@@ -1,11 +1,11 @@
-import { IInitExecutorOptions } from "../../interfaces/executors/IInitExecutorOptions";
+import { InitExecutorOptions } from "../../interfaces/executors/InitExecutorOptions";
 import { init_browser_app } from "./init_browser_app";
 import { init_browser_lib } from "./init_browser_lib";
 import { init_isomorphic } from "./init_isomorphic";
 import { init_node_app } from "./init_node_app";
 import { init_node_lib } from "./init_node_lib";
 
-const defaultOptions: IInitExecutorOptions = {
+const defaultOptions: InitExecutorOptions = {
   browser: false,
   node: false,
   app: false,
@@ -13,9 +13,7 @@ const defaultOptions: IInitExecutorOptions = {
   force: false,
 };
 
-export async function init_component(
-  options: IInitExecutorOptions = defaultOptions,
-): Promise<void> {
+export async function init_component(options: InitExecutorOptions = defaultOptions): Promise<void> {
   if (options.browser && !options.node) {
     if (options.app) {
       init_browser_app({ force: options.force });

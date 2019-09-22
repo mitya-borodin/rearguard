@@ -1,5 +1,4 @@
-import { Command } from "../../common/implementation/Command";
-import { ICommand } from "../../common/interfaces/ICommand";
+import { Command } from "../../common/Command";
 import { group_bootstrap } from "./group_bootstrap";
 import { group_build } from "./group_build";
 import { group_check_deps_on_npm } from "./group_check_deps_on_npm";
@@ -11,7 +10,7 @@ import { group_publish } from "./group_publish";
 import { group_sync } from "./group_sync";
 import { group_test } from "./group_test";
 
-export const group: ICommand = new Command("group");
+export const group = new Command("group");
 
 group.addCommand(group_bootstrap);
 group.addCommand(group_clear);

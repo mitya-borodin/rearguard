@@ -1,19 +1,19 @@
 import { isString } from "@borodindmitriy/utils";
-import { Executor } from "../interfaces/Executor";
-import { ICommand } from "../interfaces/ICommand";
-import { IFlags } from "../interfaces/IFlags";
+import { Executor } from "./Executor";
+import { Flags } from "./Flags";
 
-export class Command implements ICommand {
+const defaultExecutor = async (flags?: Flags): Promise<void> => {
+  console.log("Executor", flags);
+};
+
+export class Command {
   public name: string;
+
   private flags: Set<string>;
   private executor: Executor;
-  private leafs: Set<ICommand>;
+  private leafs: Set<Command>;
 
-  constructor(
-    name: string,
-    executor: Executor = async (flags?: { [key: string]: boolean }) =>
-      console.log("Executor", flags),
-  ) {
+  constructor(name: string, executor: Executor = defaultExecutor) {
     this.name = name;
     this.flags = new Set();
     this.executor = executor;
@@ -26,7 +26,7 @@ export class Command implements ICommand {
     this.getHelp = this.getHelp.bind(this);
   }
 
-  public addCommand(leaf: ICommand): void {
+  public addCommand(leaf: Command): void {
     this.leafs.add(leaf);
   }
 
@@ -50,10 +50,10 @@ export class Command implements ICommand {
     }
   }
 
-  public getFlags(commands: string[], prev_flag_values: IFlags = {}): IFlags {
+  public getFlags(commands: string[], prev_flag_values: Flags = {}): Flags {
     const [command_name, next_command_name, next_commands] = this.preparedCommands(commands);
 
-    const cur_flag_values: IFlags = { ...prev_flag_values };
+    const cur_flag_values: Flags = { ...prev_flag_values };
 
     for (const flag of this.flags) {
       const flag_name: string = flag.replace("--", "");

@@ -1,7 +1,7 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
 import { defaultsDeep } from "lodash";
 
-interface ICompilerOptions {
+interface CompilerOptions {
   /* Basic Options */
   target: string;
   module: string;
@@ -76,14 +76,14 @@ interface ICompilerOptions {
 export class Typescript {
   public static merge(
     origin: Typescript,
-    compilerOptions: Partial<ICompilerOptions> = {},
+    compilerOptions: Partial<CompilerOptions> = {},
     otherOptions: { compileOnSave?: boolean; include?: string[]; exclude?: string[] } = {},
   ): Typescript {
     return new Typescript(defaultsDeep(origin, { compilerOptions }, otherOptions));
   }
 
   public readonly compileOnSave: boolean;
-  public readonly compilerOptions: Readonly<ICompilerOptions>;
+  public readonly compilerOptions: Readonly<CompilerOptions>;
   public readonly include: string[];
   public readonly exclude: string[];
 

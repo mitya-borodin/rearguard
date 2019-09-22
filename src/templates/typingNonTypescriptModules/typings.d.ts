@@ -1,5 +1,5 @@
 declare module "*.css" {
-  interface IClassNames {
+  interface ClassNames {
     [className: string]: any;
   }
 

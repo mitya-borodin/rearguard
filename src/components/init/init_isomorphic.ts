@@ -6,7 +6,7 @@ import { tsLintTemplate } from "../../templates/tsLint";
 import { createEntries } from "./helpers/createEntries";
 import { defaultTemplates } from "./helpers/defaultTemplates";
 
-export async function init_isomorphic(options: { force: boolean }): Promise<void> {
+export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
   const CWDForTests: string = path.resolve(CWD, TESTS_DIR_NAME);
 
@@ -25,10 +25,10 @@ export async function init_isomorphic(options: { force: boolean }): Promise<void
   rearguardConfig.setType("lib");
 
   await createEntries(CWD);
-  await defaultTemplates(CWD, options);
-  await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || options.force);
-  await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || options.force);
+  await defaultTemplates(CWD, flags);
+  await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || flags.force);
+  await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || flags.force);
   await tsLintTemplate.render({
-    force: rearguardConfig.isOverwriteTSLintConfig() || options.force,
+    force: rearguardConfig.isOverwriteTSLintConfig() || flags.force,
   });
 }

@@ -1,16 +1,16 @@
 import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
 import {
-  IAuthor,
-  IBinMap,
-  IBugs,
-  IConfig,
-  IDependencyMap,
-  IDirectories,
-  IEngines,
-  IPublishConfig,
-  IRepository,
-  IScriptsMap,
-} from "../interfaces/configs/IPackageJSON";
+  Author,
+  BinMap,
+  Bugs,
+  Config,
+  DependencyMa,
+  Directories,
+  Engines,
+  PublishConfig,
+  Repository,
+  ScriptsMap,
+} from "../interfaces/configs/PackageJSON";
 import { Rearguard } from "./Rearguard";
 
 export class PackageJSON {
@@ -19,29 +19,29 @@ export class PackageJSON {
   public readonly description?: string;
   public readonly keywords?: string[];
   public readonly homepage: string;
-  public readonly bugs: string | IBugs;
+  public readonly bugs: string | Bugs;
   public readonly license: string;
-  public readonly author: string | IAuthor;
-  public readonly contributors?: string[] | IAuthor[];
+  public readonly author: string | Author;
+  public readonly contributors?: string[] | Author[];
   public readonly files: string[];
   public readonly main: string;
-  public readonly bin: string | IBinMap;
+  public readonly bin: string | BinMap;
   public readonly man?: string | string[];
-  public readonly directories?: IDirectories;
-  public readonly repository: string | IRepository;
-  public readonly scripts: IScriptsMap;
-  public readonly config?: IConfig;
-  public readonly dependencies?: IDependencyMap;
-  public readonly devDependencies?: IDependencyMap;
-  public readonly peerDependencies?: IDependencyMap;
-  public readonly optionalDependencies?: IDependencyMap;
+  public readonly directories?: Directories;
+  public readonly repository: string | Repository;
+  public readonly scripts: ScriptsMap;
+  public readonly config?: Config;
+  public readonly dependencies?: DependencyMa;
+  public readonly devDependencies?: DependencyMa;
+  public readonly peerDependencies?: DependencyMa;
+  public readonly optionalDependencies?: DependencyMa;
   public readonly bundledDependencies?: string[];
-  public readonly engines: IEngines;
+  public readonly engines: Engines;
   public readonly os?: string[];
   public readonly cpu?: string[];
   public readonly preferGlobal?: boolean;
   public readonly private?: boolean;
-  public readonly publishConfig?: IPublishConfig;
+  public readonly publishConfig?: PublishConfig;
   public readonly rearguard: Rearguard;
 
   constructor(data: any) {

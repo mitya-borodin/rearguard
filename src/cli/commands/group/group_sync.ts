@@ -1,8 +1,8 @@
-import { Command } from "../../common/implementation/Command";
-import { ICommand } from "../../common/interfaces/ICommand";
+import { Command } from "../../common/Command";
+import { Flags } from "../../common/Flags";
 
-async function group_sync_executor(flags: any) {
+async function group_sync_executor(flags: Flags = {}): Promise<void> {
   console.log("group_sync____EXECUTOR", flags);
 }
 
-export const group_sync: ICommand = new Command("sync", group_sync_executor);
+export const group_sync = new Command("sync", group_sync_executor);

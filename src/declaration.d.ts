@@ -1,4 +1,3 @@
-/* tslint:disable */
 declare module "workbox-webpack-plugin";
 declare module "node-object-hash";
 declare module "copy";
@@ -21,8 +20,6 @@ declare module "html-webpack-plugin" {
   import { AsyncSeriesWaterfallHook } from "tapable";
   import { compilation, Plugin } from "webpack";
   import * as webpack from "webpack";
-
-  export = HtmlWebpackPlugin;
 
   class HtmlWebpackPlugin extends Plugin {
     public static getHooks(compilation: any): any;
@@ -230,5 +227,7 @@ declare module "html-webpack-plugin" {
      */
     innerHTML?: string;
   }
+
+  export = HtmlWebpackPlugin;
 }
 /* tslint:enable */

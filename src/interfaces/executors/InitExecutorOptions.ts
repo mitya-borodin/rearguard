@@ -1,4 +1,4 @@
-export interface IInitExecutorOptions {
+export interface InitExecutorOptions {
   browser: boolean;
   node: boolean;
   app: boolean;

@@ -1,8 +1,8 @@
-import { Command } from "../../common/implementation/Command";
-import { ICommand } from "../../common/interfaces/ICommand";
+import { Command } from "../../common/Command";
+import { Flags } from "../../common/Flags";
 
-async function group_clear_executor(flags: any) {
+async function group_clear_executor(flags: Flags = {}): Promise<void> {
   console.log("group_clear____EXECUTOR", flags);
 }
 
-export const group_clear: ICommand = new Command("clear", group_clear_executor);
+export const group_clear = new Command("clear", group_clear_executor);

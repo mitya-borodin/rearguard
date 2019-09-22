@@ -1,7 +1,7 @@
 /**
  * An author or contributor
  */
-export interface IAuthor {
+export interface Author {
   name: string;
   email: string;
   homepage: string;
@@ -10,19 +10,19 @@ export interface IAuthor {
 /**
  * A map of exposed bin commands
  */
-export interface IBinMap {
+export interface BinMap {
   [commandName: string]: string;
 }
 
 /**
  * A bugs link
  */
-export interface IBugs {
+export interface Bugs {
   email: string;
   url: string;
 }
 
-export interface IConfig {
+export interface Config {
   name?: string;
   config?: object;
 }
@@ -30,14 +30,14 @@ export interface IConfig {
 /**
  * A map of dependencies
  */
-export interface IDependencyMap {
+export interface DependencyMa {
   [dependencyName: string]: string;
 }
 
 /**
  * CommonJS package structure
  */
-export interface IDirectories {
+export interface Directories {
   lib?: string;
   bin?: string;
   man?: string;
@@ -45,12 +45,12 @@ export interface IDirectories {
   example?: string;
 }
 
-export interface IEngines {
+export interface Engines {
   node: string;
   npm: string;
 }
 
-export interface IPublishConfig {
+export interface PublishConfig {
   registry: string;
   access: string;
 }
@@ -58,11 +58,11 @@ export interface IPublishConfig {
 /**
  * A project repository
  */
-export interface IRepository {
+export interface Repository {
   type: string;
   url: string;
 }
 
-export interface IScriptsMap {
+export interface ScriptsMap {
   [commandName: string]: string;
 }

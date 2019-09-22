@@ -1,3 +1,3 @@
-export interface IFlags {
+export interface Flags {
   [name: string]: boolean;
 }

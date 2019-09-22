@@ -1,4 +1,4 @@
-export interface IHelp {
+export interface Help {
   title: string;
   description: string[];
   commands: string[];

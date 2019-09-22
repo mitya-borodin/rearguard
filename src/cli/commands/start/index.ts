@@ -1,11 +1,11 @@
-import { Command } from "../../common/implementation/Command";
-import { ICommand } from "../../common/interfaces/ICommand";
+import { Command } from "../../common/Command";
+import { Flags } from "../../common/Flags";
 
-async function start_browser_executor(flags: any) {
+async function start_browser_executor(flags: Flags = {}): Promise<void> {
   console.log("START_BROWSER____EXECUTOR", flags);
 }
 
-export const start: ICommand = new Command("start", start_browser_executor);
+export const start = new Command("start", start_browser_executor);
 
 start.addFlag("--release");
 start.addFlag("--debug");

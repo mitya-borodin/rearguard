@@ -9,7 +9,7 @@ import * as spawn from "cross-spawn";
 import { existsSync } from "fs";
 import { resolve } from "path";
 
-interface IBoolObj {
+interface BoolObj {
   [key: string]: boolean;
 }
 
@@ -54,7 +54,7 @@ const {
 
   // check_deps_on_npm
   install_deps = false,
-}: IBoolObj = otherArguments.reduce((prevValue: IBoolObj, value: string): IBoolObj => {
+}: BoolObj = otherArguments.reduce((prevValue: BoolObj, value: string): BoolObj => {
   if (value.indexOf("--") === 0) {
     return Object.assign(prevValue, { [value.slice(2, value.length)]: true });
   } else if (value.indexOf("-") === 0) {
@@ -128,8 +128,10 @@ if (
       process.env.REARGUARD_LAUNCH_IS_INIT = action === "init" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_WDS = action === "wds" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_SYNC = action === "sync" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER = action === "build_node_server" ? "true" : "false";
-      process.env.REARGUARD_LAUNCH_IS_START_NODE_SERVER = action === "start_node_server" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_BUILD_NODE_SERVER =
+        action === "build_node_server" ? "true" : "false";
+      process.env.REARGUARD_LAUNCH_IS_START_NODE_SERVER =
+        action === "start_node_server" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_IS_BUILD = action === "build" ? "true" : "false";
       process.env.REARGUARD_LAUNCH_MONOREP = action === "monorepo" ? "true" : "false";
 
@@ -160,7 +162,8 @@ if (
       process.env.REARGUARD_MONO_BOOTSTRAP = bootstrap ? "true" : "false";
       process.env.REARGUARD_MONO_TEST = test ? "true" : "false";
       process.env.REARGUARD_MONO_PUBLISH = publish ? "true" : "false";
-      process.env.REARGUARD_MONO_PUBLISH_PATH = publish && patch && !(minor || major) ? "true" : "false";
+      process.env.REARGUARD_MONO_PUBLISH_PATH =
+        publish && patch && !(minor || major) ? "true" : "false";
       process.env.REARGUARD_MONO_PUBLISH_MINOR = publish && minor && !major ? "true" : "false";
       process.env.REARGUARD_MONO_PUBLISH_MAJOR = publish && major ? "true" : "false";
 
@@ -209,7 +212,9 @@ if (
 
       process.exit(result.status === null ? 0 : result.status);
     } else {
-      console.log(chalk.bold.red(`[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`));
+      console.log(
+        chalk.bold.red(`[ REARGUARD ][ NODE_MODULES ][ NOT_FOUND ]: ${NODE_MODULE_PATH}`),
+      );
 
       process.exit(1);
     }

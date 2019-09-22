@@ -10,15 +10,17 @@
   "files.autoSave": "afterDelay",
   "typescript.updateImportsOnFileMove.enabled": "never",
   "typescript.preferences.importModuleSpecifier": "relative",
-  "tslint.autoFixOnSave": true,
   "prettier.printWidth": 120,
   "prettier.trailingComma": "all",
   "workbench.colorTheme": "Darcula - WebStorm Edition",
   "workbench.iconTheme": "vscode-icons",
   "workbench.editor.revealIfOpen": true,
-  "cSpell.words": [
-    "Reinitialization",
-    "borodindmitriy"
-  ],
-  "cSpell.language": "en, ru"
+  "cSpell.words": ["Reinitialization", "borodindmitriy"],
+  "cSpell.language": "en, ru",
+  "eslint.alwaysShowStatus": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.enable": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript"],
+  "eslint.packageManager": "npm",
+  "eslint.workingDirectories": ["src", "bin"]
 }
