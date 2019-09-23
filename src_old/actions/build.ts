@@ -76,7 +76,11 @@ async function build_node_lib() {
   }
 
   console.log("");
-  console.log(chalk.bold.blue(`[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+  console.log(
+    chalk.bold.blue(
+      `[ TYPESCRIPT_COMPILE ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
+    ),
+  );
   console.log("");
 }
 
@@ -99,7 +103,9 @@ async function build() {
     });
 
     console.log("");
-    console.log(chalk.bold.blue(`[ BUILD_DLL ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log(
+      chalk.bold.blue(`[ BUILD_DLL ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`),
+    );
     console.log("");
   }
 
@@ -120,7 +126,9 @@ async function build() {
     });
 
     console.log("");
-    console.log(chalk.bold.blue(`[ BUILD_LIBRARY ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log(
+      chalk.bold.blue(`[ BUILD_LIBRARY ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`),
+    );
     console.log("");
   }
 
@@ -153,7 +161,9 @@ async function build() {
     });
 
     console.log("");
-    console.log(chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+    console.log(
+      chalk.bold.blue(`[ BUILD_PROJECT ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`),
+    );
     console.log("");
 
     show_docker_commands(rearguardConfig);

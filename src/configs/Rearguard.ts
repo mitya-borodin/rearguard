@@ -32,12 +32,13 @@ export class Rearguard {
   public configs: {
     noOverwriteTSConfig: boolean;
     noOverwriteTSTestConfig: boolean;
-    noOverwriteTSLintConfig: boolean;
+    noOverwriteLintConfig: boolean;
+    noOverwriteGitIgnore: boolean;
   };
 
   public postcss_plugins: string;
 
-  constructor(data: any) {
+  constructor(data?: any) {
     this.webpack = {
       context: "src",
       dll_entry: "vendors.ts",
@@ -68,85 +69,89 @@ export class Rearguard {
     this.configs = {
       noOverwriteTSConfig: false,
       noOverwriteTSTestConfig: false,
-      noOverwriteTSLintConfig: false,
+      noOverwriteLintConfig: false,
+      noOverwriteGitIgnore: false,
     };
 
     this.postcss_plugins = "postcss.config.js";
 
-    if (isObject(data.webpack)) {
-      for (const fieldName of ["context", "entry", "dll_entry", "lib_entry"]) {
-        if (isString(data.webpack[fieldName])) {
-          this.webpack[fieldName] = data.webpack[fieldName];
+    if (data) {
+      if (isObject(data.webpack)) {
+        for (const fieldName of ["context", "entry", "dll_entry", "lib_entry"]) {
+          if (isString(data.webpack[fieldName])) {
+            this.webpack[fieldName] = data.webpack[fieldName];
+          }
         }
-      }
 
-      if (isArray(data.webpack.modules)) {
-        this.webpack.modules = [];
+        if (isArray(data.webpack.modules)) {
+          this.webpack.modules = [];
 
-        for (const module of data.webpack.modules) {
-          this.webpack.modules.push(module);
+          for (const module of data.webpack.modules) {
+            this.webpack.modules.push(module);
+          }
         }
-      }
 
-      if (isObject(data.webpack.output)) {
-        for (const fieldName of ["path", "publicPath"]) {
-          if (isString(data.webpack.output[fieldName])) {
-            this.webpack.output[fieldName] = data.webpack.output[fieldName];
+        if (isObject(data.webpack.output)) {
+          for (const fieldName of ["path", "publicPath"]) {
+            if (isString(data.webpack.output[fieldName])) {
+              this.webpack.output[fieldName] = data.webpack.output[fieldName];
+            }
           }
         }
       }
-    }
 
-    if (isObject(data.project)) {
-      if (isArray(data.project.deps)) {
-        for (const dep of data.project.deps) {
-          this.project.deps.push(dep);
+      if (isObject(data.project)) {
+        if (isArray(data.project.deps)) {
+          for (const dep of data.project.deps) {
+            this.project.deps.push(dep);
+          }
+        }
+
+        if (isBoolean(data.project.will_load_on_demand)) {
+          this.project.will_load_on_demand = data.project.will_load_on_demand;
+        }
+
+        if (["browser", "node", "isomorphic"].includes(data.project.runtime)) {
+          this.project.runtime = data.project.runtime;
+        }
+
+        if (["app", "lib"].includes(data.project.type)) {
+          this.project.type = data.project.type;
         }
       }
 
-      if (isBoolean(data.project.will_load_on_demand)) {
-        this.project.will_load_on_demand = data.project.will_load_on_demand;
-      }
-
-      if (["browser", "node", "isomorphic"].includes(data.project.runtime)) {
-        this.project.runtime = data.project.runtime;
-      }
-
-      if (["app", "lib"].includes(data.project.type)) {
-        this.project.type = data.project.type;
-      }
-    }
-
-    if (isObject(data.distribution)) {
-      for (const fieldName of ["publish_to_git", "publish_to_docker"]) {
-        if (isBoolean(data.distribution[fieldName])) {
-          this.distribution[fieldName] = data.distribution[fieldName];
+      if (isObject(data.distribution)) {
+        for (const fieldName of ["publish_to_git", "publish_to_docker"]) {
+          if (isBoolean(data.distribution[fieldName])) {
+            this.distribution[fieldName] = data.distribution[fieldName];
+          }
         }
-      }
 
-      if (isObject(data.distribution.docker)) {
-        for (const fieldName of ["org_namespace"]) {
-          if (isString(data.distribution.docker[fieldName])) {
-            this.distribution.docker[fieldName] = data.distribution.docker[fieldName];
+        if (isObject(data.distribution.docker)) {
+          for (const fieldName of ["org_namespace"]) {
+            if (isString(data.distribution.docker[fieldName])) {
+              this.distribution.docker[fieldName] = data.distribution.docker[fieldName];
+            }
           }
         }
       }
-    }
 
-    if (isObject(data.configs)) {
-      for (const item of [
-        "noOverwriteTSConfig",
-        "noOverwriteTSTestConfig",
-        "noOverwriteTSLintConfig",
-      ]) {
-        if (isBoolean(data.configs[item])) {
-          this.configs[item] = data.configs[item];
+      if (isObject(data.configs)) {
+        for (const item of [
+          "noOverwriteTSConfig",
+          "noOverwriteTSTestConfig",
+          "noOverwriteLintConfig",
+          "noOverwriteGitIgnore",
+        ]) {
+          if (isBoolean(data.configs[item])) {
+            this.configs[item] = data.configs[item];
+          }
         }
       }
-    }
 
-    if (isString(data.postcss_plugins)) {
-      this.postcss_plugins = data.postcss_plugins;
+      if (isString(data.postcss_plugins)) {
+        this.postcss_plugins = data.postcss_plugins;
+      }
     }
   }
 }

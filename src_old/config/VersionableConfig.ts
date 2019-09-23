@@ -65,7 +65,9 @@ export class VersionableConfig implements IVersionableConfig {
           this.pkg = { rearguard: {} };
 
           console.log(
-            chalk.greenBright(`[ VERSIONABLE-CONFIG ][ CREATED ] FIELD 'rearguard' IN: ${this.config_path};`),
+            chalk.greenBright(
+              `[ VERSIONABLE-CONFIG ][ CREATED ] FIELD 'rearguard' IN: ${this.config_path};`,
+            ),
           );
           console.log("");
 
@@ -80,7 +82,9 @@ export class VersionableConfig implements IVersionableConfig {
       }
     } else {
       console.trace(
-        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
+        chalk.bold.red(
+          `[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`,
+        ),
       );
 
       process.exit(1);
@@ -94,7 +98,10 @@ export class VersionableConfig implements IVersionableConfig {
       try {
         const pkg = JSON.parse(fs.readFileSync(this.config_path).toString());
 
-        fs.writeFileSync(this.config_path, prettier_package_json.format({ ...pkg, ...fields }).trim());
+        fs.writeFileSync(
+          this.config_path,
+          prettier_package_json.format({ ...pkg, ...fields }).trim(),
+        );
       } catch (error) {
         console.error(error);
 
@@ -102,7 +109,9 @@ export class VersionableConfig implements IVersionableConfig {
       }
     } else {
       console.trace(
-        chalk.bold.red(`[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`),
+        chalk.bold.red(
+          `[ ${this.constructor.name} ][ ERROR ][ You haven't package.json here: ${this.config_path} ]`,
+        ),
       );
 
       process.exit(1);

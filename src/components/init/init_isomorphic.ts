@@ -1,34 +1,21 @@
-import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { TypescriptConfig } from "../../configs/TypescriptConfig";
-import { TESTS_DIR_NAME } from "../../const";
-import { tsLintTemplate } from "../../templates/tsLint";
-import { createEntries } from "./helpers/createEntries";
-import { defaultTemplates } from "./helpers/defaultTemplates";
+import { staticTemplates } from "./helpers/staticTemplates";
+import { dynamicTemplates } from "../helpers/dynamicTemplates";
 
 export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
-  const CWDForTests: string = path.resolve(CWD, TESTS_DIR_NAME);
-
   const rearguardConfig = new RearguardConfig(CWD);
-  const typescriptConfig = new TypescriptConfig(CWD);
-  const typescriptForTestsConfig = new TypescriptConfig(CWDForTests);
 
-  rearguardConfig.setScripts({
+  await rearguardConfig.setScripts({
     start: "rearguard start",
     build: "rearguard build",
     test: "rearguard test",
     sync: "rearguard sync",
     check_deps_on_npm: "rearguard check_deps_on_npm",
   });
-  rearguardConfig.setRuntime("isomorphic");
-  rearguardConfig.setType("lib");
+  await rearguardConfig.setRuntime("isomorphic");
+  await rearguardConfig.setType("lib");
 
-  await createEntries(CWD);
-  await defaultTemplates(CWD, flags);
-  await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || flags.force);
-  await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || flags.force);
-  await tsLintTemplate.render({
-    force: rearguardConfig.isOverwriteTSLintConfig() || flags.force,
-  });
+  await dynamicTemplates(CWD, flags);
+  await staticTemplates(flags);
 }

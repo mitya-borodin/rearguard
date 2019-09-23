@@ -127,7 +127,11 @@ async function build_node_server() {
   buildStatusConfig.last_build_time = moment();
 
   console.log("");
-  console.log(chalk.bold.blue(`[ BUILD_NODE_SERVER ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`));
+  console.log(
+    chalk.bold.blue(
+      `[ BUILD_NODE_SERVER ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
+    ),
+  );
   console.log("");
 
   show_docker_commands(rearguardConfig);

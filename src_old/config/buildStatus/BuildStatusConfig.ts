@@ -68,7 +68,9 @@ export class BuildStatusConfig extends NonVersionableConfig implements IBuildSta
       return moment(new Date(last_build_time)).utc();
     }
 
-    console.log(chalk.bold.yellow(`[ BUILD_STATUS_CONFIG ][ WARNING ][ last_build_time ][ must be a Date ]`));
+    console.log(
+      chalk.bold.yellow(`[ BUILD_STATUS_CONFIG ][ WARNING ][ last_build_time ][ must be a Date ]`),
+    );
 
     const def_last_build_time = moment().utc();
 

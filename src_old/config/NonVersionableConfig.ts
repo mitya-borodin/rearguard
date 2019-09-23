@@ -8,7 +8,10 @@ import { IConfig } from "../interfaces/config/IConfig";
 // tslint:disable:variable-name
 
 export class NonVersionableConfig implements IConfig {
-  private readonly config_path: string = path.resolve(process.cwd(), NON_VERSIONABLE_CONFIG_FILE_NAME);
+  private readonly config_path: string = path.resolve(
+    process.cwd(),
+    NON_VERSIONABLE_CONFIG_FILE_NAME,
+  );
 
   constructor(config_path?: string) {
     if (isString(config_path) && fs.existsSync(config_path)) {
@@ -23,7 +26,9 @@ export class NonVersionableConfig implements IConfig {
       } catch (error) {
         fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2).trim());
 
-        console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
+        console.log(
+          chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`),
+        );
         console.log("");
 
         return {};
@@ -31,7 +36,9 @@ export class NonVersionableConfig implements IConfig {
     } else {
       fs.writeFileSync(this.config_path, JSON.stringify({}, null, 2).trim());
 
-      console.log(chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`));
+      console.log(
+        chalk.greenBright(`[ NON-VERSIONABLE-CONFIG ][ CREATED ][ ${this.config_path} ]`),
+      );
       console.log("");
 
       return this.config;
@@ -39,7 +46,10 @@ export class NonVersionableConfig implements IConfig {
   }
 
   public set config(fields: { [key: string]: any }) {
-    fs.writeFileSync(this.config_path, JSON.stringify({ ...this.config, ...fields }, null, 2).trim());
+    fs.writeFileSync(
+      this.config_path,
+      JSON.stringify({ ...this.config, ...fields }, null, 2).trim(),
+    );
   }
 }
 

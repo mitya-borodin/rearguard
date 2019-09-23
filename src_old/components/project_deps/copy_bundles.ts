@@ -67,7 +67,12 @@ export async function copy_bundles(envConfig: IEnvConfig) {
   }
 }
 
-async function copy_bundle(envConfig: IEnvConfig, module_path: string, bundle_dirname: string, pkg_name: string) {
+async function copy_bundle(
+  envConfig: IEnvConfig,
+  module_path: string,
+  bundle_dirname: string,
+  pkg_name: string,
+) {
   try {
     // Имя пакета (package.json).name;
     const name = snakeCase(pkg_name);
@@ -96,7 +101,11 @@ async function copy_bundle(envConfig: IEnvConfig, module_path: string, bundle_di
           if (error) {
             reject(error);
           } else {
-            console.log(chalk.green(`[ CREATED ][ DIR ][ ${name} ][ ${path.relative(process.cwd(), target_bundle)} ]`));
+            console.log(
+              chalk.green(
+                `[ CREATED ][ DIR ][ ${name} ][ ${path.relative(process.cwd(), target_bundle)} ]`,
+              ),
+            );
 
             resolve();
           }
@@ -108,7 +117,9 @@ async function copy_bundle(envConfig: IEnvConfig, module_path: string, bundle_di
           if (!error) {
             if (envConfig.isDebug) {
               for (const item of items) {
-                console.log(chalk.cyan(`[ COPY ][ ${name} ][ ${path.relative(process.cwd(), item.path)} ]`));
+                console.log(
+                  chalk.cyan(`[ COPY ][ ${name} ][ ${path.relative(process.cwd(), item.path)} ]`),
+                );
               }
             } else {
               console.log(chalk.cyan(`[ COPY ][ ${name} ][ ${items.length} FILES ]`));

@@ -25,7 +25,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return context;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ context ][ must be a non empty string ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ context ][ must be a non empty string ]`),
+    );
 
     this.config = { context: "src" };
 
@@ -42,11 +44,19 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return docker_org_name;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ docker_org_name ][ must be a non empty string ]`));
+    console.log(
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ docker_org_name ][ must be a non empty string ]`,
+      ),
+    );
 
     this.config = { docker_org_name: "docker_org_name" };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ docker_org_name ][ assign to 'docker_org_name' ]`));
+    console.log(
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ docker_org_name ][ assign to 'docker_org_name' ]`,
+      ),
+    );
     console.log("");
 
     return this.docker_org_name;
@@ -59,7 +69,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return entry;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ entry ][ must be a non empty string ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ entry ][ must be a non empty string ]`),
+    );
 
     this.config = { entry: "index.tsx" };
 
@@ -76,11 +88,17 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return dll_entry;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ dll_entry ][ must be a non empty string ]`));
+    console.log(
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ dll_entry ][ must be a non empty string ]`,
+      ),
+    );
 
     this.config = { dll_entry: "vendors.ts" };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ dll_entry ][ assign to 'vendors.ts' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ dll_entry ][ assign to 'vendors.ts' ]`),
+    );
     console.log("");
 
     return this.dll_entry;
@@ -93,11 +111,17 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return lib_entry;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ lib_entry ][ must be a non empty string ]`));
+    console.log(
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ lib_entry ][ must be a non empty string ]`,
+      ),
+    );
 
     this.config = { lib_entry: "lib_exports.ts" };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ lib_entry ][ assign to 'lib_exports.ts' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ lib_entry ][ assign to 'lib_exports.ts' ]`),
+    );
     console.log("");
 
     return this.lib_entry;
@@ -113,7 +137,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
         if (isString(i_m)) {
           modules.push(i_m);
         } else {
-          console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ module: ${i_m} must be a string ]`));
+          console.log(
+            chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ module: ${i_m} must be a string ]`),
+          );
 
           has_error = true;
         }
@@ -131,7 +157,11 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     }
 
     if (!has_error && modules.length === 0) {
-      console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ modules ][ must be not empty array of string ]`));
+      console.log(
+        chalk.bold.yellow(
+          `[ RERGUARD_CONFIG ][ WARNING ][ modules ][ must be not empty array of string ]`,
+        ),
+      );
     }
 
     if (modules.length === 0) {
@@ -140,7 +170,11 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
 
     this.config = { modules };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ modules ][ assign to [ ${modules.join(", ")} ] ]`));
+    console.log(
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ modules ][ assign to [ ${modules.join(", ")} ] ]`,
+      ),
+    );
     console.log("");
 
     return this.modules;
@@ -176,7 +210,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     };
 
     console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`),
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ output ][ output assign to '{ path: "dist", publicPath: "/" }' ]`,
+      ),
     );
     console.log("");
 
@@ -184,7 +220,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
   }
 
   public get bundle_public_path(): string {
-    return path.normalize(`${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR()}/`);
+    return path.normalize(
+      `${this.output.publicPath}/${snakeCase(this.pkg.name)}/${BUNDLE_SUB_DIR()}/`,
+    );
   }
 
   public get post_css_plugins_path(): string {
@@ -195,13 +233,17 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     }
 
     console.log(
-      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ post_css_plugins_path ][ must be a non empty string ]`),
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ post_css_plugins_path ][ must be a non empty string ]`,
+      ),
     );
 
     this.config = { post_css_plugins_path: "post_css_plugins.js" };
 
     console.log(
-      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ post_css_plugins_path ][ assign to 'post_css_plugins.js' ]`),
+      chalk.bold.green(
+        `[ RERGUARD_CONFIG ][ INIT ][ post_css_plugins_path ][ assign to 'post_css_plugins.js' ]`,
+      ),
     );
     console.log("");
 
@@ -218,7 +260,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
         if (isString(i_s)) {
           sync_project_deps.push(i_s);
         } else {
-          console.log(chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`));
+          console.log(
+            chalk.bold.red(`[ RERGUARD_CONFIG ][ ERROR ][ sync_npm_dep: ${i_s} must be a string ]`),
+          );
 
           has_error = true;
         }
@@ -230,14 +274,18 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
     }
 
     console.log(
-      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ sync_project_deps ][ must be not empty array of string ]`),
+      chalk.bold.yellow(
+        `[ RERGUARD_CONFIG ][ WARNING ][ sync_project_deps ][ must be not empty array of string ]`,
+      ),
     );
 
     this.config = { sync_project_deps };
 
     console.log(
       chalk.bold.green(
-        `[ RERGUARD_CONFIG ][ INIT ][ sync_project_deps ][ assign to [ ${sync_project_deps.join(", ")} ] ]`,
+        `[ RERGUARD_CONFIG ][ INIT ][ sync_project_deps ][ assign to [ ${sync_project_deps.join(
+          ", ",
+        )} ] ]`,
       ),
     );
     console.log("");
@@ -268,7 +316,9 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_dll;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_dll ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_dll ][ must be a boolean ]`),
+    );
 
     this.config = { has_dll: false };
 
@@ -291,11 +341,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_node_lib;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_node_lib ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_node_lib ][ must be a boolean ]`),
+    );
 
     this.config = { has_node_lib: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_node_lib ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_node_lib ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.has_node_lib;
@@ -314,11 +368,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return has_browser_lib;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_browser_lib ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ has_browser_lib ][ must be a boolean ]`),
+    );
 
     this.config = { has_browser_lib: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_browser_lib ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ has_browser_lib ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.has_browser_lib;
@@ -337,11 +395,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return is_application;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_application ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_application ][ must be a boolean ]`),
+    );
 
     this.config = { is_application: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_application ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_application ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.is_application;
@@ -360,11 +422,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return is_back_end;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_back_end ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ is_back_end ][ must be a boolean ]`),
+    );
 
     this.config = { is_back_end: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_back_end ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ is_back_end ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.is_back_end;
@@ -384,11 +450,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return load_on_demand;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ load_on_demand ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ load_on_demand ][ must be a boolean ]`),
+    );
 
     this.config = { load_on_demand: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ load_on_demand ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ load_on_demand ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.load_on_demand;
@@ -407,11 +477,15 @@ export class RearguardConfig extends VersionableConfig implements IRearguardConf
       return publish_in_git;
     }
 
-    console.log(chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ publish_in_git ][ must be a boolean ]`));
+    console.log(
+      chalk.bold.yellow(`[ RERGUARD_CONFIG ][ WARNING ][ publish_in_git ][ must be a boolean ]`),
+    );
 
     this.config = { publish_in_git: false };
 
-    console.log(chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ publish_in_git ][ assign to 'false' ]`));
+    console.log(
+      chalk.bold.green(`[ RERGUARD_CONFIG ][ INIT ][ publish_in_git ][ assign to 'false' ]`),
+    );
     console.log("");
 
     return this.publish_in_git;

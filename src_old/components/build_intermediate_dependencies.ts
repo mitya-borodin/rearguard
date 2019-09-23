@@ -29,7 +29,10 @@ export async function build_intermediate_dependencies(
 
     if (fs.existsSync(cur_global_dep)) {
       // ! GET_CONFIG_FILEs
-      const cur_rearguardConfig = new RearguardConfig(envConfig, path.resolve(cur_global_dep, "package.json"));
+      const cur_rearguardConfig = new RearguardConfig(
+        envConfig,
+        path.resolve(cur_global_dep, "package.json"),
+      );
       const cur_buildStatusConfig = new BuildStatusConfig(
         path.resolve(cur_global_dep, NON_VERSIONABLE_CONFIG_FILE_NAME),
       );

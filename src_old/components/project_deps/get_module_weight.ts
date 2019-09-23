@@ -15,7 +15,10 @@ export function get_module_weight(
   a_module_map?: Map<string, string>,
 ): number {
   function worker(a_module_path: string, weight: number): number {
-    const { sync_project_deps } = new RearguardConfig(envConfig, path.resolve(a_module_path, "package.json"));
+    const { sync_project_deps } = new RearguardConfig(
+      envConfig,
+      path.resolve(a_module_path, "package.json"),
+    );
 
     if (sync_project_deps.length > 0) {
       weight += sync_project_deps.length;
@@ -36,7 +39,11 @@ export function get_module_weight(
     if (existsSync(module_path)) {
       return worker(module_path, a_weight);
     } else {
-      console.log(chalk.bold.red(`[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't module by path: ${module_path}; ]`));
+      console.log(
+        chalk.bold.red(
+          `[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't module by path: ${module_path}; ]`,
+        ),
+      );
 
       process.exit(1);
     }
@@ -54,11 +61,15 @@ export function get_module_weight(
   }
 
   console.log(
-    chalk.bold.red(`[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't link in local node_modules ${global_path}; ]`),
+    chalk.bold.red(
+      `[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't link in local node_modules ${global_path}; ]`,
+    ),
   );
 
   console.log(
-    chalk.bold.red(`[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't link in global node_modules ${global_path}; ]`),
+    chalk.bold.red(
+      `[ GET_MODULE_WEIGHT ][ ERROR ][ You haven't link in global node_modules ${global_path}; ]`,
+    ),
   );
 
   process.exit(1);

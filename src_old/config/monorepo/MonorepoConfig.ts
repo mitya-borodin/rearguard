@@ -20,7 +20,9 @@ export class MonorepoConfig extends ConfigFile implements IMonorepoConfig {
       return modules;
     }
 
-    console.error("[ MONOREPO_CONFIG_FILE ][ MODULES ][ ERROR ][ modules should be not empty string ]");
+    console.error(
+      "[ MONOREPO_CONFIG_FILE ][ MODULES ][ ERROR ][ modules should be not empty string ]",
+    );
 
     return "";
   }

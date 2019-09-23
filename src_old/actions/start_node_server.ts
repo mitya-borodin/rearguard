@@ -59,10 +59,14 @@ async function start_node_server() {
   console.log(chalk.white(ts_node_dev_command));
   console.log("");
 
-  const result = spawn.sync(tsNodeDev_bin, ["--prefer-ts", "--type-check", "--respawn", "./bin/www.ts"], {
-    encoding: "utf8",
-    stdio: "inherit",
-  });
+  const result = spawn.sync(
+    tsNodeDev_bin,
+    ["--prefer-ts", "--type-check", "--respawn", "./bin/www.ts"],
+    {
+      encoding: "utf8",
+      stdio: "inherit",
+    },
+  );
 
   if (result.signal) {
     if (result.signal === "SIGKILL") {

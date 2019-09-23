@@ -11,7 +11,7 @@ export const TESTS_DIR_NAME = "tests";
 
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
-export const TS_LINT_CONFIG_FILE_NAME = "tslint.json";
+export const LINT_CONFIG_FILE_NAME = ".eslintrc";
 
 // ! LIST_OF_LOAD_ON_DEMAND
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";

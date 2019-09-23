@@ -42,7 +42,9 @@ export async function delete_bundles(envConfig: IEnvConfig, rearguardConfig: IRe
     const paths = await del(delete_target);
 
     for (const item of paths) {
-      console.log(chalk.gray(`[ LOCAL_COPY_OF_BUNDLE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
+      console.log(
+        chalk.gray(`[ LOCAL_COPY_OF_BUNDLE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`),
+      );
     }
 
     console.log("");

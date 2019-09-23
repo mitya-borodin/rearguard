@@ -4,7 +4,12 @@ import * as chokidar from "chokidar";
 import { existsSync } from "fs";
 import * as path from "path";
 import { BuildStatusConfig } from "../config/buildStatus/BuildStatusConfig";
-import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME, NON_VERSIONABLE_CONFIG_FILE_NAME } from "../const";
+import {
+  DLL_BUNDLE_DIR_NAME,
+  LIB_BUNDLE_DIR_NAME,
+  LIB_DIR_NAME,
+  NON_VERSIONABLE_CONFIG_FILE_NAME,
+} from "../const";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import { copy_bundles } from "./project_deps/copy_bundles";
@@ -33,7 +38,11 @@ async function doSync(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) 
   await ordering_project_deps(envConfig);
   await sync_with_linked_modules(envConfig);
 
-  if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
+  if (
+    rearguardConfig.is_application ||
+    rearguardConfig.has_dll ||
+    rearguardConfig.has_browser_lib
+  ) {
     await delete_bundles(envConfig, rearguardConfig);
     await copy_bundles(envConfig);
   }
@@ -42,7 +51,10 @@ async function doSync(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) 
   console.log("");
 }
 
-export async function watch_deps(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): Promise<() => void> {
+export async function watch_deps(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): Promise<() => void> {
   console.log(chalk.bold.yellow(`[ WATCH ][ INIT ]`));
   console.log("");
 
@@ -86,7 +98,11 @@ export async function watch_deps(envConfig: IEnvConfig, rearguardConfig: IReargu
             `[ You haven't link in global node_modules ${global_path} or local node_modules ${local_path} ]`,
         ),
       );
-      console.log(chalk.red(`[ ERROR ]` + `[ You need install ${name} module or link to global node_modules ]`));
+      console.log(
+        chalk.red(
+          `[ ERROR ]` + `[ You need install ${name} module or link to global node_modules ]`,
+        ),
+      );
 
       process.exit(1);
     }

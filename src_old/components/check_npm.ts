@@ -7,19 +7,23 @@ export async function check_npm(): Promise<boolean> {
 
     const spinner = ora("Checking connection with npm registry").start();
 
-    const childProcess: ChildProcess = exec(`npm ping`, { encoding: "utf8" }, (error: ExecException | null) => {
-      clearTimeout(timeout);
+    const childProcess: ChildProcess = exec(
+      `npm ping`,
+      { encoding: "utf8" },
+      (error: ExecException | null) => {
+        clearTimeout(timeout);
 
-      if (!error) {
-        spinner.succeed("Сonnection established with npm registry");
-        resolve(true);
-      } else {
-        spinner.fail("Сonnection failure with npm registry");
-        resolve(false);
-      }
+        if (!error) {
+          spinner.succeed("Сonnection established with npm registry");
+          resolve(true);
+        } else {
+          spinner.fail("Сonnection failure with npm registry");
+          resolve(false);
+        }
 
-      console.log("");
-    });
+        console.log("");
+      },
+    );
 
     timeout = setTimeout(() => {
       spinner.fail("Сonnection failure with npm registry");

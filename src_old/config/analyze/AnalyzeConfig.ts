@@ -14,7 +14,11 @@ export class AnalyzeConfig extends NonVersionableConfig implements IAnalyzeConfi
         return port;
       } else {
         console.log("");
-        console.log(chalk.bold.yellow(`[ ANALYZE_CONFIG ][ WARNING ][ PORT ][ MUST_BE_A_NUMBER AND MORE THEN 5000 ]`));
+        console.log(
+          chalk.bold.yellow(
+            `[ ANALYZE_CONFIG ][ WARNING ][ PORT ][ MUST_BE_A_NUMBER AND MORE THEN 5000 ]`,
+          ),
+        );
       }
     } else {
       console.log("");

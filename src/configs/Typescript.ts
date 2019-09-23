@@ -1,5 +1,5 @@
 import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
-import { defaultsDeep } from "lodash";
+import { merge } from "lodash";
 
 interface CompilerOptions {
   /* Basic Options */
@@ -78,8 +78,8 @@ export class Typescript {
     origin: Typescript,
     compilerOptions: Partial<CompilerOptions> = {},
     otherOptions: { compileOnSave?: boolean; include?: string[]; exclude?: string[] } = {},
-  ): Typescript {
-    return new Typescript(defaultsDeep(origin, { compilerOptions }, otherOptions));
+  ): Readonly<Typescript> {
+    return new Typescript(merge(origin, { compilerOptions }, otherOptions));
   }
 
   public readonly compileOnSave: boolean;
@@ -94,7 +94,7 @@ export class Typescript {
       /* Basic Options */
       target: "es6",
       module: "commonjs",
-      lib: ["es6", "es7", "dom", "DOM.Iterable", "ScriptHost"],
+      lib: ["es6", "es7", "dom", "dom.iterable", "scripthost"],
       allowJs: false,
       checkJs: false,
       jsx: "react",

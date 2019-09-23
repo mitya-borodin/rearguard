@@ -66,7 +66,10 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
             ),
           );
           console.log(
-            chalk.red(`[ ERROR ]` + `[ You need go to the project and do [ npm link || npm install ] needs module ]`),
+            chalk.red(
+              `[ ERROR ]` +
+                `[ You need go to the project and do [ npm link || npm install ] needs module ]`,
+            ),
           );
 
           process.exit(1);
@@ -96,7 +99,9 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
                 if (existsSync(file_path)) {
                   files.push(`${file_path}/**`);
                 } else {
-                  console.log(chalk.red(`[ COPY_TASK ][ ERROR ][ module haven't file: ${file_path} ]`));
+                  console.log(
+                    chalk.red(`[ COPY_TASK ][ ERROR ][ module haven't file: ${file_path} ]`),
+                  );
                   console.log("");
                   process.exit(1);
                 }
@@ -141,7 +146,9 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
             const paths = await del(module_path);
 
             for (const item of paths) {
-              console.log(chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
+              console.log(
+                chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`),
+              );
             }
           }
 
@@ -152,7 +159,9 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
                 reject();
               } else {
                 console.log(
-                  chalk.green(`[ MODULE ][ CREATED ][ DIR ][ ${path.relative(process.cwd(), module_path)} ]`),
+                  chalk.green(
+                    `[ MODULE ][ CREATED ][ DIR ][ ${path.relative(process.cwd(), module_path)} ]`,
+                  ),
                 );
 
                 resolve();
@@ -173,24 +182,31 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
 
         for (const task of copyTasks) {
           await new Promise((resolve, reject) => {
-            copy(task.files, envConfig.resolveLocalModule(task.name), (error: any, items: any[]) => {
-              if (!error) {
-                if (envConfig.isDebug) {
-                  for (const item of items) {
-                    console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`), chalk.cyan(item.path));
+            copy(
+              task.files,
+              envConfig.resolveLocalModule(task.name),
+              (error: any, items: any[]) => {
+                if (!error) {
+                  if (envConfig.isDebug) {
+                    for (const item of items) {
+                      console.log(
+                        chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`),
+                        chalk.cyan(item.path),
+                      );
+                    }
+                  } else {
+                    console.log(
+                      chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`),
+                      chalk.cyan(`[ ${items.length} FILES ]`),
+                    );
                   }
-                } else {
-                  console.log(
-                    chalk.cyan(`[ MODULE ][ COPY ][ ${task.name} ]`),
-                    chalk.cyan(`[ ${items.length} FILES ]`),
-                  );
-                }
 
-                resolve();
-              } else {
-                reject(error);
-              }
-            });
+                  resolve();
+                } else {
+                  reject(error);
+                }
+              },
+            );
           });
 
           for (const dep_type of ["dependencies", "devDependencies", "peerDependencies"]) {
@@ -206,7 +222,9 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
         rearguardConfig.pkg = LOCAL_PKG;
 
         console.log("");
-        console.log(chalk.bold.white(`[ UPDATED VERSIONS OF LINKED MODULES IN LOCAL PACKAGE.JSON ]`));
+        console.log(
+          chalk.bold.white(`[ UPDATED VERSIONS OF LINKED MODULES IN LOCAL PACKAGE.JSON ]`),
+        );
         console.log("");
         // END
       } else {

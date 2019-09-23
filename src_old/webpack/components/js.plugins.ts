@@ -58,7 +58,9 @@ export const DllReferencePlugin = (
           }),
         );
       } else {
-        console.log(chalk.red(`[ DllReferencePlugin ][ ERROR ][ MANIFEST_NOT_FOUND: ${manifest} ]`));
+        console.log(
+          chalk.red(`[ DllReferencePlugin ][ ERROR ][ MANIFEST_NOT_FOUND: ${manifest} ]`),
+        );
 
         process.exit(1);
       }
@@ -114,7 +116,13 @@ class ComputeDataForHWP {
           const bundlesInfo: IBundleInfo[] = get_bundles_info(this.envConfig, this.rearguardConfig);
           const data: { js: string[]; css: [] } = { js: [], css: [] };
 
-          for (const { assets, bundle_name, has_dll, has_browser_lib, load_on_demand } of bundlesInfo) {
+          for (const {
+            assets,
+            bundle_name,
+            has_dll,
+            has_browser_lib,
+            load_on_demand,
+          } of bundlesInfo) {
             if (!load_on_demand) {
               if (has_dll && fs.existsSync(assets.dll)) {
                 data.js.push(require(assets.dll)[dll_entry_name(bundle_name)].js);
@@ -151,7 +159,10 @@ class ComputeDataForHWP {
   }
 }
 
-export const htmlWebpackPlugin = (envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): webpack.Plugin[] => {
+export const htmlWebpackPlugin = (
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): webpack.Plugin[] => {
   const { isWDS, isBuild } = envConfig;
 
   if (isWDS || isBuild) {
@@ -226,7 +237,11 @@ export const analyze = (envConfig: IEnvConfig): webpack.Plugin[] => {
   return [];
 };
 
-export const clean = (envConfig: IEnvConfig, toRemove: string[] = [], force = false): webpack.Plugin[] => {
+export const clean = (
+  envConfig: IEnvConfig,
+  toRemove: string[] = [],
+  force = false,
+): webpack.Plugin[] => {
   const { isDevelopment, isBuild, isDebug } = envConfig;
 
   if (!isDevelopment || force || isBuild) {

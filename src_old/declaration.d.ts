@@ -128,7 +128,11 @@ declare module "html-webpack-plugin" {
        */
       templateParameters?:
         | false
-        | ((compilation: compilation.Compilation, assets: TemplateParametersAssets, options: Options) => any)
+        | ((
+            compilation: compilation.Compilation,
+            assets: TemplateParametersAssets,
+            options: Options,
+          ) => any)
         | { [key: string]: any };
       /**
        * The title to use for the generated HTML document.

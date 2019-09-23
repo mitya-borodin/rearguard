@@ -4,7 +4,7 @@ import {
   BinMap,
   Bugs,
   Config,
-  DependencyMa,
+  DependencyMap,
   Directories,
   Engines,
   PublishConfig,
@@ -19,37 +19,37 @@ export class PackageJSON {
   public readonly description?: string;
   public readonly keywords?: string[];
   public readonly homepage: string;
-  public readonly bugs: string | Bugs;
+  public readonly bugs: string | Readonly<Bugs>;
   public readonly license: string;
-  public readonly author: string | Author;
-  public readonly contributors?: string[] | Author[];
+  public readonly author: string | Readonly<Author>;
+  public readonly contributors?: string[] | Readonly<Author>[];
   public readonly files: string[];
   public readonly main: string;
-  public readonly bin: string | BinMap;
+  public readonly bin: string | Readonly<BinMap>;
   public readonly man?: string | string[];
-  public readonly directories?: Directories;
-  public readonly repository: string | Repository;
-  public readonly scripts: ScriptsMap;
-  public readonly config?: Config;
-  public readonly dependencies?: DependencyMa;
-  public readonly devDependencies?: DependencyMa;
-  public readonly peerDependencies?: DependencyMa;
-  public readonly optionalDependencies?: DependencyMa;
+  public readonly directories?: Readonly<Directories>;
+  public readonly repository: string | Readonly<Repository>;
+  public readonly scripts: Readonly<ScriptsMap>;
+  public readonly config?: Readonly<Config>;
+  public readonly dependencies?: Readonly<DependencyMap>;
+  public readonly devDependencies?: Readonly<DependencyMap>;
+  public readonly peerDependencies?: Readonly<DependencyMap>;
+  public readonly optionalDependencies?: Readonly<DependencyMap>;
   public readonly bundledDependencies?: string[];
   public readonly engines: Engines;
   public readonly os?: string[];
   public readonly cpu?: string[];
   public readonly preferGlobal?: boolean;
   public readonly private?: boolean;
-  public readonly publishConfig?: PublishConfig;
-  public readonly rearguard: Rearguard;
+  public readonly publishConfig?: Readonly<PublishConfig>;
+  public readonly rearguard: Readonly<Rearguard>;
 
   constructor(data: any) {
     this.name = "";
     this.version = "1.0.0";
     this.homepage = "";
     this.bugs = {
-      email: "",
+      email: "dmitriy@borodin.site",
       url: "",
     };
     this.license = "MIT";

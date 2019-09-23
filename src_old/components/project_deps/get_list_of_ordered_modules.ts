@@ -14,7 +14,11 @@ export async function get_list_of_ordered_modules(
 ): Promise<string[]> {
   console.log(chalk.bold.blue(`============GET_LIST_OF_ORDERED_MODULES=========`));
   const startTime = moment();
-  console.log(chalk.bold.blue(`[ GET_LIST_OF_ORDERED_MODULES ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`));
+  console.log(
+    chalk.bold.blue(
+      `[ GET_LIST_OF_ORDERED_MODULES ][ RUN ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`,
+    ),
+  );
   console.log("");
 
   /////////////////////
@@ -42,10 +46,17 @@ export async function get_list_of_ordered_modules(
 
   console.log(
     chalk.bold.blue(
-      `[ GET_LIST_OF_ORDERED_MODULES ][ WORK_TIME ][ ${endTime.diff(startTime, "milliseconds")} ][ millisecond ]`,
+      `[ GET_LIST_OF_ORDERED_MODULES ][ WORK_TIME ][ ${endTime.diff(
+        startTime,
+        "milliseconds",
+      )} ][ millisecond ]`,
     ),
   );
-  console.log(chalk.bold.blue(`[ GET_LIST_OF_ORDERED_MODULES ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`));
+  console.log(
+    chalk.bold.blue(
+      `[ GET_LIST_OF_ORDERED_MODULES ][ DONE ][ ${moment().format("YYYY-MM-DD hh:mm:ss")} ]`,
+    ),
+  );
   console.log(chalk.bold.blue(`================================================`));
   console.log("");
 

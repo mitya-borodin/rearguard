@@ -143,7 +143,7 @@ npm install -D rearguard
 
 ### Build mode
 
-- rearguard build  [ --only_dev | --debug | --need_update_build_time ]
+- rearguard build [ --only_dev | --debug | --need_update_build_time ]
 
 ### Testing mode
 
@@ -389,7 +389,11 @@ Or even like this:
 
 ```json
 {
-  "modules": ["src", "src/outSideProjectFromGitSubmodule/src", "src/outSideProjectFromGitSubmodule/src/components"]
+  "modules": [
+    "src",
+    "src/outSideProjectFromGitSubmodule/src",
+    "src/outSideProjectFromGitSubmodule/src/components"
+  ]
 }
 ```
 

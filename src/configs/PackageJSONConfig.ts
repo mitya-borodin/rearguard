@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
-import { DependencyMa, ScriptsMap } from "../interfaces/configs/PackageJSON";
+import { DependencyMap, ScriptsMap } from "../interfaces/configs/PackageJSON";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
 
@@ -17,10 +17,18 @@ export class PackageJSONConfig {
   }
 
   public getPkg(): Readonly<PackageJSON> {
-    if (fs.existsSync(this.file_path)) {
-      return new PackageJSON(this.read());
-    } else {
-      console.error(`File ${this.file_path} not found`);
+    try {
+      if (fs.existsSync(this.file_path)) {
+        const origin = JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
+
+        return new PackageJSON(origin);
+      } else {
+        console.error(`File ${this.file_path} not found`);
+
+        process.exit(1);
+      }
+    } catch (error) {
+      console.error(error);
 
       process.exit(1);
     }
@@ -40,7 +48,7 @@ export class PackageJSONConfig {
     return this.getPkg().files;
   }
 
-  public getDependencies(): Readonly<DependencyMa> {
+  public getDependencies(): Readonly<DependencyMap> {
     return this.getPkg().dependencies || {};
   }
 
@@ -48,11 +56,13 @@ export class PackageJSONConfig {
     return Object.keys(this.getDependencies());
   }
 
-  public setDependencies(dependencies: DependencyMa): Readonly<PackageJSON> {
-    return this.setPkg(new PackageJSON({ ...this.getPkg(), dependencies }));
+  public async setDependencies(
+    dependencies: Readonly<DependencyMap>,
+  ): Promise<Readonly<PackageJSON>> {
+    return await this.setPkg(new PackageJSON({ ...this.getPkg(), dependencies }));
   }
 
-  public getDevDependencies(): Readonly<DependencyMa> {
+  public getDevDependencies(): Readonly<DependencyMap> {
     return this.getPkg().devDependencies || {};
   }
 
@@ -60,32 +70,35 @@ export class PackageJSONConfig {
     return Object.keys(this.getDevDependencies());
   }
 
-  public setDevDependencies(devDependencies: DependencyMa): Readonly<PackageJSON> {
-    return this.setPkg(new PackageJSON({ ...this.getPkg(), devDependencies }));
+  public async setDevDependencies(
+    devDependencies: Readonly<DependencyMap>,
+  ): Promise<Readonly<PackageJSON>> {
+    return await this.setPkg(new PackageJSON({ ...this.getPkg(), devDependencies }));
   }
 
   public getScripts(): Readonly<ScriptsMap> {
     return this.getPkg().scripts;
   }
 
-  public setScripts(scripts: ScriptsMap): Readonly<PackageJSON> {
+  public async setScripts(scripts: Readonly<ScriptsMap>): Promise<Readonly<PackageJSON>> {
     const origin = this.getPkg();
+    const pkg = new PackageJSON({ ...origin, scripts: { ...origin.scripts, ...scripts } });
 
-    return this.setPkg(new PackageJSON({ ...origin, scripts: { ...origin.scripts, ...scripts } }));
+    return await this.setPkg(pkg);
   }
 
   public getRearguard(): Readonly<Rearguard> {
     return this.getPkg().rearguard;
   }
 
-  public setRearguard(rearguard: Rearguard): Readonly<PackageJSON> {
-    return this.setPkg(new PackageJSON({ ...this.getPkg(), rearguard }));
+  public async setRearguard(rearguard: Readonly<Rearguard>): Promise<Readonly<PackageJSON>> {
+    return await this.setPkg(new PackageJSON({ ...this.getPkg(), rearguard }));
   }
 
-  private setPkg(origin: Readonly<PackageJSON>): Readonly<PackageJSON> {
+  private async setPkg(origin: Readonly<PackageJSON>): Promise<Readonly<PackageJSON>> {
     try {
       if (fs.existsSync(this.file_path)) {
-        this.write(origin);
+        fs.writeFileSync(this.file_path, PPJ.format(origin), { encoding: "utf-8" });
       } else {
         console.error(`File ${this.file_path} not found`);
 
@@ -98,27 +111,5 @@ export class PackageJSONConfig {
     }
 
     return origin;
-  }
-
-  private read(): object {
-    try {
-      return JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
-    } catch (error) {
-      console.error(error);
-
-      process.exit(1);
-    }
-
-    return {};
-  }
-
-  private write(origin: object): void {
-    try {
-      fs.writeFileSync(this.file_path, PPJ.format(origin), { encoding: "utf-8" });
-    } catch (error) {
-      console.error(error);
-
-      process.exit(1);
-    }
   }
 }

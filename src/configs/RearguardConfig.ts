@@ -1,4 +1,4 @@
-import { defaultsDeep } from "lodash";
+import { merge } from "lodash";
 import { PackageJSONConfig } from "./PackageJSONConfig";
 import { Rearguard } from "./Rearguard";
 
@@ -43,18 +43,18 @@ export class RearguardConfig extends PackageJSONConfig {
   }
 
   public isOverwriteTSLintConfig(): boolean {
-    return !this.getRearguard().configs.noOverwriteTSLintConfig;
+    return !this.getRearguard().configs.noOverwriteLintConfig;
   }
 
-  public setRuntime(runtime: "browser" | "node" | "isomorphic"): RearguardConfig {
-    this.setRearguard(new Rearguard(defaultsDeep(this.getRearguard(), { project: { runtime } })));
-
-    return this;
+  public isOverwriteGitIgnore(): boolean {
+    return !this.getRearguard().configs.noOverwriteGitIgnore;
   }
 
-  public setType(type: "app" | "lib"): RearguardConfig {
-    this.setRearguard(new Rearguard(defaultsDeep(this.getRearguard(), { project: { type } })));
+  public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {
+    await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { runtime } })));
+  }
 
-    return this;
+  public async setType(type: "app" | "lib"): Promise<void> {
+    await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { type } })));
   }
 }

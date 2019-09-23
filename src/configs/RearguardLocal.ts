@@ -27,7 +27,7 @@ export class RearguardLocal {
     last_build_time: Moment;
   };
 
-  constructor(data: Partial<RearguardLocal>) {
+  constructor(data?: any) {
     this.webpack_dev_server = {
       host: "localhost",
       port: 5000,
@@ -61,65 +61,67 @@ export class RearguardLocal {
       last_build_time: moment(),
     };
 
-    if (isObject(data.webpack_dev_server)) {
-      if (isString(data.webpack_dev_server.host)) {
-        this.webpack_dev_server.host = data.webpack_dev_server.host;
-      }
-      if (isNumber(data.webpack_dev_server.port)) {
-        this.webpack_dev_server.port = data.webpack_dev_server.port;
-      }
-      if (isObject(data.webpack_dev_server.proxy)) {
-        this.webpack_dev_server.proxy = data.webpack_dev_server.proxy;
-      }
-    }
-
-    if (isObject(data.webpack_bundle_analyzer)) {
-      if (["server", "static", "disabled"].includes(data.webpack_bundle_analyzer.analyzerMode)) {
-        this.webpack_bundle_analyzer.analyzerMode = data.webpack_bundle_analyzer.analyzerMode;
-      }
-
-      for (const fieldName of ["analyzerHost", "reportFilename", "statsFilename"]) {
-        if (isString(data.webpack_bundle_analyzer[fieldName])) {
-          this.webpack_bundle_analyzer[fieldName] = data.webpack_bundle_analyzer[fieldName];
+    if (data) {
+      if (isObject(data.webpack_dev_server)) {
+        if (isString(data.webpack_dev_server.host)) {
+          this.webpack_dev_server.host = data.webpack_dev_server.host;
+        }
+        if (isNumber(data.webpack_dev_server.port)) {
+          this.webpack_dev_server.port = data.webpack_dev_server.port;
+        }
+        if (isObject(data.webpack_dev_server.proxy)) {
+          this.webpack_dev_server.proxy = data.webpack_dev_server.proxy;
         }
       }
 
-      if (isNumber(data.webpack_bundle_analyzer.analyzerPort)) {
-        this.webpack_bundle_analyzer.analyzerPort = data.webpack_bundle_analyzer.analyzerPort;
-      }
+      if (isObject(data.webpack_bundle_analyzer)) {
+        if (["server", "static", "disabled"].includes(data.webpack_bundle_analyzer.analyzerMode)) {
+          this.webpack_bundle_analyzer.analyzerMode = data.webpack_bundle_analyzer.analyzerMode;
+        }
 
-      if (["parsed", "stat", "gzip"].includes(data.webpack_bundle_analyzer.defaultSizes)) {
-        this.webpack_bundle_analyzer.defaultSizes = data.webpack_bundle_analyzer.defaultSizes;
-      }
+        for (const fieldName of ["analyzerHost", "reportFilename", "statsFilename"]) {
+          if (isString(data.webpack_bundle_analyzer[fieldName])) {
+            this.webpack_bundle_analyzer[fieldName] = data.webpack_bundle_analyzer[fieldName];
+          }
+        }
 
-      for (const fieldName of ["openAnalyzer", "generateStatsFile"]) {
-        if (isBoolean(data.webpack_bundle_analyzer[fieldName])) {
-          this.webpack_bundle_analyzer[fieldName] = data.webpack_bundle_analyzer[fieldName];
+        if (isNumber(data.webpack_bundle_analyzer.analyzerPort)) {
+          this.webpack_bundle_analyzer.analyzerPort = data.webpack_bundle_analyzer.analyzerPort;
+        }
+
+        if (["parsed", "stat", "gzip"].includes(data.webpack_bundle_analyzer.defaultSizes)) {
+          this.webpack_bundle_analyzer.defaultSizes = data.webpack_bundle_analyzer.defaultSizes;
+        }
+
+        for (const fieldName of ["openAnalyzer", "generateStatsFile"]) {
+          if (isBoolean(data.webpack_bundle_analyzer[fieldName])) {
+            this.webpack_bundle_analyzer[fieldName] = data.webpack_bundle_analyzer[fieldName];
+          }
+        }
+
+        if (["info", "warn", "error", "silent"].includes(data.webpack_bundle_analyzer.logLevel)) {
+          this.webpack_bundle_analyzer.logLevel = data.webpack_bundle_analyzer.logLevel;
         }
       }
 
-      if (["info", "warn", "error", "silent"].includes(data.webpack_bundle_analyzer.logLevel)) {
-        this.webpack_bundle_analyzer.logLevel = data.webpack_bundle_analyzer.logLevel;
-      }
-    }
-
-    if (isObject(data.build)) {
-      if (["init", "in_progress", "done"].includes(data.build.status)) {
-        this.build.status = data.build.status;
-      }
-
-      for (const fieldName of ["hash_dev", "hash_prod"]) {
-        if (isString(data.build[fieldName])) {
-          this.build[fieldName] = data.build[fieldName];
+      if (isObject(data.build)) {
+        if (["init", "in_progress", "done"].includes(data.build.status)) {
+          this.build.status = data.build.status;
         }
-      }
 
-      if (isBoolean(data.build.has_last_build_time)) {
-        this.build.has_last_build_time = data.build.has_last_build_time;
-      }
+        for (const fieldName of ["hash_dev", "hash_prod"]) {
+          if (isString(data.build[fieldName])) {
+            this.build[fieldName] = data.build[fieldName];
+          }
+        }
 
-      if (isMoment(data.build.last_build_time)) {
-        this.build.last_build_time = data.build.last_build_time.clone();
+        if (isBoolean(data.build.has_last_build_time)) {
+          this.build.has_last_build_time = data.build.has_last_build_time;
+        }
+
+        if (isMoment(data.build.last_build_time)) {
+          this.build.last_build_time = data.build.last_build_time.clone();
+        }
       }
     }
   }

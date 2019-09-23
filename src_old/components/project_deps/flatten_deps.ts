@@ -20,7 +20,10 @@ export function flatten_deps(
   const flat_deps: Set<string> = new Set();
 
   function worker(module_name: string, node_module_path: string): boolean {
-    const { sync_project_deps } = new RearguardConfig(envConfig, path.resolve(node_module_path, "package.json"));
+    const { sync_project_deps } = new RearguardConfig(
+      envConfig,
+      path.resolve(node_module_path, "package.json"),
+    );
 
     if (sync_project_deps.length > 0) {
       flat_deps.add(module_name);
@@ -41,14 +44,21 @@ export function flatten_deps(
 
   for (const module_name of a_cur_project_deps) {
     if (isString(a_modules_root_directory) && a_module_map) {
-      const module_path = path.resolve(a_modules_root_directory, a_module_map.get(module_name) || "");
+      const module_path = path.resolve(
+        a_modules_root_directory,
+        a_module_map.get(module_name) || "",
+      );
 
       if (existsSync(module_path)) {
         if (worker(module_name, module_path)) {
           continue;
         }
       } else {
-        console.log(chalk.bold.red(`[ FLATTEN_DEPS ][ ERROR ][ You haven't module by path: ${module_path}; ]`));
+        console.log(
+          chalk.bold.red(
+            `[ FLATTEN_DEPS ][ ERROR ][ You haven't module by path: ${module_path}; ]`,
+          ),
+        );
 
         process.exit(1);
       }
@@ -70,10 +80,16 @@ export function flatten_deps(
       }
 
       console.log(
-        chalk.bold.red(`[ FLAT_DEPS_DEEP ][ ERROR ][ You haven't link in global node_modules ${global_path}; ]`),
+        chalk.bold.red(
+          `[ FLAT_DEPS_DEEP ][ ERROR ][ You haven't link in global node_modules ${global_path}; ]`,
+        ),
       );
 
-      console.log(chalk.bold.red(`[ FLAT_DEPS_DEEP ][ ERROR ][ You haven't local node_modules ${local_path} ]`));
+      console.log(
+        chalk.bold.red(
+          `[ FLAT_DEPS_DEEP ][ ERROR ][ You haven't local node_modules ${local_path} ]`,
+        ),
+      );
 
       process.exit(1);
     }

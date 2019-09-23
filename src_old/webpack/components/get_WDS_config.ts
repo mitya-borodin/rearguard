@@ -15,7 +15,10 @@ export function get_WDS_config(envConfig: IEnvConfig, rearguardConfig: IRearguar
 
   return {
     compress: true,
-    contentBase: [path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME), path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME)],
+    contentBase: [
+      path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME),
+      path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME),
+    ],
     watchContentBase: false,
     before(app: express.Application, server: any) {
       watch_deps_event_emitter.on("SYNCED", () => {

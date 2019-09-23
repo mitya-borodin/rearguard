@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as PPJ from "prettier-package-json";
 import { RearguardLocal } from "./RearguardLocal";
+import { mkdir } from "../helpers/mkdir";
 
 export class RearguardLocalConfig {
   private CWD: string;
@@ -34,17 +35,13 @@ export class RearguardLocalConfig {
     return new RearguardLocal({});
   }
 
-  public setConfig(config: RearguardLocal): Readonly<RearguardLocal> {
+  public async setConfig(config: Readonly<RearguardLocal>): Promise<Readonly<RearguardLocal>> {
     const newConfig: Readonly<RearguardLocal> = new RearguardLocal(config);
 
     try {
-      if (fs.existsSync(this.file_path)) {
-        fs.writeFileSync(this.file_path, PPJ.format(newConfig), { encoding: "utf-8" });
-      } else {
-        console.error(`File ${this.file_path} not found`);
+      await mkdir(this.file_path);
 
-        process.exit(1);
-      }
+      fs.writeFileSync(this.file_path, PPJ.format(newConfig), { encoding: "utf-8" });
     } catch (error) {
       console.error(error);
 

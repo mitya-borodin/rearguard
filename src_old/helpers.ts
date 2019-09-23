@@ -3,7 +3,13 @@ import * as path from "path";
 import { envConfig } from "./config/env";
 import { pkgInfo } from "./config/pkg";
 import { rearguardConfig } from "./config/rearguard";
-import { ASSETS_NAME, BUNDLE_SUB_DIR, DLL_BUNDLE_DIR_NAME, DLL_MANIFEST_NAME, LIB_BUNDLE_DIR_NAME } from "./const";
+import {
+  ASSETS_NAME,
+  BUNDLE_SUB_DIR,
+  DLL_BUNDLE_DIR_NAME,
+  DLL_MANIFEST_NAME,
+  LIB_BUNDLE_DIR_NAME,
+} from "./const";
 
 // CONTEXT
 export function get_context(): string {
@@ -38,6 +44,9 @@ export function lib_assets_path(root = envConfig.rootDir, name = snakeCase(pkgIn
   return path.resolve(lib_output_path(root, name), ASSETS_NAME);
 }
 
-export function dll_manifest_path(root = envConfig.rootDir, name = snakeCase(pkgInfo.name)): string {
+export function dll_manifest_path(
+  root = envConfig.rootDir,
+  name = snakeCase(pkgInfo.name),
+): string {
   return path.resolve(dll_output_path(root, name), DLL_MANIFEST_NAME);
 }

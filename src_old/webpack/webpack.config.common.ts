@@ -98,9 +98,16 @@ export function general_WP_config(
     performance: {
       hints: false,
     },
-    plugins: [new webpack.WatchIgnorePlugin([/node_modules/]), new webpack.ProgressPlugin(), ...plugins],
+    plugins: [
+      new webpack.WatchIgnorePlugin([/node_modules/]),
+      new webpack.ProgressPlugin(),
+      ...plugins,
+    ],
     profile: true,
-    recordsPath: path.resolve(process.cwd(), "node_modules/.cache/webpack/[confighash]/records.json"),
+    recordsPath: path.resolve(
+      process.cwd(),
+      "node_modules/.cache/webpack/[confighash]/records.json",
+    ),
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".css", ".json"],
       modules,

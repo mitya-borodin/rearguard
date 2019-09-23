@@ -5,13 +5,22 @@ import { LIB_BUNDLE_DIR_NAME } from "../const";
 import { get_context, lib_entry_name, lib_output_path } from "../helpers";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
-import { analyze, assetsPlugin, clean, DllReferencePlugin, HashWebpackPlugin } from "./components/js.plugins";
+import {
+  analyze,
+  assetsPlugin,
+  clean,
+  DllReferencePlugin,
+  HashWebpackPlugin,
+} from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
 // tslint:disable:object-literal-sort-keys
 
-export function library_WP_config(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): webpack.Configuration {
+export function library_WP_config(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): webpack.Configuration {
   const { lib_entry, bundle_public_path } = rearguardConfig;
 
   return general_WP_config(

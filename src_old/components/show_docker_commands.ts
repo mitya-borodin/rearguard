@@ -11,7 +11,9 @@ export function show_docker_commands(rearguardConfig: IRearguardConfig) {
 
   console.log(chalk.bold.magenta(`[ BUILD IMAGE ]`));
   console.log(
-    chalk.bold.cyan(`docker build --no-cache -f ./build/Dockerfile -t ${docker_org_name}/${pkg.name}:${pkg.version} .`),
+    chalk.bold.cyan(
+      `docker build --no-cache -f ./build/Dockerfile -t ${docker_org_name}/${pkg.name}:${pkg.version} .`,
+    ),
   );
   console.log("");
 

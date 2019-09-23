@@ -113,7 +113,10 @@ export async function initProject() {
       const dll_entry = path.resolve(src, rearguardConfig.dll_entry);
 
       if (!fs.existsSync(dll_entry)) {
-        fs.writeFileSync(dll_entry, `// В этом файле указываются импорты пакетов, которые необходимо вынести в dll;\n`);
+        fs.writeFileSync(
+          dll_entry,
+          `// В этом файле указываются импорты пакетов, которые необходимо вынести в dll;\n`,
+        );
 
         console.log(chalk.green(`[ ENTRY_FILE ][ INIT ][ ${dll_entry} ]`));
         console.log("");
@@ -200,8 +203,14 @@ export async function initProject() {
       if (rearguardConfig.has_dll) {
         if (!(rearguardConfig.has_browser_lib || rearguardConfig.has_node_lib)) {
           update_for_pkg.scripts.build = update_for_pkg.scripts.build.replace("--dll", "");
-          update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace("--dll", "");
-          update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace("--dll", "");
+          update_for_pkg.scripts["build:release"] = update_for_pkg.scripts["build:release"].replace(
+            "--dll",
+            "",
+          );
+          update_for_pkg.scripts["build:both"] = update_for_pkg.scripts["build:both"].replace(
+            "--dll",
+            "",
+          );
         }
 
         update_for_pkg.scripts.dll = "rearguard build --dll";
@@ -227,13 +236,18 @@ export async function initProject() {
     }
 
     update_for_pkg.scripts.check_deps_on_npm = "rearguard check_deps_on_npm";
-    update_for_pkg.scripts["check_deps_on_npm:install"] = "rearguard check_deps_on_npm --install_deps";
+    update_for_pkg.scripts["check_deps_on_npm:install"] =
+      "rearguard check_deps_on_npm --install_deps";
 
     /**
      * ! PRE_PUBLISH_ONLY
      */
 
-    if (!rearguardConfig.has_dll && !rearguardConfig.has_browser_lib && rearguardConfig.has_node_lib) {
+    if (
+      !rearguardConfig.has_dll &&
+      !rearguardConfig.has_browser_lib &&
+      rearguardConfig.has_node_lib
+    ) {
       update_for_pkg.scripts.prepublishOnly = "npm run build:release";
     } else {
       update_for_pkg.scripts.prepublishOnly = "npm run build:both";
@@ -279,7 +293,11 @@ export async function initProject() {
   await sync_with_linked_modules(envConfig);
 
   if (!rearguardConfig.is_back_end) {
-    if (rearguardConfig.is_application || rearguardConfig.has_dll || rearguardConfig.has_browser_lib) {
+    if (
+      rearguardConfig.is_application ||
+      rearguardConfig.has_dll ||
+      rearguardConfig.has_browser_lib
+    ) {
       await delete_bundles(envConfig, rearguardConfig);
       await copy_bundles(envConfig);
     }

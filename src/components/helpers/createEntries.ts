@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import { RearguardConfig } from "../../../configs/RearguardConfig";
-import { mkdir } from "../../../helpers/mkdir";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { mkdir } from "../../helpers/mkdir";
 
 // TODO Add logging;
 export const createEntries = async (CWD: string): Promise<void> => {
@@ -20,7 +20,7 @@ export const createEntries = async (CWD: string): Promise<void> => {
   await mkdir(contextPath);
 
   if (fs.existsSync(contextPath)) {
-    if (!fs.existsSync(contextPath)) {
+    if (!fs.existsSync(entryPath)) {
       fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");`);
     }
 

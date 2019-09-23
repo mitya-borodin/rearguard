@@ -4,7 +4,13 @@ import { DLL_BUNDLE_DIR_NAME } from "../const";
 import { dll_entry_name, dll_output_path, get_context } from "../helpers";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
-import { analyze, assetsPlugin, clean, DllPlugin, HashWebpackPlugin } from "./components/js.plugins";
+import {
+  analyze,
+  assetsPlugin,
+  clean,
+  DllPlugin,
+  HashWebpackPlugin,
+} from "./components/js.plugins";
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 

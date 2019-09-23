@@ -1,5 +1,10 @@
 import * as path from "path";
-import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME, TS_CONFIG_FILE_NAME } from "../../const";
+import {
+  DLL_BUNDLE_DIR_NAME,
+  LIB_BUNDLE_DIR_NAME,
+  LIB_DIR_NAME,
+  TS_CONFIG_FILE_NAME,
+} from "../../const";
 import { get_context } from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { ITypescriptConfigFile } from "../../interfaces/config/ITypescriptConfigFile";
@@ -30,11 +35,16 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
         target: "es6",
         jsx: "react",
         lib: ["dom", "es6", "DOM.Iterable", "ScriptHost", "es7"],
-        module: this.envConfig.isSync || this.envConfig.isBNS || this.envConfig.isSNS ? "commonjs" : "es6",
+        module:
+          this.envConfig.isSync || this.envConfig.isBNS || this.envConfig.isSNS
+            ? "commonjs"
+            : "es6",
         moduleResolution: "node",
         importHelpers: true,
         noErrorTruncation: true,
-        ...(!rearguardConfig.has_node_lib && !rearguardConfig.is_application && rearguardConfig.has_browser_lib
+        ...(!rearguardConfig.has_node_lib &&
+        !rearguardConfig.is_application &&
+        rearguardConfig.has_browser_lib
           ? {
               outDir: path.resolve(process.cwd(), LIB_DIR_NAME),
               declaration: true,
@@ -69,7 +79,8 @@ export class TypescriptConfig extends ConfigFile implements ITypescriptConfigFil
       include: [get_context(), path.resolve(get_context(), "../bin")],
       exclude: [
         "node_modules",
-        ...((this.envConfig.isWDS || this.envConfig.isBuild) && !(this.envConfig.isSync || this.envConfig.isBNS)
+        ...((this.envConfig.isWDS || this.envConfig.isBuild) &&
+        !(this.envConfig.isSync || this.envConfig.isBNS)
           ? [
               path.resolve(process.cwd(), DLL_BUNDLE_DIR_NAME),
               path.resolve(process.cwd(), LIB_BUNDLE_DIR_NAME),

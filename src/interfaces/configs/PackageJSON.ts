@@ -30,7 +30,7 @@ export interface Config {
 /**
  * A map of dependencies
  */
-export interface DependencyMa {
+export interface DependencyMap {
   [dependencyName: string]: string;
 }
 

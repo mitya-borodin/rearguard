@@ -1,14 +1,23 @@
 import { snakeCase } from "lodash";
 import * as path from "path";
 import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
-import { dll_assets_path, dll_entry_name, dll_manifest_path, lib_assets_path, lib_entry_name } from "../../helpers";
+import {
+  dll_assets_path,
+  dll_entry_name,
+  dll_manifest_path,
+  lib_assets_path,
+  lib_entry_name,
+} from "../../helpers";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { IRearguardConfig } from "../../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "../../interfaces/IBundleInfo";
 
 // tslint:disable:variable-name object-literal-sort-keys
 
-export function get_bundles_info(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig): IBundleInfo[] {
+export function get_bundles_info(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): IBundleInfo[] {
   /////////////////////
   //
   // START OF PROCEDURE

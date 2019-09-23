@@ -6,9 +6,15 @@ import { RearguardConfig } from "../../config/rearguard/RearguardConfig";
 import { IEnvConfig } from "../../interfaces/config/IEnvConfig";
 import { check_npm } from "../check_npm";
 
-export async function install_declared_deps(envConfig: IEnvConfig, CWD: string = process.cwd()): Promise<boolean> {
+export async function install_declared_deps(
+  envConfig: IEnvConfig,
+  CWD: string = process.cwd(),
+): Promise<boolean> {
   try {
-    const { sync_project_deps, pkg } = new RearguardConfig(envConfig, path.resolve(CWD, "package.json"));
+    const { sync_project_deps, pkg } = new RearguardConfig(
+      envConfig,
+      path.resolve(CWD, "package.json"),
+    );
 
     if (sync_project_deps.length > 0) {
       console.log(chalk.bold.blue(`===========INSTALL_DECLARED_DEPS============`));

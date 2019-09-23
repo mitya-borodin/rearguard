@@ -17,7 +17,10 @@ export async function create_workbox(envConfig: IEnvConfig): Promise<void> {
     cleanupOutdatedCaches: true,
     clientsClaim: true,
     globDirectory: get_output_path(),
-    globPatterns: [`**/${envConfig.isDevelopment ? "dev" : "prod"}/${glob_for_files}`, glob_for_files],
+    globPatterns: [
+      `**/${envConfig.isDevelopment ? "dev" : "prod"}/${glob_for_files}`,
+      glob_for_files,
+    ],
     importWorkboxFrom: "local",
     maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
     navigateFallback: "/",

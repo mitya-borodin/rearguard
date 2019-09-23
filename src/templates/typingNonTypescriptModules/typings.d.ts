@@ -3,7 +3,8 @@ declare module "*.css" {
     [className: string]: any;
   }
 
-  const classNames: IClassNames;
+  const classNames: ClassNames;
+
   export = classNames;
 }
 
