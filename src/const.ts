@@ -1,3 +1,5 @@
+import { ScriptsMap } from "./interfaces/configs/PackageJSON";
+
 // export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
 export const DLL_MANIFEST_NAME = "manifest.json";
 export const ASSETS_MANIFEST_NAME = "assets.json";
@@ -27,4 +29,14 @@ export const PRETTIER_OPTIONS: {
   trailingComma: "all",
   arrowParens: "always",
   parser: "json",
+};
+
+// !
+export const DEFAULT_SCRIPTS: ScriptsMap = {
+  "make-prettier": "prettier --write '**/*.{ts,tsx,json,md}'",
+  lint: "eslint src/**/*.{ts,tsx} bin/**/*.{ts, tsx}",
+  "lint-fix": "eslint --fix src/**/*.{ts,tsx} bin/**/*.{ts,tsx}",
+  typecheck: "tsc --noEmit",
+  "validate-prettiness": "prettier -c '**/*.{ts,tsx,json,md}'",
+  validate: "npm run lint && npm run typecheck && npm run validate-prettiness",
 };

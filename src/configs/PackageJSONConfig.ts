@@ -4,6 +4,8 @@ import * as PPJ from "prettier-package-json";
 import { DependencyMap, ScriptsMap } from "../interfaces/configs/PackageJSON";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
+import * as prettier from "prettier";
+import { PRETTIER_OPTIONS } from "../const";
 
 export class PackageJSONConfig {
   private CWD: string;
@@ -98,7 +100,19 @@ export class PackageJSONConfig {
   private async setPkg(origin: Readonly<PackageJSON>): Promise<Readonly<PackageJSON>> {
     try {
       if (fs.existsSync(this.file_path)) {
-        fs.writeFileSync(this.file_path, PPJ.format(origin), { encoding: "utf-8" });
+        const formatedJSON = JSON.parse(PPJ.format(origin));
+
+        // ! ==========================================
+        // !
+        // ! Manky patching for cancel script sorting;
+        // !
+        // ! ==========================================
+
+        formatedJSON.scripts = origin.scripts;
+
+        const content = prettier.format(JSON.stringify(formatedJSON, null, 2), PRETTIER_OPTIONS);
+
+        fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
       } else {
         console.error(`File ${this.file_path} not found`);
 
