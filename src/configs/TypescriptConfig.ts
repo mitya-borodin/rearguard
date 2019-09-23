@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import { merge } from "lodash";
 import * as path from "path";
-import { TS_CONFIG_FILE_NAME } from "../const";
+import * as prettier from "prettier";
+import { PRETTIER_OPTIONS, TS_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { Typescript } from "./Typescript";
 
@@ -16,51 +16,50 @@ export class TypescriptConfig {
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
-  public async init(force = false): Promise<void> {
-    await this.setTS(new Typescript(), force);
+  public async init(force = false): Promise<Readonly<Typescript>> {
+    const origin = new Typescript();
+
+    if (!fs.existsSync(this.file_path)) {
+      return await this.write(origin);
+    } else if (force) {
+      return await this.write(origin);
+    }
+
+    return origin;
   }
 
   public async setBaseUrl(baseUrl: string): Promise<void> {
-    const ts = await this.getTS();
+    const origin = await this.read();
 
-    await this.setTS(Typescript.merge(ts, { baseUrl }, {}));
+    await this.write(Typescript.merge(origin, { baseUrl }, {}));
   }
 
   public async setModule(module: "commonjs" | "es6"): Promise<void> {
-    const ts = await this.getTS();
+    const origin = await this.read();
 
-    await this.setTS(Typescript.merge(ts, { module }, {}));
+    await this.write(Typescript.merge(origin, { module }, {}));
   }
 
   public async setInclude(include: string[]): Promise<void> {
-    const ts = await this.getTS();
+    const origin = await this.read();
 
-    await this.setTS(Typescript.merge(ts, {}, { include }));
+    await this.write(Typescript.merge(origin, {}, { include }));
   }
 
   public async setExclude(exclude: string[]): Promise<void> {
-    const ts = await this.getTS();
+    const origin = await this.read();
 
-    await this.setTS(Typescript.merge(ts, {}, { exclude }));
+    await this.write(Typescript.merge(origin, {}, { exclude }));
   }
 
-  private async getTS(): Promise<Readonly<Typescript>> {
-    if (fs.existsSync(this.file_path)) {
-      return new Typescript(this.read());
-    } else {
-      return await this.write(new Typescript());
-    }
-  }
-
-  private async setTS(target: Readonly<Typescript>, force = false): Promise<Readonly<Typescript>> {
+  private async read(): Promise<Readonly<Typescript>> {
     try {
-      if (force) {
-        await this.write(target);
-      } else {
-        const origin = await this.getTS();
-        const ts = new Typescript(merge(origin, target));
+      if (fs.existsSync(this.file_path)) {
+        const origin = JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
 
-        await this.write(ts);
+        return new Typescript(origin);
+      } else {
+        return await this.init();
       }
     } catch (error) {
       console.error(error);
@@ -68,26 +67,16 @@ export class TypescriptConfig {
       process.exit(1);
     }
 
-    return target;
-  }
-
-  private read(): object {
-    try {
-      if (fs.existsSync(this.file_path)) {
-        return JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
-      }
-    } catch (error) {
-      process.exit(1);
-    }
-
-    return {};
+    return new Typescript();
   }
 
   private async write(origin: Readonly<Typescript>): Promise<Readonly<Typescript>> {
     try {
+      const content = prettier.format(JSON.stringify(origin, null, 2), PRETTIER_OPTIONS);
+
       await mkdir(path.dirname(this.file_path));
 
-      fs.writeFileSync(this.file_path, JSON.stringify(origin, null, 2), { encoding: "utf-8" });
+      fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
     } catch (error) {
       console.error(error);
 

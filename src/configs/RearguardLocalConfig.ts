@@ -1,8 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as PPJ from "prettier-package-json";
-import { RearguardLocal } from "./RearguardLocal";
+import * as prettier from "prettier";
+import { PRETTIER_OPTIONS } from "../const";
 import { mkdir } from "../helpers/mkdir";
+import { RearguardLocal } from "./RearguardLocal";
 
 export class RearguardLocalConfig {
   private CWD: string;
@@ -39,9 +40,11 @@ export class RearguardLocalConfig {
     const newConfig: Readonly<RearguardLocal> = new RearguardLocal(config);
 
     try {
+      const content = prettier.format(JSON.stringify(newConfig, null, 2), PRETTIER_OPTIONS);
+
       await mkdir(this.file_path);
 
-      fs.writeFileSync(this.file_path, PPJ.format(newConfig), { encoding: "utf-8" });
+      fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
     } catch (error) {
       console.error(error);
 

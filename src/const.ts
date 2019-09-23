@@ -15,3 +15,16 @@ export const LINT_CONFIG_FILE_NAME = ".eslintrc";
 
 // ! LIST_OF_LOAD_ON_DEMAND
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";
+
+// ! PRETTIER_CONFIG
+export const PRETTIER_OPTIONS: {
+  printWidth: number;
+  trailingComma: "none" | "es5" | "all";
+  arrowParens: "avoid" | "always";
+  parser: "json";
+} = {
+  printWidth: 100,
+  trailingComma: "all",
+  arrowParens: "always",
+  parser: "json",
+};
