@@ -39,7 +39,7 @@ export class Template {
   }
 
   protected get isExistDestFile(): boolean {
-    return fs.existsSync(this.CWD);
+    return fs.existsSync(this.destinationFilePath);
   }
 
   public async render(
@@ -50,14 +50,12 @@ export class Template {
 
     await this.createTargetDir();
 
-    if (this.isExistCWD) {
-      if (this.isExistDestFile) {
-        if (templateData.force) {
-          fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
-        }
-      } else {
+    if (this.isExistDestFile) {
+      if (templateData.force) {
         fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
       }
+    } else {
+      fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
     }
   }
 

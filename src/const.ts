@@ -1,5 +1,12 @@
 import { ScriptsMap } from "./interfaces/configs/PackageJSON";
 
+interface PrettierOptions {
+  printWidth: number;
+  trailingComma: "none" | "es5" | "all";
+  arrowParens: "avoid" | "always";
+  parser: "json" | "json-stringify";
+}
+
 // export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
 export const DLL_MANIFEST_NAME = "manifest.json";
 export const ASSETS_MANIFEST_NAME = "assets.json";
@@ -19,16 +26,21 @@ export const LINT_CONFIG_FILE_NAME = ".eslintrc";
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";
 
 // ! PRETTIER_CONFIG
-export const PRETTIER_OPTIONS: {
-  printWidth: number;
-  trailingComma: "none" | "es5" | "all";
-  arrowParens: "avoid" | "always";
-  parser: "json";
-} = {
+const PRETTIER_DEFAULT: PrettierOptions = {
   printWidth: 100,
   trailingComma: "all",
   arrowParens: "always",
+  parser: "json-stringify",
+};
+
+export const PRETTIER_JSON: PrettierOptions = {
+  ...PRETTIER_DEFAULT,
   parser: "json",
+};
+
+export const PRETTIER_JSON_STRINGIFY: PrettierOptions = {
+  ...PRETTIER_DEFAULT,
+  parser: "json-stringify",
 };
 
 // !

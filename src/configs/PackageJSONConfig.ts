@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
+import * as prettier from "prettier";
 import * as PPJ from "prettier-package-json";
+import { PRETTIER_JSON_STRINGIFY } from "../const";
 import { DependencyMap, ScriptsMap } from "../interfaces/configs/PackageJSON";
 import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
-import * as prettier from "prettier";
-import { PRETTIER_OPTIONS } from "../const";
 
 export class PackageJSONConfig {
   private CWD: string;
@@ -110,7 +110,7 @@ export class PackageJSONConfig {
 
         formatedJSON.scripts = origin.scripts;
 
-        const content = prettier.format(JSON.stringify(formatedJSON, null, 2), PRETTIER_OPTIONS);
+        const content = prettier.format(JSON.stringify(formatedJSON), PRETTIER_JSON_STRINGIFY);
 
         fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
       } else {

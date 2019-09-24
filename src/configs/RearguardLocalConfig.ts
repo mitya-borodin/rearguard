@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
-import { PRETTIER_OPTIONS } from "../const";
+import { PRETTIER_JSON } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
 
@@ -40,7 +40,7 @@ export class RearguardLocalConfig {
     const newConfig: Readonly<RearguardLocal> = new RearguardLocal(config);
 
     try {
-      const content = prettier.format(JSON.stringify(newConfig, null, 2), PRETTIER_OPTIONS);
+      const content = prettier.format(JSON.stringify(newConfig), PRETTIER_JSON);
 
       await mkdir(this.file_path);
 

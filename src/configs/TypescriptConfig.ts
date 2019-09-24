@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
-import { PRETTIER_OPTIONS, TS_CONFIG_FILE_NAME } from "../const";
+import { PRETTIER_JSON, TS_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { Typescript } from "./Typescript";
 
@@ -72,7 +72,7 @@ export class TypescriptConfig {
 
   private async write(origin: Readonly<Typescript>): Promise<Readonly<Typescript>> {
     try {
-      const content = prettier.format(JSON.stringify(origin, null, 2), PRETTIER_OPTIONS);
+      const content = prettier.format(JSON.stringify(origin), PRETTIER_JSON);
 
       await mkdir(path.dirname(this.file_path));
 
