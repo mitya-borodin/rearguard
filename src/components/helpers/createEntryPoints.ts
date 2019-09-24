@@ -4,19 +4,23 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
 
 // TODO Add logging;
-export const createEntries = async (CWD: string): Promise<void> => {
+export const createEntryPoints = async (CWD: string): Promise<void> => {
+  // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
 
+  // * Prepare data for creating files;
   const context = rearguardConfig.getContext();
   const entry = rearguardConfig.getEntry();
   const libEntry = rearguardConfig.getLibEntry();
   const dllEntry = rearguardConfig.getDllEntry();
 
+  // * Prepare data for creating files;
   const contextPath = path.resolve(CWD, context);
   const entryPath = path.resolve(contextPath, entry);
   const libEntryPath = path.resolve(contextPath, libEntry);
   const dllEntryPath = path.resolve(contextPath, dllEntry);
 
+  // ! Create context directory;
   await mkdir(contextPath);
 
   if (fs.existsSync(contextPath)) {
