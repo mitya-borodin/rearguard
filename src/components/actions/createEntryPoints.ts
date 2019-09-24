@@ -13,6 +13,8 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   const entry = rearguardConfig.getEntry();
   const libEntry = rearguardConfig.getLibEntry();
   const dllEntry = rearguardConfig.getDllEntry();
+  const isBrowser = rearguardConfig.isBrowser();
+  const isLib = rearguardConfig.isLib();
 
   // * Prepare data for creating files;
   const contextPath = path.resolve(CWD, context);
@@ -24,15 +26,15 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   await mkdir(contextPath);
 
   if (fs.existsSync(contextPath)) {
-    if (!fs.existsSync(entryPath)) {
+    if (isBrowser && !fs.existsSync(entryPath)) {
       fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");`);
     }
 
-    if (!fs.existsSync(libEntryPath)) {
+    if (isLib && !fs.existsSync(libEntryPath)) {
       fs.writeFileSync(libEntryPath, `// Entry point for export library API`);
     }
 
-    if (!fs.existsSync(dllEntryPath)) {
+    if (isBrowser && !fs.existsSync(dllEntryPath)) {
       fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library`);
     }
   }

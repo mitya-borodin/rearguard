@@ -1,9 +1,9 @@
 import * as path from "path";
-import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { editorConfigTemplate } from "../../templates/editorConfig";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
 import { prettierTemplate } from "../../templates/prettierrc";
-import { editorConfigTemplate } from "../../templates/editorConfig";
-import { RearguardConfig } from "../../configs/RearguardConfig";
+import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
 
 // TODO Add logging;
 export const staticTemplates = async (
@@ -15,9 +15,12 @@ export const staticTemplates = async (
 
   // * Prepare path to project context;
   const context = path.resolve(CWD, rearguardConfig.getContext());
+  const isBrowser = rearguardConfig.isBrowser();
 
-  // ! Create type declaration for non typescript modules like a .css, .png, etc.
-  await typingNonTypescriptModulesTemplate.render(options, context);
+  if (isBrowser) {
+    // ! Create type declaration for non typescript modules like a .css, .png, etc.
+    await typingNonTypescriptModulesTemplate.render(options, context);
+  }
 
   // ! Create file for including postcss plugins;
   await postCSSConfigTemplate.render(options);

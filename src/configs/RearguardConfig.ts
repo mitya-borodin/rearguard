@@ -50,6 +50,34 @@ export class RearguardConfig extends PackageJSONConfig {
     return !this.getRearguard().configs.noOverwriteGitIgnore;
   }
 
+  public isLib(): boolean {
+    const { type } = this.getRearguard().project;
+
+    return type === "lib";
+  }
+
+  public isBrowser(): boolean {
+    const { runtime } = this.getRearguard().project;
+
+    return runtime === "browser";
+  }
+
+  public isNode(): boolean {
+    const { runtime } = this.getRearguard().project;
+
+    return runtime === "node";
+  }
+
+  public isNodeLib(): boolean {
+    return this.isNode() && this.isLib();
+  }
+
+  public isNodeApp(): boolean {
+    const { type } = this.getRearguard().project;
+
+    return this.isNode() && type === "app";
+  }
+
   public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { runtime } })));
   }

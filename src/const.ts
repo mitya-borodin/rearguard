@@ -1,5 +1,3 @@
-import { ScriptsMap } from "./interfaces/configs/PackageJSON";
-
 interface PrettierOptions {
   printWidth: number;
   trailingComma: "none" | "es5" | "all";
@@ -41,14 +39,4 @@ export const PRETTIER_JSON: PrettierOptions = {
 export const PRETTIER_JSON_STRINGIFY: PrettierOptions = {
   ...PRETTIER_DEFAULT,
   parser: "json-stringify",
-};
-
-// !
-export const DEFAULT_SCRIPTS: ScriptsMap = {
-  "make-prettier": "prettier --write '**/*.{ts,tsx,json,md}'",
-  lint: "eslint src/**/*.{ts,tsx} bin/**/*.{ts, tsx}",
-  "lint-fix": "eslint --fix src/**/*.{ts,tsx} bin/**/*.{ts,tsx}",
-  typecheck: "tsc --noEmit",
-  "validate-prettiness": "prettier -c '**/*.{ts,tsx,json,md}'",
-  validate: "npm run lint && npm run typecheck && npm run validate-prettiness",
 };
