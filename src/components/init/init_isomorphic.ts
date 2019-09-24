@@ -1,7 +1,7 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { staticTemplates } from "./helpers/staticTemplates";
-import { dynamicTemplates } from "../helpers/dynamicTemplates";
 import { DEFAULT_SCRIPTS } from "../../const";
+import { dynamicTemplates } from "../helpers/dynamicTemplates";
+import { staticTemplates } from "../helpers/staticTemplates";
 
 export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
