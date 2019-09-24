@@ -15,8 +15,8 @@ import { createEntries } from "./createEntries";
 
 // TODO Add logging;
 export const dynamicTemplates = async (
-  CWD: string = process.cwd(),
   options: { force: boolean },
+  CWD: string = process.cwd(),
 ): Promise<void> => {
   const CWDForTests = path.resolve(CWD, TESTS_DIR_NAME);
   const rearguardConfig = new RearguardConfig(CWD);

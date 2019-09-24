@@ -18,6 +18,6 @@ export async function init_isomorphic(flags: { force: boolean }): Promise<void> 
   await rearguardConfig.setRuntime("isomorphic");
   await rearguardConfig.setType("lib");
 
-  await dynamicTemplates(CWD, flags);
-  await staticTemplates(flags);
+  await dynamicTemplates(flags, CWD);
+  await staticTemplates(flags, CWD);
 }

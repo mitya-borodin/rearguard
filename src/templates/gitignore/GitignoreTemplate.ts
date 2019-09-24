@@ -11,10 +11,10 @@ export class GitignoreTemplate extends Template {
   }): Promise<void> {
     await this.createTargetDir();
 
-    if (fs.existsSync(this.CWD)) {
+    if (this.isExistCWD) {
       const renderedContent: string = ejs.render(this.sourceContent, templateData);
 
-      if (this.isExistDestFile()) {
+      if (this.isExistDestFile) {
         if (templateData.force) {
           fs.writeFileSync(this.destinationFilePath, renderedContent, { encoding: "utf-8" });
         }
