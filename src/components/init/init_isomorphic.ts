@@ -1,8 +1,8 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DEFAULT_SCRIPTS } from "../../const";
-import { setConfigs } from "../helpers/setConfigs";
-import { staticTemplates } from "../helpers/staticTemplates";
-import { createEntryPoints } from "../helpers/createEntryPoints";
+import { createEntryPoints } from "../actions/createEntryPoints";
+import { setConfigs } from "../actions/setConfigs";
+import { staticTemplates } from "../actions/staticTemplates";
 
 export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
