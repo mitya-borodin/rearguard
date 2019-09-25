@@ -15,6 +15,7 @@ export const DLL_BUNDLE_DIR_NAME = "dll_bundle";
 export const LIB_BUNDLE_DIR_NAME = "lib_bundle";
 export const LIB_DIR_NAME = "lib";
 export const TESTS_DIR_NAME = "tests";
+export const BIN_DIR_NAME = "bin";
 
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";

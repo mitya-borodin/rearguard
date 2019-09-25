@@ -149,6 +149,10 @@ npm install -D rearguard
 
 - rearguard test [ --debug ]
 
+### Validating
+
+- rearguard lint [ --fix ]
+
 ### Project Service
 
 - rearguard sync
