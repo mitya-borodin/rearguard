@@ -2,6 +2,7 @@ import { createEntryPoints } from "./createEntryPoints";
 import { setConfigs } from "./setConfigs";
 import { setScripts } from "./setScripts";
 import { staticTemplates } from "./staticTemplates";
+import { checkDependencies } from "./checkDependencies";
 
 // TODO Add logging;
 export const commonPreset = async (
@@ -19,4 +20,7 @@ export const commonPreset = async (
 
   // ! Apply static templates to project;
   await staticTemplates(flags, CWD);
+
+  // ! Check/Install dependencies.
+  await checkDependencies(CWD);
 };

@@ -35,5 +35,6 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
   // ! Create entry points: index.tsx, export.ts, vendors.ts;
   // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore;
   // ! Apply static templates to project;
+  // ! Check/Install dependencies.
   await commonPreset(flags, CWD);
 }

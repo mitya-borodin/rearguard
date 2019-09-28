@@ -92,8 +92,9 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
     args.push(`tests/**/*.{${testsPattern}}`);
   }
 
+  // ! Run.
   try {
-    execa.sync("eslint", args, { stdout: "inherit" });
+    await execa("eslint", args);
   } catch (error) {
     console.error(error);
   }
