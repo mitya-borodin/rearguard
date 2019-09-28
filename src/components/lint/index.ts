@@ -40,7 +40,7 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
 
-  // * Prepare data for creating files;
+  // * Prepare data;
   const bin = path.resolve(CWD, BIN_DIR_NAME);
   const src = path.resolve(CWD, rearguardConfig.getContext());
   const tests = path.resolve(CWD, TESTS_DIR_NAME);

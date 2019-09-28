@@ -43,6 +43,12 @@ export class PackageJSON {
   public readonly private?: boolean;
   public readonly publishConfig?: Readonly<PublishConfig>;
   public readonly rearguard: Readonly<Rearguard>;
+  public readonly husky: {
+    hooks: {
+      ["pre-commit"]: string;
+      ["pre-push"]: string;
+    };
+  };
 
   constructor(data: any) {
     this.name = "";
@@ -69,6 +75,12 @@ export class PackageJSON {
     this.engines = {
       node: ">=10 <11",
       npm: ">=6 <7",
+    };
+    this.husky = {
+      hooks: {
+        ["pre-commit"]: "pretty-quick --staged",
+        ["pre-push"]: "npm run validate",
+      },
     };
     this.rearguard = new Rearguard(data.rearguard || {});
 
@@ -126,6 +138,14 @@ export class PackageJSON {
       for (const fieldName of ["node", "npm"]) {
         if (isString(data.engines[fieldName])) {
           this.engines[fieldName] = data.engines[fieldName];
+        }
+      }
+    }
+
+    if (isObject(data.husky) && isObject(data.husky.hooks)) {
+      for (const fieldName of Object.keys(data.husky.hooks)) {
+        if (isString(data.husky.hooks[fieldName])) {
+          this.husky.hooks[fieldName] = data.husky.hooks[fieldName];
         }
       }
     }
