@@ -11,8 +11,6 @@
 
   "files.autoSave": "afterDelay",
 
-  "extensions.showRecommendationsOnlyOnDemand": true,
-
   "workbench.colorTheme": "Nord",
   "workbench.iconTheme": "vscode-icons",
   "workbench.editor.revealIfOpen": true,

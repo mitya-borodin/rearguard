@@ -11,4 +11,4 @@ COPY ./dist/node_modules ./node_modules
 COPY ./dist/src ./src
 COPY ./dist/bin ./bin
 
-CMD ["node", "./bin/www.js"]
+CMD ["node", "./bin/index.js"]

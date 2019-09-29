@@ -56,6 +56,12 @@ export class RearguardConfig extends PackageJSONConfig {
     return type === "lib";
   }
 
+  public isApp(): boolean {
+    const { type } = this.getRearguard().project;
+
+    return type === "app";
+  }
+
   public isBrowser(): boolean {
     const { runtime } = this.getRearguard().project;
 

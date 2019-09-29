@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
+import { BIN_DIR_NAME, BIN_FILE_NAME } from "../../const";
 
 // TODO Add logging;
 export const createEntryPoints = async (CWD: string): Promise<void> => {
@@ -14,7 +15,9 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   const libEntry = rearguardConfig.getLibEntry();
   const dllEntry = rearguardConfig.getDllEntry();
   const isBrowser = rearguardConfig.isBrowser();
+  const isNode = rearguardConfig.isNode();
   const isLib = rearguardConfig.isLib();
+  const isApp = rearguardConfig.isApp();
 
   // * Prepare data for creating files;
   const contextPath = path.resolve(CWD, context);
@@ -36,6 +39,20 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
 
     if (isBrowser && !fs.existsSync(dllEntryPath)) {
       fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library`);
+    }
+  }
+
+  if (isNode && isApp) {
+    // * Prepare  node app data.
+    const binDirPath = path.resolve(CWD, BIN_DIR_NAME);
+    const binFilePath = path.resolve(binDirPath, BIN_FILE_NAME);
+
+    // ! Create bin directory;
+    await mkdir(binDirPath);
+
+    if (!fs.existsSync(binFilePath)) {
+      // ! Create bin file;
+      fs.writeFileSync(binFilePath, `console.log("Entry point for back end implementation.");`);
     }
   }
 };

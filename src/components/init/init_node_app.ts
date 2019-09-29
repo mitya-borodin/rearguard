@@ -1,5 +1,10 @@
 import { commonPreset } from "../actions/commonPreset";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import {
+  backEndDockerfileTemplate,
+  dockerComposeExampleTemplate,
+  dockerIgnoreTemplate,
+} from "../../templates/docker";
 
 export async function init_node_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -12,6 +17,15 @@ export async function init_node_app(flags: { force: boolean }): Promise<void> {
 
   // ! Set type of project;
   await rearguardConfig.setType("app");
+
+  // ! Set buildAssets/Dockerfile;
+  await backEndDockerfileTemplate.render(flags);
+
+  // ! buildAssets/docker-compose.yml;
+  await dockerComposeExampleTemplate.render(flags);
+
+  // ! Create .dockerignore
+  await dockerIgnoreTemplate.render(flags);
 
   // ! Set scripts;
   // ! Create entry points: index.tsx, export.ts, vendors.ts;

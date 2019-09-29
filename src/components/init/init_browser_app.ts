@@ -20,16 +20,16 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
   await rearguardConfig.setType("app");
 
   // ! Set buildAssets/Dockerfile;
-  frontEndDockerfileTemplate.render(flags);
+  await frontEndDockerfileTemplate.render(flags);
 
   // ! buildAssets/docker-compose.yml;
-  dockerComposeExampleTemplate.render(flags);
+  await dockerComposeExampleTemplate.render(flags);
 
   // ! buildAssets/nginx.conf;
-  nginxTemplate.render(flags);
+  await nginxTemplate.render(flags);
 
   // ! Create .dockerignore
-  dockerIgnoreTemplate.render(flags);
+  await dockerIgnoreTemplate.render(flags);
 
   // ! Set scripts;
   // ! Create entry points: index.tsx, export.ts, vendors.ts;
