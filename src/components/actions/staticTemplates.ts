@@ -4,6 +4,7 @@ import { editorConfigTemplate } from "../../templates/editorConfig";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
 import { prettierTemplate } from "../../templates/prettierrc";
 import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
+import { vsCodeSettingsTemplate, vsCodeExtensionsTemplate } from "../../templates/vsCode";
 
 // TODO Add logging;
 export const staticTemplates = async (
@@ -30,4 +31,10 @@ export const staticTemplates = async (
 
   // ! Create .editorconfig.
   await editorConfigTemplate.render(options);
+
+  // ! Create .vscode/settings.json.
+  await vsCodeSettingsTemplate.render(options);
+
+  // ! Create .vscode/extensions.json.
+  await vsCodeExtensionsTemplate.render(options);
 };

@@ -14,6 +14,7 @@ const targetDevDepKeys: string[] = [
   "@typescript-eslint/eslint-plugin",
 ];
 
+// TODO Add logging.
 export const checkDependencies = async (CWD: string = process.cwd()): Promise<void> => {
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
@@ -48,10 +49,19 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
   const needInstallDeps = targetDepKeys.some((name) => !depKeys.includes(name));
   const needInstallDevDeps = targetDevDepKeys.some((name) => !devDepKeys.includes(name));
 
+  // * Prepare execa options.
+  const execaOptions: execa.Options = {
+    stdout: "inherit",
+    stderr: "inherit",
+  };
+
   if (needInstallDeps) {
     // ! Install Dependencies.
     try {
-      await execa("npm", ["install", "-S", ...targetDepKeys]);
+      const curDepList = rearguardConfig.getDependencyList();
+      const toInstall = targetDepKeys.filter((name) => !curDepList.includes(name));
+
+      await execa("npm", ["install", "-S", ...toInstall], execaOptions);
     } catch (error) {
       console.error(error);
     }
@@ -60,7 +70,10 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
   if (needInstallDevDeps) {
     // ! Install Dev Dependencies.
     try {
-      await execa("npm", ["install", "-D", ...targetDevDepKeys]);
+      const curDevDepList = rearguardConfig.getDevDependencyList();
+      const toInstall = targetDevDepKeys.filter((name) => !curDevDepList.includes(name));
+
+      await execa("npm", ["install", "-D", ...toInstall], execaOptions);
     } catch (error) {
       console.error(error);
     }

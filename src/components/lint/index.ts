@@ -34,6 +34,7 @@ const getExtensions = (hasTS: boolean, hasTSX: boolean): string => {
   return extensions.join(",");
 };
 
+// TODO Add logging.
 export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void> {
   const CWD: string = process.cwd();
 
@@ -94,7 +95,7 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
 
   // ! Run.
   try {
-    await execa("eslint", args);
+    await execa("eslint", args, { stdout: "inherit", stderr: "inherit" });
   } catch (error) {
     console.error(error);
   }

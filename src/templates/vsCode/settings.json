@@ -11,6 +11,8 @@
 
   "files.autoSave": "afterDelay",
 
+  "extensions.showRecommendationsOnlyOnDemand": true,
+
   "workbench.colorTheme": "Nord",
   "workbench.iconTheme": "vscode-icons",
   "workbench.editor.revealIfOpen": true,
@@ -32,6 +34,6 @@
   "eslint.packageManager": "npm",
   "eslint.workingDirectories": ["src", "bin", "tests"],
 
-  "cSpell.words": ["borodindmitriy"],
+  "cSpell.words": [],
   "cSpell.language": "en, ru"
 }
