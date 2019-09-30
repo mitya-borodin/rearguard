@@ -154,4 +154,74 @@ export class Rearguard {
       }
     }
   }
+
+  public toJSON(): object {
+    if (this.project.runtime === "node" && this.project.type === "app") {
+      return {
+        project: {
+          runtime: this.project.runtime,
+          type: this.project.type,
+          deps: this.project.deps,
+        },
+        distribution: {
+          publish_to_docker: this.distribution.publish_to_docker,
+          docker: this.distribution.docker,
+        },
+        configs: this.configs,
+      };
+    }
+
+    if (this.project.runtime === "node" && this.project.type === "lib") {
+      return {
+        project: {
+          runtime: this.project.runtime,
+          type: this.project.type,
+          deps: this.project.deps,
+        },
+        distribution: {
+          publish_to_git: this.distribution.publish_to_git,
+        },
+        configs: this.configs,
+      };
+    }
+
+    if (
+      (this.project.runtime === "isomorphic" || this.project.runtime === "browser") &&
+      this.project.type === "lib"
+    ) {
+      return {
+        webpack: this.webpack,
+        project: {
+          runtime: this.project.runtime,
+          type: this.project.type,
+          deps: this.project.deps,
+          will_load_on_demand: this.project.will_load_on_demand,
+        },
+        distribution: {
+          publish_to_git: this.distribution.publish_to_git,
+        },
+        configs: this.configs,
+        postcss_plugins: this.postcss_plugins,
+      };
+    }
+
+    if (this.project.runtime === "browser" && this.project.type === "app") {
+      return {
+        webpack: this.webpack,
+        project: {
+          runtime: this.project.runtime,
+          type: this.project.type,
+          deps: this.project.deps,
+        },
+        distribution: {
+          publish_to_docker: this.distribution.publish_to_docker,
+          docker: this.distribution.docker,
+        },
+        configs: this.configs,
+        postcss_plugins: this.postcss_plugins,
+      };
+    }
+
+    return this;
+  }
 }
