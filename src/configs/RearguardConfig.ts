@@ -62,6 +62,12 @@ export class RearguardConfig extends PackageJSONConfig {
     return type === "app";
   }
 
+  public isIsomorphic(): boolean {
+    const { runtime } = this.getRearguard().project;
+
+    return runtime === "isomorphic";
+  }
+
   public isBrowser(): boolean {
     const { runtime } = this.getRearguard().project;
 

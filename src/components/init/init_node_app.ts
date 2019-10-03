@@ -12,25 +12,25 @@ export async function init_node_app(flags: { force: boolean }): Promise<void> {
   // * Create rearguard config;
   const rearguardConfig = new RearguardConfig(CWD);
 
-  // ! Set environment in which the code will work;
+  // ! Set environment in which the code will work
   await rearguardConfig.setRuntime("node");
 
-  // ! Set type of project;
+  // ! Set type of project
   await rearguardConfig.setType("app");
 
-  // ! Set buildAssets/Dockerfile;
+  // ! Set buildAssets/Dockerfile
   await backEndDockerfileTemplate.render(flags);
 
-  // ! buildAssets/docker-compose.yml;
+  // ! buildAssets/docker-compose.yml
   await dockerComposeExampleTemplate.render(flags);
 
   // ! Create .dockerignore
   await dockerIgnoreTemplate.render(flags);
 
-  // ! Set scripts;
-  // ! Create entry points: index.tsx, export.ts, vendors.ts;
-  // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore;
-  // ! Apply static templates to project;
-  // ! Check/Install dependencies.
+  // ! Set scripts
+  // ! Create entry points: index.tsx, export.ts, vendors.ts
+  // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore
+  // ! Apply static templates to project
+  // ! Check/Install dependencies
   await commonPreset(flags, CWD);
 }

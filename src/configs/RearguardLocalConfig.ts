@@ -4,6 +4,7 @@ import * as prettier from "prettier";
 import { PRETTIER_JSON } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
+import { Moment } from "moment";
 
 export class RearguardLocalConfig {
   private CWD: string;
@@ -14,6 +15,14 @@ export class RearguardLocalConfig {
     this.CWD = CWD;
     this.file_name = ".rearguardrc";
     this.file_path = path.resolve(this.CWD, this.file_name);
+  }
+
+  get has_last_build_time(): boolean {
+    return this.getConfig().build.has_last_build_time;
+  }
+
+  get last_build_time(): Moment {
+    return this.getConfig().build.last_build_time;
   }
 
   public getConfig(): Readonly<RearguardLocal> {

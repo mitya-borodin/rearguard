@@ -18,9 +18,9 @@ export async function build_intermediate_dependencies(
   console.log(chalk.bold.white(`[ FROM: ${rearguardConfig.pkg.name} ]`));
   console.log("");
 
-  // ! CUR_DEPENDECIES_LIST
+  // ! CUR_DEPENDENCIES_LIST
   const cur_dep_list = rearguardConfig.sync_project_deps;
-  // ! REBUIL_LIST
+  // ! REBUILD_LIST
   const target_modules: string[] = [];
 
   for (const cur_dep_name of cur_dep_list) {
@@ -56,6 +56,8 @@ export async function build_intermediate_dependencies(
             const k_has_last_build_time = k_buildStatusConfig.has_last_build_time;
 
             if (k_has_last_build_time) {
+              // TODO !!!!!!!!!!!!
+
               const k_build_time = k_buildStatusConfig.last_build_time;
 
               // * CUR_BUILD_TIME <= TARGET_BUILD_TIME
