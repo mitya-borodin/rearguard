@@ -5,7 +5,7 @@ import {
   frontEndDockerfileTemplate,
 } from "../../templates/docker";
 import { nginxTemplate } from "../../templates/nginx";
-import { commonPreset } from "../actions/commonPreset";
+import { commonPreset } from "../procedures/commonPreset";
 
 export async function init_browser_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();

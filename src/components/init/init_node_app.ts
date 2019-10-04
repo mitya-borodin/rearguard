@@ -1,4 +1,4 @@
-import { commonPreset } from "../actions/commonPreset";
+import { commonPreset } from "../procedures/commonPreset";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import {
   backEndDockerfileTemplate,

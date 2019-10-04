@@ -1,5 +1,5 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { commonPreset } from "../actions/commonPreset";
+import { commonPreset } from "../procedures/commonPreset";
 
 export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
