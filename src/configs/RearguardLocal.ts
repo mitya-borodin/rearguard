@@ -1,6 +1,6 @@
 import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
-import { isMoment, Moment } from "moment";
+import { Moment } from "moment";
 
 export class RearguardLocal {
   public webpack_dev_server: {
