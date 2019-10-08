@@ -2,6 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
 import * as PPJ from "prettier-package-json";
+import * as semver from "semver";
+import { snakeCase } from "lodash";
 import { PRETTIER_JSON_STRINGIFY } from "../const";
 import { DependencyMap, ScriptsMap } from "../interfaces/configs/PackageJSON";
 import { PackageJSON } from "./PackageJSON";
@@ -9,23 +11,25 @@ import { Rearguard } from "./Rearguard";
 
 export class PackageJSONConfig {
   protected CWD: string;
-  protected file_name: string;
-  private file_path: string;
+  protected packageJsonFileName: string;
+  public readonly pathToPackageJsonFile: string;
 
   constructor(CWD: string = process.cwd()) {
     this.CWD = CWD;
-    this.file_name = "package.json";
-    this.file_path = path.resolve(this.CWD, this.file_name);
+    this.packageJsonFileName = "package.json";
+    this.pathToPackageJsonFile = path.resolve(this.CWD, this.packageJsonFileName);
   }
 
   public getPkg(): Readonly<PackageJSON> {
     try {
-      if (fs.existsSync(this.file_path)) {
-        const origin = JSON.parse(fs.readFileSync(this.file_path, { encoding: "utf-8" }));
+      if (fs.existsSync(this.pathToPackageJsonFile)) {
+        const origin = JSON.parse(
+          fs.readFileSync(this.pathToPackageJsonFile, { encoding: "utf-8" }),
+        );
 
         return new PackageJSON(origin);
       } else {
-        console.error(`File ${this.file_path} not found`);
+        console.error(`File ${this.pathToPackageJsonFile} not found`);
 
         process.exit(1);
       }
@@ -40,6 +44,10 @@ export class PackageJSONConfig {
 
   public getName(): string {
     return this.getPkg().name;
+  }
+
+  public getSnakeName(): string {
+    return snakeCase(this.getName());
   }
 
   public getVersion(): string {
@@ -64,6 +72,32 @@ export class PackageJSONConfig {
     return await this.setPkg(new PackageJSON({ ...this.getPkg(), dependencies }));
   }
 
+  public async setDependencyVersion(
+    dependencyName: string,
+    version: string,
+  ): Promise<Readonly<PackageJSON>> {
+    const pkg = this.getPkg();
+    const dependencies = { ...pkg.dependencies };
+    const devDependencies = { ...pkg.devDependencies };
+    const peerDependencies = { ...pkg.peerDependencies };
+
+    if (semver.valid(dependencies[dependencyName]) && semver.valid(version)) {
+      dependencies[dependencyName] = version;
+    }
+
+    if (semver.valid(devDependencies[dependencyName]) && semver.valid(version)) {
+      devDependencies[dependencyName] = version;
+    }
+
+    if (semver.valid(peerDependencies[dependencyName]) && semver.valid(version)) {
+      peerDependencies[dependencyName] = version;
+    }
+
+    return await this.setPkg(
+      new PackageJSON({ ...this.getPkg(), dependencies, devDependencies, peerDependencies }),
+    );
+  }
+
   public getDevDependencies(): Readonly<DependencyMap> {
     return this.getPkg().devDependencies || {};
   }
@@ -76,6 +110,20 @@ export class PackageJSONConfig {
     devDependencies: Readonly<DependencyMap>,
   ): Promise<Readonly<PackageJSON>> {
     return await this.setPkg(new PackageJSON({ ...this.getPkg(), devDependencies }));
+  }
+
+  public getPeerDependencies(): Readonly<DependencyMap> {
+    return this.getPkg().peerDependencies || {};
+  }
+
+  public getPeerDependencyList(): string[] {
+    return Object.keys(this.getPeerDependencies());
+  }
+
+  public async setPeerDependencies(
+    peerDependencies: Readonly<DependencyMap>,
+  ): Promise<Readonly<PackageJSON>> {
+    return await this.setPkg(new PackageJSON({ ...this.getPkg(), peerDependencies }));
   }
 
   public getScripts(): Readonly<ScriptsMap> {
@@ -99,7 +147,7 @@ export class PackageJSONConfig {
 
   private async setPkg(origin: Readonly<PackageJSON>): Promise<Readonly<PackageJSON>> {
     try {
-      if (fs.existsSync(this.file_path)) {
+      if (fs.existsSync(this.pathToPackageJsonFile)) {
         const formatedJSON = JSON.parse(PPJ.format(origin));
 
         // ! ==========================================
@@ -112,9 +160,9 @@ export class PackageJSONConfig {
 
         const content = prettier.format(JSON.stringify(formatedJSON), PRETTIER_JSON_STRINGIFY);
 
-        fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
+        fs.writeFileSync(this.pathToPackageJsonFile, content, { encoding: "utf-8" });
       } else {
-        console.error(`File ${this.file_path} not found`);
+        console.error(`File ${this.pathToPackageJsonFile} not found`);
 
         process.exit(1);
       }

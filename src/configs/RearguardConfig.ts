@@ -112,7 +112,7 @@ export class RearguardConfig extends PackageJSONConfig {
       }
 
       if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
-        const pkgPath = path.resolve(nodeModulePath, dependencyName, this.file_name);
+        const pkgPath = path.resolve(nodeModulePath, dependencyName, this.packageJsonFileName);
 
         if (fs.existsSync(pkgPath)) {
           const pkgContent = fs.readFileSync(pkgPath, { encoding: "utf-8" });

@@ -224,7 +224,10 @@ export class PackageJSON {
             }
           }
         }
-        this[fieldName] = result;
+
+        if (Object.keys(result).length > 0) {
+          this[fieldName] = result;
+        }
       }
     }
 

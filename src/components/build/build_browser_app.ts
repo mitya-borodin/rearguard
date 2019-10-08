@@ -1,6 +1,6 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { getModuleSetForReBuild } from "../procedures/getModuleSetForReBuild";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   const CWD: string = process.cwd();
@@ -8,7 +8,7 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
 
-  console.log("----" || rearguardConfig || options);
+  console.log(CWD || rearguardConfig || options);
 
-  console.log(await getModuleSetForReBuild(process.cwd()));
+  await copyGlobalLinkedModules(CWD);
 }

@@ -181,7 +181,7 @@ export async function sync_with_linked_modules(envConfig: IEnvConfig): Promise<v
         const LOCAL_PKG = Object.assign({}, rearguardConfig.pkg);
 
         for (const task of copyTasks) {
-          await new Promise((resolve, reject) => {
+          await new Promise((resolve, reject): void => {
             copy(
               task.files,
               envConfig.resolveLocalModule(task.name),
