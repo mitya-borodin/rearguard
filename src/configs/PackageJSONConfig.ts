@@ -8,8 +8,8 @@ import { PackageJSON } from "./PackageJSON";
 import { Rearguard } from "./Rearguard";
 
 export class PackageJSONConfig {
-  private CWD: string;
-  private file_name: string;
+  protected CWD: string;
+  protected file_name: string;
   private file_path: string;
 
   constructor(CWD: string = process.cwd()) {

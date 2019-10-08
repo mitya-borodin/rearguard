@@ -25,6 +25,7 @@ export class PackageJSON {
   public readonly contributors?: string[] | Readonly<Author>[];
   public readonly files: string[];
   public readonly main: string;
+  public readonly types: string;
   public readonly bin: string | Readonly<BinMap>;
   public readonly man?: string | string[];
   public readonly directories?: Readonly<Directories>;
@@ -66,6 +67,7 @@ export class PackageJSON {
     };
     this.files = [];
     this.main = "";
+    this.types = "";
     this.bin = "";
     this.repository = {
       type: "",
@@ -84,7 +86,7 @@ export class PackageJSON {
     };
     this.rearguard = new Rearguard(data.rearguard || {});
 
-    for (const fieldName of ["name", "version", "homepage", "license", "main", "bin"]) {
+    for (const fieldName of ["name", "version", "homepage", "license", "main", "types", "bin"]) {
       if (isString(data[fieldName])) {
         this[fieldName] = data[fieldName];
       }

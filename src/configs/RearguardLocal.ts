@@ -119,8 +119,8 @@ export class RearguardLocal {
           this.build.has_last_build_time = data.build.has_last_build_time;
         }
 
-        if (isMoment(data.build.last_build_time)) {
-          this.build.last_build_time = data.build.last_build_time.clone();
+        if (isString(data.build.last_build_time)) {
+          this.build.last_build_time = moment(data.build.last_build_time).clone();
         }
       }
     }

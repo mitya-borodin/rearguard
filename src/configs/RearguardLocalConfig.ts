@@ -17,15 +17,19 @@ export class RearguardLocalConfig {
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
-  get has_last_build_time(): boolean {
-    return this.getConfig().build.has_last_build_time;
+  public async hasLastBuildTime(): Promise<boolean> {
+    const { build } = await this.getConfig();
+
+    return build.has_last_build_time;
   }
 
-  get last_build_time(): Moment {
-    return this.getConfig().build.last_build_time;
+  public async getLastBuildTime(): Promise<Moment> {
+    const { build } = await this.getConfig();
+
+    return build.last_build_time;
   }
 
-  public getConfig(): Readonly<RearguardLocal> {
+  public async getConfig(): Promise<Readonly<RearguardLocal>> {
     if (fs.existsSync(this.file_path)) {
       const content_of_rc_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
 
@@ -37,9 +41,7 @@ export class RearguardLocalConfig {
         process.exit(1);
       }
     } else {
-      console.error(`File ${this.file_path} not found`);
-
-      process.exit(1);
+      return await this.setConfig(new RearguardLocal());
     }
 
     return new RearguardLocal({});
@@ -51,7 +53,7 @@ export class RearguardLocalConfig {
     try {
       const content = prettier.format(JSON.stringify(newConfig), PRETTIER_JSON);
 
-      await mkdir(this.file_path);
+      await mkdir(path.dirname(this.file_path));
 
       fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
     } catch (error) {

@@ -33,6 +33,7 @@ export function get_module_weight(
     }
   }
 
+  // ! Only for monorepo
   if (isString(a_module_root) && a_module_map) {
     const module_path = path.resolve(a_module_root, a_module_map.get(a_module_name) || "");
 

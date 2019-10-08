@@ -6,4 +6,6 @@ export async function build_isomorphic(options: BuildExecutorOptions): Promise<v
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
+
+  console.log("----" || rearguardConfig || options);
 }

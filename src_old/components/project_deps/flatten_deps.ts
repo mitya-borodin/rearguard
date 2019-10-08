@@ -43,6 +43,7 @@ export function flatten_deps(
   }
 
   for (const module_name of a_cur_project_deps) {
+    // ! Only for monorepo
     if (isString(a_modules_root_directory) && a_module_map) {
       const module_path = path.resolve(
         a_modules_root_directory,

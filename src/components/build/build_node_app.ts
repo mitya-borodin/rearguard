@@ -6,4 +6,6 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
+
+  console.log("----" || rearguardConfig || options);
 }

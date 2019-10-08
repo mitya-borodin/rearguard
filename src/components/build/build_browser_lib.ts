@@ -6,4 +6,6 @@ export async function build_browser_lib(options: BuildExecutorOptions): Promise<
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
+
+  console.log("----" || rearguardConfig || options);
 }

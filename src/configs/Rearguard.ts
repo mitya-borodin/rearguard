@@ -1,6 +1,7 @@
 import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
 
 export class Rearguard {
+  public bin: string;
   public webpack: {
     context: string;
     entry: string;
@@ -14,7 +15,6 @@ export class Rearguard {
   };
 
   public project: {
-    deps: string[];
     will_load_on_demand: boolean;
     runtime: "browser" | "node" | "isomorphic";
     type: "app" | "lib";
@@ -39,6 +39,8 @@ export class Rearguard {
   public postcss_plugins: string;
 
   constructor(data?: any) {
+    this.bin = "";
+
     this.webpack = {
       context: "src",
       dll_entry: "vendors.ts",
@@ -52,7 +54,6 @@ export class Rearguard {
     };
 
     this.project = {
-      deps: [],
       will_load_on_demand: false,
       runtime: "browser",
       type: "app",
@@ -76,6 +77,10 @@ export class Rearguard {
     this.postcss_plugins = "postcss.config.js";
 
     if (data) {
+      if (isString(data.bin)) {
+        this.bin = data.bin;
+      }
+
       if (isObject(data.webpack)) {
         for (const fieldName of ["context", "entry", "dll_entry", "lib_entry"]) {
           if (isString(data.webpack[fieldName])) {
@@ -101,12 +106,6 @@ export class Rearguard {
       }
 
       if (isObject(data.project)) {
-        if (isArray(data.project.deps)) {
-          for (const dep of data.project.deps) {
-            this.project.deps.push(dep);
-          }
-        }
-
         if (isBoolean(data.project.will_load_on_demand)) {
           this.project.will_load_on_demand = data.project.will_load_on_demand;
         }
@@ -156,28 +155,32 @@ export class Rearguard {
   }
 
   public toJSON(): object {
+    const project = {
+      project: {
+        runtime: this.project.runtime,
+        type: this.project.type,
+      },
+    };
+
+    const appDistribution = {
+      distribution: {
+        publish_to_docker: this.distribution.publish_to_docker,
+        docker: this.distribution.docker,
+      },
+    };
+
     if (this.project.runtime === "node" && this.project.type === "app") {
       return {
-        project: {
-          runtime: this.project.runtime,
-          type: this.project.type,
-          deps: this.project.deps,
-        },
-        distribution: {
-          publish_to_docker: this.distribution.publish_to_docker,
-          docker: this.distribution.docker,
-        },
+        bin: this.bin,
+        ...project,
+        ...appDistribution,
         configs: this.configs,
       };
     }
 
     if (this.project.runtime === "node" && this.project.type === "lib") {
       return {
-        project: {
-          runtime: this.project.runtime,
-          type: this.project.type,
-          deps: this.project.deps,
-        },
+        ...project,
         distribution: {
           publish_to_git: this.distribution.publish_to_git,
         },
@@ -194,7 +197,6 @@ export class Rearguard {
         project: {
           runtime: this.project.runtime,
           type: this.project.type,
-          deps: this.project.deps,
           will_load_on_demand: this.project.will_load_on_demand,
         },
         distribution: {
@@ -208,15 +210,8 @@ export class Rearguard {
     if (this.project.runtime === "browser" && this.project.type === "app") {
       return {
         webpack: this.webpack,
-        project: {
-          runtime: this.project.runtime,
-          type: this.project.type,
-          deps: this.project.deps,
-        },
-        distribution: {
-          publish_to_docker: this.distribution.publish_to_docker,
-          docker: this.distribution.docker,
-        },
+        ...project,
+        ...appDistribution,
         configs: this.configs,
         postcss_plugins: this.postcss_plugins,
       };

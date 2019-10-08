@@ -1,6 +1,12 @@
+import * as fs from "fs";
+import * as path from "path";
 import { merge } from "lodash";
 import { PackageJSONConfig } from "./PackageJSONConfig";
 import { Rearguard } from "./Rearguard";
+import { getLocalNodeModulePath } from "../helpers/dependencyPaths";
+
+const dependenciesNotCreatedWithRearguard: Set<string> = new Set();
+const dependenciesCreatedWithRearguard: Set<string> = new Set();
 
 export class RearguardConfig extends PackageJSONConfig {
   public getContext(): string {
@@ -24,10 +30,6 @@ export class RearguardConfig extends PackageJSONConfig {
     publicPath: string;
   } {
     return this.getRearguard().webpack.output;
-  }
-
-  public getProjectDeps(): string[] {
-    return this.getRearguard().project.deps;
   }
 
   public isPublishToGit(): boolean {
@@ -96,5 +98,51 @@ export class RearguardConfig extends PackageJSONConfig {
 
   public async setType(type: "app" | "lib"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { type } })));
+  }
+
+  public async getDependenciesCreatedWithRearguard(): Promise<Set<string>> {
+    const nodeModulePath = this.findNodeModulesInParentDirectory(this.CWD);
+    const dependencyList = this.getDependencyList();
+    const projectDeps: Set<string> = new Set();
+
+    for (const dependencyName of dependencyList) {
+      if (dependenciesCreatedWithRearguard.has(dependencyName)) {
+        projectDeps.add(dependencyName);
+        continue;
+      }
+
+      if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
+        const pkgPath = path.resolve(nodeModulePath, dependencyName, this.file_name);
+
+        if (fs.existsSync(pkgPath)) {
+          const pkgContent = fs.readFileSync(pkgPath, { encoding: "utf-8" });
+          const pkg = JSON.parse(pkgContent);
+
+          if (pkg.hasOwnProperty("rearguard")) {
+            projectDeps.add(dependencyName);
+            dependenciesCreatedWithRearguard.add(dependencyName);
+          } else {
+            dependenciesNotCreatedWithRearguard.add(dependencyName);
+          }
+        }
+      }
+    }
+
+    return projectDeps;
+  }
+
+  public findNodeModulesInParentDirectory(CWD: string, count = 0): string {
+    const nodeModules = getLocalNodeModulePath(CWD);
+
+    if (fs.existsSync(nodeModules)) {
+      return nodeModules;
+      // ! Looking for above to 3 level, because npm package may have namespace
+    } else if (count <= 3) {
+      return this.findNodeModulesInParentDirectory(path.resolve(CWD, ".."), count + 1);
+    } else {
+      throw new Error(
+        `[ FIND_NODE_MODULES_IN_PARENT ][ node_modules not found here: ${nodeModules} ]`,
+      );
+    }
   }
 }
