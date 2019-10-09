@@ -3,10 +3,24 @@ import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
 
 async function app_executor(flags: Flags = {}): Promise<void> {
-  await init_component({ browser: true, node: false, app: true, lib: false, force: flags.force });
+  await init_component({
+    dll: false,
+    browser: true,
+    node: false,
+    app: true,
+    lib: false,
+    force: flags.force,
+  });
 }
 async function lib_executor(flags: Flags = {}): Promise<void> {
-  await init_component({ browser: true, node: false, app: false, lib: true, force: flags.force });
+  await init_component({
+    dll: false,
+    browser: true,
+    node: false,
+    app: false,
+    lib: true,
+    force: flags.force,
+  });
 }
 
 const app = new Command("app", app_executor);

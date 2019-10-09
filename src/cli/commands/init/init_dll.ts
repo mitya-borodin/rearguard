@@ -2,15 +2,19 @@ import { init_component } from "../../../components/init";
 import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
 
-async function isomorphic_executor(flags: Flags = {}): Promise<void> {
+async function dll_executor(flags: Flags = {}): Promise<void> {
   await init_component({
-    dll: false,
-    browser: true,
-    node: true,
+    dll: true,
+    browser: false,
+    node: false,
     app: false,
     lib: true,
     force: flags.force,
   });
 }
 
-export const init_isomorphic = new Command("isomorphic", isomorphic_executor);
+const dll = new Command("dll", dll_executor);
+
+export const init_dll = new Command("browser");
+
+init_dll.addCommand(dll);

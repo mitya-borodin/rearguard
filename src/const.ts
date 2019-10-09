@@ -1,15 +1,9 @@
-interface PrettierOptions {
-  printWidth: number;
-  trailingComma: "none" | "es5" | "all";
-  arrowParens: "avoid" | "always";
-  parser: "json" | "json-stringify";
-}
+import { PrettierOptions } from "./interfaces/PrettierOptions";
 
-// export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
 export const DLL_MANIFEST_NAME = "manifest.json";
 export const ASSETS_MANIFEST_NAME = "assets.json";
 
-// ! DIR_NAMES
+// ! DIR/FILE_NAMES
 export const DISTRIBUTIVE_DIR_NAME = "dist";
 export const DLL_BUNDLE_DIR_NAME = "dll_bundle";
 export const LIB_BUNDLE_DIR_NAME = "lib_bundle";
@@ -26,11 +20,11 @@ export const LINT_CONFIG_FILE_NAME = ".eslintrc";
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";
 
 // ! PRETTIER_CONFIG
-const PRETTIER_DEFAULT: PrettierOptions = {
+export const PRETTIER_DEFAULT: PrettierOptions = {
   printWidth: 100,
   trailingComma: "all",
   arrowParens: "always",
-  parser: "json-stringify",
+  parser: "typescript",
 };
 
 export const PRETTIER_JSON: PrettierOptions = {

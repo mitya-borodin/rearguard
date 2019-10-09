@@ -64,6 +64,12 @@ export class RearguardConfig extends PackageJSONConfig {
     return type === "app";
   }
 
+  public isDll(): boolean {
+    const { type } = this.getRearguard().project;
+
+    return type === "dll";
+  }
+
   public isIsomorphic(): boolean {
     const { runtime } = this.getRearguard().project;
 
@@ -92,11 +98,17 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.isNode() && type === "app";
   }
 
+  public willLoadOnDemand(): boolean {
+    const { will_load_on_demand } = this.getRearguard().project;
+
+    return will_load_on_demand;
+  }
+
   public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { runtime } })));
   }
 
-  public async setType(type: "app" | "lib"): Promise<void> {
+  public async setType(type: "dll" | "app" | "lib"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { type } })));
   }
 

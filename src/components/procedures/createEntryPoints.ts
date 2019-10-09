@@ -19,6 +19,7 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   const isNode = rearguardConfig.isNode();
   const isLib = rearguardConfig.isLib();
   const isApp = rearguardConfig.isApp();
+  const isDll = rearguardConfig.isDll();
 
   // * Prepare data for creating files;
   const contextPath = path.resolve(CWD, context);
@@ -30,21 +31,21 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   await mkdir(contextPath);
 
   if (fs.existsSync(contextPath)) {
-    if ((isBrowser || isIsomorphic) && !fs.existsSync(entryPath)) {
+    if (!isDll && (isBrowser || isIsomorphic) && !fs.existsSync(entryPath)) {
       fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");`);
     }
 
-    if (isLib && !fs.existsSync(libEntryPath)) {
+    if (!isDll && isLib && !fs.existsSync(libEntryPath)) {
       fs.writeFileSync(libEntryPath, `// Entry point for export library API`);
     }
 
-    if ((isBrowser || isIsomorphic) && !fs.existsSync(dllEntryPath)) {
+    if ((isDll || isBrowser || isIsomorphic) && !fs.existsSync(dllEntryPath)) {
       fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library`);
     }
   }
 
   if (isNode && isApp) {
-    // * Prepare  node app data.
+    // * Prepare node app data.
     const binDirPath = path.resolve(CWD, BIN_DIR_NAME);
     const binFilePath = path.resolve(binDirPath, BIN_FILE_NAME);
 

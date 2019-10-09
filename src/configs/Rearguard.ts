@@ -15,9 +15,9 @@ export class Rearguard {
   };
 
   public project: {
-    will_load_on_demand: boolean;
     runtime: "browser" | "node" | "isomorphic";
-    type: "app" | "lib";
+    type: "dll" | "app" | "lib";
+    will_load_on_demand: boolean;
   };
 
   public distribution: {
