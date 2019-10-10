@@ -5,6 +5,7 @@ import { build_browser_lib } from "./build_browser_lib";
 import { build_browser_app } from "./build_browser_app";
 import { build_node_lib } from "./build_node_lib";
 import { build_node_app } from "./build_node_app";
+import { build_browser_dll } from "./build_browser_dll";
 
 const defaultOptions: BuildExecutorOptions = {
   only_dev: false,
@@ -26,10 +27,15 @@ export async function build_component(
   const isNode = rearguardConfig.isNode();
   const isApp = rearguardConfig.isApp();
   const isLib = rearguardConfig.isLib();
+  const isDll = rearguardConfig.isDll();
 
   // ? Select component
   if (isIsomorphic) {
     await build_isomorphic(options);
+  }
+
+  if (isBrowser && isDll) {
+    await build_browser_dll(options);
   }
 
   if (isBrowser && isLib) {

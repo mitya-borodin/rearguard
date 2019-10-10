@@ -8,7 +8,7 @@ async function dll_executor(flags: Flags = {}): Promise<void> {
     browser: false,
     node: false,
     app: false,
-    lib: true,
+    lib: false,
     force: flags.force,
   });
 }

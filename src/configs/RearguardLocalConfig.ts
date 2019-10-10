@@ -29,6 +29,16 @@ export class RearguardLocalConfig {
     return build.last_build_time;
   }
 
+  public async getWDSConfig(): Promise<{
+    host: string;
+    port: number;
+    proxy: { [key: string]: any };
+  }> {
+    const config = await this.getConfig();
+
+    return config.webpack_dev_server;
+  }
+
   public async getConfig(): Promise<Readonly<RearguardLocal>> {
     if (fs.existsSync(this.file_path)) {
       const content_of_rc_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });

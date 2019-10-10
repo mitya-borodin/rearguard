@@ -114,7 +114,7 @@ export class Rearguard {
           this.project.runtime = data.project.runtime;
         }
 
-        if (["app", "lib"].includes(data.project.type)) {
+        if (["dll", "app", "lib"].includes(data.project.type)) {
           this.project.type = data.project.type;
         }
       }
@@ -207,14 +207,26 @@ export class Rearguard {
       };
     }
 
-    if (this.project.runtime === "browser" && this.project.type === "app") {
-      return {
-        webpack: this.webpack,
-        ...project,
-        ...appDistribution,
-        configs: this.configs,
-        postcss_plugins: this.postcss_plugins,
-      };
+    if (this.project.runtime === "browser") {
+      if (this.project.type === "app") {
+        return {
+          webpack: this.webpack,
+          ...project,
+          ...appDistribution,
+          configs: this.configs,
+          postcss_plugins: this.postcss_plugins,
+        };
+      }
+
+      if (this.project.type === "dll") {
+        return {
+          webpack: {
+            context: this.webpack.context,
+            dll_entry: this.webpack.dll_entry,
+          },
+          ...project,
+        };
+      }
     }
 
     return this;

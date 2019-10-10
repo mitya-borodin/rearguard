@@ -13,11 +13,11 @@ export async function init_browser_dll(): Promise<void> {
   // ! Set type of project
   await rearguardConfig.setType("dll");
 
-  // ! Create entry points: index.tsx, export.ts, vendors.ts;
-  await createEntryPoints(CWD);
-
   // ! Set scripts;
   await rearguardConfig.setScripts({
     build: "npx rearguard build",
   });
+
+  // ! Create entry points: index.tsx, export.ts, vendors.ts;
+  await createEntryPoints(CWD);
 }
