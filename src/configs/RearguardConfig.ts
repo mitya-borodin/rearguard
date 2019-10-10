@@ -104,6 +104,10 @@ export class RearguardConfig extends PackageJSONConfig {
     return will_load_on_demand;
   }
 
+  public getFilenameWithExternalPostCSSPlugins(): string {
+    return this.getRearguard().postcss_plugins;
+  }
+
   public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { runtime } })));
   }
