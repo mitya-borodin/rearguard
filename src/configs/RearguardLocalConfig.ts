@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
+import { merge } from "lodash";
 import { PRETTIER_JSON } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
@@ -37,6 +38,12 @@ export class RearguardLocalConfig {
     const config = await this.getConfig();
 
     return config.webpack_dev_server;
+  }
+
+  public async setBuildStatus(status: "init" | "in_progress" | "done"): Promise<void> {
+    const config = await this.getConfig();
+
+    await this.setConfig(merge(config, { build: { status } }));
   }
 
   public async getConfig(): Promise<Readonly<RearguardLocal>> {

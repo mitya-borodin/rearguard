@@ -3,6 +3,7 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { getDLLRuntimeName, getLIBRuntimeName } from "../../helpers/bundleNaming";
 import { getRearguardNodeModulesPath } from "../../helpers/dependencyPaths";
+import { Entry } from "webpack";
 
 export const getAppEntryPoints = async (CWD: string, isDevelopment: boolean): Promise<string[]> => {
   // * Prepare configs
@@ -34,7 +35,7 @@ export const getAppEntryPoints = async (CWD: string, isDevelopment: boolean): Pr
   return [entryPath];
 };
 
-export const getLibEntryPoint = async (CWD: string): Promise<{ [key: string]: string }> => {
+export const getLibEntryPoint = async (CWD: string): Promise<Entry> => {
   // * Prepare config
   const rearguardConfig = new RearguardConfig(CWD);
 
@@ -46,11 +47,11 @@ export const getLibEntryPoint = async (CWD: string): Promise<{ [key: string]: st
   const snakeName = rearguardConfig.getSnakeName();
 
   return {
-    [getLIBRuntimeName(snakeName)]: libEntryPath,
+    [getLIBRuntimeName(snakeName)]: [libEntryPath],
   };
 };
 
-export const getDllEntryPoint = async (CWD: string): Promise<{ [key: string]: string }> => {
+export const getDllEntryPoint = async (CWD: string): Promise<Entry> => {
   // * Prepare config
   const rearguardConfig = new RearguardConfig(CWD);
 
@@ -62,6 +63,6 @@ export const getDllEntryPoint = async (CWD: string): Promise<{ [key: string]: st
   const snakeName = rearguardConfig.getSnakeName();
 
   return {
-    [getDLLRuntimeName(snakeName)]: dllEntryPath,
+    [getDLLRuntimeName(snakeName)]: [dllEntryPath],
   };
 };

@@ -1,61 +1,39 @@
-import chalk from "chalk";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import * as path from "path";
-import { Entry, EntryFunc } from "webpack";
 import * as webpack from "webpack";
-import { get_bundles_info } from "../components/project_deps/get_bundles_info";
-import { get_context, lib_entry_name } from "../helpers";
-import { IEnvConfig } from "../interfaces/config/IEnvConfig";
-import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
-import { IBundleInfo } from "./../interfaces/IBundleInfo";
-import cssLoaders from "./components/css.loders";
-import { uglify } from "./components/js.plugins";
+import { RearguardConfig } from "../configs/RearguardConfig";
+import { getCSSLoader } from "./components/getCSSLoader";
+import { getExternals } from "./components/getExternals";
+import { getTypescriptLoader } from "./components/getTypescriptLoader";
+import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
+import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
+import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
+import { getRearguardNodeModulesPath, getLocalNodeModulePath } from "../helpers/dependencyPaths";
 // tslint:disable:variable-name object-literal-sort-keys
 
-export function general_WP_config(
-  envConfig: IEnvConfig,
-  rearguardConfig: IRearguardConfig,
-  entry: string | string[] | Entry | EntryFunc,
+export const getGeneralWebpackConfig = async (
+  CWD: string,
+  isDevelopment: boolean,
+  entry: string[] | webpack.Entry,
   output: webpack.Output,
-  rules: webpack.Rule[],
   plugins: webpack.Plugin[],
-  a_externals: webpack.ExternalsObjectElement,
-): webpack.Configuration {
-  const { modules } = rearguardConfig;
-  const { isDevelopment, isDebug } = envConfig;
-
-  const info: IBundleInfo[] = get_bundles_info(envConfig, rearguardConfig);
-  const lib_externals: webpack.ExternalsObjectElement = {};
-
-  for (const { has_browser_lib, bundle_name, pkg_name } of info) {
-    if (has_browser_lib) {
-      lib_externals[pkg_name] = {
-        var: lib_entry_name(bundle_name),
-      };
-    }
-  }
-
-  const externals: { [key: string]: any } = { ...lib_externals, ...a_externals };
-
-  if (Object.keys(externals).length > 0) {
-    console.log(chalk.bold.green("[ EXTERNALS ]"));
-    for (const key in externals) {
-      if (externals.hasOwnProperty(key)) {
-        const types = Object.keys(externals[key]);
-
-        for (const type of types) {
-          console.log(chalk.green(`[ ${key} ][ ${type} ][ ${externals[key][type]} ]`));
-        }
-      }
-    }
-  }
+  isDebug = false,
+  needUpdateBuildTime = false,
+  rules: webpack.Rule[] = [],
+  externals: webpack.ExternalsObjectElement = {},
+): Promise<webpack.Configuration> => {
+  const rearguardConfig = new RearguardConfig(CWD);
+  const contextPath = path.resolve(CWD, rearguardConfig.getContext());
+  const modules = [
+    ...rearguardConfig.getModules(),
+    await getRearguardNodeModulesPath(CWD),
+    getLocalNodeModulePath(CWD),
+  ];
 
   return {
-    bail: !isDevelopment,
-    cache: true,
-    context: get_context(),
-    devtool: isDebug ? "source-map" : false,
+    context: contextPath,
     entry,
-    externals,
+    externals: { ...(await getExternals(CWD, isDevelopment)), ...externals },
     mode: "none",
     module: {
       rules: [
@@ -70,44 +48,18 @@ export function general_WP_config(
           test: /\.(text|csv)(\?.*)?$/,
           use: "raw-loader",
         },
-        ...cssLoaders(),
+        ...getTypescriptLoader(CWD),
+        ...getCSSLoader(CWD, isDevelopment, isDebug),
         ...rules,
       ],
     },
-    optimization: {
-      concatenateModules: false,
-      flagIncludedChunks: false,
-      occurrenceOrder: false,
-      namedModules: isDevelopment,
-      namedChunks: isDevelopment,
-      nodeEnv: isDevelopment ? "development" : "production",
-      minimize: !isDevelopment,
-      noEmitOnErrors: !isDevelopment,
-      minimizer: uglify(envConfig),
-    },
     output: {
-      // filename - шаблон имен файлов.
       filename: isDevelopment ? "[name].js?[hash:8]" : "[hash:32].js",
-      // Дописывает дополнительную информацию в bundle;
       pathinfo: isDebug,
       chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[hash:32].chunk.js",
-      // globalObject - непонятная хрень, после того, как все отлажу, то обязательно разберусь с этой настройкой.
       globalObject: "this",
       ...output,
     },
-    performance: {
-      hints: false,
-    },
-    plugins: [
-      new webpack.WatchIgnorePlugin([/node_modules/]),
-      new webpack.ProgressPlugin(),
-      ...plugins,
-    ],
-    profile: true,
-    recordsPath: path.resolve(
-      process.cwd(),
-      "node_modules/.cache/webpack/[confighash]/records.json",
-    ),
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".css", ".json"],
       modules,
@@ -117,7 +69,34 @@ export function general_WP_config(
       mainFields: ["loader", "main"],
       modules,
     },
+    plugins: [
+      new webpack.WatchIgnorePlugin([/node_modules/]),
+      new webpack.ProgressPlugin(),
+      new CleanWebpackPlugin(),
+      ...plugins,
+      new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
+      ...(await getWebpackBundleAnalyzerPlugin(CWD, isDebug)),
+    ],
+    bail: !isDevelopment,
+    cache: true,
+    devtool: isDebug ? "source-map" : false,
+    optimization: {
+      concatenateModules: false,
+      flagIncludedChunks: false,
+      occurrenceOrder: false,
+      namedModules: isDevelopment,
+      namedChunks: isDevelopment,
+      nodeEnv: isDevelopment ? "development" : "production",
+      minimize: !isDevelopment,
+      noEmitOnErrors: !isDevelopment,
+      minimizer: getTerserWebpackPlugin(isDevelopment),
+    },
+    performance: {
+      hints: false,
+    },
+    profile: true,
+    recordsPath: path.resolve(CWD, "node_modules/.cache/webpack/[confighash]/records.json"),
   };
-}
+};
 
 // tslint:enable:variable-name object-literal-sort-keys

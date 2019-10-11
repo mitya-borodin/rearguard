@@ -1,17 +1,18 @@
 import chalk from "chalk";
+import copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
-import * as copy from "copy";
 import * as path from "path";
-import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
-import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
+import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { mkdir } from "../../helpers/mkdir";
+import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
+import File = require("vinyl");
 
 export const copyBundlesToProject = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);
-  const localNodeModulePath = getLocalNodeModulePath();
+  const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   for (const dependency of dependencies) {
     // * Prepare data
@@ -51,11 +52,13 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
 
     // ! Copy dll bundle files
     await new Promise((resolve, reject): void => {
-      copy([`${dllSource}/**`], dllDestination, (error: any, items: any[]) => {
+      copy([`${dllSource}/**`], dllDestination, (error: Error | null, files?: File[]) => {
         if (!error) {
-          console.log(
-            chalk.cyan(`[ COPY ][ DLL ][ BUNDLE ][ ${snakeName} ][ ${items.length} FILES ]`),
-          );
+          if (files) {
+            console.log(
+              chalk.cyan(`[ COPY ][ DLL ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
+            );
+          }
 
           resolve();
         } else {
@@ -90,11 +93,13 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
 
     // ! Copy lib bundle files
     await new Promise((resolve, reject): void => {
-      copy([`${libSource}/**`], libDestination, (error: any, items: any[]) => {
+      copy([`${libSource}/**`], libDestination, (error: Error | null, files?: File[]) => {
         if (!error) {
-          console.log(
-            chalk.cyan(`[ COPY ][ LIB ][ BUNDLE ][ ${snakeName} ][ ${items.length} FILES ]`),
-          );
+          if (files) {
+            console.log(
+              chalk.cyan(`[ COPY ][ LIB ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
+            );
+          }
 
           resolve();
         } else {

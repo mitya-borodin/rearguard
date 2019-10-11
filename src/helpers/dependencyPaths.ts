@@ -16,11 +16,11 @@ export const getGlobalNodeModulePath = async (): Promise<string> => {
   return cacheGlobalNodeModulePath;
 };
 
-export const getLocalNodeModulePath = (CWD: string = process.cwd()): string => {
+export const getLocalNodeModulePath = (CWD: string): string => {
   return path.resolve(CWD, "node_modules");
 };
 
-export const getRearguardNodeModulesPath = async (CWD: string = process.cwd()): Promise<string> => {
+export const getRearguardNodeModulesPath = async (CWD: string): Promise<string> => {
   // * Get nodeModules paths
   const globalNodeModulePath = await getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);

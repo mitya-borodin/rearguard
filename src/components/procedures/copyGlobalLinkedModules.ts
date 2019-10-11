@@ -1,17 +1,18 @@
 import chalk from "chalk";
+import copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
-import * as copy from "copy";
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
-import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 import { mkdir } from "../../helpers/mkdir";
+import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
+import File = require("vinyl");
 
 export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);
   const globalNodeModulePath = await getGlobalNodeModulePath();
-  const localNodeModulePath = getLocalNodeModulePath();
+  const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   const globalLinkedModules: Array<[string, string]> = [];
   const localPathForLinkedModules: string[] = [];
@@ -94,9 +95,11 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
     const CWD = path.resolve(localNodeModulePath, name);
 
     await new Promise((resolve, reject): void => {
-      copy(patternForFiles, CWD, (error: any, items: any[]) => {
+      copy(patternForFiles, CWD, (error: Error | null, files?: File[]): void => {
         if (!error) {
-          console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${name} ][ ${items.length} FILES ]`));
+          if (files) {
+            console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${name} ][ ${files.length} FILES ]`));
+          }
 
           resolve();
         } else {

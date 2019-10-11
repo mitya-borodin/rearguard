@@ -13,6 +13,10 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.getRearguard().webpack.context;
   }
 
+  public getModules(): string[] {
+    return this.getRearguard().webpack.modules;
+  }
+
   public getEntry(): string {
     return this.getRearguard().webpack.entry;
   }

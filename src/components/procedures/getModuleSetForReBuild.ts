@@ -11,7 +11,7 @@ export const getModuleSetForReBuild = async (CWD: string): Promise<Set<string>> 
 
   // * Prepare data
   const globalNodeModulePath = await getGlobalNodeModulePath();
-  const localNodeModulePath = getLocalNodeModulePath();
+  const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   // ! Look through the dependencies of the current project
   for (const i_module of await getSortedListOfDependencies(CWD)) {

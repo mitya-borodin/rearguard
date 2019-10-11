@@ -65,8 +65,8 @@ export const getCSSLoader = (
 
           // https://github.com/maximkoretskiy/postcss-initial
           // This is polyfill for css rule: "all: initial".
-          // Указываем .className { all: initial } и вместо all: initial
-          // будут вставлены значения по-молчанию для настедуемых свойств.
+          // Write .className { all: initial } with properties all: initial
+          // before all: initial will pull initial value for all inherit fields.
           require("postcss-initial")({ reset: "inherited" }),
 
           // W3C color() function, e.g. div { background: color(red alpha(90%)); }

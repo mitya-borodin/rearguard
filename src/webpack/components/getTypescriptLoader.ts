@@ -9,7 +9,7 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
 
   // * Prepare paths
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
-  const configFilePath = path.resolve(contextPath, TS_CONFIG_FILE_NAME);
+  const configFilePath = path.resolve(CWD, TS_CONFIG_FILE_NAME);
 
   // * Prepare settings
   const include = [contextPath];

@@ -225,6 +225,9 @@ export class Rearguard {
             dll_entry: this.webpack.dll_entry,
           },
           ...project,
+          distribution: {
+            publish_to_git: this.distribution.publish_to_git,
+          },
         };
       }
     }

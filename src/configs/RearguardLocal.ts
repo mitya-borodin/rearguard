@@ -1,6 +1,6 @@
 import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
-import { Moment } from "moment";
+import { Moment, isMoment } from "moment";
 
 export class RearguardLocal {
   public webpack_dev_server: {
@@ -115,12 +115,12 @@ export class RearguardLocal {
           }
         }
 
-        if (isBoolean(data.build.has_last_build_time)) {
-          this.build.has_last_build_time = data.build.has_last_build_time;
-        }
-
         if (isString(data.build.last_build_time)) {
+          this.build.has_last_build_time = true;
           this.build.last_build_time = moment(data.build.last_build_time).clone();
+        } else if (isMoment(data.build.last_build_time)) {
+          this.build.has_last_build_time = true;
+          this.build.last_build_time = data.build.last_build_time.clone();
         }
       }
     }

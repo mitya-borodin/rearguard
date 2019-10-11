@@ -1,7 +1,7 @@
 import { PrettierOptions } from "./interfaces/PrettierOptions";
 
-export const DLL_MANIFEST_NAME = "manifest.json";
-export const ASSETS_MANIFEST_NAME = "assets.json";
+export const DLL_MANIFEST_NAME = "webpack-dll-manifest.json";
+export const ASSETS_MANIFEST_NAME = "webpack-assets.json";
 
 // ! DIR/FILE_NAMES
 export const DISTRIBUTIVE_DIR_NAME = "dist";
