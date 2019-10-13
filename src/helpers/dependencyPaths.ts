@@ -43,3 +43,11 @@ export const getRearguardNodeModulesPath = async (CWD: string): Promise<string> 
 
   throw new Error("Rearguard in not installed, please execute `npm i -g rearguard`.");
 };
+
+export const getTypescriptBin = async (CWD: string): Promise<string> => {
+  return path.resolve(await getRearguardNodeModulesPath(CWD), ".bin/tsc");
+};
+
+export const getTypescriptNodeDevBin = async (CWD: string): Promise<string> => {
+  return path.resolve(await getRearguardNodeModulesPath(CWD), ".bin/ts-node-dev");
+};

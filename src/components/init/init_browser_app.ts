@@ -6,12 +6,17 @@ import {
 } from "../../templates/docker";
 import { nginxTemplate } from "../../templates/nginx";
 import { commonPreset } from "../procedures/commonPreset";
+import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 
 export async function init_browser_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
+  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+
+  // ! Set status.
+  await rearguardLocalConfig.setBuildStatus("init");
 
   // ! Set environment in which the code will work
   await rearguardConfig.setRuntime("browser");

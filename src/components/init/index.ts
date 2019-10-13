@@ -17,7 +17,7 @@ const defaultOptions: InitExecutorOptions = {
 
 export async function init_component(options: InitExecutorOptions = defaultOptions): Promise<void> {
   if (options.dll) {
-    await init_browser_dll();
+    await init_browser_dll({ force: options.force });
   }
 
   if (options.browser && !options.node) {

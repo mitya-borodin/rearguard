@@ -4,15 +4,18 @@ import { ASSETS_MANIFEST_NAME } from "../../../const";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import { getLIBBundleOutputPath, getDLLBundleOutputPath } from "../../../helpers/bundleNaming";
 
-export const getAssetsWebpackPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugin => {
+export const getAssetsWebpackPlugin = (
+  CWD: string,
+  isDevelopment: boolean,
+  forLib: boolean,
+): webpack.Plugin => {
   const rearguardConfig = new RearguardConfig();
   const snakeName = rearguardConfig.getSnakeName();
-  const isLib = rearguardConfig.isLib();
 
   // * Path to assets home
   let path = getDLLBundleOutputPath(CWD, snakeName, isDevelopment);
 
-  if (isLib) {
+  if (forLib) {
     path = getLIBBundleOutputPath(CWD, snakeName, isDevelopment);
   }
 

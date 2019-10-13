@@ -24,6 +24,7 @@ export const setConfigs = async (
   const rearguardConfig = new RearguardConfig(CWD);
   const typescriptConfig = new TypescriptConfig(CWD);
   const typescriptForTestsConfig = new TypescriptConfig(CWDForTests);
+  const isNode = rearguardConfig.isNode();
 
   // * Prepare data for configuration;
   const binPath = path.resolve(CWD, "bin");
@@ -39,13 +40,13 @@ export const setConfigs = async (
   // ! Typescript config for developing and building;
   await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || options.force);
   await typescriptConfig.setBaseUrl(baseUrl);
-  await typescriptConfig.setInclude([binPath, baseUrl]);
+  await typescriptConfig.setInclude([...(isNode ? [binPath] : []), baseUrl]);
   await typescriptConfig.setExclude(exclude);
 
   // ! Typescript config for testing;
   await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || options.force);
   await typescriptForTestsConfig.setBaseUrl(baseUrl);
-  await typescriptForTestsConfig.setInclude([binPath, baseUrl, CWDForTests]);
+  await typescriptForTestsConfig.setInclude([...(isNode ? [binPath] : []), baseUrl, CWDForTests]);
   await typescriptForTestsConfig.setExclude(exclude);
 
   // ! Create lint configuration;

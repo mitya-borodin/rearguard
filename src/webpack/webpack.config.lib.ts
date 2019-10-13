@@ -19,7 +19,7 @@ export const getLibWebpackConfig = async (
     getLibOutput(CWD, isDevelopment),
     [
       ...(await getDllReferencePlugin(CWD, isDevelopment)),
-      getAssetsWebpackPlugin(CWD, isDevelopment),
+      getAssetsWebpackPlugin(CWD, isDevelopment, true),
     ],
     isDebug,
   );

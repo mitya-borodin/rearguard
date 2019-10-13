@@ -6,7 +6,8 @@ export function getWebpackStats(CWD: string): webpack.Stats.ToStringOptionsObjec
   const rearguardConfig = new RearguardConfig(CWD);
 
   return {
-    assets: false,
+    assets: true,
+    env: true,
     context: path.resolve(CWD, rearguardConfig.getContext()),
     colors: true,
     hash: true,

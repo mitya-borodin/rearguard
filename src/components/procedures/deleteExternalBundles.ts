@@ -41,11 +41,14 @@ export const deleteExternalBundles = async (CWD: string, deleteAll = false): Pro
 
   const paths = await del(needDelete);
 
-  for (const item of paths) {
-    console.log(
-      chalk.gray(`[ BUNDLE_FROM_PROJECT ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`),
-    );
-  }
+  if (paths.length > 0) {
+    console.log(chalk.gray(`[ REMOVE PREV BUILD RESULT ]`));
+    console.log("");
 
-  console.log("");
+    for (const item of paths) {
+      console.log(chalk.gray(`[ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
+    }
+
+    console.log("");
+  }
 };
