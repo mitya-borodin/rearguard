@@ -58,6 +58,27 @@ export class PackageJSONConfig {
     return this.getPkg().files;
   }
 
+  public async setFiles(files: string[]): Promise<Readonly<PackageJSON>> {
+    const origin = this.getPkg();
+    const pkg = new PackageJSON({ ...origin, files });
+
+    return await this.setPkg(pkg);
+  }
+
+  public async setTypes(types: string): Promise<Readonly<PackageJSON>> {
+    const origin = this.getPkg();
+    const pkg = new PackageJSON({ ...origin, types });
+
+    return await this.setPkg(pkg);
+  }
+
+  public async setMain(main: string): Promise<Readonly<PackageJSON>> {
+    const origin = this.getPkg();
+    const pkg = new PackageJSON({ ...origin, main });
+
+    return await this.setPkg(pkg);
+  }
+
   public getDependencies(): Readonly<DependencyMap> {
     return this.getPkg().dependencies || {};
   }

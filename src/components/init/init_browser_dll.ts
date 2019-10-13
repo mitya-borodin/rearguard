@@ -5,6 +5,7 @@ import { TypescriptConfig } from "../../configs/TypescriptConfig";
 import { DISTRIBUTIVE_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 
 export async function init_browser_dll(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -29,6 +30,12 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
 
   // ! Set type of project
   await rearguardConfig.setType("dll");
+
+  // ! Set files for project
+  await rearguardConfig.setFiles([DLL_BUNDLE_DIR_NAME]);
+
+  // ! Create .prettierignore in json format.
+  await prettierIgnoreTemplate.render(options);
 
   // ! Set scripts;
   await rearguardConfig.setScripts({

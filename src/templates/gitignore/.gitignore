@@ -84,7 +84,7 @@ lerna-debug.log
 Thumbs.db
 
 # Rearguard Project
-<% if (publish_to_git) { %>
+<% if (!publish_to_git) { %>
 dll_bundle
 lib_bundle
 lib

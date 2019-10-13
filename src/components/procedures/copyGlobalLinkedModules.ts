@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import copy from "copy";
+import * as copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
 import * as path from "path";
@@ -11,6 +11,15 @@ import File = require("vinyl");
 
 export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);
+
+  if (dependencies.length === 0) {
+    return;
+  }
+
+  console.log(chalk.bold.blue(`[ COPY GLOBAL LINKED MODULES TO LOCAL NODE_MODULES ]`));
+  console.log("");
+
+  const rearguardConfig = new RearguardConfig(CWD);
   const globalNodeModulePath = await getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
@@ -79,12 +88,12 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
       const paths = await del(localPathForLinkedModule);
 
       for (const item of paths) {
-        console.log(chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
+        console.log(chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(CWD, item)} ]`));
       }
 
       await mkdir(localPathForLinkedModule);
 
-      const relativePathToLocalModule = path.relative(process.cwd(), localPathForLinkedModule);
+      const relativePathToLocalModule = path.relative(CWD, localPathForLinkedModule);
 
       console.log(chalk.green(`[ MODULE ][ CREATED ][ DIR ][ ${relativePathToLocalModule} ]`));
     }
@@ -92,24 +101,26 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
 
   // ! Copy global linked modules to local node_modules.
   for (const [name, pkgVersion, patternForFiles] of moduleCopyingTasks) {
-    const CWD = path.resolve(localNodeModulePath, name);
-
     await new Promise((resolve, reject): void => {
-      copy(patternForFiles, CWD, (error: Error | null, files?: File[]): void => {
-        if (!error) {
-          if (files) {
-            console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${name} ][ ${files.length} FILES ]`));
-          }
+      copy(
+        patternForFiles,
+        path.resolve(localNodeModulePath, name),
+        (error: Error | null, files?: File[]): void => {
+          if (!error) {
+            if (files) {
+              console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${name} ][ ${files.length} FILES ]`));
+            }
 
-          resolve();
-        } else {
-          reject(error);
-        }
-      });
+            resolve();
+          } else {
+            reject(error);
+          }
+        },
+      );
     });
 
-    const rearguardConfig = new RearguardConfig(CWD);
-
-    rearguardConfig.setDependencyVersion(name, pkgVersion);
+    await rearguardConfig.setDependencyVersion(name, pkgVersion);
   }
+
+  console.log("");
 };

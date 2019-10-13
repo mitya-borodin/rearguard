@@ -15,7 +15,7 @@ export const hasVendorImports = async (CWD: string): Promise<boolean> => {
   if (fs.existsSync(dllEntryPath)) {
     const content = fs.readFileSync(dllEntryPath);
 
-    return /import "[a-zA-Z/.-]*";/g.test(content.toString());
+    return /import "[@a-zA-Z/.-]*";/g.test(content.toString());
   }
 
   return false;

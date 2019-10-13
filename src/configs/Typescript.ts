@@ -109,7 +109,7 @@ export class Typescript {
       noImplicitThis: true,
       alwaysStrict: true,
       strictFunctionTypes: true,
-      strictPropertyInitialization: true,
+      strictPropertyInitialization: false,
       suppressImplicitAnyIndexErrors: true,
       suppressExcessPropertyErrors: false,
 

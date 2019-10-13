@@ -2,9 +2,10 @@ import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { editorConfigTemplate } from "../../templates/editorConfig";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
+import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { prettierTemplate } from "../../templates/prettierrc";
 import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
-import { vsCodeSettingsTemplate, vsCodeExtensionsTemplate } from "../../templates/vsCode";
+import { vsCodeExtensionsTemplate, vsCodeSettingsTemplate } from "../../templates/vsCode";
 
 // TODO Add logging;
 export const staticTemplates = async (
@@ -28,6 +29,9 @@ export const staticTemplates = async (
 
   // ! Create .prettier in json format.
   await prettierTemplate.render(options);
+
+  // ! Create .prettierignore in json format.
+  await prettierIgnoreTemplate.render(options);
 
   // ! Create .editorconfig.
   await editorConfigTemplate.render(options);

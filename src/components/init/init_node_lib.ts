@@ -1,6 +1,7 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { commonPreset } from "../procedures/commonPreset";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { commonPreset } from "../procedures/commonPreset";
+import { updatePkgFiles } from "../procedures/updatePkgFiles";
 
 export async function init_node_lib(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -17,6 +18,8 @@ export async function init_node_lib(flags: { force: boolean }): Promise<void> {
 
   // ! Set type of project
   await rearguardConfig.setType("lib");
+
+  await updatePkgFiles(CWD);
 
   // ! Set scripts
   // ! Create entry points: index.tsx, export.ts, vendors.ts

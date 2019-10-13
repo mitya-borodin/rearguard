@@ -5,7 +5,7 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { LIB_DIR_NAME, TS_CONFIG_FILE_NAME } from "../../const";
 import { getTypescriptBin } from "../../helpers/dependencyPaths";
 
-export const buildLib = async (CWD: string): Promise<void> => {
+export const buildLib = async (CWD: string, emitDeclarationOnly = false): Promise<void> => {
   console.log(chalk.bold.blue(`[ TSC ][ ASSEMBLY ]`));
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
@@ -28,6 +28,7 @@ export const buildLib = async (CWD: string): Promise<void> => {
         path.resolve(CWD, LIB_DIR_NAME),
         "--module",
         "commonjs",
+        ...(emitDeclarationOnly ? ["--emitDeclarationOnly"] : []),
         "--declaration",
       ],
       execaOptions,

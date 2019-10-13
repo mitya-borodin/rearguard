@@ -30,20 +30,31 @@ export const deleteExternalBundles = async (CWD: string, deleteAll = false): Pro
       const externalSnakeName = snakeCase(dependency);
 
       if (fs.existsSync(pathToDllBundleDir)) {
-        needDelete.push(CWD, DLL_BUNDLE_DIR_NAME, externalSnakeName);
+        needDelete.push(path.resolve(CWD, DLL_BUNDLE_DIR_NAME, externalSnakeName));
       }
 
       if (fs.existsSync(pathToLibBundleDir)) {
-        needDelete.push(CWD, LIB_BUNDLE_DIR_NAME, externalSnakeName);
+        needDelete.push(path.resolve(CWD, LIB_BUNDLE_DIR_NAME, externalSnakeName));
       }
     }
   }
 
   const paths = await del(needDelete);
 
+  if (fs.existsSync(pathToDllBundleDir) && fs.readdirSync(pathToDllBundleDir).length === 0) {
+    for (const path of await del(pathToDllBundleDir)) {
+      paths.push(path);
+    }
+  }
+
+  if (fs.existsSync(pathToLibBundleDir) && fs.readdirSync(pathToLibBundleDir).length === 0) {
+    for (const path of await del(pathToLibBundleDir)) {
+      paths.push(path);
+    }
+  }
+
   if (paths.length > 0) {
-    console.log(chalk.gray(`[ REMOVE PREV BUILD RESULT ]`));
-    console.log("");
+    console.log(chalk.bold.gray(`[ CLEAN ]`));
 
     for (const item of paths) {
       console.log(chalk.gray(`[ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));

@@ -3,43 +3,40 @@ import * as moment from "moment";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildDllBundles } from "../procedures/buildDllBundles";
-import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { buildLibBundles } from "../procedures/buildLibBundles";
 import { buildLib } from "../procedures/buildLib";
+import { buildLibBundles } from "../procedures/buildLibBundles";
+import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { updatePkgFiles } from "../procedures/updatePkgFiles";
 
 export async function build_isomorphic(options: BuildExecutorOptions): Promise<void> {
-  const CWD: string = process.cwd();
-
-  console.log(options);
-
-  // * Create rearguard config
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
-
-  // ! Set status.
-  await rearguardLocalConfig.setBuildStatus("in_progress");
-
   console.log(chalk.bold.blue(`[ ISOMORPHIC ][ BUILD ][ START ]`));
   console.log("");
-
   const startTime = moment();
+
+  const CWD: string = process.cwd();
+  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+
+  await rearguardLocalConfig.setBuildStatus("in_progress");
+  await updatePkgFiles(CWD);
 
   await deleteExternalBundles(CWD, true);
 
-  // ? Build DLL for Isomorphic build.
+  await copyGlobalLinkedModules(CWD);
+  await copyBundlesToProject(CWD);
+
   await buildDllBundles(CWD, options);
-
-  // ? Build Browser Lib for Isomorphic build.
   await buildLibBundles(CWD, options);
-
-  // ? Build Node Lib for Isomorphic build.
   await buildLib(CWD);
 
-  // ! Set status.
+  await deleteExternalBundles(CWD);
+
   await rearguardLocalConfig.setBuildStatus("done");
 
   console.log(
     chalk.bold.blue(
-      `[ ISOMORPHIC ][ BUILD ][ END ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
+      `[ ISOMORPHIC ][ BUILD ][ FINISH ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
     ),
   );
   console.log("");

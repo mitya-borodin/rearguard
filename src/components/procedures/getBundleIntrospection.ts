@@ -1,5 +1,7 @@
+import * as fs from "fs";
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { DLL_BUNDLE_DIR_NAME } from "../../const";
 import {
   getDLLAssetsPath,
   getDLLManifestPath,
@@ -20,14 +22,16 @@ export const getBundleIntrospections = async (
   const bundleIntrospections: BundleIntrospection[] = [];
 
   for (const dependency of dependencies) {
-    const rearguardConfig = new RearguardConfig(path.resolve(localNodeModulePath, dependency));
+    const dependencyCWD = path.resolve(localNodeModulePath, dependency);
+    const rearguardConfig = new RearguardConfig(dependencyCWD);
     const pkgName = rearguardConfig.getName();
     const pkgSnakeName = rearguardConfig.getSnakeName();
     const isBrowser = rearguardConfig.isBrowser();
     const isLib = rearguardConfig.isLib();
+    const isIsomorphic = rearguardConfig.isIsomorphic();
 
-    const hasDll = false;
-    const hasBrowserLib = isBrowser && isLib;
+    const hasDll = fs.existsSync(path.resolve(dependencyCWD, DLL_BUNDLE_DIR_NAME));
+    const hasBrowserLib = (isBrowser && isLib) || isIsomorphic;
 
     bundleIntrospections.push({
       pkgName,

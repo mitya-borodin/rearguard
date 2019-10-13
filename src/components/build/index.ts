@@ -29,7 +29,6 @@ export async function build_component(
   const isLib = rearguardConfig.isLib();
   const isDll = rearguardConfig.isDll();
 
-  // ? Select component
   if (isIsomorphic) {
     await build_isomorphic(options);
   }
@@ -47,7 +46,7 @@ export async function build_component(
   }
 
   if (isNode && isLib) {
-    await build_node_lib(options);
+    await build_node_lib();
   }
 
   if (isNode && isApp) {

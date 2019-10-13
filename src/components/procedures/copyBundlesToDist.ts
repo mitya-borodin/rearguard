@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import copy from "copy";
+import * as copy from "copy";
 import * as path from "path";
 import { DISTRIBUTIVE_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 import File from "vinyl";

@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import copy from "copy";
+import * as copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
 import * as path from "path";
@@ -12,6 +12,14 @@ import File = require("vinyl");
 
 export const copyBundlesToProject = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);
+
+  if (dependencies.length === 0) {
+    return;
+  }
+
+  console.log(chalk.bold.blue(`[ COPY BUNDLES FORM LOCAL NODE_MODULES TO PROJECT ]`));
+  console.log("");
+
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   for (const dependency of dependencies) {
@@ -54,7 +62,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
     await new Promise((resolve, reject): void => {
       copy([`${dllSource}/**`], dllDestination, (error: Error | null, files?: File[]) => {
         if (!error) {
-          if (files) {
+          if (files && files.length > 0) {
             console.log(
               chalk.cyan(`[ COPY ][ DLL ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
             );
@@ -95,7 +103,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
     await new Promise((resolve, reject): void => {
       copy([`${libSource}/**`], libDestination, (error: Error | null, files?: File[]) => {
         if (!error) {
-          if (files) {
+          if (files && files.length > 0) {
             console.log(
               chalk.cyan(`[ COPY ][ LIB ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
             );
@@ -107,7 +115,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
         }
       });
     });
-
-    console.log("");
   }
+
+  console.log("");
 };
