@@ -10,7 +10,11 @@ import {
   TESTS_DIR_NAME,
 } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
-import { lintTemplate } from "../../templates/lint";
+import {
+  nodeLibLintTemplate,
+  browserOrIsomorphicLintTemplate,
+  lintIgnoreTemplate,
+} from "../../templates/lint";
 
 // TODO Add logging;
 export const setConfigs = async (
@@ -25,6 +29,8 @@ export const setConfigs = async (
   const typescriptConfig = new TypescriptConfig(CWD);
   const typescriptForTestsConfig = new TypescriptConfig(CWDForTests);
   const isNode = rearguardConfig.isNode();
+  const isBrowser = rearguardConfig.isBrowser();
+  const isIsomorphic = rearguardConfig.isIsomorphic();
 
   // * Prepare data for configuration;
   const binPath = path.resolve(CWD, "bin");
@@ -50,7 +56,21 @@ export const setConfigs = async (
   await typescriptForTestsConfig.setExclude(exclude);
 
   // ! Create lint configuration;
-  await lintTemplate.render({ force: rearguardConfig.isOverwriteTSLintConfig() || options.force });
+  if (isNode) {
+    await nodeLibLintTemplate.render({
+      force: rearguardConfig.isOverwriteLintConfig() || options.force,
+    });
+  }
+
+  if (isBrowser || isIsomorphic) {
+    await browserOrIsomorphicLintTemplate.render({
+      force: rearguardConfig.isOverwriteLintConfig() || options.force,
+    });
+  }
+
+  lintIgnoreTemplate.render({
+    force: rearguardConfig.isOverwriteLintConfig() || options.force,
+  });
 
   // ! Create .gitignore configuration;
   await gitignoreTemplate.render({

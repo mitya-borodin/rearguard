@@ -3,12 +3,11 @@
   "plugins": ["@typescript-eslint"],
   "extends": ["plugin:@typescript-eslint/recommended", "eslint-config-prettier"],
   "rules": {
-    "no-console": "off",
-    "variable-name": "off",
-    "object-literal-sort-keys": "off",
     "no-unused-vars": "warn",
+    "no-use-before-define": "warn",
+    "object-literal-sort-keys": "off",
     "@typescript-eslint/no-use-before-define": "warn",
-    "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "no-unused-expressions": "error",
+    "no-underscore-dangle": "error"
   }
 }

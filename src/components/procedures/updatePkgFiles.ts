@@ -20,7 +20,9 @@ export const updatePkgFiles = async (CWD: string): Promise<void> => {
     ]);
   }
 
-  await rearguardConfig.setMain(`./${LIB_DIR_NAME}/${libEntry}`);
+  await rearguardConfig.setMain(
+    `./${LIB_DIR_NAME}/${libEntry.replace(path.extname(libEntry), ".js")}`,
+  );
   await rearguardConfig.setTypes(
     `./${LIB_DIR_NAME}/${libEntry.replace(path.extname(libEntry), ".d.ts")}`,
   );

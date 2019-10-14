@@ -15,6 +15,7 @@ export const BIN_FILE_NAME = "index.ts";
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
 export const LINT_CONFIG_FILE_NAME = ".eslintrc";
+export const LINT_IGNORE_FILE_NAME = ".eslintignore";
 
 // ! LIST_OF_LOAD_ON_DEMAND
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";

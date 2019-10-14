@@ -18,6 +18,12 @@ const targetDevDepKeys: string[] = [
 export const checkDependencies = async (CWD: string = process.cwd()): Promise<void> => {
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
+  const isBrowser = rearguardConfig.isBrowser();
+  const isIsomorphic = rearguardConfig.isIsomorphic();
+
+  if (isBrowser || isIsomorphic) {
+    targetDevDepKeys.push("eslint-plugin-react");
+  }
 
   // * Prepare data;
   const depMap = rearguardConfig.getDependencies();

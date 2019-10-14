@@ -48,7 +48,7 @@ export class RearguardConfig extends PackageJSONConfig {
     return !this.getRearguard().configs.noOverwriteTSTestConfig;
   }
 
-  public isOverwriteTSLintConfig(): boolean {
+  public isOverwriteLintConfig(): boolean {
     return !this.getRearguard().configs.noOverwriteLintConfig;
   }
 
