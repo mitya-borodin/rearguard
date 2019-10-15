@@ -5,6 +5,7 @@ export const ASSETS_MANIFEST_NAME = "webpack-assets.json";
 
 // ! DIR/FILE_NAMES
 export const DISTRIBUTIVE_DIR_NAME = "dist";
+export const PUBLIC_DIR_NAME = "public";
 export const DLL_BUNDLE_DIR_NAME = "dll_bundle";
 export const LIB_BUNDLE_DIR_NAME = "lib_bundle";
 export const LIB_DIR_NAME = "lib";

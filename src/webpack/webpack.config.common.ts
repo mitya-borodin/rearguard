@@ -1,4 +1,5 @@
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import * as path from "path";
 import * as webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
@@ -72,6 +73,7 @@ export const getGeneralWebpackConfig = async (
     plugins: [
       new webpack.WatchIgnorePlugin([/node_modules/]),
       new webpack.ProgressPlugin(),
+      new CaseSensitivePathsPlugin(),
       new CleanWebpackPlugin(),
       ...plugins,
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),

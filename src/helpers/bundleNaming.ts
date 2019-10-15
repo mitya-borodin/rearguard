@@ -4,7 +4,12 @@ import {
   LIB_BUNDLE_DIR_NAME,
   ASSETS_MANIFEST_NAME,
   DLL_MANIFEST_NAME,
+  PUBLIC_DIR_NAME,
 } from "../const";
+
+export function getPublicDirPath(CWD: string): string {
+  return path.resolve(CWD, PUBLIC_DIR_NAME);
+}
 
 export function getDLLRuntimeName(snakeName: string): string {
   return `DLL_${snakeName}`;

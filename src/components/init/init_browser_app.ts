@@ -7,6 +7,9 @@ import {
 import { nginxTemplate } from "../../templates/nginx";
 import { commonPreset } from "../procedures/commonPreset";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { mkdir } from "../../helpers/mkdir";
+import { getPublicDirPath } from "../../helpers/bundleNaming";
+import { indexHtmlTemplate } from "../../templates/indexHtml";
 
 export async function init_browser_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -42,4 +45,8 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
   // ! Apply static templates to project
   // ! Check/Install dependencies
   await commonPreset(flags, CWD);
+
+  // ! Create index.html
+  await mkdir(getPublicDirPath(CWD));
+  await indexHtmlTemplate.render(flags);
 }
