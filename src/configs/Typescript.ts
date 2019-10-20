@@ -52,6 +52,7 @@ interface CompilerOptions {
   typeRoots?: string[];
   types?: string[];
   allowSyntheticDefaultImports: boolean;
+  esModuleInterop: boolean;
   importHelpers: boolean;
 
   /* Source Map Options */
@@ -92,9 +93,9 @@ export class Typescript {
 
     this.compilerOptions = {
       /* Basic Options */
-      target: "es6",
+      target: "es2018",
       module: "commonjs",
-      lib: ["es6", "es7", "dom", "dom.iterable", "scripthost"],
+      lib: ["dom", "es2018", "esnext.asynciterable"],
       allowJs: false,
       checkJs: false,
       jsx: "react",
@@ -104,7 +105,7 @@ export class Typescript {
 
       /* Strict Type-Checking Options */
       strict: true,
-      noImplicitAny: true,
+      noImplicitAny: false,
       strictNullChecks: true,
       noImplicitThis: true,
       alwaysStrict: true,
@@ -116,17 +117,19 @@ export class Typescript {
       /* Additional Checks */
       noUnusedLocals: true,
       noUnusedParameters: false,
-      noImplicitReturns: false,
+      noImplicitReturns: true,
       noFallthroughCasesInSwitch: true,
 
       /* Module Resolution Options */
       moduleResolution: "node",
       baseUrl: "src",
+      typeRoots: ["./types", "./node_modules/@types"],
       allowSyntheticDefaultImports: true,
+      esModuleInterop: true,
       importHelpers: true,
 
       /* Source Map Options */
-      sourceMap: false,
+      sourceMap: true,
       inlineSourceMap: false,
       inlineSources: false,
 
@@ -199,6 +202,7 @@ export class Typescript {
           "noImplicitReturns",
           "noFallthroughCasesInSwitch",
           "allowSyntheticDefaultImports",
+          "esModuleInterop",
           "importHelpers",
           "sourceMap",
           "inlineSourceMap",

@@ -11,6 +11,7 @@ export const getLibWebpackConfig = async (
   CWD: string,
   isDevelopment: boolean,
   isDebug: boolean,
+  needUpdateBuildTime: boolean,
 ): Promise<webpack.Configuration> => {
   return await getGeneralWebpackConfig(
     CWD,
@@ -22,6 +23,7 @@ export const getLibWebpackConfig = async (
       getAssetsWebpackPlugin(CWD, isDevelopment, true),
     ],
     isDebug,
+    needUpdateBuildTime,
   );
 };
 

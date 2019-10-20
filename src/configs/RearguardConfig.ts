@@ -9,6 +9,9 @@ const dependenciesNotCreatedWithRearguard: Set<string> = new Set();
 const dependenciesCreatedWithRearguard: Set<string> = new Set();
 
 export class RearguardConfig extends PackageJSONConfig {
+  public getBin(): string {
+    return this.getRearguard().bin;
+  }
   public getContext(): string {
     return this.getRearguard().webpack.context;
   }

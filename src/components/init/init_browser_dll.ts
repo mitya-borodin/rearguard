@@ -1,11 +1,10 @@
-import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { createEntryPoints } from "../procedures/createEntryPoints";
-import { TypescriptConfig } from "../../configs/TypescriptConfig";
-import { DISTRIBUTIVE_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
-import { gitignoreTemplate } from "../../templates/gitignore";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { TypescriptConfig } from "../../configs/TypescriptConfig";
+import { DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
+import { gitignoreTemplate } from "../../templates/gitignore";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
+import { createEntryPoints } from "../procedures/createEntryPoints";
 
 export async function init_browser_dll(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -15,12 +14,8 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
   const typescriptConfig = new TypescriptConfig(CWD);
 
-  const baseUrl = path.resolve(CWD, rearguardConfig.getContext());
-  const exclude: string[] = [
-    "node_modules",
-    path.resolve(CWD, DISTRIBUTIVE_DIR_NAME),
-    path.resolve(CWD, DLL_BUNDLE_DIR_NAME),
-  ];
+  const context = rearguardConfig.getContext();
+  const exclude: string[] = ["node_modules", DLL_BUNDLE_DIR_NAME];
 
   // ! Set status.
   await rearguardLocalConfig.setBuildStatus("init");
@@ -47,8 +42,8 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
 
   // ! Typescript config for developing and building;
   await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig());
-  await typescriptConfig.setBaseUrl(baseUrl);
-  await typescriptConfig.setInclude([baseUrl]);
+  await typescriptConfig.setBaseUrl(context);
+  await typescriptConfig.setInclude([context]);
   await typescriptConfig.setExclude(exclude);
 
   // ! Create .gitignore configuration;

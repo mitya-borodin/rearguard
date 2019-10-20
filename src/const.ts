@@ -12,6 +12,8 @@ export const LIB_DIR_NAME = "lib";
 export const TESTS_DIR_NAME = "tests";
 export const BIN_DIR_NAME = "bin";
 export const BIN_FILE_NAME = "index.ts";
+export const BUILD_ASSETS_DIR_NAME = "buildAssets";
+export const TYPE_DECLARATION_DIR_NAME = "types";
 
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";

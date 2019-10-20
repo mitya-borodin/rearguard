@@ -1,12 +1,11 @@
 import * as fs from "fs";
+import { merge } from "lodash";
+import { Moment } from "moment";
 import * as path from "path";
 import * as prettier from "prettier";
-import { merge } from "lodash";
 import { PRETTIER_JSON } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
-import { Moment } from "moment";
-import moment = require("moment");
 
 export class RearguardLocalConfig {
   private CWD: string;
@@ -44,7 +43,7 @@ export class RearguardLocalConfig {
   public async setBuildStatus(status: "init" | "in_progress" | "done"): Promise<void> {
     const config = await this.getConfig();
 
-    await this.setConfig(merge(config, { build: { status, last_build_time: moment() } }));
+    await this.setConfig(merge(config, { build: { status } }));
   }
 
   public async getConfig(): Promise<Readonly<RearguardLocal>> {

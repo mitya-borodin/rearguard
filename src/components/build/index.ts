@@ -50,6 +50,6 @@ export async function build_component(
   }
 
   if (isNode && isApp) {
-    await build_node_app(options);
+    await build_node_app();
   }
 }

@@ -1,6 +1,5 @@
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { editorConfigTemplate } from "../../templates/editorConfig";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { prettierTemplate } from "../../templates/prettierrc";
@@ -18,8 +17,9 @@ export const staticTemplates = async (
   // * Prepare path to project context;
   const context = path.resolve(CWD, rearguardConfig.getContext());
   const isBrowser = rearguardConfig.isBrowser();
+  const isIsomorphic = rearguardConfig.isIsomorphic();
 
-  if (isBrowser) {
+  if (isBrowser || isIsomorphic) {
     // ! Create type declaration for non typescript modules like a .css, .png, etc.
     await typingNonTypescriptModulesTemplate.render(options, context);
   }
@@ -32,9 +32,6 @@ export const staticTemplates = async (
 
   // ! Create .prettierignore in json format.
   await prettierIgnoreTemplate.render(options);
-
-  // ! Create .editorconfig.
-  await editorConfigTemplate.render(options);
 
   // ! Create .vscode/settings.json.
   await vsCodeSettingsTemplate.render(options);

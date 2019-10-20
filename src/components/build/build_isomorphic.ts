@@ -9,6 +9,7 @@ import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 
 export async function build_isomorphic(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ ISOMORPHIC ][ BUILD ][ START ]`));
@@ -20,6 +21,8 @@ export async function build_isomorphic(options: BuildExecutorOptions): Promise<v
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
   await updatePkgFiles(CWD);
+
+  await buildOutdatedDependency(CWD);
 
   await deleteExternalBundles(CWD, true);
 

@@ -37,7 +37,10 @@ export const getGeneralWebpackConfig = async (
     externals: { ...(await getExternals(CWD, isDevelopment)), ...externals },
     mode: "none",
     module: {
+      strictExportPresence: true,
       rules: [
+        // Disable require.ensure as it's not a standard language feature.
+        { parser: { requireEnsure: false } },
         {
           loader: "file-loader",
           query: {
@@ -61,6 +64,7 @@ export const getGeneralWebpackConfig = async (
       globalObject: "this",
       ...output,
     },
+
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".css", ".json"],
       modules,
@@ -77,6 +81,12 @@ export const getGeneralWebpackConfig = async (
       new CleanWebpackPlugin(),
       ...plugins,
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
+      // Moment.js is an extremely popular library that bundles large locale files
+      // by default due to how Webpack interprets its code. This is a practical
+      // solution that requires the user to opt into importing specific locales.
+      // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
+      // You can remove this if you don't use Moment.js:
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       ...(await getWebpackBundleAnalyzerPlugin(CWD, isDebug)),
     ],
     bail: !isDevelopment,
@@ -92,9 +102,31 @@ export const getGeneralWebpackConfig = async (
       minimize: !isDevelopment,
       noEmitOnErrors: !isDevelopment,
       minimizer: getTerserWebpackPlugin(isDevelopment),
+      // Automatically split vendor and commons
+      // https://twitter.com/wSokra/status/969633336732905474
+      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+      splitChunks: {
+        chunks: "all",
+        name: false,
+      },
+      // Keep the runtime chunk separated to enable long term caching
+      // https://twitter.com/wSokra/status/969679223278505985
+      // https://github.com/facebook/create-react-app/issues/5358
+      runtimeChunk: {
+        name: (entrypoint): string => `runtime-${entrypoint.name}`,
+      },
     },
-    performance: {
-      hints: false,
+    // Some libraries import Node modules but don't use them in the browser.
+    // Tell Webpack to provide empty mocks for them so importing them works.
+    node: {
+      module: "empty",
+      dgram: "empty",
+      dns: "mock",
+      fs: "empty",
+      http2: "empty",
+      net: "empty",
+      tls: "empty",
+      child_process: "empty",
     },
     profile: true,
     recordsPath: path.resolve(CWD, "node_modules/.cache/webpack/[confighash]/records.json"),

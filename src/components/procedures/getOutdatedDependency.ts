@@ -5,9 +5,9 @@ import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 
-export const getModuleSetForReBuild = async (CWD: string): Promise<Set<string>> => {
+export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> => {
   // * Result dependency Set
-  const moduleSetForReBuild: Set<string> = new Set();
+  const outdatedDependency: Set<string> = new Set();
 
   // * Prepare data
   const globalNodeModulePath = await getGlobalNodeModulePath();
@@ -37,15 +37,11 @@ export const getModuleSetForReBuild = async (CWD: string): Promise<Set<string>> 
 
               // * I_MODULE_LAST_BUILD_TIME <= K_MODULE_LAST_BUILD_TIME
               if (i_moduleLastBuildTime.isSameOrBefore(k_moduleLastBuildTime)) {
-                console.log(
-                  i_moduleLastBuildTime.utc().format(),
-                  k_moduleLastBuildTime.utc().format(),
-                );
-                moduleSetForReBuild.add(i_modulePath);
+                outdatedDependency.add(i_modulePath);
                 break;
               }
             } else {
-              moduleSetForReBuild.add(i_modulePath);
+              outdatedDependency.add(i_modulePath);
             }
           } else {
             console.log(
@@ -54,7 +50,7 @@ export const getModuleSetForReBuild = async (CWD: string): Promise<Set<string>> 
           }
         }
       } else {
-        moduleSetForReBuild.add(i_modulePath);
+        outdatedDependency.add(i_modulePath);
       }
     } else if (fs.existsSync(path.resolve(localNodeModulePath, i_module))) {
       console.log(chalk.grey(`[ MODULE_SET_FOR_RE_BUILD ][ ${i_module} ][ LOCAL_INSTALLED ]`));
@@ -63,5 +59,5 @@ export const getModuleSetForReBuild = async (CWD: string): Promise<Set<string>> 
     }
   }
 
-  return moduleSetForReBuild;
+  return outdatedDependency;
 };

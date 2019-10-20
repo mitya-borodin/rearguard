@@ -10,9 +10,9 @@ export class TypescriptConfig {
   private file_name: string;
   private file_path: string;
 
-  constructor(CWD: string = process.cwd()) {
+  constructor(CWD: string = process.cwd(), file_name = TS_CONFIG_FILE_NAME) {
     this.CWD = CWD;
-    this.file_name = TS_CONFIG_FILE_NAME;
+    this.file_name = file_name;
     this.file_path = path.resolve(this.CWD, this.file_name);
   }
 
@@ -38,6 +38,12 @@ export class TypescriptConfig {
     const origin = await this.read();
 
     await this.write(Typescript.merge(origin, { module }, {}));
+  }
+
+  public async setTypes(types: string[]): Promise<void> {
+    const origin = await this.read();
+
+    await this.write(Typescript.merge(origin, { types }, {}));
   }
 
   public async setInclude(include: string[]): Promise<void> {

@@ -9,6 +9,7 @@ export const getDLLWebpackConfig = async (
   CWD: string,
   isDevelopment: boolean,
   isDebug: boolean,
+  needUpdateBuildTime: boolean,
 ): Promise<webpack.Configuration> => {
   return await getGeneralWebpackConfig(
     CWD,
@@ -17,5 +18,6 @@ export const getDLLWebpackConfig = async (
     getDllOutput(CWD, isDevelopment),
     [getDllPlugin(CWD, isDevelopment), getAssetsWebpackPlugin(CWD, isDevelopment, false)],
     isDebug,
+    needUpdateBuildTime,
   );
 };

@@ -34,6 +34,8 @@ export class HashWebpackPlugin {
 
         const curHash = config.build[hashType];
 
+        // ! needUpdateBuildTime need only for rebuild outdated deps
+        // ! because after build hash can be like a before as content didn't change.
         if (curHash !== hash || this.needUpdateBuildTime) {
           await this.rearguardLocalConfig.setConfig(
             merge(config, { build: { last_build_time: moment() } }),

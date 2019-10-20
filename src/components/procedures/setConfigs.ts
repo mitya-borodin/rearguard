@@ -1,7 +1,7 @@
-import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { TypescriptConfig } from "../../configs/TypescriptConfig";
 import {
+  BUILD_ASSETS_DIR_NAME,
   DISTRIBUTIVE_DIR_NAME,
   DLL_BUNDLE_DIR_NAME,
   LIB_BUNDLE_DIR_NAME,
@@ -11,9 +11,9 @@ import {
 } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import {
-  nodeLibLintTemplate,
   browserOrIsomorphicLintTemplate,
   lintIgnoreTemplate,
+  nodeLibLintTemplate,
 } from "../../templates/lint";
 
 // TODO Add logging;
@@ -21,39 +21,72 @@ export const setConfigs = async (
   options: { force: boolean },
   CWD: string = process.cwd(),
 ): Promise<void> => {
-  // * Current work directory for test;
-  const CWDForTests = path.resolve(CWD, TESTS_DIR_NAME);
-
   // * Create configs;
   const rearguardConfig = new RearguardConfig(CWD);
   const typescriptConfig = new TypescriptConfig(CWD);
-  const typescriptForTestsConfig = new TypescriptConfig(CWDForTests);
+  const typescriptConfigForJest = new TypescriptConfig(CWD, "tsconfig.jest.json");
   const isNode = rearguardConfig.isNode();
   const isBrowser = rearguardConfig.isBrowser();
   const isIsomorphic = rearguardConfig.isIsomorphic();
+  const isLib = rearguardConfig.isLib();
+  const isApp = rearguardConfig.isApp();
 
   // * Prepare data for configuration;
-  const binPath = path.resolve(CWD, "bin");
-  const baseUrl = path.resolve(CWD, rearguardConfig.getContext());
-  const exclude: string[] = [
-    "node_modules",
-    path.resolve(CWD, DISTRIBUTIVE_DIR_NAME),
-    path.resolve(CWD, DLL_BUNDLE_DIR_NAME),
-    path.resolve(CWD, LIB_BUNDLE_DIR_NAME),
-    path.resolve(CWD, LIB_DIR_NAME),
-  ];
+  const context = rearguardConfig.getContext();
+  const bin = rearguardConfig.getBin();
+
+  // * Include
+  const include: Set<string> = new Set([context]);
+  const includeForJest: Set<string> = new Set([
+    `${context}/**/*`,
+    `${TESTS_DIR_NAME}/**/*`,
+    `__${TESTS_DIR_NAME}__/**/*`,
+  ]);
+
+  // * Exclude
+  const exclude: Set<string> = new Set(["node_modules"]);
+
+  if (isApp) {
+    exclude.add(DISTRIBUTIVE_DIR_NAME);
+  }
+
+  if (isBrowser || isIsomorphic) {
+    exclude.add(DLL_BUNDLE_DIR_NAME);
+    exclude.add(LIB_BUNDLE_DIR_NAME);
+    exclude.add(LIB_DIR_NAME);
+  }
+
+  if (isNode) {
+    if (isLib) {
+      exclude.add(LIB_DIR_NAME);
+    }
+
+    if (isApp) {
+      include.add(bin);
+      includeForJest.add(`${bin}/**/*`);
+    }
+  }
+
+  if ((isNode && isApp) || (isBrowser && isApp)) {
+    exclude.add(BUILD_ASSETS_DIR_NAME);
+  }
 
   // ! Typescript config for developing and building;
   await typescriptConfig.init(rearguardConfig.isOverwriteTSConfig() || options.force);
-  await typescriptConfig.setBaseUrl(baseUrl);
-  await typescriptConfig.setInclude([...(isNode ? [binPath] : []), baseUrl]);
-  await typescriptConfig.setExclude(exclude);
+  await typescriptConfig.setBaseUrl(context);
+  await typescriptConfig.setInclude(Array.from(include));
+  await typescriptConfig.setExclude([
+    ...Array.from(exclude),
+    `${context}/**/*.test.ts`,
+    `${context}/**/*.spec.ts`,
+  ]);
 
-  // ! Typescript config for testing;
-  await typescriptForTestsConfig.init(rearguardConfig.isOverwriteTSTestConfig() || options.force);
-  await typescriptForTestsConfig.setBaseUrl(baseUrl);
-  await typescriptForTestsConfig.setInclude([...(isNode ? [binPath] : []), baseUrl, CWDForTests]);
-  await typescriptForTestsConfig.setExclude(exclude);
+  // ! Typescript config for Jest;
+  await typescriptConfigForJest.init(rearguardConfig.isOverwriteTSTestConfig() || options.force);
+  await typescriptConfigForJest.setBaseUrl(context);
+  await typescriptConfigForJest.setInclude(Array.from(includeForJest));
+  await typescriptConfigForJest.setExclude(Array.from(exclude));
+  await typescriptConfigForJest.setTypes(["jest"]);
 
   // ! Create lint configuration;
   if (isNode) {

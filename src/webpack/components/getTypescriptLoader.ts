@@ -16,16 +16,43 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
   const test = /\.(ts|tsx)?$/;
 
   return [
-    // TODO Change to ESLint
     /*     {
+      test: /\.(js|mjs|jsx|ts|tsx)$/,
       enforce: "pre",
-      include,
-      loader: "tslint-loader",
-      options: {
-        configFile: tsLintConfig.config_path,
-        tsConfigFile: configFilePath,
-      },
-      test,
+      use: [
+        {
+          options: {
+            cache: true,
+            formatter: require.resolve("react-dev-utils/eslintFormatter"),
+            eslintPath: require.resolve("eslint"),
+            resolvePluginsRelativeTo: __dirname,
+            // @remove-on-eject-begin
+            ignore: process.env.EXTEND_ESLINT === "true",
+            baseConfig: (() => {
+              // We allow overriding the config only if the env variable is set
+              if (process.env.EXTEND_ESLINT === "true") {
+                const eslintCli = new eslint.CLIEngine();
+                let eslintConfig;
+                try {
+                  eslintConfig = eslintCli.getConfigForFile(paths.appIndexJs);
+                } catch (e) {
+                  console.error(e);
+                  process.exit(1);
+                }
+                return eslintConfig;
+              } else {
+                return {
+                  extends: [require.resolve("eslint-config-react-app")],
+                };
+              }
+            })(),
+            useEslintrc: false,
+            // @remove-on-eject-end
+          },
+          loader: require.resolve("eslint-loader"),
+        },
+      ],
+      include: paths.appSrc,
     }, */
     {
       include,
@@ -35,7 +62,7 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
           loader: "ts-loader",
           options: {
             configFile: configFilePath,
-            context: contextPath,
+            context: CWD,
             experimentalFileCaching: false,
           },
         },

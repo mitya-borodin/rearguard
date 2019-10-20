@@ -20,6 +20,7 @@ export const buildDllBundles = async (
         CWD,
         false,
         options.debug,
+        options.need_update_build_time,
       );
 
       await new Promise((resolve, reject): void => {
@@ -45,6 +46,7 @@ export const buildDllBundles = async (
       CWD,
       true,
       options.debug,
+      options.need_update_build_time,
     );
 
     await new Promise((resolve, reject): void => {

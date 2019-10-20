@@ -18,6 +18,7 @@ export const buildLibBundles = async (
       CWD,
       false,
       options.debug,
+      options.need_update_build_time,
     );
 
     await new Promise((resolve, reject): void => {
@@ -43,6 +44,7 @@ export const buildLibBundles = async (
     CWD,
     true,
     options.debug,
+    options.need_update_build_time,
   );
 
   await new Promise((resolve, reject): void => {

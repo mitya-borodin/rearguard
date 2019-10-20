@@ -7,10 +7,10 @@ import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicTo
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
-  console.log(chalk.bold.blue(`[ DLL ][ BUILD ][ START ]`));
+  console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
   console.log("");
   const startTime = moment();
 
@@ -19,7 +19,7 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
-  await updatePkgFiles(CWD);
+  await buildOutdatedDependency(CWD);
 
   await deleteExternalBundles(CWD, true);
 
@@ -34,7 +34,9 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
 
   console.log("");
   console.log(
-    chalk.bold.blue(`[ DLL ][ BUILD ][ FINISH ][ ${moment().diff(startTime, "milliseconds")} ms ]`),
+    chalk.bold.blue(
+      `[ BROWSER ][ APP ][ BUILD ][ FINISH ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
+    ),
   );
   console.log("");
 }
