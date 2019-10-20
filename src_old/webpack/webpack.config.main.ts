@@ -1,3 +1,4 @@
+import * as webpack from "webpack";
 import { buildStatusConfig } from "../config/buildStatus";
 import { DIST_DIR_NAME } from "../const";
 import { IEnvConfig } from "../interfaces/config/IEnvConfig";
@@ -16,7 +17,10 @@ import { general_WP_config } from "./webpack.config.common";
 
 // tslint:disable:object-literal-sort-keys
 
-export function main_WS_config(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+export function main_WS_config(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): webpack.Configuration {
   const { output } = rearguardConfig;
 
   return general_WP_config(

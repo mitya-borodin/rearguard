@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as webpack from "webpack";
 import { buildStatusConfig } from "../config/buildStatus";
 import { DLL_BUNDLE_DIR_NAME } from "../const";
 import { dll_entry_name, dll_output_path, get_context } from "../helpers";
@@ -14,9 +15,10 @@ import {
 import tsLoader from "./components/ts.loaders";
 import { general_WP_config } from "./webpack.config.common";
 
-// tslint:disable:object-literal-sort-keys
-
-export function dll_WP_config(envConfig: IEnvConfig, rearguardConfig: IRearguardConfig) {
+export function dll_WP_config(
+  envConfig: IEnvConfig,
+  rearguardConfig: IRearguardConfig,
+): webpack.Configuration {
   const { dll_entry, bundle_public_path } = rearguardConfig;
 
   return general_WP_config(
@@ -45,5 +47,3 @@ export function dll_WP_config(envConfig: IEnvConfig, rearguardConfig: IRearguard
     {},
   );
 }
-
-// tslint:enable:object-literal-sort-keys

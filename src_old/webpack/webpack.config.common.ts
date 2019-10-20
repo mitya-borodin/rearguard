@@ -9,7 +9,6 @@ import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
 import { IBundleInfo } from "./../interfaces/IBundleInfo";
 import cssLoaders from "./components/css.loders";
 import { uglify } from "./components/js.plugins";
-// tslint:disable:variable-name object-literal-sort-keys
 
 export function general_WP_config(
   envConfig: IEnvConfig,
@@ -119,5 +118,3 @@ export function general_WP_config(
     },
   };
 }
-
-// tslint:enable:variable-name object-literal-sort-keys
