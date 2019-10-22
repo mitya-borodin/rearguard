@@ -19,6 +19,7 @@ export const TYPE_DECLARATION_DIR_NAME = "types";
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
 export const LINT_CONFIG_FILE_NAME = ".eslintrc";
 export const LINT_IGNORE_FILE_NAME = ".eslintignore";
+export const REARGUARD_LOCAL_CONFIG_FILE_NAME = ".rearguardrc";
 
 // ! LIST_OF_LOAD_ON_DEMAND
 export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";

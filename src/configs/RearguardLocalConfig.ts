@@ -3,19 +3,18 @@ import { merge } from "lodash";
 import { Moment } from "moment";
 import * as path from "path";
 import * as prettier from "prettier";
-import { PRETTIER_JSON } from "../const";
+import { PRETTIER_JSON, REARGUARD_LOCAL_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
 
 export class RearguardLocalConfig {
-  private CWD: string;
-  private file_name: string;
   private file_path: string;
 
-  constructor(CWD: string = process.cwd()) {
-    this.CWD = CWD;
-    this.file_name = ".rearguardrc";
-    this.file_path = path.resolve(this.CWD, this.file_name);
+  constructor(
+    CWD: string = process.cwd(),
+    file_path = path.resolve(CWD, REARGUARD_LOCAL_CONFIG_FILE_NAME),
+  ) {
+    this.file_path = file_path;
   }
 
   public async hasLastBuildTime(): Promise<boolean> {
@@ -38,6 +37,12 @@ export class RearguardLocalConfig {
     const config = await this.getConfig();
 
     return config.webpack_dev_server;
+  }
+
+  public async getStatus(): Promise<string> {
+    const config = await this.getConfig();
+
+    return config.build.status;
   }
 
   public async setBuildStatus(status: "init" | "in_progress" | "done"): Promise<void> {

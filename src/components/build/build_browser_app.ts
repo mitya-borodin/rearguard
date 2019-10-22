@@ -9,6 +9,7 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
+import { watchLinkedModules } from "../procedures/watchLinkedModules";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
@@ -34,6 +35,8 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   await createListOfLoadOnDemand(CWD, false);
 
   await rearguardLocalConfig.setBuildStatus("done");
+
+  await watchLinkedModules(CWD);
 
   console.log("");
   console.log(

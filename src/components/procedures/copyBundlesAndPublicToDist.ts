@@ -65,4 +65,6 @@ export const copyBundlesAndPublicToDist = async (CWD: string): Promise<void> => 
       },
     );
   });
+
+  console.log("");
 };

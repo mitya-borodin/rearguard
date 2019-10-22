@@ -142,7 +142,7 @@ export async function watch_deps(
       if (global_modules_watcher) {
         global_modules_watcher.on("ready", resolve);
       } else {
-        reject("[ WATCH ][ ERROR ][ WATCHRE NOT FOUND ]");
+        reject("[ WATCH ][ ERROR ][ WATCHER NOT FOUND ]");
       }
     });
 
