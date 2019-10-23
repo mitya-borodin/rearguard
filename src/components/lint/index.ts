@@ -5,6 +5,7 @@ import * as execa from "execa";
 import { Flags } from "../../cli/common/Flags";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { BIN_DIR_NAME, TESTS_DIR_NAME } from "../../const";
+import chalk from "chalk";
 
 const defaultFlags: Flags = { fix: false };
 
@@ -31,7 +32,11 @@ const getExtensions = (hasTS: boolean, hasTSX: boolean): string => {
     extensions.push("tsx");
   }
 
-  return extensions.join(",");
+  if (extensions.length > 1) {
+    return `{${extensions.join(",")}}`;
+  }
+
+  return extensions[0];
 };
 
 // TODO Add logging.
@@ -45,14 +50,17 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
   const bin = path.resolve(CWD, BIN_DIR_NAME);
   const src = path.resolve(CWD, rearguardConfig.getContext());
   const tests = path.resolve(CWD, TESTS_DIR_NAME);
+  const __tests__ = path.resolve(CWD, `__${TESTS_DIR_NAME}__`);
 
   const hasBin = fs.existsSync(bin);
   const hasSrc = fs.existsSync(src);
   const hasTests = fs.existsSync(tests);
+  const has__Tests__ = fs.existsSync(__tests__);
 
   let binPattern = "";
   let srcPattern = "";
   let testsPattern = "";
+  let __tests__Pattern = "";
 
   if (hasBin) {
     const hasTS = await checkGlobPattern(`bin/**/*.ts`);
@@ -75,6 +83,13 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
     testsPattern = getExtensions(hasTS, hasTSX);
   }
 
+  if (has__Tests__) {
+    const hasTS = await checkGlobPattern(`__${TESTS_DIR_NAME}__/**/*.ts`);
+    const hasTSX = await checkGlobPattern(`__${TESTS_DIR_NAME}__/**/*.tsx`);
+
+    __tests__Pattern = getExtensions(hasTS, hasTSX);
+  }
+
   const args: string[] = [];
 
   if (fix) {
@@ -82,21 +97,31 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
   }
 
   if (binPattern !== "") {
-    args.push(`bin/**/*.{${binPattern}}`);
+    args.push(`bin/**/*.${binPattern}`);
   }
 
   if (srcPattern !== "") {
-    args.push(`src/**/*.{${srcPattern}}`);
+    args.push(`src/**/*.${srcPattern}`);
   }
 
   if (testsPattern !== "") {
-    args.push(`tests/**/*.{${testsPattern}}`);
+    args.push(`tests/**/*.${testsPattern}`);
+  }
+
+  if (__tests__Pattern !== "") {
+    args.push(`__${TESTS_DIR_NAME}__/**/*.${testsPattern}`);
   }
 
   // ! Run.
   try {
     await execa("eslint", args, { stdout: "inherit", stderr: "inherit" });
   } catch (error) {
-    console.error(error);
+    console.log(chalk.bold.magenta(`CWD: ${process.cwd()}`));
+    console.log("");
+
+    console.log(chalk.bold.magenta(error.message));
+    console.log("");
+
+    process.exit(1);
   }
 }
