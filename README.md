@@ -133,17 +133,19 @@ npm install -D rearguard
 ### Project Initialization / Reinitialization
 
 - rearguard init browser app [ --force ]
+- rearguard init browser dll [ --force ]
 - rearguard init browser lib [ --force ]
-- rearguard init node app [ --force ]
+- rearguard init isomorphic [ --force ]
 - rearguard init node lib [ --force ]
+- rearguard init node app [ --force ]
 
 ### Develop mode
 
-- rearguard start [ --release | --debug ]
+- rearguard start [ --release | --debug | --ts_node_dev ]
 
 ### Build mode
 
-- rearguard build [ --only_dev | --debug | --need_update_build_time ]
+- rearguard build [ --only_dev | --debug ]
 
 ### Testing mode
 
@@ -157,6 +159,7 @@ npm install -D rearguard
 
 - rearguard sync
 - rearguard check_deps_on_npm
+- rearguard update_project
 
 ### Group service
 
@@ -170,6 +173,7 @@ npm install -D rearguard
 - rearguard group publish [ --patch | --minor | --major ]
 - rearguard group sync
 - rearguard group check_deps_on_npm
+- rearguard group update_project
 
 <a name="structure"></a>
 
