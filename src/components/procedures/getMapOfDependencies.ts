@@ -15,7 +15,7 @@ export const getMapOfDependencies = async (
   // * Prepare data
   const rearguardConfig = new RearguardConfig(CWD);
   const dependencies = await rearguardConfig.getDependenciesCreatedWithRearguard();
-  const globalNodeModulePath = await getGlobalNodeModulePath();
+  const globalNodeModulePath = getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   for (const dependency of dependencies) {

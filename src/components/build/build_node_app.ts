@@ -9,10 +9,12 @@ import * as PPJ from "prettier-package-json";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { DISTRIBUTIVE_DIR_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";
+import { processQueue } from "../../helpers/processQueue";
 import { buildNodeApp } from "../procedures/buildNodeApp";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 
-export async function build_node_app(): Promise<void> {
+export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
   console.log("");
   const startTime = moment();
@@ -21,6 +23,9 @@ export async function build_node_app(): Promise<void> {
   const rearguardConfig = new RearguardConfig(CWD);
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
   const pkg = rearguardConfig.getPkg();
+  const name = rearguardConfig.getName();
+
+  await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
@@ -71,6 +76,8 @@ export async function build_node_app(): Promise<void> {
   }
 
   await rearguardLocalConfig.setBuildStatus("done");
+
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

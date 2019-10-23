@@ -16,7 +16,7 @@ export const copyBundlesAndPublicToDist = async (CWD: string): Promise<void> => 
         if (!error) {
           if (files) {
             console.log(
-              chalk.white(`[ COPY ][ DLL ][ BUNDLE ][ FILES ${files.length} ][ TO_DIST ]`),
+              chalk.cyan(`[ COPY ][ DLL ][ BUNDLE ][ FILES ${files.length} ][ TO_DIST ]`),
             );
           }
 
@@ -36,7 +36,7 @@ export const copyBundlesAndPublicToDist = async (CWD: string): Promise<void> => 
         if (!error) {
           if (files) {
             console.log(
-              chalk.white(`[ COPY ][ LIB ][ BUNDLE ][ FILES ${files.length} ][ TO_DIST ]`),
+              chalk.cyan(`[ COPY ][ LIB ][ BUNDLE ][ FILES ${files.length} ][ TO_DIST ]`),
             );
           }
 
@@ -55,7 +55,7 @@ export const copyBundlesAndPublicToDist = async (CWD: string): Promise<void> => 
       (error: Error | null, files?: File[]) => {
         if (!error) {
           if (files) {
-            console.log(chalk.white(`[ COPY ][ PUBLIC ][ FILES ${files.length} ][ TO_DIST ]`));
+            console.log(chalk.cyan(`[ COPY ][ PUBLIC ][ FILES ${files.length} ][ TO_DIST ]`));
           }
 
           resolve();

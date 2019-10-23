@@ -47,6 +47,6 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
   await commonPreset(flags, CWD);
 
   // ! Create index.html
-  await mkdir(getPublicDirPath(CWD));
+  mkdir(getPublicDirPath(CWD));
   await indexHtmlTemplate.render(flags);
 }

@@ -49,7 +49,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
 
     // ! Make dll bundle dir
     if (fs.existsSync(dllSource)) {
-      await mkdir(dllDestination);
+      mkdir(dllDestination);
 
       const relativePath = path.relative(process.cwd(), dllDestination);
 
@@ -64,7 +64,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
         if (!error) {
           if (files && files.length > 0) {
             console.log(
-              chalk.cyan(`[ COPY ][ DLL ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
+              chalk.cyan(`[ COPY    ][ DLL ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
             );
           }
 
@@ -90,7 +90,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
 
     // ! Make lib bundle dir
     if (fs.existsSync(libSource)) {
-      await mkdir(libDestination);
+      mkdir(libDestination);
 
       const relativePath = path.relative(process.cwd(), libDestination);
 
@@ -105,7 +105,7 @@ export const copyBundlesToProject = async (CWD: string): Promise<void> => {
         if (!error) {
           if (files && files.length > 0) {
             console.log(
-              chalk.cyan(`[ COPY ][ LIB ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
+              chalk.cyan(`[ COPY    ][ LIB ][ BUNDLE ][ ${snakeName} ][ ${files.length} FILES ]`),
             );
           }
 

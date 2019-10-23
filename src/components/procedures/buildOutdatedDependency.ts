@@ -21,7 +21,11 @@ export const buildOutdatedDependency = async (CWD: string): Promise<void> => {
       const spinner = ora(`build: ${dirNames[dirNames.length - 1]}`).start();
 
       try {
-        await execa("npx", ["rearguard", "build", "--need_update_build_time"], { cwd: dependency });
+        await execa(
+          "npx",
+          ["rearguard", "build", "--need_update_build_time", "--bypass_the_queue"],
+          { cwd: dependency },
+        );
 
         if (spinner) {
           spinner.succeed();

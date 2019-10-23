@@ -10,7 +10,7 @@ export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> =
   const outdatedDependency: Set<string> = new Set();
 
   // * Prepare data
-  const globalNodeModulePath = await getGlobalNodeModulePath();
+  const globalNodeModulePath = getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   // ! Look through the dependencies of the current project

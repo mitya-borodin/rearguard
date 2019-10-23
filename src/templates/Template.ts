@@ -60,6 +60,6 @@ export class Template {
   }
 
   public async createTargetDir(): Promise<void> {
-    await mkdir(path.dirname(this.destinationFilePath));
+    mkdir(path.dirname(this.destinationFilePath));
   }
 }

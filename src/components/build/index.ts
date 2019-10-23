@@ -11,6 +11,7 @@ const defaultOptions: BuildExecutorOptions = {
   only_dev: false,
   debug: false,
   need_update_build_time: false,
+  bypass_the_queue: false,
 };
 
 export async function build_component(
@@ -46,10 +47,10 @@ export async function build_component(
   }
 
   if (isNode && isLib) {
-    await build_node_lib();
+    await build_node_lib(options);
   }
 
   if (isNode && isApp) {
-    await build_node_app();
+    await build_node_app(options);
   }
 }

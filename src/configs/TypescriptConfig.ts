@@ -80,7 +80,7 @@ export class TypescriptConfig {
     try {
       const content = prettier.format(JSON.stringify(origin), PRETTIER_JSON);
 
-      await mkdir(path.dirname(this.file_path));
+      mkdir(path.dirname(this.file_path));
 
       fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
     } catch (error) {

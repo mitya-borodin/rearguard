@@ -20,7 +20,7 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
   console.log("");
 
   const rearguardConfig = new RearguardConfig(CWD);
-  const globalNodeModulePath = await getGlobalNodeModulePath();
+  const globalNodeModulePath = getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   const globalLinkedModules: Array<[string, string]> = [];
@@ -55,6 +55,7 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
       process.exit(1);
     }
   }
+  console.log("");
 
   const moduleCopyingTasks: Array<[string, string, string[]]> = [];
 
@@ -88,16 +89,17 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
       const paths = await del(localPathForLinkedModule);
 
       for (const item of paths) {
-        console.log(chalk.gray(`[ MODULE ][ REMOVE ][ ${path.relative(CWD, item)} ]`));
+        console.log(chalk.gray(`[ REMOVE  ][ MODULE ][ DIR ][ ${path.relative(CWD, item)} ]`));
       }
 
-      await mkdir(localPathForLinkedModule);
+      mkdir(localPathForLinkedModule);
 
       const relativePathToLocalModule = path.relative(CWD, localPathForLinkedModule);
 
-      console.log(chalk.green(`[ MODULE ][ CREATED ][ DIR ][ ${relativePathToLocalModule} ]`));
+      console.log(chalk.green(`[ CREATED ][ MODULE ][ DIR ][ ${relativePathToLocalModule} ]`));
     }
   }
+  console.log("");
 
   // ! Copy global linked modules to local node_modules.
   for (const [name, pkgVersion, patternForFiles] of moduleCopyingTasks) {
@@ -108,7 +110,7 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
         (error: Error | null, files?: File[]): void => {
           if (!error) {
             if (files) {
-              console.log(chalk.cyan(`[ MODULE ][ COPY ][ ${name} ][ ${files.length} FILES ]`));
+              console.log(chalk.cyan(`[ COPY ][ MODULE ][ ${name} ][ ${files.length} FILES ]`));
             }
 
             resolve();
@@ -121,6 +123,5 @@ export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
 
     await rearguardConfig.setDependencyVersion(name, pkgVersion);
   }
-
   console.log("");
 };

@@ -9,7 +9,8 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
-import { watchLinkedModules } from "../procedures/watchLinkedModules";
+import { processQueue } from "../../helpers/processQueue";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
@@ -17,7 +18,11 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   const startTime = moment();
 
   const CWD: string = process.cwd();
+  const rearguardConfig = new RearguardConfig(CWD);
+  const name = rearguardConfig.getName();
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+
+  await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
@@ -36,7 +41,7 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  await watchLinkedModules(CWD);
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

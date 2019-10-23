@@ -18,7 +18,7 @@ export const getAppEntryPoints = async (CWD: string, isDevelopment: boolean): Pr
   const { host, port } = await rearguardLocalConfig.getWDSConfig();
 
   // * Getting rearguard nodeModulesPath
-  const nodeModulesPath = await getRearguardNodeModulesPath(CWD);
+  const nodeModulesPath = getRearguardNodeModulesPath(CWD);
 
   // * Getting modules from rearguard dependencies
   const WDSModulesPath = path.resolve(nodeModulesPath, "webpack-dev-server");

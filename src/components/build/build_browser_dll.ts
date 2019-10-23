@@ -4,6 +4,8 @@ import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildDllBundles } from "../procedures/buildDllBundles";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { processQueue } from "../../helpers/processQueue";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export async function build_browser_dll(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ DLL ][ BUILD ][ START ]`));
@@ -12,6 +14,10 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
 
   const CWD: string = process.cwd();
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardConfig = new RearguardConfig(CWD);
+  const name = rearguardConfig.getName();
+
+  await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
@@ -20,6 +26,8 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
   await buildDllBundles(CWD, options);
 
   await rearguardLocalConfig.setBuildStatus("done");
+
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

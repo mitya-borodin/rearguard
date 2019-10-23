@@ -10,6 +10,8 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
 import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { processQueue } from "../../helpers/processQueue";
 
 export async function build_browser_lib(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ LIB ][ BUILD ][ START ]`));
@@ -18,6 +20,10 @@ export async function build_browser_lib(options: BuildExecutorOptions): Promise<
 
   const CWD: string = process.cwd();
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardConfig = new RearguardConfig(CWD);
+  const name = rearguardConfig.getName();
+
+  await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
   await updatePkgFiles(CWD);
@@ -36,6 +42,8 @@ export async function build_browser_lib(options: BuildExecutorOptions): Promise<
   await deleteExternalBundles(CWD);
 
   await rearguardLocalConfig.setBuildStatus("done");
+
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log(
     chalk.bold.blue(

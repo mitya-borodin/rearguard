@@ -12,6 +12,7 @@ import { deleteExternalBundles } from "./deleteExternalBundles";
 import { copyGlobalLinkedModules } from "./copyGlobalLinkedModules";
 import { copyBundlesToProject } from "./copyBundlesToProject";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { processQueue } from "../../helpers/processQueue";
 
 let inProgress = false;
 
@@ -23,7 +24,6 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
       console.log(chalk.bold.yellow(`[ CLOSE WATCHER FOR MODULES OBSERVATION ]`));
       console.log("");
 
-      watcher.removeAllListeners();
       watcher.close();
       watcher = undefined;
     }
@@ -31,9 +31,15 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
 
   shutdown();
 
+  process.on("SIGINT", shutdown);
+  process.on("exit", shutdown);
+  process.on("uncaughtException", shutdown);
+  process.on("unhandledRejection", shutdown);
+
   const rearguardConfig = new RearguardConfig(CWD);
   const isBrowser = rearguardConfig.isBrowser();
   const isIsomorphic = rearguardConfig.isIsomorphic();
+  const name = rearguardConfig.getName();
   const dependencies = await getSortedListOfDependencies(CWD);
   const chokidarOptions = {
     cwd: CWD,
@@ -45,7 +51,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
     console.log(chalk.bold.yellow(`[ INIT OF MODULES OBSERVATION ]`));
     console.log("");
 
-    const globalNodeModulePath = await getGlobalNodeModulePath();
+    const globalNodeModulePath = getGlobalNodeModulePath();
     const observedModules: string[] = [];
 
     for (const dependency of dependencies) {
@@ -57,6 +63,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
         observedModules.push(path.resolve(dependencyGlobalPath, REARGUARD_LOCAL_CONFIG_FILE_NAME));
       }
     }
+    console.log("");
 
     if (observedModules.length > 0) {
       watcher = watch(observedModules, chokidarOptions);
@@ -98,6 +105,10 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
 
             inProgress = true;
 
+            // ! Перед началом работы необходимо занять очередь, чтобы никто больше не выполнял работ
+            // ! Before starting work, it is necessary to take a turn so that no one else can perform the work
+            await processQueue.getInQueue(name);
+
             await buildOutdatedDependency(CWD);
             await copyGlobalLinkedModules(CWD);
 
@@ -108,49 +119,16 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
 
             pubSub.emit(events.SYNCED);
 
+            // ! После окончания работ необходимо освободить очередь, для того чтобы другие желающие могли выполнить работу
+            // ! After the work is finished, the queue must be vacated so that others can do the work
+            await processQueue.getOutQueue(name);
+
             inProgress = false;
 
             console.log(chalk.yellow(`[ PROCESSING OF CHANGES IS COMPLETE: ${observedFile} ]`));
             console.log("");
           }
         }
-      });
-
-      process.on("beforeExit", (code) => {
-        console.log(chalk.bold.yellow(`[ BEFORE_EXIT ][ CODE: ${code} ]`));
-        console.log("");
-
-        shutdown();
-      });
-
-      // tslint:disable-next-line no-identical-functions
-      process.on("SIGTERM", () => {
-        console.log(chalk.bold.yellow(`[ SIGTERM ]`));
-        console.log("");
-
-        shutdown();
-      });
-
-      process.once("SIGUSR2", async () => {
-        console.log(chalk.bold.yellow(`[ SIGUSR2 ]`));
-        console.log("");
-
-        shutdown();
-      });
-
-      process.on("unhandledRejection", (reason, promise) => {
-        console.log(chalk.bold.yellow(`[ unhandledRejection ]`), { reason, promise });
-        console.log("");
-
-        shutdown();
-      });
-
-      process.on("uncaughtException", (error) => {
-        console.log(chalk.bold.yellow(`[ uncaughtException ]`));
-        console.error(error);
-        console.log("");
-
-        shutdown();
       });
     } else {
       console.log(chalk.bold.yellow(`[ THERE ARE NO OBSERVABLE MODULES ]`));

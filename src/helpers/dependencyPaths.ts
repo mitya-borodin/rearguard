@@ -4,12 +4,12 @@ import * as execa from "execa";
 
 let cacheGlobalNodeModulePath = "";
 
-export const getGlobalNodeModulePath = async (): Promise<string> => {
+export const getGlobalNodeModulePath = (): string => {
   if (cacheGlobalNodeModulePath !== "") {
     return cacheGlobalNodeModulePath;
   }
 
-  const { stdout } = await execa("npm", ["root", "-g"], { encoding: "utf-8" });
+  const { stdout } = execa.sync("npm", ["root", "-g"], { encoding: "utf-8" });
 
   cacheGlobalNodeModulePath = stdout.replace("\n", "");
 
@@ -20,9 +20,9 @@ export const getLocalNodeModulePath = (CWD: string): string => {
   return path.resolve(CWD, "node_modules");
 };
 
-export const getRearguardNodeModulesPath = async (CWD: string): Promise<string> => {
+export const getRearguardNodeModulesPath = (CWD: string): string => {
   // * Get nodeModules paths
-  const globalNodeModulePath = await getGlobalNodeModulePath();
+  const globalNodeModulePath = getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   // * Path to locally installed rearguard
@@ -44,10 +44,10 @@ export const getRearguardNodeModulesPath = async (CWD: string): Promise<string> 
   throw new Error("Rearguard in not installed, please execute `npm i -g rearguard`.");
 };
 
-export const getTypescriptBin = async (CWD: string): Promise<string> => {
-  return path.resolve(await getRearguardNodeModulesPath(CWD), ".bin/tsc");
+export const getTypescriptBin = (CWD: string): string => {
+  return path.resolve(getRearguardNodeModulesPath(CWD), ".bin/tsc");
 };
 
-export const getTypescriptNodeDevBin = async (CWD: string): Promise<string> => {
-  return path.resolve(await getRearguardNodeModulesPath(CWD), ".bin/ts-node-dev");
+export const getTypescriptNodeDevBin = (CWD: string): string => {
+  return path.resolve(getRearguardNodeModulesPath(CWD), ".bin/ts-node-dev");
 };

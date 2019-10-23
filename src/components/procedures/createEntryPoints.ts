@@ -28,7 +28,7 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   const dllEntryPath = path.resolve(contextPath, dllEntry);
 
   // ! Create context directory;
-  await mkdir(contextPath);
+  mkdir(contextPath);
 
   if (fs.existsSync(contextPath)) {
     if (!isDll && (isBrowser || isIsomorphic) && !fs.existsSync(entryPath)) {
@@ -50,7 +50,7 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
     const binFilePath = path.resolve(binDirPath, BIN_FILE_NAME);
 
     // ! Create bin directory;
-    await mkdir(binDirPath);
+    mkdir(binDirPath);
 
     if (!fs.existsSync(binFilePath)) {
       // ! Create bin file;

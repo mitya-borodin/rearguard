@@ -18,7 +18,7 @@ export const buildLib = async (CWD: string, emitDeclarationOnly = false): Promis
 
   try {
     await execa(
-      await getTypescriptBin(CWD),
+      getTypescriptBin(CWD),
       [
         "--project",
         path.resolve(CWD, TS_CONFIG_FILE_NAME),

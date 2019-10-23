@@ -27,7 +27,7 @@ export const getGeneralWebpackConfig = async (
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const modules = [
     ...rearguardConfig.getModules(),
-    await getRearguardNodeModulesPath(CWD),
+    getRearguardNodeModulesPath(CWD),
     getLocalNodeModulePath(CWD),
   ];
 

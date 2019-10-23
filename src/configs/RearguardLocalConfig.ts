@@ -75,7 +75,7 @@ export class RearguardLocalConfig {
     try {
       const content = prettier.format(JSON.stringify(newConfig), PRETTIER_JSON);
 
-      await mkdir(path.dirname(this.file_path));
+      mkdir(path.dirname(this.file_path));
 
       fs.writeFileSync(this.file_path, content, { encoding: "utf-8" });
     } catch (error) {
