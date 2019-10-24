@@ -79,6 +79,7 @@ export const setConfigs = async (
     ...Array.from(exclude),
     `${context}/**/*.test.ts`,
     `${context}/**/*.spec.ts`,
+    `__${TESTS_DIR_NAME}__/**/*`,
   ]);
 
   // ! Typescript config for Jest;

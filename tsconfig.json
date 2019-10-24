@@ -51,5 +51,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*", "bin/**/*"]
+  "include": ["src/**/*", "bin/**/*", "tools/**/*"]
 }

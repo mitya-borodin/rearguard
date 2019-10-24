@@ -39,7 +39,7 @@
     "validate-prettiness": "prettier -c '**/*.{ts,json,md}'",
     "validate": "npm run lint && npm run typecheck && npm run validate-prettiness",
     "make-prettier": "prettier --write '**/*.{ts,json,md}'",
-    "templates": "node ./tools/copyTemplateFiles.js",
+    "templates": "ts-node ./tools/copyTemplateFiles.ts",
     "prestart": "npm run validate && npm run templates",
     "pretest": "npm run validate && npm run templates",
     "prepublishOnly": "npm run validate && npm run templates"

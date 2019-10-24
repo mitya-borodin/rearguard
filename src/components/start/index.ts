@@ -1,5 +1,6 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { StartExecutorOptions } from "../../interfaces/executors/StartExecutorOptions";
+import { start_isomorphic } from "./start_isomorphic";
 
 const defaultOptions: StartExecutorOptions = {
   release: false,
@@ -24,7 +25,7 @@ export async function start_component(
   const isDll = rearguardConfig.isDll();
 
   if (isIsomorphic) {
-    console.log("START_ISOMORPHIC", options);
+    await start_isomorphic(options);
   }
 
   if (isBrowser && isDll) {

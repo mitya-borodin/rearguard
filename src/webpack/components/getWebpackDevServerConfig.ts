@@ -6,6 +6,7 @@ import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 import { getWebpackStats } from "./getWebpackStats";
 import WebpackDevServer from "webpack-dev-server";
+import { pubSub, events } from "../../helpers/pubSub";
 
 // tslint:disable:object-literal-sort-keys
 
@@ -23,13 +24,13 @@ export const getWebpackDevServerConfig = async (
     contentBase: [path.resolve(CWD, DLL_BUNDLE_DIR_NAME), path.resolve(CWD, LIB_BUNDLE_DIR_NAME)],
     watchContentBase: false,
     // TODO Uncomment, after debugging recompiling queue
-    /*     before(app: express.Application, server: any): void {
-      watch_deps_event_emitter.on("SYNCED", () => {
+    before(app: any, server: any): void {
+      pubSub.on(events.SYNCED, () => {
         server.middleware.waitUntilValid(() => {
           server.sockWrite(server.sockets, "content-changed");
         });
       });
-    }, */
+    },
     historyApiFallback: true,
     hot: true,
     https: true,
