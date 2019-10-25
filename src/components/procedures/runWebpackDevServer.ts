@@ -37,8 +37,19 @@ export const runWebpackDevServer = async (
   });
 
   // TODO сделать единственный метод для shutdown.
-  process.on("SIGINT", () => wds.close());
-  process.on("exit", () => wds.close());
-  process.on("uncaughtException", () => wds.close());
-  process.on("unhandledRejection", () => wds.close());
+  process.on("SIGINT", () => {
+    wds.close();
+    process.exit(0);
+  });
+  process.on("exit", () => {
+    wds.close();
+  });
+  process.on("uncaughtException", () => {
+    wds.close();
+    process.exit(1);
+  });
+  process.on("unhandledRejection", () => {
+    wds.close();
+    process.exit(1);
+  });
 };

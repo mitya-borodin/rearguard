@@ -25,6 +25,6 @@ export const runTsNodeDev = async (CWD: string): Promise<void> => {
       execaOptions,
     );
   } catch (error) {
-    console.error(error);
+    console.error(chalk.bold.magenta(error.message));
   }
 };

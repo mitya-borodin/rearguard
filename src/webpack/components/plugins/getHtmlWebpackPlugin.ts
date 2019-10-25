@@ -96,11 +96,21 @@ class ComputeDataForHWP {
 }
 
 export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugin[] => {
+  const rearguardConfig = new RearguardConfig(CWD);
+  const isBrowser = rearguardConfig.isBrowser();
+  const isApp = rearguardConfig.isApp();
+
+  let template = path.resolve(CWD, getPublicDirPath(CWD), "index.html");
+
+  if (!(isBrowser && isApp)) {
+    template = path.resolve(__dirname, "../../../templates/indexHtml", "index.html");
+  }
+
   return [
     new HtmlWebpackPlugin({
       filename: "index.html",
       inject: false,
-      template: path.resolve(CWD, getPublicDirPath(CWD), "index.html"),
+      template,
       meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
     }),
     new ComputeDataForHWP(CWD, isDevelopment),
