@@ -6,6 +6,7 @@ import * as prettier from "prettier";
 import { PRETTIER_JSON, REARGUARD_LOCAL_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardLocal } from "./RearguardLocal";
+import moment = require("moment");
 
 export class RearguardLocalConfig {
   private file_path: string;
@@ -49,6 +50,12 @@ export class RearguardLocalConfig {
     const config = await this.getConfig();
 
     await this.setConfig(merge(config, { build: { status } }));
+  }
+
+  public async setLastBuildTime(): Promise<void> {
+    const config = await this.getConfig();
+
+    await this.setConfig(merge(config, { build: { last_build_time: moment() } }));
   }
 
   public async getConfig(): Promise<Readonly<RearguardLocal>> {

@@ -1,6 +1,10 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { StartExecutorOptions } from "../../interfaces/executors/StartExecutorOptions";
+import { start_browser_lib } from "./start_browser_lib";
 import { start_isomorphic } from "./start_isomorphic";
+import { start_browser_app } from "./start_browser_app";
+import { start_node_lib } from "./start_node_lib";
+import { start_node_app } from "./start_node_app";
 
 const defaultOptions: StartExecutorOptions = {
   release: false,
@@ -22,29 +26,24 @@ export async function start_component(
   const isNode = rearguardConfig.isNode();
   const isApp = rearguardConfig.isApp();
   const isLib = rearguardConfig.isLib();
-  const isDll = rearguardConfig.isDll();
 
   if (isIsomorphic) {
     await start_isomorphic(options);
   }
 
-  if (isBrowser && isDll) {
-    console.log("START_BROWSER_DLL", options);
-  }
-
   if (isBrowser && isLib) {
-    console.log("START_BROWSER_LIB", options);
+    await start_browser_lib(options);
   }
 
   if (isBrowser && isApp) {
-    console.log("START_BROWSER_APP", options);
+    await start_browser_app(options);
   }
 
   if (isNode && isLib) {
-    console.log("START_NODE_LIB", options);
+    await start_node_lib();
   }
 
   if (isNode && isApp) {
-    console.log("START_NODE_APP", options);
+    await start_node_app();
   }
 }

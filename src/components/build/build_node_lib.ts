@@ -31,6 +31,8 @@ export async function build_node_lib(options: BuildExecutorOptions): Promise<voi
 
   await processQueue.getOutQueue(name, options.bypass_the_queue);
 
+  await rearguardLocalConfig.setLastBuildTime();
+
   console.log(
     chalk.bold.blue(
       `[ NODE ][ LIB ][ BUILD ][ FINISH ][ ${moment().diff(startTime, "milliseconds")} ms ]`,
