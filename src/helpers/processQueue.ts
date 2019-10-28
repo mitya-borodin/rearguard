@@ -18,6 +18,8 @@ enum queueEvent {
   QUEUE_UPDATED = "QUEUE_UPDATED",
 }
 
+const queueCopy: Set<string> = new Set();
+
 class ProcessQueue {
   private readonly tmpDirName: string;
   private readonly fileName: string;
@@ -58,6 +60,7 @@ class ProcessQueue {
     const queue = this.getQueue(this.pathToProcessQueueFile);
 
     queue.push(name);
+    queueCopy.add(name);
 
     console.log(chalk.bold.yellow(`[ GET IN THE GLOBAL QUEUE OF PROCESSES ]`));
     console.log(chalk.bold.yellow(`[ TIME ][ ${new Date().getTime()} ]`));
@@ -109,6 +112,7 @@ class ProcessQueue {
     let queue = this.getQueue(this.pathToProcessQueueFile);
 
     queue = queue.filter((item) => item !== name);
+    queueCopy.delete(name);
 
     console.log(chalk.bold.yellow(`[ GET OUT THE GLOBAL QUEUE OF PROCESSES ]`));
     console.log(chalk.bold.yellow(`[ ${this.pathToProcessQueueFile} ]`));
@@ -121,6 +125,10 @@ class ProcessQueue {
     );
 
     this.shutdownWatcher();
+  }
+
+  dropQueue(): void {
+    fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
   }
 
   private activateWatcher(): void {
@@ -146,8 +154,9 @@ class ProcessQueue {
         this.pubSub.emit(queueEvent.QUEUE_UPDATED, this.getQueue(pathToProcessQueueFile));
       });
 
-      process.on("SIGINT", this.shutdownWatcher);
       process.on("exit", this.shutdownWatcher);
+      process.on("SIGINT", this.shutdownWatcher);
+      process.on("rejectionHandled", this.shutdownWatcher);
       process.on("uncaughtException", this.shutdownWatcher);
       process.on("unhandledRejection", this.shutdownWatcher);
 
@@ -160,14 +169,28 @@ class ProcessQueue {
     console.log("");
 
     if (this.watcher) {
-      process.off("SIGINT", this.shutdownWatcher);
       process.off("exit", this.shutdownWatcher);
+      process.off("SIGINT", this.shutdownWatcher);
+      process.off("rejectionHandled", this.shutdownWatcher);
       process.off("uncaughtException", this.shutdownWatcher);
       process.off("unhandledRejection", this.shutdownWatcher);
 
       this.watcher.close();
       this.watcherIsActive = false;
       this.watcher = undefined;
+    }
+
+    if (queueCopy.size > 0) {
+      const queue = this.getQueue(this.pathToProcessQueueFile).filter(
+        (item) => !queueCopy.has(item),
+      );
+
+      fs.writeFileSync(
+        this.pathToProcessQueueFile,
+        new Uint8Array(Buffer.from(JSON.stringify(queue))),
+      );
+
+      queueCopy.clear();
     }
   }
 
