@@ -22,14 +22,9 @@ export const getDllPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugi
 export const getDllReferencePlugin = async (
   CWD: string,
   isDevelopment: boolean,
-  excludeThemSelf = false,
 ): Promise<webpack.Plugin[]> => {
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
-  const snakeName = rearguardConfig.getSnakeName();
-
-  const dllManifestPath = getDLLManifestPath(CWD, snakeName, isDevelopment);
-  const dllRuntimeName = getDLLRuntimeName(CWD);
 
   const bundleIntrospection: BundleIntrospection[] = await getBundleIntrospections(
     CWD,
@@ -60,19 +55,6 @@ export const getDllReferencePlugin = async (
 
         process.exit(1);
       }
-    }
-  }
-
-  // exclude_them_self - выставляется в true в случае когда dll зависит от dll.
-  if (!excludeThemSelf) {
-    if (fs.existsSync(dllManifestPath)) {
-      result.push(
-        new webpack.DllReferencePlugin({
-          context: contextPath,
-          manifest: dllManifestPath,
-          name: dllRuntimeName,
-        }),
-      );
     }
   }
 

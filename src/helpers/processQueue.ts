@@ -1,11 +1,13 @@
-import * as fs from "fs";
-import * as path from "path";
-import { getGlobalNodeModulePath } from "./dependencyPaths";
-import { mkdir } from "./mkdir";
-import { isArray, isString } from "@borodindmitriy/utils";
-import { watch } from "chokidar";
-import chalk from "chalk";
 import { EventEmitter } from "@borodindmitriy/isomorphic";
+import { isArray, isString } from "@borodindmitriy/utils";
+import chalk from "chalk";
+import { watch } from "chokidar";
+import * as fs from "fs";
+import * as os from "os";
+import * as delay from "delay";
+import * as path from "path";
+import { mkdir } from "./mkdir";
+import { random } from "lodash";
 
 const chokidarOptions = {
   followSymlinks: false,
@@ -26,11 +28,9 @@ class ProcessQueue {
   private readonly pubSub: EventEmitter;
 
   constructor() {
-    const globalNodeModulePath = getGlobalNodeModulePath();
-
-    this.tmpDirName = "tmp";
+    this.tmpDirName = "rearguard";
     this.fileName = ".rearguardProcessQueue";
-    this.pathToTmpDir = path.resolve(globalNodeModulePath, this.tmpDirName);
+    this.pathToTmpDir = path.resolve(os.tmpdir(), this.tmpDirName);
     this.pathToProcessQueueFile = path.resolve(this.pathToTmpDir, this.fileName);
     this.pubSub = new EventEmitter();
     this.watcher = undefined;
@@ -41,26 +41,37 @@ class ProcessQueue {
     mkdir(this.pathToTmpDir);
 
     if (!fs.existsSync(this.pathToProcessQueueFile)) {
+      /* console.log([], JSON.stringify([]));
+      console.log(""); */
+
       fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
     }
   }
 
   async getInQueue(name: string, bypassTheQueue = false): Promise<void> {
-    if (bypassTheQueue) {
-      return Promise.resolve();
-    }
+    await delay(random(500, 1000));
 
-    console.log(chalk.bold.yellow(`[ GET IN THE GLOBAL QUEUE OF PROCESSES ]`));
-    console.log("");
+    if (bypassTheQueue) {
+      return;
+    }
 
     const queue = this.getQueue(this.pathToProcessQueueFile);
 
     queue.push(name);
 
-    fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify(queue));
+    console.log(chalk.bold.yellow(`[ GET IN THE GLOBAL QUEUE OF PROCESSES ]`));
+    console.log(chalk.bold.yellow(`[ TIME ][ ${new Date().getTime()} ]`));
+    console.log(chalk.bold.yellow(`[ ${this.pathToProcessQueueFile} ]`));
+    console.log(chalk.bold.green(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
+    console.log("");
+
+    fs.writeFileSync(
+      this.pathToProcessQueueFile,
+      new Uint8Array(Buffer.from(JSON.stringify(queue))),
+    );
 
     if (queue.length === 1) {
-      return Promise.resolve();
+      return;
     }
 
     this.activateWatcher();
@@ -69,7 +80,7 @@ class ProcessQueue {
       const queueHandler = (queue: string[]): void => {
         try {
           if (isArray(queue)) {
-            if (name == queue[0]) {
+            if (name === queue[0]) {
               this.pubSub.off(queueEvent.QUEUE_UPDATED, queueHandler);
 
               resolve();
@@ -95,14 +106,19 @@ class ProcessQueue {
       return;
     }
 
-    console.log(chalk.bold.yellow(`[ GET OUT THE GLOBAL QUEUE OF PROCESSES ]`));
-    console.log("");
-
     let queue = this.getQueue(this.pathToProcessQueueFile);
 
     queue = queue.filter((item) => item !== name);
 
-    fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify(queue));
+    console.log(chalk.bold.yellow(`[ GET OUT THE GLOBAL QUEUE OF PROCESSES ]`));
+    console.log(chalk.bold.yellow(`[ ${this.pathToProcessQueueFile} ]`));
+    console.log(chalk.bold.magenta(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
+    console.log("");
+
+    fs.writeFileSync(
+      this.pathToProcessQueueFile,
+      new Uint8Array(Buffer.from(JSON.stringify(queue))),
+    );
 
     this.shutdownWatcher();
   }
@@ -157,8 +173,9 @@ class ProcessQueue {
 
   private getQueue(pathToProcessQueueFile: string): string[] {
     if (fs.existsSync(pathToProcessQueueFile)) {
+      const JSONString = fs.readFileSync(pathToProcessQueueFile, { encoding: "utf-8" });
+
       try {
-        const JSONString = fs.readFileSync(pathToProcessQueueFile, { encoding: "utf-8" });
         const queue = JSON.parse(JSONString);
         const result: string[] = [];
 
@@ -177,6 +194,10 @@ class ProcessQueue {
         return result;
       } catch (error) {
         console.error(error);
+
+        console.log(chalk.bold.red("[ JSONString ]"));
+        console.log(chalk.bold.red(JSONString));
+        console.log("");
 
         fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
       }

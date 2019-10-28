@@ -43,7 +43,7 @@ export async function build_isomorphic(options: BuildExecutorOptions): Promise<v
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  await processQueue.getOutQueue(name, options.bypass_the_queue);
+  processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log(
     chalk.bold.blue(

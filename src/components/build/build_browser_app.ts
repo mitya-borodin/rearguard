@@ -41,7 +41,7 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  await processQueue.getOutQueue(name, options.bypass_the_queue);
+  processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

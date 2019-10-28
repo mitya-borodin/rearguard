@@ -12,7 +12,8 @@ import { pubSub, events } from "../../helpers/pubSub";
 
 export const getWebpackDevServerConfig = async (
   CWD: string,
-): Promise<WebpackDevServer.Configuration> => {
+  isDevelopment: boolean,
+): Promise<WebpackDevServer.Configuration & { liveReload: boolean }> => {
   const rearguardConfig = new RearguardConfig(CWD);
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
 
@@ -23,7 +24,6 @@ export const getWebpackDevServerConfig = async (
     compress: true,
     contentBase: [path.resolve(CWD, DLL_BUNDLE_DIR_NAME), path.resolve(CWD, LIB_BUNDLE_DIR_NAME)],
     watchContentBase: false,
-    // TODO Uncomment, after debugging recompiling queue
     before(app: any, server: any): void {
       pubSub.on(events.SYNCED, () => {
         server.middleware.waitUntilValid(() => {
@@ -32,8 +32,10 @@ export const getWebpackDevServerConfig = async (
       });
     },
     historyApiFallback: true,
-    hot: true,
-    https: true,
+    hot: isDevelopment,
+    liveReload: isDevelopment,
+    // ! Should enable with right certificates
+    https: false,
     overlay: false,
     proxy,
     publicPath: output.publicPath,

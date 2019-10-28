@@ -18,7 +18,7 @@ export const runWebpackDevServer = async (
   const rearguardLocalConfig = new RearguardLocalConfig(CWD);
 
   const webpackConfig = await getAppWebpackConfig(CWD, isDevelopment, isBuild, isDebug);
-  const webpackDevServerConfig = await getWebpackDevServerConfig(CWD);
+  const webpackDevServerConfig = await getWebpackDevServerConfig(CWD, isDevelopment);
   const compiler = webpack(webpackConfig);
 
   const wds: any = new WDS(compiler, webpackDevServerConfig);
@@ -36,7 +36,6 @@ export const runWebpackDevServer = async (
     console.log("");
   });
 
-  // TODO сделать единственный метод для shutdown.
   process.on("SIGINT", () => {
     wds.close();
     process.exit(0);

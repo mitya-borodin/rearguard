@@ -15,7 +15,7 @@ export const getAppWebpackConfig = async (
   return await getGeneralWebpackConfig(
     CWD,
     isDevelopment,
-    await getAppEntryPoints(CWD, isDevelopment),
+    await getAppEntryPoints(CWD),
     getAppOutput(CWD),
     [
       ...(await getDllReferencePlugin(CWD, isDevelopment)),

@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import * as moment from "moment";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildDllBundles } from "../procedures/buildDllBundles";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { processQueue } from "../../helpers/processQueue";
-import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export async function build_browser_dll(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ DLL ][ BUILD ][ START ]`));
@@ -27,7 +27,7 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  await processQueue.getOutQueue(name, options.bypass_the_queue);
+  processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(
