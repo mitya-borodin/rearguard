@@ -121,7 +121,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
 
             // ! После окончания работ необходимо освободить очередь, для того чтобы другие желающие могли выполнить работу
             // ! After the work is finished, the queue must be vacated so that others can do the work
-            processQueue.getOutQueue(name);
+            await processQueue.getOutQueue(name);
 
             inProgress = false;
 

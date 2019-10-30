@@ -77,7 +77,7 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  processQueue.getOutQueue(name, options.bypass_the_queue);
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

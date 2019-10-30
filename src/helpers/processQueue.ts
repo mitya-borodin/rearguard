@@ -8,6 +8,7 @@ import * as delay from "delay";
 import * as path from "path";
 import { mkdir } from "./mkdir";
 import { random } from "lodash";
+import * as findProcess from "find-process";
 
 const chokidarOptions = {
   followSymlinks: false,
@@ -18,10 +19,20 @@ enum queueEvent {
   QUEUE_UPDATED = "QUEUE_UPDATED",
 }
 
+interface Process {
+  pid: number;
+  ppid: number;
+  uid: number;
+  gid: number;
+  name: string;
+  bin: string;
+  cmd: string;
+}
+
 const queueCopy: Set<string> = new Set();
 
-const getProcessName = (name: string): string => `${name}-${process.pid}`;
-
+const getProcessName = (name: string): string => `${name}____PID:${process.pid}`;
+const getPID = (name: string): string => name.split("____PID:")[1];
 class ProcessQueue {
   private readonly tmpDirName: string;
   private readonly fileName: string;
@@ -54,30 +65,19 @@ class ProcessQueue {
       return;
     }
 
+    await this.removeZombie();
+
     const processName = getProcessName(name);
-    const timeToDelay = random(50, 500) + random(50, 500);
+    const timeToDelay = random(50, 500);
 
     console.log(chalk.bold.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
     console.log(chalk.bold.gray(`[ GET IN ][ TIME ][ ${new Date().getTime()} ][ ms ]`));
     console.log(chalk.bold.gray(`[ TIME TO DELAY ][ ${timeToDelay} ][ ms ]`));
     console.log(chalk.bold.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
     console.log("");
-    console.log(chalk.gray("If you have been waiting too long for the work to continue,"));
-    console.log(chalk.gray("there may have been an error in the rearguard process queue."));
-    console.log(chalk.gray("Stop all running rearguard processes and run the command:"));
-    console.log("");
-    console.log(chalk.bold.gray("rearguard clear_process_queue"));
-    console.log("");
-    console.log(chalk.gray("Если вы слишком долго ожидаете продолжения работы, возможно"));
-    console.log(chalk.gray("произошла ошибка в составлении очереди процессов rearguard."));
-    console.log(chalk.gray("Остановите все запущенные rearguard процессы и выполните команду:"));
-    console.log("");
-    console.log(chalk.bold.gray("rearguard clear_process_queue"));
-    console.log("");
     // ! It is necessary to randomize waiting for the cases when the
     // ! notification about the queue change comes simultaneously to
     // ! different processes.
-    // ! Before writing the queue file.
     await delay(timeToDelay);
 
     const queue = this.getQueue(this.pathToProcessQueueFile);
@@ -124,7 +124,7 @@ class ProcessQueue {
     });
   }
 
-  getOutQueue(name: string, bypassTheQueue = false): void {
+  async getOutQueue(name: string, bypassTheQueue = false): Promise<void> {
     if (bypassTheQueue) {
       return;
     }
@@ -150,15 +150,26 @@ class ProcessQueue {
     this.shutdownWatcher();
   }
 
-  dropQueue(): void {
-    fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
+  private async removeZombie(): Promise<void> {
+    let queue = this.getQueue(this.pathToProcessQueueFile);
+    const zombie: string[] = [];
 
-    const queue = this.getQueue(this.pathToProcessQueueFile);
+    for (const name of queue) {
+      const PID = getPID(name);
 
-    console.log(chalk.bold.gray(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
-    console.log(chalk.bold.gray(`[ TIME ][ ${new Date().getTime()} ][ ms ]`));
-    console.log(chalk.bold.gray(`[ ${this.pathToProcessQueueFile} ]`));
-    console.log("");
+      const process: Process[] = await findProcess("pid", PID);
+
+      if (process.length === 0) {
+        zombie.push(name);
+      }
+    }
+
+    queue = queue.filter((name) => !zombie.includes(name));
+
+    fs.writeFileSync(
+      this.pathToProcessQueueFile,
+      new Uint8Array(Buffer.from(JSON.stringify(queue))),
+    );
   }
 
   private activateWatcher(): void {
@@ -184,12 +195,6 @@ class ProcessQueue {
         this.pubSub.emit(queueEvent.QUEUE_UPDATED, this.getQueue(pathToProcessQueueFile));
       });
 
-      process.on("exit", this.shutdownWatcher);
-      process.on("SIGINT", this.shutdownWatcher);
-      process.on("rejectionHandled", this.shutdownWatcher);
-      process.on("uncaughtException", this.shutdownWatcher);
-      process.on("unhandledRejection", this.shutdownWatcher);
-
       this.watcher = watcher;
     }
   }
@@ -199,12 +204,6 @@ class ProcessQueue {
     console.log("");
 
     if (this.watcher) {
-      process.off("exit", this.shutdownWatcher);
-      process.off("SIGINT", this.shutdownWatcher);
-      process.off("rejectionHandled", this.shutdownWatcher);
-      process.off("uncaughtException", this.shutdownWatcher);
-      process.off("unhandledRejection", this.shutdownWatcher);
-
       this.watcher.close();
       this.watcherIsActive = false;
       this.watcher = undefined;

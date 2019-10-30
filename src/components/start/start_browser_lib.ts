@@ -24,7 +24,7 @@ export async function start_browser_lib(options: StartExecutorOptions): Promise<
   await copyBundlesToProject(CWD);
   await watchLinkedModules(CWD);
 
-  processQueue.getOutQueue(name);
+  await processQueue.getOutQueue(name);
 
   await runWebpackDevServer(CWD, !options.release, false, options.debug);
 }

@@ -27,7 +27,7 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  processQueue.getOutQueue(name, options.bypass_the_queue);
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

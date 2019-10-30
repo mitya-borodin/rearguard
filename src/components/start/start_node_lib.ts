@@ -23,7 +23,7 @@ export async function start_node_lib(): Promise<void> {
   await copyBundlesToProject(CWD);
   await watchLinkedModules(CWD);
 
-  processQueue.getOutQueue(name);
+  await processQueue.getOutQueue(name);
 
   await runTsNodeDev(CWD);
 }

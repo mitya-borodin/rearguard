@@ -25,7 +25,7 @@ export async function start_isomorphic(options: StartExecutorOptions): Promise<v
   await copyBundlesToProject(CWD);
   await watchLinkedModules(CWD);
 
-  processQueue.getOutQueue(name);
+  await processQueue.getOutQueue(name);
 
   if (options.ts_node_dev) {
     await runTsNodeDev(CWD);
