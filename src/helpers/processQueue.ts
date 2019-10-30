@@ -20,6 +20,8 @@ enum queueEvent {
 
 const queueCopy: Set<string> = new Set();
 
+const getProcessName = (name: string): string => `${name}-${process.pid}`;
+
 class ProcessQueue {
   private readonly tmpDirName: string;
   private readonly fileName: string;
@@ -43,30 +45,48 @@ class ProcessQueue {
     mkdir(this.pathToTmpDir);
 
     if (!fs.existsSync(this.pathToProcessQueueFile)) {
-      /* console.log([], JSON.stringify([]));
-      console.log(""); */
-
       fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
     }
   }
 
   async getInQueue(name: string, bypassTheQueue = false): Promise<void> {
-    await delay(random(500, 1000));
-
     if (bypassTheQueue) {
       return;
     }
 
+    const processName = getProcessName(name);
+    const timeToDelay = random(50, 500) + random(50, 500);
+
+    console.log(chalk.bold.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
+    console.log(chalk.bold.gray(`[ GET IN ][ TIME ][ ${new Date().getTime()} ][ ms ]`));
+    console.log(chalk.bold.gray(`[ TIME TO DELAY ][ ${timeToDelay} ][ ms ]`));
+    console.log(chalk.bold.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
+    console.log("");
+    console.log(chalk.gray("If you have been waiting too long for the work to continue,"));
+    console.log(chalk.gray("there may have been an error in the rearguard process queue."));
+    console.log(chalk.gray("Stop all running rearguard processes and run the command:"));
+    console.log("");
+    console.log(chalk.bold.gray("rearguard clear_process_queue"));
+    console.log("");
+    console.log(chalk.gray("Если вы слишком долго ожидаете продолжения работы, возможно"));
+    console.log(chalk.gray("произошла ошибка в составлении очереди процессов rearguard."));
+    console.log(chalk.gray("Остановите все запущенные rearguard процессы и выполните команду:"));
+    console.log("");
+    console.log(chalk.bold.gray("rearguard clear_process_queue"));
+    console.log("");
+    // ! It is necessary to randomize waiting for the cases when the
+    // ! notification about the queue change comes simultaneously to
+    // ! different processes.
+    // ! Before writing the queue file.
+    await delay(timeToDelay);
+
     const queue = this.getQueue(this.pathToProcessQueueFile);
 
-    queue.push(name);
-    queueCopy.add(name);
-
-    console.log(chalk.bold.yellow(`[ GET IN THE GLOBAL QUEUE OF PROCESSES ]`));
-    console.log(chalk.bold.yellow(`[ TIME ][ ${new Date().getTime()} ]`));
-    console.log(chalk.bold.yellow(`[ ${this.pathToProcessQueueFile} ]`));
-    console.log(chalk.bold.green(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
+    console.log(chalk.bold.gray(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
     console.log("");
+
+    queue.push(processName);
+    queueCopy.add(processName);
 
     fs.writeFileSync(
       this.pathToProcessQueueFile,
@@ -83,7 +103,7 @@ class ProcessQueue {
       const queueHandler = (queue: string[]): void => {
         try {
           if (isArray(queue)) {
-            if (name === queue[0]) {
+            if (processName === queue[0]) {
               this.pubSub.off(queueEvent.QUEUE_UPDATED, queueHandler);
 
               resolve();
@@ -109,14 +129,17 @@ class ProcessQueue {
       return;
     }
 
+    const processName = getProcessName(name);
+
     let queue = this.getQueue(this.pathToProcessQueueFile);
 
-    queue = queue.filter((item) => item !== name);
-    queueCopy.delete(name);
+    queue = queue.filter((item) => item !== processName);
+    queueCopy.delete(processName);
 
-    console.log(chalk.bold.yellow(`[ GET OUT THE GLOBAL QUEUE OF PROCESSES ]`));
-    console.log(chalk.bold.yellow(`[ ${this.pathToProcessQueueFile} ]`));
-    console.log(chalk.bold.magenta(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
+    console.log(chalk.bold.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
+    console.log(chalk.bold.gray(`[ GET OUT ]`));
+    console.log(chalk.bold.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
+    console.log(chalk.bold.gray(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
     console.log("");
 
     fs.writeFileSync(
@@ -129,6 +152,13 @@ class ProcessQueue {
 
   dropQueue(): void {
     fs.writeFileSync(this.pathToProcessQueueFile, JSON.stringify([]));
+
+    const queue = this.getQueue(this.pathToProcessQueueFile);
+
+    console.log(chalk.bold.gray(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
+    console.log(chalk.bold.gray(`[ TIME ][ ${new Date().getTime()} ][ ms ]`));
+    console.log(chalk.bold.gray(`[ ${this.pathToProcessQueueFile} ]`));
+    console.log("");
   }
 
   private activateWatcher(): void {
@@ -165,7 +195,7 @@ class ProcessQueue {
   }
 
   private shutdownWatcher(): void {
-    console.log(chalk.bold.yellow(`[ SHUTDOWN GLOBAL QUEUE OBSERVATION ]`));
+    console.log(chalk.bold.gray(`[ SHUTDOWN GLOBAL QUEUE OBSERVATION ]`));
     console.log("");
 
     if (this.watcher) {
