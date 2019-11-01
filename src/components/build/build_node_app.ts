@@ -13,6 +13,7 @@ import { processQueue } from "../../helpers/processQueue";
 import { buildNodeApp } from "../procedures/buildNodeApp";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -40,6 +41,7 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
     console.log("");
   }
 
+  await buildUnfinishedDependencies(CWD);
   await copyGlobalLinkedModules(CWD);
 
   await buildNodeApp(CWD);

@@ -1,12 +1,13 @@
 import chalk from "chalk";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { processQueue } from "../../helpers/processQueue";
 import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { watchLinkedModules } from "../procedures/watchLinkedModules";
 import { runNodeServer } from "../procedures/runNodeServer";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { processQueue } from "../../helpers/processQueue";
+import { watchLinkedModules } from "../procedures/watchLinkedModules";
 
 export async function start_node_app(): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE APP ][ START ]`));
@@ -18,6 +19,7 @@ export async function start_node_app(): Promise<void> {
 
   await processQueue.getInQueue(name);
 
+  await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD, true);
   await copyGlobalLinkedModules(CWD);

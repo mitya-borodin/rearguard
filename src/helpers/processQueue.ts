@@ -70,10 +70,12 @@ class ProcessQueue {
     const processName = getProcessName(name);
     const timeToDelay = random(50, 500);
 
-    console.log(chalk.bold.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
-    console.log(chalk.bold.gray(`[ GET IN ][ TIME ][ ${new Date().getTime()} ][ ms ]`));
-    console.log(chalk.bold.gray(`[ TIME TO DELAY ][ ${timeToDelay} ][ ms ]`));
-    console.log(chalk.bold.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
+    console.log(chalk.bold.gray(`[ ACTIVATE GLOBAL QUEUE OBSERVATION ]`));
+    console.log("");
+    console.log(chalk.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
+    console.log(chalk.gray(`[ GET IN ][ TIME ][ ${new Date().getTime()} ][ ms ]`));
+    console.log(chalk.gray(`[ TIME TO DELAY ][ ${timeToDelay} ][ ms ]`));
+    console.log(chalk.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
     console.log("");
     // ! It is necessary to randomize waiting for the cases when the
     // ! notification about the queue change comes simultaneously to
@@ -136,9 +138,10 @@ class ProcessQueue {
     queue = queue.filter((item) => item !== processName);
     queueCopy.delete(processName);
 
-    console.log(chalk.bold.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
-    console.log(chalk.bold.gray(`[ GET OUT ]`));
-    console.log(chalk.bold.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
+    console.log(chalk.gray(`[ GLOBAL QUEUE OF REARGUARD PROCESSES ]`));
+    console.log(chalk.gray(`[ GET OUT ]`));
+    console.log(chalk.gray(`[ PATH TO QUEUE ][ ${this.pathToProcessQueueFile} ]`));
+    console.log("");
     console.log(chalk.bold.gray(`[ CURRENT QUEUE ][ ${queue.join(", ")} ]`));
     console.log("");
 

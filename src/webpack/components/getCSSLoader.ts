@@ -5,6 +5,12 @@ import * as webpack from "webpack";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { isArray } from "@borodindmitriy/utils";
 
+// style files regexes
+/* const cssRegex = /\.css$/;
+const cssModuleRegex = /\.module\.css$/;
+const sassRegex = /\.(scss|sass)$/;
+const sassModuleRegex = /\.module\.(scss|sass)$/; */
+
 export const getCSSLoader = (
   CWD: string,
   isDevelopment: boolean,

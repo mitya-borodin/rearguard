@@ -9,6 +9,8 @@ import { watchLinkedModules } from "../procedures/watchLinkedModules";
 import { runWebpackDevServer } from "../procedures/runWebpackDevServer";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 
 export async function start_isomorphic(options: StartExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ ISOMORPHIC ][ START ]`));
@@ -19,10 +21,12 @@ export async function start_isomorphic(options: StartExecutorOptions): Promise<v
 
   await processQueue.getInQueue(name);
 
+  await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD, true);
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
+  await createListOfLoadOnDemand(CWD, true);
   await watchLinkedModules(CWD);
 
   await processQueue.getOutQueue(name);

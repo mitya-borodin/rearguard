@@ -1,104 +1,119 @@
 declare module "isomorphic-style-loader/StyleContext";
 declare module "isomorphic-style-loader/withStyles";
+declare module "isomorphic-style-loader/useStyles";
 
-declare module "*.css" {
-  interface ClassNames {
-    [className: string]: any;
+declare namespace NodeJS {
+  interface ProcessEnv {
+    readonly NODE_ENV: "development" | "production" | "test";
+    readonly PUBLIC_URL: string;
   }
-
-  const classNames: ClassNames;
-
-  export = classNames;
 }
 
 // For more information you need to go here:
 // https://github.com/webpack-contrib/worker-loader#integrating-with-typescript
-
 declare module "worker-loader!*" {
   class WebpackWorker extends Worker {
     constructor();
   }
 
-  export = WebpackWorker;
+  export default WebpackWorker;
 }
 
-declare module "*.jpg" {
-  const path: string;
+declare module "*.css" {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
 
-  export = path;
+declare module "*.module.css" {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
+
+declare module "*.module.scss" {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
+
+declare module "*.module.sass" {
+  const classes: { readonly [key: string]: string };
+  export default classes;
 }
 
 declare module "*.ico" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
-declare module "*.jpeg" {
-  const path: string;
-
-  export = path;
-}
-
-declare module "*.png" {
-  const path: string;
-
-  export = path;
+declare module "*.bmp" {
+  const src: string;
+  export default src;
 }
 
 declare module "*.gif" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
-declare module "*.eot" {
-  const path: string;
 
-  export = path;
+declare module "*.jpg" {
+  const src: string;
+  export default src;
 }
-declare module "*.otf" {
-  const path: string;
 
-  export = path;
+declare module "*.jpeg" {
+  const src: string;
+  export default src;
 }
+
+declare module "*.png" {
+  const src: string;
+  export default src;
+}
+
 declare module "*.webp" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
 declare module "*.svg" {
-  const path: string;
+  import * as React from "react";
 
-  export = path;
+  export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+
+  const src: string;
+  export default src;
+}
+
+declare module "*.eot" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.otf" {
+  const src: string;
+  export default src;
 }
 
 declare module "*.ttf" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
 declare module "*.woff" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
 declare module "*.woff2" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
 declare module "*.csv" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }
 
 declare module "*.text" {
-  const path: string;
-
-  export = path;
+  const src: string;
+  export default src;
 }

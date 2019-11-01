@@ -22,8 +22,8 @@ export const buildOutdatedDependency = async (CWD: string): Promise<void> => {
 
       try {
         await execa(
-          "npx",
-          ["rearguard", "build", "--need_update_build_time", "--bypass_the_queue"],
+          "npm",
+          ["run", "build", "--", "--need_update_build_time", "--bypass_the_queue"],
           { cwd: dependency },
         );
 

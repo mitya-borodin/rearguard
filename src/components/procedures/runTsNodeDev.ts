@@ -21,7 +21,7 @@ export const runTsNodeDev = async (CWD: string): Promise<void> => {
   try {
     await execa(
       getTypescriptNodeDevBin(CWD),
-      ["--clear", "--prefer-ts", "--type-check", "--respawn", entryPath],
+      ["--prefer-ts", "--type-check", "--respawn", entryPath],
       execaOptions,
     );
   } catch (error) {

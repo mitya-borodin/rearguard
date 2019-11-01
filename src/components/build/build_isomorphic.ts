@@ -12,6 +12,8 @@ import { updatePkgFiles } from "../procedures/updatePkgFiles";
 import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 
 export async function build_isomorphic(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ ISOMORPHIC ][ BUILD ][ START ]`));
@@ -28,12 +30,12 @@ export async function build_isomorphic(options: BuildExecutorOptions): Promise<v
   await rearguardLocalConfig.setBuildStatus("in_progress");
   await updatePkgFiles(CWD);
 
+  await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
-
   await deleteExternalBundles(CWD, true);
-
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
+  await createListOfLoadOnDemand(CWD, false);
 
   await buildDllBundles(CWD, options);
   await buildLibBundles(CWD, options);

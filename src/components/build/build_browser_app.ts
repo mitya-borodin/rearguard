@@ -11,6 +11,7 @@ import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { processQueue } from "../../helpers/processQueue";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
@@ -26,18 +27,16 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
+  await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
-
   await deleteExternalBundles(CWD, true);
-
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
+  await createListOfLoadOnDemand(CWD, false);
 
   await buildBrowserApp(CWD, options);
 
   await copyBundlesAndPublicToDist(CWD);
-
-  await createListOfLoadOnDemand(CWD, false);
 
   await rearguardLocalConfig.setBuildStatus("done");
 

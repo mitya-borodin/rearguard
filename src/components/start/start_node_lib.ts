@@ -7,6 +7,7 @@ import { runTsNodeDev } from "../procedures/runTsNodeDev";
 import { watchLinkedModules } from "../procedures/watchLinkedModules";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
+import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
 
 export async function start_node_lib(): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE LIB ][ START ]`));
@@ -17,6 +18,7 @@ export async function start_node_lib(): Promise<void> {
 
   await processQueue.getInQueue(name);
 
+  await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD, true);
   await copyGlobalLinkedModules(CWD);
