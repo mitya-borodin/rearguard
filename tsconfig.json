@@ -51,5 +51,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*", "bin/**/*", "tools/**/*"]
+  "include": ["src/**/*", "bin/**/*", "tools/**/*"],
+  "exclude": ["./src/templates/typingNonTypescriptModules/*", "./src_old"]
 }
