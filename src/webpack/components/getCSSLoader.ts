@@ -91,6 +91,15 @@ export const getCSSLoader = (
           // https://github.com/luisrudge/postcss-flexbugs-fixes
           require("postcss-flexbugs-fixes")(),
 
+          // https://github.com/postcss/postcss-nested
+          require("postcss-nested")(),
+
+          // https://github.com/postcss/postcss-custom-properties
+          require("postcss-custom-properties")(),
+
+          // https://github.com/MadLittleMods/postcss-css-variables
+          require("postcss-css-variables")(),
+
           // Add vendor prefixes to CSS rules using values from caniuse.com
           // https://github.com/postcss/autoprefixer
           // TODO Add settings from browserList.

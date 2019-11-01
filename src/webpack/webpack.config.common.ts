@@ -10,7 +10,6 @@ import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlu
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
 import { getRearguardNodeModulesPath, getLocalNodeModulePath } from "../helpers/dependencyPaths";
-// tslint:disable:variable-name object-literal-sort-keys
 
 export const getGeneralWebpackConfig = async (
   CWD: string,

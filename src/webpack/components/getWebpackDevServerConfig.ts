@@ -1,14 +1,9 @@
-// import * as express from "express";
-import * as path from "path";
-// import { watch_deps_event_emitter } from "../../components/watch_deps";
+import WebpackDevServer from "webpack-dev-server";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
+import { events, pubSub } from "../../helpers/pubSub";
 import { getWebpackStats } from "./getWebpackStats";
-import WebpackDevServer from "webpack-dev-server";
-import { pubSub, events } from "../../helpers/pubSub";
-
-// tslint:disable:object-literal-sort-keys
 
 export const getWebpackDevServerConfig = async (
   CWD: string,
@@ -21,8 +16,9 @@ export const getWebpackDevServerConfig = async (
   const output = rearguardConfig.getOutput();
 
   return {
+    http2: true,
     compress: true,
-    contentBase: [path.resolve(CWD, DLL_BUNDLE_DIR_NAME), path.resolve(CWD, LIB_BUNDLE_DIR_NAME)],
+    contentBase: [DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME],
     watchContentBase: false,
     before(app: any, server: any): void {
       pubSub.on(events.SYNCED, () => {
@@ -34,12 +30,13 @@ export const getWebpackDevServerConfig = async (
     historyApiFallback: true,
     hot: isDevelopment,
     liveReload: isDevelopment,
-    // ! Should enable with right certificates
-    https: false,
     overlay: false,
     proxy,
     publicPath: output.publicPath,
     stats: getWebpackStats(CWD),
+    headers: {
+      ["Cache-Control"]: "no-transform",
+    },
   };
 };
 

@@ -25,16 +25,7 @@ export const runWebpackDevServer = async (
 
   const { host, port } = await rearguardLocalConfig.getWDSConfig();
 
-  pubSub.on(events.SYNCED, () => {
-    // ! middleware isn't describing in type declarations.
-    wds.middleware.invalidate();
-  });
-
-  wds.listen(port, host, () => {
-    console.log(chalk.cyan(`[ WEBPACK-DEV-SERVER ][ LAUNCHED ]`));
-    console.log(chalk.cyan(`[ HOSTNAME: https://${host}:${port} ]`));
-    console.log("");
-  });
+  pubSub.on(events.SYNCED, () => wds.middleware.invalidate());
 
   process.on("SIGINT", () => {
     wds.close();
@@ -51,4 +42,6 @@ export const runWebpackDevServer = async (
     wds.close();
     process.exit(1);
   });
+
+  wds.listen(port, host);
 };
