@@ -43,13 +43,14 @@ export class PackageJSON {
   public readonly preferGlobal?: boolean;
   public readonly private?: boolean;
   public readonly publishConfig?: Readonly<PublishConfig>;
-  public readonly rearguard: Readonly<Rearguard>;
   public readonly husky: {
     hooks: {
       ["pre-commit"]: string;
       ["pre-push"]: string;
     };
   };
+  public readonly browserslist: string[];
+  public readonly rearguard: Readonly<Rearguard>;
 
   constructor(data: any) {
     this.name = "";
@@ -78,6 +79,7 @@ export class PackageJSON {
       node: ">=10 <11",
       npm: ">=6 <7",
     };
+    this.browserslist = ["last 2 versions"];
     this.husky = {
       hooks: {
         ["pre-commit"]: "pretty-quick --staged",
@@ -140,6 +142,16 @@ export class PackageJSON {
       for (const fieldName of ["node", "npm"]) {
         if (isString(data.engines[fieldName])) {
           this.engines[fieldName] = data.engines[fieldName];
+        }
+      }
+    }
+
+    if (isArray(data.browserslist)) {
+      this.browserslist = [];
+
+      for (const listItem of data.browserslist) {
+        if (isString(listItem)) {
+          this.browserslist.push(listItem);
         }
       }
     }

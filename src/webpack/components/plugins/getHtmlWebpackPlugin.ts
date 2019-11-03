@@ -77,7 +77,8 @@ class ComputeDataForHWP {
 
           // Manipulate the content
           data.assets.js = [...assets.js, ...data.assets.js];
-
+          console.log("");
+          console.log("");
           console.log(chalk.bold.green("[ HtmlWebpackPlugin ][ BUILD ][ index.html ]"));
           for (const css of data.assets.css) {
             console.log(chalk.green(`[ CSS ][ ${css} ]`));

@@ -4,3 +4,5 @@ declare module "workbox-build";
 declare module "dumper.js";
 declare module "html-webpack-plugin";
 declare module "find-process";
+declare module "postcss-normalize";
+declare module "postcss-safe-parser";

@@ -28,8 +28,8 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
       },
     },
     {
-      include,
       test,
+      include,
       use: [
         {
           loader: "ts-loader",

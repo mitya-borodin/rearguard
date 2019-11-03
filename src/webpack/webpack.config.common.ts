@@ -1,15 +1,17 @@
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 import * as path from "path";
 import * as webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
+import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
-import { getRearguardNodeModulesPath, getLocalNodeModulePath } from "../helpers/dependencyPaths";
+import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -19,17 +21,24 @@ export const getGeneralWebpackConfig = async (
   plugins: webpack.Plugin[],
   isDebug = false,
   needUpdateBuildTime = false,
+  isProfile = false,
   rules: webpack.Rule[] = [],
   externals: webpack.ExternalsObjectElement = {},
 ): Promise<webpack.Configuration> => {
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const modules = [
+    // ! First of all, modules from the current project are connected
     ...rearguardConfig.getModules(),
+    // ! The second step is to connect the modules from the node_modules of the specific project.
     getLocalNodeModulePath(CWD),
-    // ! getRearguardNodeModulesPath must be in the end of list.
+    // ! The modules from rearguard node_modules are connected last.
     getRearguardNodeModulesPath(CWD),
   ];
+  const [eslintLoader, tsLoader] = getTypescriptLoader(CWD);
+  const fileRegExp = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|bmp|gif)(\?.*)?$/;
+  const rawFileRegExp = /\.(text|csv)(\?.*)?$/;
+  const [, useOnlyIsomorphicStyleLoader] = rearguardConfig.getCSS();
 
   return {
     context: contextPath,
@@ -41,20 +50,39 @@ export const getGeneralWebpackConfig = async (
       rules: [
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
+        // First, run the linter.
+        eslintLoader,
         {
-          loader: "file-loader",
-          query: {
-            name: isDevelopment ? "[path][name].[ext]?[hash:8]" : "[hash:32].[ext]",
-          },
-          test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+          oneOf: [
+            // A loader for webpack which transforms files into base64 URIs.
+            // url-loader works like file-loader, but can return a DataURL if the file is smaller than a byte limit.
+            // https://webpack.js.org/loaders/url-loader/
+            {
+              test: fileRegExp,
+              loader: "url-loader",
+              options: {
+                limit: 10240,
+                name: "static/media/[name].[hash:8].[ext]",
+              },
+            },
+            tsLoader,
+            ...getCSSLoader(CWD, isDevelopment, isDebug),
+            ...rules,
+            // https://webpack.js.org/loaders/raw-loader/
+            // A loader for webpack that allows importing files as a String.
+            {
+              test: rawFileRegExp,
+              use: "raw-loader",
+            },
+            {
+              loader: "file-loader",
+              test: fileRegExp,
+              query: {
+                name: isDevelopment ? "[path][name].[ext]?[hash:8]" : "[hash:32].[ext]",
+              },
+            },
+          ],
         },
-        {
-          test: /\.(text|csv)(\?.*)?$/,
-          use: "raw-loader",
-        },
-        ...getTypescriptLoader(CWD),
-        ...getCSSLoader(CWD, isDevelopment, isDebug),
-        ...rules,
       ],
     },
     output: {
@@ -66,8 +94,16 @@ export const getGeneralWebpackConfig = async (
     },
 
     resolve: {
-      extensions: [".js", ".ts", ".tsx", ".css", ".json"],
+      extensions: [".ts", ".tsx", ".css", ".scss", ".sass", ".js", ".json"],
       modules,
+      alias: {
+        ...(isProfile
+          ? {
+              "react-dom$": "react-dom/profiling",
+              "scheduler/tracing": "scheduler/tracing-profiling",
+            }
+          : {}),
+      },
     },
     resolveLoader: {
       extensions: [".js", ".json"],
@@ -81,6 +117,7 @@ export const getGeneralWebpackConfig = async (
       new CleanWebpackPlugin(),
       ...plugins,
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
+      ...(!isDevelopment && !useOnlyIsomorphicStyleLoader ? [new MiniCssExtractPlugin()] : []),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
@@ -101,7 +138,10 @@ export const getGeneralWebpackConfig = async (
       nodeEnv: isDevelopment ? "development" : "production",
       minimize: !isDevelopment,
       noEmitOnErrors: !isDevelopment,
-      minimizer: getTerserWebpackPlugin(isDevelopment),
+      minimizer: [
+        ...getTerserWebpackPlugin(isDevelopment),
+        ...getOptimizeCSSAssetsPlugin(isDevelopment, isDebug),
+      ],
     },
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.

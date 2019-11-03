@@ -58,6 +58,10 @@ export class PackageJSONConfig {
     return this.getPkg().files;
   }
 
+  public getBrowserslist(): string[] {
+    return this.getPkg().browserslist;
+  }
+
   public async setFiles(files: string[]): Promise<Readonly<PackageJSON>> {
     const origin = this.getPkg();
     const pkg = new PackageJSON({ ...origin, files });

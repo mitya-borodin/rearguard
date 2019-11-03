@@ -111,8 +111,10 @@ export class RearguardConfig extends PackageJSONConfig {
     return will_load_on_demand;
   }
 
-  public getFilenameWithExternalPostCSSPlugins(): string {
-    return this.getRearguard().postcss_plugins;
+  public getCSS(): [string, boolean] {
+    const { postcssPlugins, useOnlyIsomorphicStyleLoader } = this.getRearguard().css;
+
+    return [postcssPlugins, useOnlyIsomorphicStyleLoader];
   }
 
   public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {

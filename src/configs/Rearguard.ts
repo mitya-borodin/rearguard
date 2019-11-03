@@ -36,7 +36,10 @@ export class Rearguard {
     noOverwriteGitIgnore: boolean;
   };
 
-  public postcss_plugins: string;
+  public css: {
+    postcssPlugins: string;
+    useOnlyIsomorphicStyleLoader: boolean;
+  };
 
   constructor(data?: any) {
     this.bin = "";
@@ -74,7 +77,10 @@ export class Rearguard {
       noOverwriteGitIgnore: false,
     };
 
-    this.postcss_plugins = "postcss.config.js";
+    this.css = {
+      postcssPlugins: "postcss.config.js",
+      useOnlyIsomorphicStyleLoader: false,
+    };
 
     if (data) {
       if (isString(data.bin)) {
@@ -148,8 +154,17 @@ export class Rearguard {
         }
       }
 
-      if (isString(data.postcss_plugins)) {
-        this.postcss_plugins = data.postcss_plugins;
+      if (isObject(data.css)) {
+        if (isString(data.css.postcssPlugins)) {
+          this.css.postcssPlugins = data.css.postcssPlugins;
+        }
+        if (isBoolean(data.css.useOnlyIsomorphicStyleLoader)) {
+          this.css.useOnlyIsomorphicStyleLoader = data.css.useOnlyIsomorphicStyleLoader;
+        }
+      }
+
+      if (this.project.runtime === "isomorphic") {
+        this.css.useOnlyIsomorphicStyleLoader = true;
       }
     }
   }
@@ -203,7 +218,10 @@ export class Rearguard {
           publish_to_git: this.distribution.publish_to_git,
         },
         configs: this.configs,
-        postcss_plugins: this.postcss_plugins,
+        css:
+          this.project.runtime === "isomorphic"
+            ? { postcssPlugins: this.css.postcssPlugins }
+            : { ...this.css },
       };
     }
 
@@ -214,7 +232,7 @@ export class Rearguard {
           ...project,
           ...appDistribution,
           configs: this.configs,
-          postcss_plugins: this.postcss_plugins,
+          css: { ...this.css },
         };
       }
 
