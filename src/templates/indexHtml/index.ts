@@ -1,10 +1,9 @@
+import chalk from "chalk";
+import * as del from "del";
 import * as fs from "fs";
 import * as path from "path";
-import * as copy from "copy";
-import { Template } from "../Template";
 import { PUBLIC_DIR_NAME } from "../../const";
-import File = require("vinyl");
-import chalk from "chalk";
+import { Template } from "../Template";
 
 export const indexHtmlTemplate = new Template(
   "index.html",
@@ -15,36 +14,41 @@ export const indexHtmlTemplate = new Template(
 export const copyPublicAssets = async (CWD: string, force = false): Promise<void> => {
   const pathToSource = path.resolve(__dirname, "public");
   const pathToDestination = path.resolve(CWD, "public");
-  const toCopy: string[] = [];
+  const fileNames: string[] = [];
 
   if (fs.existsSync(pathToSource)) {
-    const sourceFiles = fs.readdirSync(pathToSource);
+    const sourceFileNames = fs.readdirSync(pathToSource);
 
-    for (const sourceFile of sourceFiles) {
-      const pathToSourceFile = path.resolve(pathToSource, sourceFile);
-      const pathToDestinationFile = path.resolve(pathToDestination, sourceFile);
+    for (const sourceFileName of sourceFileNames) {
+      const pathToDestinationFile = path.resolve(pathToDestination, sourceFileName);
 
       if (!fs.existsSync(pathToDestinationFile) || force) {
-        toCopy.push(pathToSourceFile);
+        fileNames.push(sourceFileName);
       }
     }
   }
 
-  console.log(toCopy, pathToDestination);
+  if (fileNames.length > 0) {
+    const paths = await del(fileNames.map((fileName) => path.resolve(pathToDestination, fileName)));
 
-  if (toCopy.length > 0) {
-    await new Promise((resolve, reject): void => {
-      copy(toCopy, "public", { cwd: CWD }, (error: Error | null, files?: File[]) => {
-        if (!error) {
-          if (files && files.length > 0) {
-            console.log(chalk.cyan(`[ COPY ][ PUBLIC FILE ][ ${files.length} FILES ]`));
-          }
+    if (paths.length > 0) {
+      console.log(chalk.bold.gray(`[ CLEAN ]`));
 
-          resolve();
-        } else {
-          reject(error);
-        }
-      });
-    });
+      for (const item of paths) {
+        console.log(chalk.gray(`[ REMOVE ][ ${path.relative(process.cwd(), item)} ]`));
+      }
+
+      console.log("");
+    }
+
+    for (const fileName of fileNames) {
+      const pathToSourceFile = path.resolve(pathToSource, fileName);
+      const pathToDestinationFile = path.resolve(pathToDestination, fileName);
+
+      fs.copyFileSync(pathToSourceFile, pathToDestinationFile);
+    }
+
+    console.log(chalk.cyan(`[ COPY ][ PUBLIC ][ ${fileNames.length} FILES ]`));
+    console.log("");
   }
 };
