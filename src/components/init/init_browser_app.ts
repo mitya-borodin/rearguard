@@ -9,7 +9,7 @@ import { commonPreset } from "../procedures/commonPreset";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { getPublicDirPath } from "../../helpers/bundleNaming";
-import { indexHtmlTemplate } from "../../templates/indexHtml";
+import { indexHtmlTemplate, copyPublicAssets } from "../../templates/indexHtml";
 
 export async function init_browser_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -49,4 +49,5 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
   // ! Create index.html
   mkdir(getPublicDirPath(CWD));
   await indexHtmlTemplate.render(flags);
+  await copyPublicAssets(CWD, flags.force);
 }
