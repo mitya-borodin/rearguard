@@ -1,6 +1,5 @@
 import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 import * as path from "path";
 import * as webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
@@ -9,6 +8,8 @@ import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
+import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
+import { getMiniCssExtractPlugin } from "./components/plugins/getMiniCssExtractPlugin";
 import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
@@ -39,7 +40,6 @@ export const getGeneralWebpackConfig = async (
   const [eslintLoader, tsLoader] = getTypescriptLoader(CWD);
   const fileRegExp = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|bmp|gif)(\?.*)?$/;
   const rawFileRegExp = /\.(text|csv)(\?.*)?$/;
-  const [, useOnlyIsomorphicStyleLoader] = rearguardConfig.getCSS();
 
   return {
     context: contextPath,
@@ -124,17 +124,9 @@ export const getGeneralWebpackConfig = async (
       new CaseSensitivePathsPlugin(),
       new CleanWebpackPlugin(),
       ...plugins,
+      ...getMiniCssExtractPlugin(CWD, isDevelopment),
+      ...getManifestPlugin(CWD, output),
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
-      ...(!isDevelopment && !useOnlyIsomorphicStyleLoader
-        ? [
-            new MiniCssExtractPlugin({
-              // Options similar to the same options in webpackOptions.output
-              // both options are optional
-              filename: "[name].css?[hash:8]",
-              chunkFilename: "[name].chunk.css?[hash:8]",
-            }),
-          ]
-        : []),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
