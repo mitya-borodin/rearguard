@@ -36,7 +36,7 @@ const getExtensions = (hasTS: boolean, hasTSX: boolean): string => {
     return `{${extensions.join(",")}}`;
   }
 
-  return extensions[0];
+  return extensions[0] || "";
 };
 
 // TODO Add logging.

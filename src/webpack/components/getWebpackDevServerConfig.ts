@@ -1,7 +1,7 @@
 import WebpackDevServer from "webpack-dev-server";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
-import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
+import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME } from "../../const";
 import { events, pubSub } from "../../helpers/pubSub";
 import { getWebpackStats } from "./getWebpackStats";
 
@@ -18,7 +18,7 @@ export const getWebpackDevServerConfig = async (
   return {
     http2: true,
     compress: true,
-    contentBase: [DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME],
+    contentBase: [DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME],
     watchContentBase: false,
     before(app: any, server: any): void {
       pubSub.on(events.SYNCED, () => {

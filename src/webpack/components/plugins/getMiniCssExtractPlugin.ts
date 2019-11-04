@@ -6,7 +6,7 @@ export const getMiniCssExtractPlugin = (CWD: string, isDevelopment: boolean): we
   const rearguardConfig = new RearguardConfig(CWD);
   const [, useOnlyIsomorphicStyleLoader] = rearguardConfig.getCSS();
 
-  if (!isDevelopment && useOnlyIsomorphicStyleLoader) {
+  if (!isDevelopment && !useOnlyIsomorphicStyleLoader) {
     return [
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
