@@ -1,19 +1,18 @@
 import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
-import * as ManifestPlugin from "webpack-manifest-plugin";
 import * as path from "path";
 import * as webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
+import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
+import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
-import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
-import { getChunkOptimization } from "./components/getChunkOptimization";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -28,8 +27,6 @@ export const getGeneralWebpackConfig = async (
   externals: webpack.ExternalsObjectElement = {},
 ): Promise<webpack.Configuration> => {
   const rearguardConfig = new RearguardConfig(CWD);
-  const isBrowser = rearguardConfig.isBrowser();
-  const isApp = rearguardConfig.isApp();
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const modules = [
     // ! First of all, modules from the current project are connected
@@ -135,34 +132,6 @@ export const getGeneralWebpackConfig = async (
               // both options are optional
               filename: "[name].css?[hash:8]",
               chunkFilename: "[name].chunk.css?[hash:8]",
-            }),
-          ]
-        : []),
-      // Generate an asset manifest file with the following content:
-      // - "files" key: Mapping of all asset filenames to their corresponding
-      //   output file so that tools can pick it up without having to parse
-      //   `index.html`
-      // - "entrypoints" key: Array of files which are included in `index.html`,
-      //   can be used to reconstruct the HTML if necessary
-      ...(isBrowser && isApp
-        ? [
-            new ManifestPlugin({
-              fileName: "asset-manifest.json",
-              publicPath: output.publicPath,
-              generate: (seed, files, entrypoints): any => {
-                const manifestFiles = files.reduce((manifest: any, file: any) => {
-                  manifest[file.name] = file.path;
-                  return manifest;
-                }, seed);
-                const entrypointFiles = entrypoints.main.filter(
-                  (fileName) => !fileName.endsWith(".map"),
-                );
-
-                return {
-                  files: manifestFiles,
-                  entrypoints: entrypointFiles,
-                };
-              },
             }),
           ]
         : []),
