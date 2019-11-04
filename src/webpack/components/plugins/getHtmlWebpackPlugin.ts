@@ -12,6 +12,7 @@ import {
   getPublicDirPath,
 } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
+import { isString } from "@borodindmitriy/utils";
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -51,7 +52,7 @@ class ComputeDataForHWP {
             this.CWD,
             this.isDevelopment,
           );
-          const assets: { js: string[]; css: [] } = { js: [], css: [] };
+          const assets: { js: string[]; css: string[] } = { js: [], css: [] };
 
           for (const {
             hasDll,
@@ -62,11 +63,25 @@ class ComputeDataForHWP {
           } of bundleIntrospection) {
             if (!willLoadOnDemand) {
               if (hasDll && fs.existsSync(assetsPath.dll)) {
-                assets.js.push(require(assetsPath.dll)[getDLLRuntimeName(pkgSnakeName)].js);
+                const source = require(assetsPath.dll)[getDLLRuntimeName(pkgSnakeName)];
+
+                if (isString(source.js)) {
+                  assets.js.push(source.js);
+                }
+                if (isString(source.css)) {
+                  assets.css.push(source.css);
+                }
               }
 
               if (hasBrowserLib && fs.existsSync(assetsPath.lib)) {
-                assets.js.push(require(assetsPath.lib)[getLIBRuntimeName(pkgSnakeName)].js);
+                const source = require(assetsPath.lib)[getLIBRuntimeName(pkgSnakeName)];
+
+                if (isString(source.js)) {
+                  assets.js.push(source.js);
+                }
+                if (isString(source.css)) {
+                  assets.css.push(source.css);
+                }
               }
             }
           }
@@ -77,6 +92,8 @@ class ComputeDataForHWP {
 
           // Manipulate the content
           data.assets.js = [...assets.js, ...data.assets.js];
+          data.assets.css = [...assets.css, ...data.assets.css];
+
           console.log("");
           console.log("");
           console.log(chalk.bold.green("[ HtmlWebpackPlugin ][ BUILD ][ index.html ]"));

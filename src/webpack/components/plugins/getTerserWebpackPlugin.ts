@@ -1,5 +1,5 @@
-import * as TerserWebpackPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
+import * as TerserWebpackPlugin from "terser-webpack-plugin";
 
 export const getTerserWebpackPlugin = (
   isDevelopment: boolean,

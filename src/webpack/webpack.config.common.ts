@@ -1,6 +1,7 @@
 import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import * as ManifestPlugin from "webpack-manifest-plugin";
 import * as path from "path";
 import * as webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
@@ -12,6 +13,7 @@ import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlu
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
 import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
+import { getChunkOptimization } from "./components/getChunkOptimization";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -26,6 +28,8 @@ export const getGeneralWebpackConfig = async (
   externals: webpack.ExternalsObjectElement = {},
 ): Promise<webpack.Configuration> => {
   const rearguardConfig = new RearguardConfig(CWD);
+  const isBrowser = rearguardConfig.isBrowser();
+  const isApp = rearguardConfig.isApp();
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const modules = [
     // ! First of all, modules from the current project are connected
@@ -44,7 +48,7 @@ export const getGeneralWebpackConfig = async (
     context: contextPath,
     entry,
     externals: { ...(await getExternals(CWD, isDevelopment)), ...externals },
-    mode: "none",
+    mode: /* isDevelopment ? "development" : "production" */ "none",
     module: {
       strictExportPresence: true,
       rules: [
@@ -62,7 +66,7 @@ export const getGeneralWebpackConfig = async (
               loader: "url-loader",
               options: {
                 limit: 10240,
-                name: "static/media/[name].[hash:8].[ext]",
+                name: "[name].[hash:8].[ext]",
               },
             },
             tsLoader,
@@ -86,10 +90,17 @@ export const getGeneralWebpackConfig = async (
       ],
     },
     output: {
-      filename: isDevelopment ? "[name].js?[hash:8]" : "[hash:32].js",
-      pathinfo: isDebug,
-      chunkFilename: isDevelopment ? "[name].chunk.js?[hash:8]" : "[hash:32].chunk.js",
+      filename: "[name].js?[hash:8]",
+      chunkFilename: "[name].chunk.js?[hash:8]",
+      // this defaults to 'window', but by setting it to 'this' then
+      // module chunks which are built will work in web workers as well.
       globalObject: "this",
+      // Prevents conflicts when multiple Webpack runtimes (from different apps)
+      // are used on the same page.
+      jsonpFunction: `webpackJsonp_rearguard_${rearguardConfig.getSnakeName()}`,
+      pathinfo: isDevelopment,
+      // TODO: remove this when upgrading to webpack 5
+      futureEmitAssets: true,
       ...output,
     },
 
@@ -117,7 +128,44 @@ export const getGeneralWebpackConfig = async (
       new CleanWebpackPlugin(),
       ...plugins,
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
-      ...(!isDevelopment && !useOnlyIsomorphicStyleLoader ? [new MiniCssExtractPlugin()] : []),
+      ...(!isDevelopment && !useOnlyIsomorphicStyleLoader
+        ? [
+            new MiniCssExtractPlugin({
+              // Options similar to the same options in webpackOptions.output
+              // both options are optional
+              filename: "[name].css?[hash:8]",
+              chunkFilename: "[name].chunk.css?[hash:8]",
+            }),
+          ]
+        : []),
+      // Generate an asset manifest file with the following content:
+      // - "files" key: Mapping of all asset filenames to their corresponding
+      //   output file so that tools can pick it up without having to parse
+      //   `index.html`
+      // - "entrypoints" key: Array of files which are included in `index.html`,
+      //   can be used to reconstruct the HTML if necessary
+      ...(isBrowser && isApp
+        ? [
+            new ManifestPlugin({
+              fileName: "asset-manifest.json",
+              publicPath: output.publicPath,
+              generate: (seed, files, entrypoints): any => {
+                const manifestFiles = files.reduce((manifest: any, file: any) => {
+                  manifest[file.name] = file.path;
+                  return manifest;
+                }, seed);
+                const entrypointFiles = entrypoints.main.filter(
+                  (fileName) => !fileName.endsWith(".map"),
+                );
+
+                return {
+                  files: manifestFiles,
+                  entrypoints: entrypointFiles,
+                };
+              },
+            }),
+          ]
+        : []),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
@@ -142,6 +190,7 @@ export const getGeneralWebpackConfig = async (
         ...getTerserWebpackPlugin(isDevelopment),
         ...getOptimizeCSSAssetsPlugin(isDevelopment, isDebug),
       ],
+      ...getChunkOptimization(CWD),
     },
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.

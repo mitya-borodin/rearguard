@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as execa from "execa";
 import * as fs from "fs";
-import ora from "ora";
+import * as ora from "ora";
 import * as path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";

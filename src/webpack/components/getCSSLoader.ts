@@ -128,11 +128,21 @@ export const getCSSLoader = (
         test: cssIsomorphicRegex,
         exclude: cssIsomorphicModuleRegex,
         use: [isomorphicStyle, getCSSLoader({ importLoaders: 1 }), postCss],
+        // Don't consider CSS imports dead code even if the
+        // containing package claims to have no side effects.
+        // Remove this when webpack adds a warning or an error for this.
+        // See https://github.com/webpack/webpack/issues/6571
+        sideEffects: true,
       },
       {
         test: sassIsomorphicRegex,
         exclude: sassIsomorphicModuleRegex,
         use: [isomorphicStyle, getCSSLoader({ importLoaders: 2 }), postCss, ...sass],
+        // Don't consider CSS imports dead code even if the
+        // containing package claims to have no side effects.
+        // Remove this when webpack adds a warning or an error for this.
+        // See https://github.com/webpack/webpack/issues/6571
+        sideEffects: true,
       },
 
       // ! ISOMORPHIC-STYLE-LOADER - CSS-MODULES-LOADER
@@ -173,8 +183,7 @@ export const getCSSLoader = (
         test: cssRegex,
         exclude: cssModuleRegex,
         use: [
-          style,
-          ...(!isDevelopment ? [MiniCssExtractPlugin.loader] : []),
+          ...(isDevelopment ? [style] : [MiniCssExtractPlugin.loader]),
           getCSSLoader({ importLoaders: 1 }),
           postCss,
         ],
@@ -188,12 +197,15 @@ export const getCSSLoader = (
         test: sassRegex,
         exclude: sassModuleRegex,
         use: [
-          style,
-          ...(!isDevelopment ? [MiniCssExtractPlugin.loader] : []),
+          ...(isDevelopment ? [style] : [MiniCssExtractPlugin.loader]),
           getCSSLoader({ importLoaders: 2 }),
           postCss,
           ...sass,
         ],
+        // Don't consider CSS imports dead code even if the
+        // containing package claims to have no side effects.
+        // Remove this when webpack adds a warning or an error for this.
+        // See https://github.com/webpack/webpack/issues/6571
         sideEffects: true,
       },
 
@@ -201,21 +213,18 @@ export const getCSSLoader = (
       {
         test: cssModuleRegex,
         use: [
-          style,
-          ...(!isDevelopment ? [MiniCssExtractPlugin.loader] : []),
+          ...(isDevelopment ? [style] : [MiniCssExtractPlugin.loader]),
           getCSSLoader({
             importLoaders: 1,
             modules: { localIdentName: localIdentName(isDevelopment) },
           }),
           postCss,
         ],
-        sideEffects: true,
       },
       {
         test: sassModuleRegex,
         use: [
-          style,
-          ...(!isDevelopment ? [MiniCssExtractPlugin.loader] : []),
+          ...(isDevelopment ? [style] : [MiniCssExtractPlugin.loader]),
           getCSSLoader({
             importLoaders: 2,
             modules: { localIdentName: localIdentName(isDevelopment) },
@@ -223,7 +232,6 @@ export const getCSSLoader = (
           postCss,
           ...sass,
         ],
-        sideEffects: true,
       },
     ];
   }
