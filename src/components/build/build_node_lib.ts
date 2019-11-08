@@ -1,13 +1,13 @@
 import chalk from "chalk";
 import * as moment from "moment";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
-import { buildLib } from "../procedures/buildLib";
-import { updatePkgFiles } from "../procedures/updatePkgFiles";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";
-import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { buildLib } from "../procedures/build/buildLib";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { updatePkgFiles } from "../procedures/updatePkgFiles";
 
 export async function build_node_lib(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ LIB ][ BUILD ][ START ]`));
@@ -16,7 +16,7 @@ export async function build_node_lib(options: BuildExecutorOptions): Promise<voi
 
   const CWD: string = process.cwd();
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const name = rearguardConfig.getName();
 
   await processQueue.getInQueue(name, options.bypass_the_queue);

@@ -4,5 +4,6 @@ export interface InitExecutorOptions {
   node: boolean;
   app: boolean;
   lib: boolean;
+  mono: boolean;
   force: boolean;
 }

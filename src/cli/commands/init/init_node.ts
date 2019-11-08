@@ -9,6 +9,7 @@ async function app_executor(flags: Flags = {}): Promise<void> {
     node: true,
     app: true,
     lib: false,
+    mono: false,
     force: flags.force,
   });
 }
@@ -20,6 +21,7 @@ async function lib_executor(flags: Flags = {}): Promise<void> {
     node: true,
     app: false,
     lib: true,
+    mono: false,
     force: flags.force,
   });
 }
@@ -31,3 +33,5 @@ export const init_node = new Command("node");
 
 init_node.addCommand(lib);
 init_node.addCommand(app);
+
+init_node.addFlag("--force");

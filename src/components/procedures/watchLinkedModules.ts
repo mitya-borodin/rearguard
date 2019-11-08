@@ -4,15 +4,15 @@ import * as fs from "fs";
 import { watch } from "chokidar";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 import { getGlobalNodeModulePath } from "../../helpers/dependencyPaths";
-import { REARGUARD_LOCAL_CONFIG_FILE_NAME } from "../../const";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { REARGUARD_DEV_CONFIG_FILE_NAME } from "../../const";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { events, pubSub } from "../../helpers/pubSub";
-import { buildOutdatedDependency } from "./buildOutdatedDependency";
 import { deleteExternalBundles } from "./deleteExternalBundles";
 import { copyGlobalLinkedModules } from "./copyGlobalLinkedModules";
 import { copyBundlesToProject } from "./copyBundlesToProject";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
+import { buildOutdatedDependency } from "./build/buildOutdatedDependency";
 
 let inProgress = false;
 
@@ -60,7 +60,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
       if (fs.existsSync(dependencyGlobalPath)) {
         console.log(chalk.yellow(`[ OBSERVED MODULE: ${dependencyGlobalPath} ]`));
 
-        observedModules.push(path.resolve(dependencyGlobalPath, REARGUARD_LOCAL_CONFIG_FILE_NAME));
+        observedModules.push(path.resolve(dependencyGlobalPath, REARGUARD_DEV_CONFIG_FILE_NAME));
       }
     }
     console.log("");
@@ -92,7 +92,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
       watcher.on("error", (error: Error): void => console.error(error));
       watcher.on("all", async (type: string, observedFile: string) => {
         if (!inProgress) {
-          const rearguardLocalConfig = new RearguardLocalConfig(CWD, observedFile);
+          const rearguardLocalConfig = new RearguardDevConfig(CWD, observedFile);
           const status = await rearguardLocalConfig.getStatus();
 
           if (status === "done" && !inProgress) {

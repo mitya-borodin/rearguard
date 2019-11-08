@@ -6,7 +6,7 @@ import {
 } from "../../templates/docker";
 import { nginxTemplate } from "../../templates/nginx";
 import { commonPreset } from "../procedures/commonPreset";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { getPublicDirPath } from "../../helpers/bundleNaming";
 import { indexHtmlTemplate, copyPublicAssets } from "../../templates/indexHtml";
@@ -16,7 +16,7 @@ export async function init_browser_app(flags: { force: boolean }): Promise<void>
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   // ! Set status.
   await rearguardLocalConfig.setBuildStatus("init");

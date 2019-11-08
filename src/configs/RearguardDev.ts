@@ -2,7 +2,7 @@ import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
 import * as moment from "moment";
 import { Moment, isMoment } from "moment";
 
-export class RearguardLocal {
+export class RearguardDev {
   public webpack_dev_server: {
     host: string;
     port: number;

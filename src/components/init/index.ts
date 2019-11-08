@@ -5,6 +5,7 @@ import { init_isomorphic } from "./init_isomorphic";
 import { init_node_app } from "./init_node_app";
 import { init_node_lib } from "./init_node_lib";
 import { init_browser_dll } from "./init_browser_dll";
+import { init_mono } from "./init_mono";
 
 const defaultOptions: InitExecutorOptions = {
   dll: false,
@@ -12,6 +13,7 @@ const defaultOptions: InitExecutorOptions = {
   node: false,
   app: false,
   lib: false,
+  mono: false,
   force: false,
 };
 
@@ -40,5 +42,9 @@ export async function init_component(options: InitExecutorOptions = defaultOptio
 
   if (options.browser && options.node) {
     await init_isomorphic({ force: options.force });
+  }
+
+  if (options.mono) {
+    await init_mono({ force: options.force });
   }
 }

@@ -77,6 +77,12 @@ export class RearguardConfig extends PackageJSONConfig {
     return type === "dll";
   }
 
+  public isMono(): boolean {
+    const { type } = this.getRearguard().project;
+
+    return type === "mono";
+  }
+
   public isIsomorphic(): boolean {
     const { runtime } = this.getRearguard().project;
 
@@ -121,8 +127,12 @@ export class RearguardConfig extends PackageJSONConfig {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { runtime } })));
   }
 
-  public async setType(type: "dll" | "app" | "lib"): Promise<void> {
+  public async setType(type: "dll" | "app" | "lib" | "mono"): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { type } })));
+  }
+
+  public async setComponents(components: string[]): Promise<void> {
+    await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { components } })));
   }
 
   public async getDependenciesCreatedWithRearguard(): Promise<Set<string>> {

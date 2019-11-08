@@ -1,17 +1,17 @@
 import * as moment from "moment";
 import * as webpack from "webpack";
 import { merge } from "lodash";
-import { RearguardLocalConfig } from "../../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../../configs/RearguardDevConfig";
 
 export class HashWebpackPlugin {
   private isDevelopment: boolean;
   private needUpdateBuildTime: boolean;
-  private rearguardLocalConfig: RearguardLocalConfig;
+  private rearguardLocalConfig: RearguardDevConfig;
 
   constructor(CWD: string, isDevelopment: boolean, needUpdateBuildTime: boolean) {
     this.isDevelopment = isDevelopment;
     this.needUpdateBuildTime = needUpdateBuildTime;
-    this.rearguardLocalConfig = new RearguardLocalConfig(CWD);
+    this.rearguardLocalConfig = new RearguardDevConfig(CWD);
 
     this.apply = this.apply.bind(this);
   }

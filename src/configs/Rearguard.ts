@@ -16,8 +16,9 @@ export class Rearguard {
 
   public project: {
     runtime: "browser" | "node" | "isomorphic";
-    type: "dll" | "app" | "lib";
+    type: "dll" | "app" | "lib" | "mono";
     will_load_on_demand: boolean;
+    components: string[];
   };
 
   public distribution: {
@@ -60,6 +61,7 @@ export class Rearguard {
       will_load_on_demand: false,
       runtime: "browser",
       type: "app",
+      components: ["packages/*"],
     };
 
     this.distribution = {
@@ -120,8 +122,16 @@ export class Rearguard {
           this.project.runtime = data.project.runtime;
         }
 
-        if (["dll", "app", "lib"].includes(data.project.type)) {
+        if (["dll", "app", "lib", "mono"].includes(data.project.type)) {
           this.project.type = data.project.type;
+        }
+
+        if (isArray(data.project.components)) {
+          this.project.components = [];
+
+          for (const item of data.project.components) {
+            this.project.components.push(item);
+          }
         }
       }
 
@@ -170,6 +180,15 @@ export class Rearguard {
   }
 
   public toJSON(): object {
+    if (this.project.type === "mono") {
+      return {
+        project: {
+          type: this.project.type,
+          components: this.project.components,
+        },
+      };
+    }
+
     const project = {
       project: {
         runtime: this.project.runtime,
@@ -187,7 +206,10 @@ export class Rearguard {
     if (this.project.runtime === "node" && this.project.type === "app") {
       return {
         bin: this.bin,
-        ...project,
+        ...{
+          ...project,
+          components: this.project.components,
+        },
         ...appDistribution,
         configs: this.configs,
       };
@@ -229,7 +251,10 @@ export class Rearguard {
       if (this.project.type === "app") {
         return {
           webpack: this.webpack,
-          ...project,
+          ...{
+            ...project,
+            components: this.project.components,
+          },
           ...appDistribution,
           configs: this.configs,
           css: { ...this.css },

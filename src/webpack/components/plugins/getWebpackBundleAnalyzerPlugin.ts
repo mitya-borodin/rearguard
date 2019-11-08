@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import { RearguardLocalConfig } from "../../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../../configs/RearguardDevConfig";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 // Webpack Bundle Analyzer
@@ -8,7 +8,7 @@ export const getWebpackBundleAnalyzerPlugin = async (
   CWD: string,
   isDebug: boolean,
 ): Promise<webpack.Plugin[]> => {
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const { webpack_bundle_analyzer } = await rearguardLocalConfig.getConfig();
 
   if (isDebug) {

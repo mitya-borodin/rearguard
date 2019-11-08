@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
-import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";

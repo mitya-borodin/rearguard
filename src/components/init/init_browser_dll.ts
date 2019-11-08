@@ -1,5 +1,5 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { TypescriptConfig } from "../../configs/TypescriptConfig";
 import { DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
@@ -11,7 +11,7 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const typescriptConfig = new TypescriptConfig(CWD);
 
   const context = rearguardConfig.getContext();

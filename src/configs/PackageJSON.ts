@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
 import {
   Author,
@@ -76,7 +78,7 @@ export class PackageJSON {
     };
     this.scripts = {};
     this.engines = {
-      node: ">=10 <11",
+      node: ">=10 <13",
       npm: ">=6 <7",
     };
     this.browserslist = ["last 2 versions"];
@@ -273,5 +275,22 @@ export class PackageJSON {
         }
       }
     }
+  }
+
+  public toJSON(): object {
+    const { project } = this.rearguard;
+
+    if (project.type === "mono") {
+      const { browserslist, husky, bin, files, types, main, ...other } = this;
+
+      return {
+        ...other,
+        husky: {
+          ["pre-push"]: "npm run validate",
+        },
+      };
+    }
+
+    return this;
   }
 }

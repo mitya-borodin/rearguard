@@ -9,6 +9,7 @@ async function dll_executor(flags: Flags = {}): Promise<void> {
     node: false,
     app: false,
     lib: false,
+    mono: false,
     force: flags.force,
   });
 }
@@ -20,6 +21,7 @@ async function lib_executor(flags: Flags = {}): Promise<void> {
     node: false,
     app: false,
     lib: true,
+    mono: false,
     force: flags.force,
   });
 }
@@ -31,6 +33,7 @@ async function app_executor(flags: Flags = {}): Promise<void> {
     node: false,
     app: true,
     lib: false,
+    mono: false,
     force: flags.force,
   });
 }
@@ -44,3 +47,5 @@ export const init_browser = new Command("browser");
 init_browser.addCommand(dll);
 init_browser.addCommand(lib);
 init_browser.addCommand(app);
+
+init_browser.addFlag("--force");

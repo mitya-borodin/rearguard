@@ -3,11 +3,11 @@ import * as execa from "execa";
 import * as fs from "fs";
 import * as ora from "ora";
 import * as path from "path";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
-import { getBundleSubDir } from "../../helpers/bundleNaming";
-import { getGlobalNodeModulePath } from "../../helpers/dependencyPaths";
-import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
+import { getSortedListOfDependencies } from "../getSortedListOfDependencies";
+import { getGlobalNodeModulePath } from "../../../helpers/dependencyPaths";
+import { RearguardConfig } from "../../../configs/RearguardConfig";
+import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../../const";
+import { getBundleSubDir } from "../../../helpers/bundleNaming";
 
 export const buildUnfinishedDependencies = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);

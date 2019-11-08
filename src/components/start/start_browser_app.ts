@@ -2,14 +2,14 @@ import chalk from "chalk";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
 import { StartExecutorOptions } from "../../interfaces/executors/StartExecutorOptions";
-import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
-import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { watchLinkedModules } from "../procedures/watchLinkedModules";
-import { runWebpackDevServer } from "../procedures/runWebpackDevServer";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
+import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { runWebpackDevServer } from "../procedures/runWebpackDevServer";
+import { watchLinkedModules } from "../procedures/watchLinkedModules";
 
 export async function start_browser_app(options: StartExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER APP ][ START ]`));

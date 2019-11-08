@@ -1,17 +1,17 @@
 import chalk from "chalk";
 import * as moment from "moment";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
+import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { buildBrowserApp } from "../procedures/buildBrowserApp";
+import { buildBrowserApp } from "../procedures/build/buildBrowserApp";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicToDist";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
-import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
-import { processQueue } from "../../helpers/processQueue";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
@@ -21,7 +21,7 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   const CWD: string = process.cwd();
   const rearguardConfig = new RearguardConfig(CWD);
   const name = rearguardConfig.getName();
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   await processQueue.getInQueue(name, options.bypass_the_queue);
 

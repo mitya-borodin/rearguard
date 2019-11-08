@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import * as execa from "execa";
 import * as path from "path";
-import { DISTRIBUTIVE_DIR_NAME, TS_CONFIG_FILE_NAME } from "../../const";
-import { getTypescriptBin } from "../../helpers/dependencyPaths";
+import { getTypescriptBin } from "../../../helpers/dependencyPaths";
+import { TS_CONFIG_FILE_NAME, DISTRIBUTIVE_DIR_NAME } from "../../../const";
 
 export const buildNodeApp = async (CWD: string): Promise<void> => {
   console.log(chalk.bold.blue(`[ TSC ][ ASSEMBLY ]`));

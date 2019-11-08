@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 
@@ -19,7 +19,7 @@ export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> =
 
     if (fs.existsSync(i_modulePath)) {
       // * Here we are will work with dependencies of the current project
-      const i_moduleLocalConfig = new RearguardLocalConfig(i_modulePath);
+      const i_moduleLocalConfig = new RearguardDevConfig(i_modulePath);
 
       if (await i_moduleLocalConfig.hasLastBuildTime()) {
         const i_moduleProjectDeps = await getSortedListOfDependencies(i_modulePath);
@@ -30,7 +30,7 @@ export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> =
           const k_modulePath = path.resolve(globalNodeModulePath, i_moduleProjectDeps[k]);
 
           if (fs.existsSync(k_modulePath)) {
-            const k_moduleLocalConfig = new RearguardLocalConfig(k_modulePath);
+            const k_moduleLocalConfig = new RearguardDevConfig(k_modulePath);
 
             if (await k_moduleLocalConfig.hasLastBuildTime()) {
               const k_moduleLastBuildTime = await k_moduleLocalConfig.getLastBuildTime();

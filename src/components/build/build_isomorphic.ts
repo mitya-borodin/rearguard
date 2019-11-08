@@ -1,19 +1,19 @@
 import chalk from "chalk";
 import * as moment from "moment";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
+import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { buildDllBundles } from "../procedures/buildDllBundles";
-import { buildLib } from "../procedures/buildLib";
-import { buildLibBundles } from "../procedures/buildLibBundles";
+import { buildDllBundles } from "../procedures/build/buildDllBundles";
+import { buildLib } from "../procedures/build/buildLib";
+import { buildLibBundles } from "../procedures/build/buildLibBundles";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
-import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { processQueue } from "../../helpers/processQueue";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
-import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 
 export async function build_isomorphic(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ ISOMORPHIC ][ BUILD ][ START ]`));
@@ -21,7 +21,7 @@ export async function build_isomorphic(options: BuildExecutorOptions): Promise<v
   const startTime = moment();
 
   const CWD: string = process.cwd();
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const rearguardConfig = new RearguardConfig(CWD);
   const name = rearguardConfig.getName();
 

@@ -9,8 +9,11 @@ async function isomorphic_executor(flags: Flags = {}): Promise<void> {
     node: true,
     app: false,
     lib: true,
+    mono: false,
     force: flags.force,
   });
 }
 
 export const init_isomorphic = new Command("isomorphic", isomorphic_executor);
+
+init_isomorphic.addFlag("--force");

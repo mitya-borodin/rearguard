@@ -3,11 +3,11 @@ import * as copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
 import * as path from "path";
+import File from "vinyl";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { mkdir } from "../../helpers/mkdir";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
-import File = require("vinyl");
 
 export const copyGlobalLinkedModules = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);

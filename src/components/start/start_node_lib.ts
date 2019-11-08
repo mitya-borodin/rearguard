@@ -1,13 +1,13 @@
 import chalk from "chalk";
-import { buildOutdatedDependency } from "../procedures/buildOutdatedDependency";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { processQueue } from "../../helpers/processQueue";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { runTsNodeDev } from "../procedures/runTsNodeDev";
 import { watchLinkedModules } from "../procedures/watchLinkedModules";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { processQueue } from "../../helpers/processQueue";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
 
 export async function start_node_lib(): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE LIB ][ START ]`));

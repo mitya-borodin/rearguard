@@ -3,7 +3,7 @@ import * as webpack from "webpack";
 import * as WDS from "webpack-dev-server";
 import { getWebpackDevServerConfig } from "../../webpack/components/getWebpackDevServerConfig";
 import { getAppWebpackConfig } from "../../webpack/webpack.config.app";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { pubSub, events } from "../../helpers/pubSub";
 
 export const runWebpackDevServer = async (
@@ -15,7 +15,7 @@ export const runWebpackDevServer = async (
   console.log(chalk.bold.blue(`[ RUN WEBPACK-DEV-SERVER ]`));
   console.log("");
 
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   const webpackConfig = await getAppWebpackConfig(CWD, isDevelopment, isBuild, isDebug);
   const webpackDevServerConfig = await getWebpackDevServerConfig(CWD, isDevelopment);

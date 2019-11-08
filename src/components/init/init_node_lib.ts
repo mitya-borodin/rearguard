@@ -1,5 +1,5 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { commonPreset } from "../procedures/commonPreset";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
 
@@ -8,7 +8,7 @@ export async function init_node_lib(flags: { force: boolean }): Promise<void> {
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   // ! Set status.
   await rearguardLocalConfig.setBuildStatus("init");

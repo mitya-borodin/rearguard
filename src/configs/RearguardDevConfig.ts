@@ -3,17 +3,17 @@ import { merge } from "lodash";
 import { Moment } from "moment";
 import * as path from "path";
 import * as prettier from "prettier";
-import { PRETTIER_JSON, REARGUARD_LOCAL_CONFIG_FILE_NAME } from "../const";
+import { PRETTIER_JSON, REARGUARD_DEV_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
-import { RearguardLocal } from "./RearguardLocal";
-import moment = require("moment");
+import { RearguardDev } from "./RearguardDev";
+import * as moment from "moment";
 
-export class RearguardLocalConfig {
+export class RearguardDevConfig {
   private file_path: string;
 
   constructor(
     CWD: string = process.cwd(),
-    file_path = path.resolve(CWD, REARGUARD_LOCAL_CONFIG_FILE_NAME),
+    file_path = path.resolve(CWD, REARGUARD_DEV_CONFIG_FILE_NAME),
   ) {
     this.file_path = file_path;
   }
@@ -58,26 +58,26 @@ export class RearguardLocalConfig {
     await this.setConfig(merge(config, { build: { last_build_time: moment() } }));
   }
 
-  public async getConfig(): Promise<Readonly<RearguardLocal>> {
+  public async getConfig(): Promise<Readonly<RearguardDev>> {
     if (fs.existsSync(this.file_path)) {
       const content_of_rc_file = fs.readFileSync(this.file_path, { encoding: "utf-8" });
 
       try {
-        return new RearguardLocal(JSON.parse(content_of_rc_file));
+        return new RearguardDev(JSON.parse(content_of_rc_file));
       } catch (error) {
         console.error(error);
 
         process.exit(1);
       }
     } else {
-      return await this.setConfig(new RearguardLocal());
+      return await this.setConfig(new RearguardDev());
     }
 
-    return new RearguardLocal({});
+    return new RearguardDev({});
   }
 
-  public async setConfig(config: Readonly<RearguardLocal>): Promise<Readonly<RearguardLocal>> {
-    const newConfig: Readonly<RearguardLocal> = new RearguardLocal(config);
+  public async setConfig(config: Readonly<RearguardDev>): Promise<Readonly<RearguardDev>> {
+    const newConfig: Readonly<RearguardDev> = new RearguardDev(config);
 
     try {
       const content = prettier.format(JSON.stringify(newConfig), PRETTIER_JSON);

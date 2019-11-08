@@ -47,13 +47,18 @@
 
 - rearguard group bootstrap [ --force | --only_dev | --debug ]
 - rearguard group clear
-- rearguard group init [ --force ]
 - rearguard group install
 - rearguard group build [ --only_dev | --debug ]
 - rearguard group link
+- rearguard group lint
+- rearguard group lint-fix
+- rearguard group typecheck
+- rearguard group validate-prettiness
+- rearguard group validate
+- rearguard group make-prettier
 - rearguard group test [ --debug ]
 - rearguard group publish [ --patch | --minor | --major ]
-- rearguard group reInit [ --force ]
+- rearguard group refresh [ --force ]
 
 <a name="install"></a>
 

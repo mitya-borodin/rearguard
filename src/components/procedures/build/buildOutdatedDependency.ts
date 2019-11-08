@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as execa from "execa";
 import * as ora from "ora";
-import { getOutdatedDependency } from "./getOutdatedDependency";
+import { getOutdatedDependency } from "../getOutdatedDependency";
 
 export const buildOutdatedDependency = async (CWD: string): Promise<void> => {
   const outdatedDependency = await getOutdatedDependency(CWD);

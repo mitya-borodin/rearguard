@@ -7,13 +7,13 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as PPJ from "prettier-package-json";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { DISTRIBUTIVE_DIR_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";
 import { processQueue } from "../../helpers/processQueue";
-import { buildNodeApp } from "../procedures/buildNodeApp";
-import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { buildUnfinishedDependencies } from "../procedures/buildUnfinishedDependencies";
+import { buildNodeApp } from "../procedures/build/buildNodeApp";
+import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -22,7 +22,7 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
 
   const CWD: string = process.cwd();
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const pkg = rearguardConfig.getPkg();
   const name = rearguardConfig.getName();
 

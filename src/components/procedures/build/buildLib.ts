@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import * as execa from "execa";
 import * as path from "path";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { LIB_DIR_NAME, TS_CONFIG_FILE_NAME } from "../../const";
-import { getTypescriptBin } from "../../helpers/dependencyPaths";
+import { RearguardConfig } from "../../../configs/RearguardConfig";
+import { getTypescriptBin } from "../../../helpers/dependencyPaths";
+import { TS_CONFIG_FILE_NAME, LIB_DIR_NAME } from "../../../const";
 
 export const buildLib = async (CWD: string, emitDeclarationOnly = false): Promise<void> => {
   console.log(chalk.bold.blue(`[ TSC ][ ASSEMBLY ]`));

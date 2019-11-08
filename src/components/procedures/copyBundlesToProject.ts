@@ -3,12 +3,12 @@ import * as copy from "copy";
 import * as del from "del";
 import * as fs from "fs";
 import * as path from "path";
+import File from "vinyl";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { mkdir } from "../../helpers/mkdir";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
-import File = require("vinyl");
 
 export const copyBundlesToProject = async (CWD: string): Promise<void> => {
   const dependencies = await getSortedListOfDependencies(CWD);

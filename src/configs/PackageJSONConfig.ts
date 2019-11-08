@@ -155,9 +155,16 @@ export class PackageJSONConfig {
     return this.getPkg().scripts;
   }
 
-  public async setScripts(scripts: Readonly<ScriptsMap>): Promise<Readonly<PackageJSON>> {
+  public async setScripts(
+    scripts: Readonly<ScriptsMap>,
+    force = false,
+  ): Promise<Readonly<PackageJSON>> {
     const origin = this.getPkg();
-    const pkg = new PackageJSON({ ...origin, scripts: { ...origin.scripts, ...scripts } });
+
+    const pkg = new PackageJSON({
+      ...origin,
+      scripts: force ? scripts : { ...origin.scripts, ...scripts },
+    });
 
     return await this.setPkg(pkg);
   }
@@ -173,7 +180,7 @@ export class PackageJSONConfig {
   private async setPkg(origin: Readonly<PackageJSON>): Promise<Readonly<PackageJSON>> {
     try {
       if (fs.existsSync(this.pathToPackageJsonFile)) {
-        const formatedJSON = JSON.parse(PPJ.format(origin));
+        const formatedJSON = JSON.parse(PPJ.format(origin.toJSON()));
 
         // ! ==========================================
         // !

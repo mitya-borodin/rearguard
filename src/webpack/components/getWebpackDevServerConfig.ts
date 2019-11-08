@@ -1,6 +1,6 @@
 import WebpackDevServer from "webpack-dev-server";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME } from "../../const";
 import { events, pubSub } from "../../helpers/pubSub";
 import { getWebpackStats } from "./getWebpackStats";
@@ -10,7 +10,7 @@ export const getWebpackDevServerConfig = async (
   isDevelopment: boolean,
 ): Promise<WebpackDevServer.Configuration & { liveReload: boolean }> => {
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   const { proxy } = await rearguardLocalConfig.getWDSConfig();
   const output = rearguardConfig.getOutput();

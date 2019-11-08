@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import * as webpack from "webpack";
-import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { hasVendorImports } from "./hasVendorImports";
-import { getDLLWebpackConfig } from "../../webpack/webpack.config.dll";
-import { getWebpackStats } from "../../webpack/components/getWebpackStats";
+import { BuildExecutorOptions } from "../../../interfaces/executors/BuildExecutorOptions";
+import { hasVendorImports } from "../hasVendorImports";
+import { getDLLWebpackConfig } from "../../../webpack/webpack.config.dll";
+import { getWebpackStats } from "../../../webpack/components/getWebpackStats";
 
 export const buildDllBundles = async (
   CWD: string,

@@ -5,14 +5,14 @@ import {
   dockerComposeExampleTemplate,
   dockerIgnoreTemplate,
 } from "../../templates/docker";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 
 export async function init_node_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
 
   // * Create rearguard config;
   const rearguardConfig = new RearguardConfig(CWD);
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   // ! Set status.
   await rearguardLocalConfig.setBuildStatus("init");

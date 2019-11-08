@@ -1,10 +1,10 @@
 import chalk from "chalk";
 import * as moment from "moment";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { RearguardLocalConfig } from "../../configs/RearguardLocalConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
-import { buildDllBundles } from "../procedures/buildDllBundles";
+import { buildDllBundles } from "../procedures/build/buildDllBundles";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 
 export async function build_browser_dll(options: BuildExecutorOptions): Promise<void> {
@@ -13,7 +13,7 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
   const startTime = moment();
 
   const CWD: string = process.cwd();
-  const rearguardLocalConfig = new RearguardLocalConfig(CWD);
+  const rearguardLocalConfig = new RearguardDevConfig(CWD);
   const rearguardConfig = new RearguardConfig(CWD);
   const name = rearguardConfig.getName();
 
