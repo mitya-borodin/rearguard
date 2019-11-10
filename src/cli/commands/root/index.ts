@@ -7,12 +7,14 @@ import { lint } from "../lint";
 import { start } from "../start";
 import { sync } from "../sync";
 import { test } from "../test";
+import { refresh_command } from "../refresh";
 
 // Root command
 export const rearguard = new Command("rearguard");
 
-// Project Initialization / Reinitialization
+// Project Initialization / Refresh
 rearguard.addCommand(init_command);
+rearguard.addCommand(refresh_command);
 
 // Develop mode
 rearguard.addCommand(start);
