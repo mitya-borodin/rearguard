@@ -39,6 +39,10 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.getRearguard().webpack.output;
   }
 
+  public getComponents(): string[] {
+    return this.getRearguard().project.components;
+  }
+
   public isPublishToGit(): boolean {
     return this.getRearguard().distribution.publish_to_git;
   }
