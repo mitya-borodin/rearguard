@@ -61,7 +61,7 @@ export class Rearguard {
       will_load_on_demand: false,
       runtime: "browser",
       type: "app",
-      components: ["packages/*"],
+      components: ["components"],
     };
 
     this.distribution = {

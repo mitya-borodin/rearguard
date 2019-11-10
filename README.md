@@ -70,13 +70,13 @@ Globally, for use in multiple projects.
 npm install -g rearguard
 ```
 
-Locally, in the project and saving the exact version.
+Locally, in the project for saves the exact version.
 
 ```sh
 npm install -D rearguard
 ```
 
-## Documentation
+## Documentation / Документация
 
 - [English](./docs/en/index.md)
 - [Русский](./docs/ru/index.md)
