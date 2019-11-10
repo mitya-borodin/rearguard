@@ -48,8 +48,8 @@
 - rearguard group bootstrap [ --force | --only_dev | --debug ]
 - rearguard group clear
 - rearguard group install
-- rearguard group build [ --only_dev | --debug ]
 - rearguard group link
+- rearguard group build [ --only_dev | --debug ]
 - rearguard group lint
 - rearguard group lint-fix
 - rearguard group typecheck
