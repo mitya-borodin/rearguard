@@ -1,5 +1,5 @@
-import * as execa from "execa";
-import * as path from "path";
+import execa from "execa";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { vsCodeExtensionsTemplate, vsCodeSettingsTemplate } from "../../templates/vsCode";

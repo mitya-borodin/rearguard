@@ -1,8 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as prettier from "prettier";
-import * as PPJ from "prettier-package-json";
-import * as semver from "semver";
+import fs from "fs";
+import path from "path";
+import prettier from "prettier";
+import PPJ from "prettier-package-json";
+import semver from "semver";
 import { snakeCase } from "lodash";
 import { PRETTIER_JSON_STRINGIFY } from "../const";
 import { DependencyMap, ScriptsMap } from "../interfaces/configs/PackageJSON";

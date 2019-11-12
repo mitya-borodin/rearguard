@@ -1,6 +1,6 @@
-import * as OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
-import * as safePostCssParser from "postcss-safe-parser";
-import * as webpack from "webpack";
+import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
+import safePostCssParser from "postcss-safe-parser";
+import webpack from "webpack";
 
 export const getOptimizeCSSAssetsPlugin = (
   isDevelopment: boolean,

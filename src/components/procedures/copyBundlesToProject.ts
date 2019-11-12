@@ -1,8 +1,8 @@
 import chalk from "chalk";
-import * as copy from "copy";
-import * as del from "del";
-import * as fs from "fs";
-import * as path from "path";
+import copy from "copy";
+import del from "del";
+import fs from "fs";
+import path from "path";
 import File from "vinyl";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";

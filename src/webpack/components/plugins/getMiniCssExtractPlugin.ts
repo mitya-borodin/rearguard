@@ -1,5 +1,5 @@
-import * as webpack from "webpack";
-import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import webpack from "webpack";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 
 export const getMiniCssExtractPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugin[] => {

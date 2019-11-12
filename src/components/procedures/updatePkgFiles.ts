@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
 import { hasVendorImports } from "./hasVendorImports";

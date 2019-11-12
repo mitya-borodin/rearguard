@@ -25,7 +25,7 @@
 - rearguard init isomorphic [ --force ]
 - rearguard init node lib [ --force ]
 - rearguard init node app [ --force ]
-- rearguard refresh [ --force ]
+- rearguard refresh [ --force ] **no yet implemented**
 
 ### Develop mode
 
@@ -45,7 +45,7 @@
 
 ### Group service
 
-- rearguard group bootstrap [ --force | --only_dev | --debug ]
+- rearguard group bootstrap [ --only_dev | --debug ]
 - rearguard group clear
 - rearguard group install
 - rearguard group link
@@ -56,9 +56,9 @@
 - rearguard group validate-prettiness
 - rearguard group validate
 - rearguard group make-prettier
-- rearguard group test [ --debug ]
-- rearguard group publish [ --patch | --minor | --major ]
-- rearguard group refresh [ --force ]
+- rearguard group test [ --debug ] **no yet implemented**
+- rearguard group publish [ --patch | --minor | --major ] **no yet implemented**
+- rearguard group refresh [ --force ] **no yet implemented**
 
 <a name="install"></a>
 

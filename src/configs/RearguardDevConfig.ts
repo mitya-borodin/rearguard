@@ -1,12 +1,12 @@
-import * as fs from "fs";
+import fs from "fs";
 import { merge } from "lodash";
 import { Moment } from "moment";
-import * as path from "path";
-import * as prettier from "prettier";
+import path from "path";
+import prettier from "prettier";
 import { PRETTIER_JSON, REARGUARD_DEV_CONFIG_FILE_NAME } from "../const";
 import { mkdir } from "../helpers/mkdir";
 import { RearguardDev } from "./RearguardDev";
-import * as moment from "moment";
+import moment from "moment";
 
 export class RearguardDevConfig {
   private file_path: string;

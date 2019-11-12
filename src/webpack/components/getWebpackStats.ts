@@ -1,6 +1,6 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import webpack from "webpack";
-import * as path from "path";
+import path from "path";
 
 export function getWebpackStats(CWD: string): webpack.Stats.ToStringOptionsObject {
   const rearguardConfig = new RearguardConfig(CWD);

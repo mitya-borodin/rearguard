@@ -2,13 +2,13 @@ import { EventEmitter } from "@borodindmitriy/isomorphic";
 import { isArray, isString } from "@borodindmitriy/utils";
 import chalk from "chalk";
 import { watch } from "chokidar";
-import * as fs from "fs";
-import * as os from "os";
-import * as delay from "delay";
-import * as path from "path";
+import fs from "fs";
+import os from "os";
+import delay from "delay";
+import path from "path";
 import { mkdir } from "./mkdir";
 import { random } from "lodash";
-import * as findProcess from "find-process";
+import findProcess from "find-process";
 
 const chokidarOptions = {
   followSymlinks: false,

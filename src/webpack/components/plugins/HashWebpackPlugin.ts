@@ -1,5 +1,5 @@
-import * as moment from "moment";
-import * as webpack from "webpack";
+import moment from "moment";
+import webpack from "webpack";
 import { merge } from "lodash";
 import { RearguardDevConfig } from "../../../configs/RearguardDevConfig";
 

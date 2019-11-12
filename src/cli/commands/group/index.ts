@@ -19,14 +19,12 @@ const group_bootstrap = new Command(
   "bootstrap",
   async (flags: Flags = { force: false, only_dev: false, debug: false }): Promise<void> => {
     await group_bootstrap_component({
-      force: flags.force,
       only_dev: flags.only_dev,
       debug: flags.debug,
     });
   },
 );
 
-group_bootstrap.addFlag("--force");
 group_bootstrap.addFlag("--only_dev");
 group_bootstrap.addFlag("--debug");
 

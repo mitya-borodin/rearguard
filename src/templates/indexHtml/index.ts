@@ -1,7 +1,7 @@
 import chalk from "chalk";
-import * as del from "del";
-import * as fs from "fs";
-import * as path from "path";
+import del from "del";
+import fs from "fs";
+import path from "path";
 import { PUBLIC_DIR_NAME } from "../../const";
 import { Template } from "../Template";
 

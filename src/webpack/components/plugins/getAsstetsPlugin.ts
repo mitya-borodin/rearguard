@@ -1,5 +1,5 @@
-import * as AssetsWebpackPlugin from "assets-webpack-plugin";
-import * as webpack from "webpack";
+import AssetsWebpackPlugin from "assets-webpack-plugin";
+import webpack from "webpack";
 import { ASSETS_MANIFEST_NAME } from "../../../const";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import { getLIBBundleOutputPath, getDLLBundleOutputPath } from "../../../helpers/bundleNaming";

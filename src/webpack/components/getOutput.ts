@@ -1,5 +1,5 @@
 import { resolve, normalize } from "path";
-import * as webpack from "webpack";
+import webpack from "webpack";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import {
   getDLLBundleOutputPath,

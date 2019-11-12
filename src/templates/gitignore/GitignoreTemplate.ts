@@ -1,5 +1,5 @@
-import * as ejs from "ejs";
-import * as fs from "fs";
+import ejs from "ejs";
+import fs from "fs";
 import { Template } from "../Template";
 
 // TODO Add logging;

@@ -1,7 +1,7 @@
 import chalk from "chalk";
-import * as fs from "fs";
-import * as path from "path";
-import * as webpack from "webpack";
+import fs from "fs";
+import path from "path";
+import webpack from "webpack";
 import { getBundleIntrospections } from "../../../components/procedures/getBundleIntrospection";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import { getDLLManifestPath, getDLLRuntimeName } from "../../../helpers/bundleNaming";

@@ -1,5 +1,5 @@
-import * as webpack from "webpack";
-import * as ManifestPlugin from "webpack-manifest-plugin";
+import webpack from "webpack";
+import ManifestPlugin from "webpack-manifest-plugin";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 
 export const getManifestPlugin = (CWD: string, output: webpack.Output): webpack.Plugin[] => {

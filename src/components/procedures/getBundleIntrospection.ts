@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME } from "../../const";
 import {

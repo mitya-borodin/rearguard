@@ -1,5 +1,5 @@
 import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
-import * as moment from "moment";
+import moment from "moment";
 import { Moment, isMoment } from "moment";
 
 export class RearguardDev {

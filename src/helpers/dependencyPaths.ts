@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as execa from "execa";
+import fs from "fs";
+import path from "path";
+import execa from "execa";
 
 let cacheGlobalNodeModulePath = "";
 

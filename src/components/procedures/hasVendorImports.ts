@@ -1,6 +1,6 @@
-import * as path from "path";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import * as fs from "fs";
+import fs from "fs";
 
 export const hasVendorImports = async (CWD: string): Promise<boolean> => {
   // * Create rearguard config

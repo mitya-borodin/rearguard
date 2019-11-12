@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import * as copy from "copy";
-import * as path from "path";
+import copy from "copy";
+import path from "path";
 import File from "vinyl";
 import { DISTRIBUTIVE_DIR_NAME, DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME } from "../../const";
 import { getPublicDirPath } from "../../helpers/bundleNaming";

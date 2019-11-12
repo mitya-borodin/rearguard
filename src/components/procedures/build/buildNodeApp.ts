@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import * as execa from "execa";
-import * as path from "path";
+import execa from "execa";
+import path from "path";
 import { getTypescriptBin } from "../../../helpers/dependencyPaths";
 import { TS_CONFIG_FILE_NAME, DISTRIBUTIVE_DIR_NAME } from "../../../const";
 

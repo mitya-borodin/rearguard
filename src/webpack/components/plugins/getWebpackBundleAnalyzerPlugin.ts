@@ -1,4 +1,4 @@
-import * as webpack from "webpack";
+import webpack from "webpack";
 import { RearguardDevConfig } from "../../../configs/RearguardDevConfig";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 

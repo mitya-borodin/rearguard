@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import * as execa from "execa";
+import execa from "execa";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { getTypescriptNodeDevBin } from "../../helpers/dependencyPaths";
 

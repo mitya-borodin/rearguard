@@ -1,3 +1,5 @@
+import { group_command_executor } from "./executor";
+
 export const group_install_component = async (): Promise<void> => {
-  console.log("group_install_component");
+  await group_command_executor(["npm", "install"], true);
 };

@@ -3,49 +3,32 @@
     /* Basic Options */
     "rootDir": "./",
     "outDir": "./lib",
-    "target": "es6",
+    "target": "es2018",
     "module": "commonjs",
-    "lib": ["es6", "es7"],
-    "allowJs": false,
-    "checkJs": false,
-    "jsx": "react",
+    "lib": ["es2018", "esnext.asynciterable"],
     "removeComments": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
 
     /* Strict Type-Checking Options */
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
-    "suppressExcessPropertyErrors": false,
 
     /* Additional Checks */
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
 
     /* Module Resolution Options */
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "importHelpers": true,
+    "esModuleInterop": true,
 
     /* Source Map Options */
-    "sourceMap": false,
-    "inlineSourceMap": false,
-    "inlineSources": false,
+    "sourceMap": true,
 
     /* Debug Options */
-    "diagnostics": false,
-    "extendedDiagnostics": false,
-    "traceResolution": false,
-    "noErrorTruncation": true,
     "pretty": true,
+    "noErrorTruncation": true,
 
     /* Experimental Options */
     "experimentalDecorators": true,

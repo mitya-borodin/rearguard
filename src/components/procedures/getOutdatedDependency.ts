@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";

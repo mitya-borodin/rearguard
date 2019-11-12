@@ -1,7 +1,7 @@
-import * as CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
+import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import * as path from "path";
-import * as webpack from "webpack";
+import path from "path";
+import webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
 import { getChunkOptimization } from "./components/getChunkOptimization";

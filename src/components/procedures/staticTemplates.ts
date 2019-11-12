@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { postCSSConfigTemplate } from "../../templates/postCssConfig";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";

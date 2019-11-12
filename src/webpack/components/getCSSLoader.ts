@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { isArray } from "@borodindmitriy/utils";
-import * as fs from "fs";
-import * as path from "path";
-import * as webpack from "webpack";
-import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import fs from "fs";
+import path from "path";
+import webpack from "webpack";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export const getCSSLoader = (

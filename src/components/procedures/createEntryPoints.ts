@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { BIN_DIR_NAME, BIN_FILE_NAME } from "../../const";

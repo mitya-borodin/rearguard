@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { Template } from "../Template";
 import { PACKAGE_JSON_FILE_NAME } from "../../const";
 import { RearguardConfig } from "../../configs/RearguardConfig";

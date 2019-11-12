@@ -1,8 +1,8 @@
 import chalk from "chalk";
-import * as execa from "execa";
-import * as fs from "fs";
-import * as ora from "ora";
-import * as path from "path";
+import execa from "execa";
+import fs from "fs";
+import ora from "ora";
+import path from "path";
 import { getSortedListOfDependencies } from "../getSortedListOfDependencies";
 import { getGlobalNodeModulePath } from "../../../helpers/dependencyPaths";
 import { RearguardConfig } from "../../../configs/RearguardConfig";

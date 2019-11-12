@@ -1,14 +1,29 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
 import { merge } from "lodash";
+import path from "path";
+import { promisify } from "util";
+import { getLocalNodeModulePath } from "../helpers/dependencyPaths";
 import { PackageJSONConfig } from "./PackageJSONConfig";
 import { Rearguard } from "./Rearguard";
-import { getLocalNodeModulePath } from "../helpers/dependencyPaths";
 
 const dependenciesNotCreatedWithRearguard: Set<string> = new Set();
 const dependenciesCreatedWithRearguard: Set<string> = new Set();
 
+const exists = promisify(fs.exists);
+const readdir = promisify(fs.readdir);
+const readFile = promisify(fs.readFile);
+
 export class RearguardConfig extends PackageJSONConfig {
+  static isRearguard = async (pkgPath: string): Promise<boolean> => {
+    if (await exists(pkgPath)) {
+      const pkgContent = await readFile(pkgPath, { encoding: "utf-8" });
+      const pkg = JSON.parse(pkgContent);
+
+      return pkg.hasOwnProperty("rearguard");
+    }
+
+    return false;
+  };
   public getBin(): string {
     return this.getRearguard().bin;
   }
@@ -139,25 +154,54 @@ export class RearguardConfig extends PackageJSONConfig {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { components } })));
   }
 
-  public async getDependenciesCreatedWithRearguard(): Promise<Set<string>> {
-    const nodeModulePath = this.findNodeModulesInParentDirectory(this.CWD);
-    const dependencyList = this.getDependencyList();
+  public async getDependenciesCreatedWithRearguard(
+    monoDependencyDirs: string[] = [],
+    searchInMonoDirectory = false,
+  ): Promise<Set<string>> {
     const projectDeps: Set<string> = new Set();
 
-    for (const dependencyName of dependencyList) {
-      if (dependenciesCreatedWithRearguard.has(dependencyName)) {
-        projectDeps.add(dependencyName);
-        continue;
+    if (searchInMonoDirectory) {
+      for (const monoDependencyDir of monoDependencyDirs) {
+        const pathToMonoDependency = path.resolve(this.CWD, monoDependencyDir);
+        const dependencyDirs = (await readdir(pathToMonoDependency)).map((dirName) =>
+          path.resolve(pathToMonoDependency, dirName),
+        );
+
+        for (const dependencyDir of dependencyDirs) {
+          const rearguardConfig = new RearguardConfig(dependencyDir);
+          const dependencyName = rearguardConfig.getName();
+
+          if (dependenciesCreatedWithRearguard.has(dependencyName)) {
+            projectDeps.add(dependencyName);
+            continue;
+          }
+
+          if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
+            const pkgPath = path.resolve(dependencyDir, this.packageJsonFileName);
+
+            if (await RearguardConfig.isRearguard(pkgPath)) {
+              projectDeps.add(dependencyName);
+              dependenciesCreatedWithRearguard.add(dependencyName);
+            } else {
+              dependenciesNotCreatedWithRearguard.add(dependencyName);
+            }
+          }
+        }
       }
+    } else {
+      const nodeModulePath = this.findNodeModulesInParentDirectory(this.CWD);
+      const dependencyList = this.getDependencyList();
 
-      if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
-        const pkgPath = path.resolve(nodeModulePath, dependencyName, this.packageJsonFileName);
+      for (const dependencyName of dependencyList) {
+        if (dependenciesCreatedWithRearguard.has(dependencyName)) {
+          projectDeps.add(dependencyName);
+          continue;
+        }
 
-        if (fs.existsSync(pkgPath)) {
-          const pkgContent = fs.readFileSync(pkgPath, { encoding: "utf-8" });
-          const pkg = JSON.parse(pkgContent);
+        if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
+          const pkgPath = path.resolve(nodeModulePath, dependencyName, this.packageJsonFileName);
 
-          if (pkg.hasOwnProperty("rearguard")) {
+          if (await RearguardConfig.isRearguard(pkgPath)) {
             projectDeps.add(dependencyName);
             dependenciesCreatedWithRearguard.add(dependencyName);
           } else {
@@ -175,8 +219,8 @@ export class RearguardConfig extends PackageJSONConfig {
 
     if (fs.existsSync(nodeModules)) {
       return nodeModules;
-      // ! Looking for above to 3 level, because npm package may have namespace
     } else if (count <= 3) {
+      // ! Looking for above to 3 level, because npm package may have namespace
       return this.findNodeModulesInParentDirectory(path.resolve(CWD, ".."), count + 1);
     } else {
       throw new Error(

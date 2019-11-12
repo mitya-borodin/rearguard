@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import {
   DLL_BUNDLE_DIR_NAME,
   LIB_BUNDLE_DIR_NAME,

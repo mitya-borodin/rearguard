@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import webpack from "webpack";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { TS_CONFIG_FILE_NAME } from "../../const";

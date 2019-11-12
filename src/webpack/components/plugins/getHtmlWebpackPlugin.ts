@@ -1,8 +1,8 @@
 import chalk from "chalk";
-import * as fs from "fs";
-import * as path from "path";
-import * as HtmlWebpackPlugin from "html-webpack-plugin";
-import * as webpack from "webpack";
+import fs from "fs";
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
 import { getBundleIntrospections } from "../../../components/procedures/getBundleIntrospection";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import {

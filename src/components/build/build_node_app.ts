@@ -1,11 +1,11 @@
 import chalk from "chalk";
-import * as del from "del";
-import * as execa from "execa";
-import * as fs from "fs";
-import * as moment from "moment";
-import * as path from "path";
-import * as prettier from "prettier";
-import * as PPJ from "prettier-package-json";
+import del from "del";
+import execa from "execa";
+import fs from "fs";
+import moment from "moment";
+import path from "path";
+import prettier from "prettier";
+import PPJ from "prettier-package-json";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { DISTRIBUTIVE_DIR_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";

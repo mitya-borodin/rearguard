@@ -1,7 +1,7 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as glob from "glob";
-import * as execa from "execa";
+import fs from "fs";
+import path from "path";
+import glob from "glob";
+import execa from "execa";
 import { Flags } from "../../cli/common/Flags";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { BIN_DIR_NAME, TESTS_DIR_NAME } from "../../const";
@@ -114,7 +114,7 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
 
   // ! Run.
   try {
-    await execa("eslint", args, { stdout: "inherit", stderr: "inherit" });
+    await execa("eslint", args, { stdout: "inherit", stderr: "inherit", cwd: process.cwd() });
   } catch (error) {
     console.log(chalk.bold.magenta(`CWD: ${process.cwd()}`));
     console.log("");

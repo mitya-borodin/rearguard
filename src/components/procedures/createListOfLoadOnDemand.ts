@@ -1,6 +1,6 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
-import * as prettier from "prettier";
+import prettier from "prettier";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { LIST_OF_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
 import { getDLLRuntimeName, getLIBRuntimeName } from "../../helpers/bundleNaming";

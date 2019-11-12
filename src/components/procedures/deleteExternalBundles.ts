@@ -1,8 +1,8 @@
 import chalk from "chalk";
-import * as del from "del";
-import * as fs from "fs";
+import del from "del";
+import fs from "fs";
 import { snakeCase } from "lodash";
-import * as path from "path";
+import path from "path";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../const";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 

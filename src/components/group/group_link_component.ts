@@ -1,3 +1,5 @@
+import { group_command_executor } from "./executor";
+
 export const group_link_component = async (): Promise<void> => {
-  console.log("group_link_component");
+  await group_command_executor(["npm", "link"], true);
 };

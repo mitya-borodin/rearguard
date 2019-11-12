@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as prettier from "prettier";
+import fs from "fs";
+import path from "path";
+import prettier from "prettier";
 import { getBundleIntrospections } from "./getBundleIntrospection";
 import { LIST_OF_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
 import { RearguardConfig } from "../../configs/RearguardConfig";

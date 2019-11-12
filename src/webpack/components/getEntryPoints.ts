@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { getDLLRuntimeName, getLIBRuntimeName } from "../../helpers/bundleNaming";
 import { Entry } from "webpack";

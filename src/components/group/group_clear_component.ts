@@ -1,3 +1,5 @@
+import { group_command_executor } from "./executor";
+
 export const group_clear_component = async (): Promise<void> => {
-  console.log("group_clear_component");
+  await group_command_executor(["rm", "-rf", "./node_modules"], true);
 };

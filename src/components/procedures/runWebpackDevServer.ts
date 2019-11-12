@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import * as webpack from "webpack";
-import * as WDS from "webpack-dev-server";
+import webpack from "webpack";
+import WDS from "webpack-dev-server";
 import { getWebpackDevServerConfig } from "../../webpack/components/getWebpackDevServerConfig";
 import { getAppWebpackConfig } from "../../webpack/webpack.config.app";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";

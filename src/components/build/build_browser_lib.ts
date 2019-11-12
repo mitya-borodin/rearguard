@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import * as moment from "moment";
+import moment from "moment";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";

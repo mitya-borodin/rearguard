@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import * as webpack from "webpack";
+import webpack from "webpack";
 import { BuildExecutorOptions } from "../../../interfaces/executors/BuildExecutorOptions";
 import { getLibWebpackConfig } from "../../../webpack/webpack.config.lib";
 import { getWebpackStats } from "../../../webpack/components/getWebpackStats";

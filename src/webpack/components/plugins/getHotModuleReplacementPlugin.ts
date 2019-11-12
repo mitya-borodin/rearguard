@@ -1,4 +1,4 @@
-import * as webpack from "webpack";
+import webpack from "webpack";
 
 export const getHotModuleReplacementPlugin = (
   isDevelopment: boolean,

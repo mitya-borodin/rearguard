@@ -1,5 +1,5 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import * as webpack from "webpack";
+import webpack from "webpack";
 
 export const getChunkOptimization = (CWD: string): webpack.Options.Optimization => {
   const rearguardConfig = new RearguardConfig(CWD);
