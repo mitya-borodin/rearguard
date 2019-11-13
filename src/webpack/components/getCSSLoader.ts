@@ -56,10 +56,6 @@ export const getCSSLoader = (
         // https://github.com/postcss/postcss-import
         require("postcss-import")({ path: contextPath }),
 
-        // Postcss flexbox bug fixer
-        // https://github.com/luisrudge/postcss-flexbugs-fixes
-        require("postcss-flexbugs-fixes")(),
-
         // https://github.com/MadLittleMods/postcss-css-variables
         require("postcss-css-variables")(),
 
