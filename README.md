@@ -9,7 +9,11 @@
 
 ## What is it rearguard
 
-Rearguard is a toolset for WEB and Node developers that help with every routine action and setting.
+Rearguard is a set of tools for developing client-server applications in which the code base is developed in a mono repository.
+
+Rearguard supports the following types of projects: browser (dll, lib, app), node (lib, app), isomorphic (lib, app).
+
+Rearguard automatically configures VSCode to work with a specific type of project, and also has a convenient CLI to run the necessary scripts in many repositories.
 
 - First of all, rearguard covers basic needs:
 
