@@ -4,6 +4,7 @@
   "vsicons.dontShowNewVersionMessage": true,
 
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
 
   "diffEditor.ignoreTrimWhitespace": true,
 
@@ -35,7 +36,7 @@
     { "language": "typescriptreact", "autoFix": true }
   ],
   "eslint.packageManager": "npm",
-  "eslint.workingDirectories": ["src", "bin", "tests"],
+  "eslint.workingDirectories": ["."],
 
   "cSpell.words": ["borodindmitriy"],
   "cSpell.language": "en,ru",

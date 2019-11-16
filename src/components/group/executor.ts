@@ -3,6 +3,7 @@ import execa from "execa";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
 import { getSortedListOfMonoComponents } from "../procedures/getSortedListOfDependencies";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 
 export const group_command_executor = async (
   [command, ...params]: string[],
@@ -12,6 +13,8 @@ export const group_command_executor = async (
   const rearguardConfig = new RearguardConfig(CWD);
   const name = rearguardConfig.getName();
   const components = rearguardConfig.getComponents();
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 
   await processQueue.getInQueue(name);
 

@@ -12,22 +12,22 @@ export const setScripts = async (CWD: string): Promise<void> => {
   const startScripts: { [key: string]: string } = {};
 
   if (!(isBrowser && isDll)) {
-    startScripts.start = "npx rearguard start";
+    startScripts.start = "rearguard start";
   }
 
   if (isIsomorphic) {
-    startScripts["start:ts_node_dev"] = "npx rearguard start --ts_node_dev";
+    startScripts["start:ts_node_dev"] = "rearguard start --ts_node_dev";
   }
 
   // ! Set scripts;
   await rearguardConfig.setScripts({
     ...startScripts,
-    build: "npx rearguard build",
-    test: "npx rearguard test",
-    sync: "npx rearguard sync",
-    check_deps_on_npm: "npx rearguard check_deps_on_npm",
-    lint: `npx rearguard lint`,
-    "lint-fix": `npx rearguard lint --fix`,
+    build: "rearguard build",
+    test: "rearguard test",
+    sync: "rearguard sync",
+    check_deps_on_npm: "rearguard check_deps_on_npm",
+    lint: `rearguard lint`,
+    "lint-fix": `rearguard lint --fix`,
     typecheck: "tsc --noEmit",
     "validate-prettiness": "prettier -c '**/*.{ts,tsx,json,md}'",
     validate: "npm run lint && npm run typecheck && npm run validate-prettiness",

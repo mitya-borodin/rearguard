@@ -8,6 +8,7 @@ import { prettierTemplate } from "../../templates/prettierrc";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 
 export async function init_mono(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -37,24 +38,26 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
 
   const rearguardConfig = new RearguardConfig(CWD);
   await rearguardConfig.setType("mono");
-  await rearguardConfig.setComponents(["components/*"]);
+  await rearguardConfig.setComponents(["components"]);
   await rearguardConfig.setScripts(
     {
-      bootstrap: "npx rearguard group bootstrap",
-      clear: "npx rearguard group clear",
-      install: "npx rearguard group install",
-      link: "npx rearguard group link",
-      lint: "npx rearguard group lint",
-      ["lint-fix"]: "npx rearguard group lint-fix",
-      typecheck: "npx rearguard group typecheck",
-      ["validate-prettiness"]: "npx rearguard group validate-prettiness",
-      validate: "npx rearguard group validate",
-      ["make-prettier"]: "npx rearguard group make-prettier",
-      build: "npx rearguard group build",
-      test: "npx rearguard group test",
-      publish: "npx rearguard group publish",
-      refresh: "npx rearguard group refresh",
+      bootstrap: "rearguard group bootstrap",
+      clear: "rearguard group clear",
+      install: "rearguard group install",
+      link: "rearguard group link",
+      lint: "rearguard group lint",
+      ["lint-fix"]: "rearguard group lint-fix",
+      typecheck: "rearguard group typecheck",
+      ["validate-prettiness"]: "rearguard group validate-prettiness",
+      validate: "rearguard group validate",
+      ["make-prettier"]: "rearguard group make-prettier",
+      build: "rearguard group build",
+      test: "rearguard group test",
+      publish: "rearguard group publish",
+      refresh: "rearguard group refresh",
     },
     true,
   );
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 }

@@ -14,6 +14,8 @@ export const BIN_DIR_NAME = "bin";
 export const BIN_FILE_NAME = "index.ts";
 export const BUILD_ASSETS_DIR_NAME = "buildAssets";
 export const TYPE_DECLARATION_DIR_NAME = "types";
+export const VS_CODE = ".vscode";
+export const VS_CODE_SETTINGS = ".vscode/settings.json";
 
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
