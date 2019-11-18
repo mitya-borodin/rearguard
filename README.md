@@ -4,6 +4,7 @@
 - [Technology](#tech)
 - [CLI](#cli)
 - [Install](#install)
+- [Examples](#examples)
 - [Documentation / Документация](#docs)
 
 <a name="whatIsIt"></a>
@@ -137,6 +138,18 @@ Locally, in the project for saves the exact version.
 ```sh
 npm install -D rearguard
 ```
+
+<a name="examples"></a>
+
+## Examples
+
+You can see an example of how to use it in the following projects:
+
+**!!! They're not perfect at the moment, but I'll upgrade them to a canonical look as much as I can.**
+
+- [base-code](https://github.com/mitya-borodin/base-code)
+- [example](https://github.com/mitya-borodin/example)
+- [home-tracker](https://github.com/mitya-borodin/home-tracker)
 
 <a name="docs"></a>
 
