@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "include": ["src/**/*", "__tests__/**/*"],
+  "exclude": [
+    "src_old",
+    "node_modules",
+    "babel.config.js",
+    "./src/templates/typingNonTypescriptModules/typings.d.ts"
+  ],
+  "types": ["jest"]
+}

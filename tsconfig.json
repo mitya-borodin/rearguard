@@ -1,14 +1,39 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
+    /* Basic Options */
     "rootDir": "./",
-    "strict": true,
+    "outDir": "./lib",
+    "target": "es2018",
     "module": "commonjs",
-    "lib": ["es6", "webworker", "es7"],
-    "moduleResolution": "node",
-    "target": "es6",
+    "lib": ["es2018", "esnext.asynciterable"],
+    "removeComments": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
+    /* Source Map Options */
+    "sourceMap": true,
+
+    /* Debug Options */
+    "pretty": true,
+    "noErrorTruncation": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*", "bin/**/*"]
+  "include": ["src/**/*", "bin/**/*", "tools/**/*"],
+  "exclude": ["./src/templates/typingNonTypescriptModules/*", "./src_old"]
 }
