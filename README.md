@@ -2,18 +2,17 @@
 
 - [What is it rearguard ?](#whatIsIt)
 - [Technology](#tech)
-- [Install](#install)
 - [CLI](#cli)
+- [Install](#install)
+- [Documentation / Документация](#docs)
 
 <a name="whatIsIt"></a>
 
 ## What is it rearguard
 
-Rearguard is a set of tools for developing client-server applications in which the code base is developed in a mono repository.
+Rearguard is a set of tools for developing client-server applications in which the code base is developed in a mono repository. This doesn't exclude the possibility of working in a familiar way, using separate repositories for the client, server and other libraries. But the way of code organization in the **mono repository** is considered to be the **recommended** one.
 
 Rearguard supports the following types of projects: browser (dll, lib, app), node (lib, app), isomorphic (lib, app).
-
-Rearguard automatically configures VSCode to work with a specific type of project, and also has a convenient CLI to run the necessary scripts in many repositories.
 
 - First of all, rearguard covers basic needs:
 
@@ -23,7 +22,7 @@ Rearguard automatically configures VSCode to work with a specific type of projec
   - assembly result (application, library, isomorphic library)
 
 - Second, the rearguard knows a lot about the project and can automatically manage VSCode configurations since VSCode settings are JSON files.
-- In the third case, the rearguard contains templates for the main project settings such as (`.eslint.json, .eslintignore, .gitignore, Dockerfile, .dockerignore, nginx.conf, .prettierrc, .prettierignore`). The rearguard adds these templates to the project and then uses them as settings for Webpack and other users, thus managing configurations such as `.eslint.json`. The rearguard allows you to overwrite the settings if necessary to update them with the help of the `rearguard refresh --force` command.
+- In the third case, the rearguard contains templates for the main project settings such as (`.eslint.json, .eslintignore, .gitignore, Dockerfile, .dockerignore, nginx.conf, .prettierrc, .prettierignore`). The rearguard adds these templates to the project and then uses them as settings for Webpack and other users, thus managing configurations such as `.eslint.json`. The rearguard allows you to overwrite the settings. If necessary, you can bring the settings to the current default settings, if the rearguard has been updated `rearguard refresh --force`.
 - The rearguard supports two schemes of code organization known as a mono repository and poly repository.
 - The rearguard also covers a large number of household moments, which eliminates the need to take care of these moments.
 
@@ -111,6 +110,7 @@ The rearguard as a caring parent :-)
 - rearguard group clear
 - rearguard group install
 - rearguard group link
+- rearguard group start [ --release | --debug | --ts_node_dev ] **no yet implemented**
 - rearguard group build [ --only_dev | --debug ]
 - rearguard group lint
 - rearguard group lint-fix
@@ -137,6 +137,8 @@ Locally, in the project for saves the exact version.
 ```sh
 npm install -D rearguard
 ```
+
+<a name="docs"></a>
 
 ## Documentation / Документация
 
