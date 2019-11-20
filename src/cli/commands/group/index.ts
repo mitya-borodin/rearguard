@@ -1,7 +1,6 @@
 import { group_bootstrap_component } from "../../../components/group/group_bootstrap_component";
 import { group_build_component } from "../../../components/group/group_build_component";
 import { group_clear_component } from "../../../components/group/group_clear_component";
-import { group_install_component } from "../../../components/group/group_install_component";
 import { group_link_component } from "../../../components/group/group_link_component";
 import { group_lint_component } from "../../../components/group/group_lint_component";
 import { group_lint_fix_component } from "../../../components/group/group_lint_fix_component";
@@ -39,8 +38,6 @@ group_build.addFlag("--only_dev");
 group_build.addFlag("--debug");
 
 const group_clear = new Command("clear", group_clear_component);
-
-const group_install = new Command("install", group_install_component);
 
 const group_link = new Command("link", group_link_component);
 
@@ -96,7 +93,6 @@ export const group = new Command("group");
 
 group.addCommand(group_bootstrap);
 group.addCommand(group_clear);
-group.addCommand(group_install);
 group.addCommand(group_link);
 group.addCommand(group_lint);
 group.addCommand(group_lint_fix);

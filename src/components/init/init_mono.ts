@@ -43,7 +43,6 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
     {
       bootstrap: "rearguard group bootstrap",
       clear: "rearguard group clear",
-      install: "rearguard group install",
       link: "rearguard group link",
       lint: "rearguard group lint",
       ["lint-fix"]: "rearguard group lint-fix",

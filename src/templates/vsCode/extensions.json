@@ -14,9 +14,9 @@
     "pnp.polacode",
     "esbenp.prettier-vscode",
     "ms-vscode-remote.vscode-remote-extensionpack",
-    "chakrounanas.turbo-console-log",
     "vscode-icons-team.vscode-icons",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "christian-kohler.npm-intellisense"
   ],
   "unwantedRecommendations": [
     "felipecaputo.git-project-manager",
