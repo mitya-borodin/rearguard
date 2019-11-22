@@ -110,7 +110,7 @@ The rearguard as a caring parent :-)
 - rearguard group bootstrap [ --only_dev | --debug ]
 - rearguard group clear
 - rearguard group link
-- rearguard group start [ --release | --debug | --ts_node_dev ] **no yet implemented**
+- rearguard group start [ --release | --debug | --ts_node_dev ]
 - rearguard group build [ --only_dev | --debug ]
 - rearguard group lint
 - rearguard group lint-fix

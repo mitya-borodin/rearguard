@@ -13,6 +13,7 @@ import { group_validate_component } from "../../../components/group/group_valida
 import { group_validate_prettiness_component } from "../../../components/group/group_validate_prettiness_component";
 import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
+import { group_start_component } from "../../../components/group/group_start_component";
 
 const group_bootstrap = new Command(
   "bootstrap",
@@ -40,6 +41,21 @@ group_build.addFlag("--debug");
 const group_clear = new Command("clear", group_clear_component);
 
 const group_link = new Command("link", group_link_component);
+
+const group_start = new Command(
+  "start",
+  async (flags: Flags = { release: false, debug: false, ts_node_dev: false }): Promise<void> => {
+    await group_start_component({
+      release: flags.release,
+      debug: flags.debug,
+      ts_node_dev: flags.ts_node_dev,
+    });
+  },
+);
+
+group_start.addFlag("--release");
+group_start.addFlag("--debug");
+group_start.addFlag("--ts_node_dev");
 
 const group_lint_fix = new Command("lint-fix", group_lint_fix_component);
 
@@ -94,6 +110,7 @@ export const group = new Command("group");
 group.addCommand(group_bootstrap);
 group.addCommand(group_clear);
 group.addCommand(group_link);
+group.addCommand(group_start);
 group.addCommand(group_lint);
 group.addCommand(group_lint_fix);
 group.addCommand(group_typecheck);
