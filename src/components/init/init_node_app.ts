@@ -23,6 +23,9 @@ export async function init_node_app(flags: { force: boolean }): Promise<void> {
   // ! Set type of project
   await rearguardConfig.setType("app");
 
+  // ! Set path to bin file
+  await rearguardConfig.setBin("./bin/index.ts");
+
   // ! Set buildAssets/Dockerfile
   await backEndDockerfileTemplate.render(flags);
 

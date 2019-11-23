@@ -16,7 +16,12 @@
     "ms-vscode-remote.vscode-remote-extensionpack",
     "vscode-icons-team.vscode-icons",
     "redhat.vscode-yaml",
-    "christian-kohler.npm-intellisense"
+    "christian-kohler.npm-intellisense",
+    "clinyong.vscode-css-modules",
+    "andrewleedham.vscode-css-modules",
+    "rexebin.dracula",
+    "humao.rest-client",
+    "fabianlauer.vs-code-xml-format"
   ],
   "unwantedRecommendations": [
     "felipecaputo.git-project-manager",

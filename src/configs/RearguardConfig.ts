@@ -150,6 +150,10 @@ export class RearguardConfig extends PackageJSONConfig {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { type } })));
   }
 
+  public async setBin(bin: string): Promise<void> {
+    await this.setRearguard(new Rearguard(merge(this.getRearguard(), { bin })));
+  }
+
   public async setComponents(components: string[]): Promise<void> {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { components } })));
   }
