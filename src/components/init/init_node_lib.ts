@@ -2,9 +2,12 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { commonPreset } from "../procedures/commonPreset";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { initPackage } from "../procedures/initPackage";
 
 export async function init_node_lib(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
+
+  await initPackage(CWD);
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);

@@ -1,14 +1,17 @@
-import { commonPreset } from "../procedures/commonPreset";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import {
   backEndDockerfileTemplate,
   dockerComposeExampleTemplate,
   dockerIgnoreTemplate,
 } from "../../templates/docker";
-import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
+import { commonPreset } from "../procedures/commonPreset";
+import { initPackage } from "../procedures/initPackage";
 
 export async function init_node_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
+
+  await initPackage(CWD);
 
   // * Create rearguard config;
   const rearguardConfig = new RearguardConfig(CWD);

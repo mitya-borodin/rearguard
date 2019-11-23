@@ -5,9 +5,12 @@ import { DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { createEntryPoints } from "../procedures/createEntryPoints";
+import { initPackage } from "../procedures/initPackage";
 
 export async function init_browser_dll(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
+
+  await initPackage(CWD);
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);

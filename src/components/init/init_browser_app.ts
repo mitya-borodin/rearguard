@@ -10,9 +10,12 @@ import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { getPublicDirPath } from "../../helpers/bundleNaming";
 import { indexHtmlTemplate, copyPublicAssets } from "../../templates/indexHtml";
+import { initPackage } from "../procedures/initPackage";
 
 export async function init_browser_app(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
+
+  await initPackage(CWD);
 
   // * Create rearguard config
   const rearguardConfig = new RearguardConfig(CWD);

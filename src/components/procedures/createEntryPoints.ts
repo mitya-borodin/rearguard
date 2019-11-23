@@ -4,7 +4,6 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { mkdir } from "../../helpers/mkdir";
 import { BIN_DIR_NAME, BIN_FILE_NAME } from "../../const";
 
-// TODO Add logging;
 export const createEntryPoints = async (CWD: string): Promise<void> => {
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
@@ -32,15 +31,15 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
 
   if (fs.existsSync(contextPath)) {
     if (!isDll && (isBrowser || isIsomorphic) && !fs.existsSync(entryPath)) {
-      fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");`);
+      fs.writeFileSync(entryPath, `console.log("Entry point for launch in browser");\r`);
     }
 
     if (!isDll && isLib && !fs.existsSync(libEntryPath)) {
-      fs.writeFileSync(libEntryPath, `// Entry point for export library API`);
+      fs.writeFileSync(libEntryPath, `// Entry point for export library API\r`);
     }
 
     if ((isDll || isBrowser || isIsomorphic) && !fs.existsSync(dllEntryPath)) {
-      fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library`);
+      fs.writeFileSync(dllEntryPath, `// Entry point for collect vendors deps into dll library\r`);
     }
   }
 
@@ -54,7 +53,7 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
 
     if (!fs.existsSync(binFilePath)) {
       // ! Create bin file;
-      fs.writeFileSync(binFilePath, `console.log("Entry point for back end implementation.");`);
+      fs.writeFileSync(binFilePath, `console.log("Entry point for back end implementation.");\r`);
     }
   }
 };
