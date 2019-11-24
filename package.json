@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "5.1.8",
+  "version": "5.1.9",
   "description": "Tools for development browser (dll, lib, app), node (lib, app), isomorphic (lib, app).",
   "engines": {
     "node": ">=10 <13",
@@ -150,6 +150,26 @@
     "pretty-quick": "^2.0.0",
     "ts-jest": "^24.1.0"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "webpack",
+    "typescript",
+    "node",
+    "build",
+    "library",
+    "browser",
+    "mono",
+    "repository",
+    "postcss",
+    "eslint",
+    "css-loader",
+    "isomorphic",
+    "style-loader",
+    "build",
+    "scss",
+    "build-tool",
+    "javascript",
+    "jest"
+  ],
   "license": "MIT"
 }
