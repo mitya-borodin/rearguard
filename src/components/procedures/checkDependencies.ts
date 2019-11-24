@@ -23,6 +23,7 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
 
   if (isBrowser || isIsomorphic) {
     targetDevDepKeys.push("eslint-plugin-react");
+    targetDevDepKeys.push("normalize.css");
   }
 
   // * Prepare data;
