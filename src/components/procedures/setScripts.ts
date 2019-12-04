@@ -24,8 +24,6 @@ export const setScripts = async (CWD: string): Promise<void> => {
     ...startScripts,
     build: "rearguard build",
     test: "rearguard test",
-    sync: "rearguard sync",
-    check_deps_on_npm: "rearguard check_deps_on_npm",
     lint: `rearguard lint`,
     "lint-fix": `rearguard lint --fix`,
     typecheck: "tsc --noEmit",
