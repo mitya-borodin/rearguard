@@ -1,4 +1,4 @@
-import { getErrorMessage } from "@borodindmitriy/utils";
+import { getErrorMessage } from "@rtcts/utils";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import * as path from "path";

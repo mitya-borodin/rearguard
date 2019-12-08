@@ -1,4 +1,4 @@
-import { getErrorMessage, isString, isUndefined } from "@borodindmitriy/utils";
+import { getErrorMessage, isString, isUndefined } from "@rtcts/utils";
 import chalk from "chalk";
 import * as copy from "copy";
 import * as del from "del";

@@ -1,4 +1,4 @@
-import { isString } from "@borodindmitriy/utils";
+import { isString } from "@rtcts/utils";
 import { Executor } from "./Executor";
 import { Flags } from "./Flags";
 

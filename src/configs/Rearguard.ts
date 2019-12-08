@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isObject, isString } from "@rtcts/utils";
 
 export class Rearguard {
   public bin: string;

@@ -1,4 +1,4 @@
-import { isObject } from "@borodindmitriy/utils";
+import { isObject } from "@rtcts/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { isArray } from "@borodindmitriy/utils";
+import { isArray } from "@rtcts/utils";
 import fs from "fs";
 import path from "path";
 import webpack from "webpack";

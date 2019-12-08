@@ -12,7 +12,7 @@ import {
   getPublicDirPath,
 } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
-import { isString } from "@borodindmitriy/utils";
+import { isString } from "@rtcts/utils";
 
 class ComputeDataForHWP {
   private CWD: string;

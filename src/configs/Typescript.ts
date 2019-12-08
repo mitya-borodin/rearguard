@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isString } from "@rtcts/utils";
 import { merge } from "lodash";
 
 interface CompilerOptions {

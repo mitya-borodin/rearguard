@@ -1,4 +1,4 @@
-import { getErrorMessage, isObject, isString } from "@borodindmitriy/utils";
+import { getErrorMessage, isObject, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { ChildProcess, exec, ExecException } from "child_process";
 import { execSync } from "child_process";

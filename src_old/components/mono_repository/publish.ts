@@ -1,4 +1,4 @@
-import { isString } from "@borodindmitriy/utils";
+import { isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import * as spawn from "cross-spawn";

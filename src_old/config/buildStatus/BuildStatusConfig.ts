@@ -1,4 +1,4 @@
-import { isDate, isString } from "@borodindmitriy/utils";
+import { isDate, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { Moment } from "moment";
 import * as moment from "moment";

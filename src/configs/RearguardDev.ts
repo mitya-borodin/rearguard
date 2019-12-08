@@ -1,4 +1,4 @@
-import { isBoolean, isNumber, isObject, isString } from "@borodindmitriy/utils";
+import { isBoolean, isNumber, isObject, isString } from "@rtcts/utils";
 import moment from "moment";
 import { Moment, isMoment } from "moment";
 

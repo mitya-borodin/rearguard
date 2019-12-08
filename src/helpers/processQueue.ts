@@ -1,5 +1,5 @@
-import { EventEmitter } from "@borodindmitriy/isomorphic";
-import { isArray, isString } from "@borodindmitriy/utils";
+import EventEmitter from "eventemitter3";
+import { isArray, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { watch } from "chokidar";
 import fs from "fs";

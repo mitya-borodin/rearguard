@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { snakeCase } from "lodash";
 import * as path from "path";

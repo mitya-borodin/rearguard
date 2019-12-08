@@ -1,4 +1,4 @@
-import { isObject, isString } from "@borodindmitriy/utils";
+import { isObject, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { IPkgInfo } from "../../interfaces/config/IPkgInfo";
 import { VersionableConfig } from "../VersionableConfig";

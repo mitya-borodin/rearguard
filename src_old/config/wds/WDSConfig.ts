@@ -1,4 +1,4 @@
-import { isNumber, isObject, isString } from "@borodindmitriy/utils";
+import { isNumber, isObject, isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { IWDSConfig } from "../../interfaces/config/IWDSConfig";
 import { NonVersionableConfig } from "../NonVersionableConfig";

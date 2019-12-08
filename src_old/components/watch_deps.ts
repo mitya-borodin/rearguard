@@ -1,4 +1,4 @@
-import { EventEmitter } from "@borodindmitriy/isomorphic";
+import { EventEmitter } from "@rtcts/isomorphic";
 import chalk from "chalk";
 import * as chokidar from "chokidar";
 import { existsSync } from "fs";

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { isArray, isBoolean, isObject, isString } from "@borodindmitriy/utils";
+import { isArray, isBoolean, isObject, isString } from "@rtcts/utils";
 import {
   Author,
   BinMap,

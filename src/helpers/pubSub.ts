@@ -1,4 +1,4 @@
-import { EventEmitter } from "@borodindmitriy/isomorphic";
+import EventEmitter from "eventemitter3";
 
 export enum events {
   SYNCED = "SYNCED",

@@ -1,4 +1,4 @@
-import { isString } from "@borodindmitriy/utils";
+import { isString } from "@rtcts/utils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as path from "path";
