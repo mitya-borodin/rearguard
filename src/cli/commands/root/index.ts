@@ -6,6 +6,7 @@ import { lint } from "../lint";
 import { start } from "../start";
 import { test } from "../test";
 import { refresh_command } from "../refresh";
+import { sync } from "../sync";
 
 // Root command
 export const rearguard = new Command("rearguard");
@@ -25,6 +26,9 @@ rearguard.addCommand(test);
 
 // Validating mode
 rearguard.addCommand(lint);
+
+// Service
+rearguard.addCommand(sync);
 
 // Group service
 rearguard.addCommand(group);
