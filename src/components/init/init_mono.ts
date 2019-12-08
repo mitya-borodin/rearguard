@@ -55,7 +55,7 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
       test: "rearguard group test",
       publish: "rearguard group publish",
       refresh: "rearguard group refresh",
-      postinstall: "npx typesync",
+      sync: "rearguard group sync",
     },
     true,
   );

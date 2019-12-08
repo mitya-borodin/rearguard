@@ -18,18 +18,27 @@ export async function sync_component(): Promise<void> {
   const CWD: string = process.cwd();
   const rearguardConfig = new RearguardConfig(CWD);
   const name = rearguardConfig.getName();
+  const isDll = rearguardConfig.isDll();
+  const isNode = rearguardConfig.isNode();
   const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
   await processQueue.getInQueue(name);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
-  await buildUnfinishedDependencies(CWD);
-  await buildOutdatedDependency(CWD);
-  await deleteExternalBundles(CWD, true);
-  await copyGlobalLinkedModules(CWD);
-  await copyBundlesToProject(CWD);
-  await createListOfLoadOnDemand(CWD, false);
+  if (!isDll && !isNode) {
+    await buildUnfinishedDependencies(CWD);
+    await buildOutdatedDependency(CWD);
+    await deleteExternalBundles(CWD, true);
+    await copyGlobalLinkedModules(CWD);
+    await copyBundlesToProject(CWD);
+    await createListOfLoadOnDemand(CWD, false);
+  }
+
+  if (isNode) {
+    await buildUnfinishedDependencies(CWD);
+    await copyGlobalLinkedModules(CWD);
+  }
 
   await rearguardLocalConfig.setBuildStatus("done");
 
