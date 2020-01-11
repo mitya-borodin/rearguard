@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { DLL_BUNDLE_DIR_NAME } from "../../const";
 import {
   getDLLAssetsPath,
   getDLLManifestPath,
@@ -12,6 +11,7 @@ import {
 import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { BundleIntrospection } from "../../interfaces/BundleIntrospection";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
+import { hasVendorImports } from "./hasVendorImports";
 
 export const getBundleIntrospections = async (
   CWD: string,
@@ -30,7 +30,9 @@ export const getBundleIntrospections = async (
     const isLib = rearguardConfig.isLib();
     const isIsomorphic = rearguardConfig.isIsomorphic();
 
-    const hasDll = fs.existsSync(path.resolve(dependencyCWD, DLL_BUNDLE_DIR_NAME));
+    const dllManifestPath = getDLLManifestPath(CWD, pkgSnakeName, isDevelopment);
+
+    const hasDll = fs.existsSync(dllManifestPath) && (await hasVendorImports(dependencyCWD));
     const hasBrowserLib = (isBrowser && isLib) || isIsomorphic;
 
     bundleIntrospections.push({
@@ -47,7 +49,7 @@ export const getBundleIntrospections = async (
         dll: hasDll ? getDLLAssetsPath(CWD, pkgSnakeName, isDevelopment) : "",
         lib: hasBrowserLib ? getLIBAssetsPath(CWD, pkgSnakeName, isDevelopment) : "",
       },
-      dllManifestPath: hasDll ? getDLLManifestPath(CWD, pkgSnakeName, isDevelopment) : "",
+      dllManifestPath: hasDll ? dllManifestPath : "",
     });
   }
 

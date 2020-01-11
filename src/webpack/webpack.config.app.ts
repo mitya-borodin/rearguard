@@ -23,5 +23,6 @@ export const getAppWebpackConfig = async (
       ...getHtmlWebpackPlugin(CWD, isDevelopment),
     ],
     isDebug,
+    false,
   );
 };

@@ -1,7 +1,8 @@
+import { isString } from "@rtcts/utils";
 import chalk from "chalk";
 import fs from "fs";
-import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "path";
 import webpack from "webpack";
 import { getBundleIntrospections } from "../../../components/procedures/getBundleIntrospection";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
@@ -12,7 +13,6 @@ import {
   getPublicDirPath,
 } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
-import { isString } from "@rtcts/utils";
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -104,6 +104,8 @@ class ComputeDataForHWP {
             console.log(chalk.green(`[ JS ][ ${js} ]`));
           }
           console.log("");
+
+          // console.log(JSON.stringify(data, null, 2));
 
           // Tell webpack to move on
           callback(null, data);

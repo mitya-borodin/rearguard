@@ -19,5 +19,9 @@ export const getDLLWebpackConfig = async (
     [getDllPlugin(CWD, isDevelopment), getAssetsWebpackPlugin(CWD, isDevelopment, false)],
     isDebug,
     needUpdateBuildTime,
+    false,
+    [],
+    {},
+    true,
   );
 };

@@ -8,12 +8,12 @@ import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
-import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
 import { getMiniCssExtractPlugin } from "./components/plugins/getMiniCssExtractPlugin";
 import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
+import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -26,6 +26,7 @@ export const getGeneralWebpackConfig = async (
   isProfile = false,
   rules: webpack.Rule[] = [],
   externals: webpack.ExternalsObjectElement = {},
+  isDll = false,
 ): Promise<webpack.Configuration> => {
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
@@ -151,7 +152,7 @@ export const getGeneralWebpackConfig = async (
         ...getTerserWebpackPlugin(isDevelopment),
         ...getOptimizeCSSAssetsPlugin(isDevelopment, isDebug),
       ],
-      ...getChunkOptimization(CWD),
+      ...(isDll ? [] : getChunkOptimization(CWD)),
     },
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.

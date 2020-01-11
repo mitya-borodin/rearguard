@@ -24,6 +24,7 @@ export const getDllReferencePlugin = async (
   isDevelopment: boolean,
 ): Promise<webpack.Plugin[]> => {
   const rearguardConfig = new RearguardConfig(CWD);
+  const pkgSnakeName = rearguardConfig.getSnakeName();
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
 
   const bundleIntrospection: BundleIntrospection[] = await getBundleIntrospections(
@@ -56,6 +57,18 @@ export const getDllReferencePlugin = async (
         process.exit(1);
       }
     }
+  }
+
+  const dllManifestPathForCurrentProject = getDLLManifestPath(CWD, pkgSnakeName, isDevelopment);
+
+  if (fs.existsSync(dllManifestPathForCurrentProject)) {
+    result.push(
+      new webpack.DllReferencePlugin({
+        context: contextPath,
+        manifest: dllManifestPathForCurrentProject,
+        name: getDLLRuntimeName(pkgSnakeName),
+      }),
+    );
   }
 
   return result;

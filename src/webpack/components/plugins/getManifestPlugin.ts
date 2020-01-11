@@ -23,7 +23,9 @@ export const getManifestPlugin = (CWD: string, output: webpack.Output): webpack.
             manifest[file.name] = file.path;
             return manifest;
           }, seed);
-          const entrypointFiles = entrypoints.main.filter((fileName) => !fileName.endsWith(".map"));
+
+          const key = Object.keys(entrypoints)[0];
+          const entrypointFiles = entrypoints[key].filter((fileName) => !fileName.endsWith(".map"));
 
           return {
             files: manifestFiles,

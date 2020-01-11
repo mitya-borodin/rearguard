@@ -5,6 +5,7 @@ import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildBrowserApp } from "../procedures/build/buildBrowserApp";
+import { buildDllBundles } from "../procedures/build/buildDllBundles";
 import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicToDist";
@@ -33,6 +34,8 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
   await createListOfLoadOnDemand(CWD, false);
+
+  await buildDllBundles(CWD, options);
 
   await buildBrowserApp(CWD, options);
 
