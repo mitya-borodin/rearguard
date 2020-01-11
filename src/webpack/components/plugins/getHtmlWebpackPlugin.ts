@@ -137,7 +137,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
   }
 
   if (isDevelopment) {
-    PUBLIC_URL = "/";
+    PUBLIC_URL = "";
   }
 
   return [
