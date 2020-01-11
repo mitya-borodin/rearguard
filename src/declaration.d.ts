@@ -6,3 +6,4 @@ declare module "html-webpack-plugin";
 declare module "find-process";
 declare module "postcss-normalize";
 declare module "postcss-safe-parser";
+declare module "fork-ts-checker-webpack-plugin";

@@ -13,7 +13,7 @@ export const getAppOutput = (CWD: string, isDevelopment: boolean): webpack.Outpu
   const rearguardConfig = new RearguardConfig(CWD);
   const { path, publicPath } = rearguardConfig.getOutput();
 
-  return { path: resolve(CWD, path), publicPath: isDevelopment ? "" : publicPath };
+  return { path: resolve(CWD, path), publicPath: isDevelopment ? "/" : publicPath };
 };
 
 export const getLibOutput = (CWD: string, isDevelopment: boolean): webpack.Output => {
@@ -23,7 +23,7 @@ export const getLibOutput = (CWD: string, isDevelopment: boolean): webpack.Outpu
 
   return {
     path: getLIBBundleOutputPath(CWD, snakeName, isDevelopment),
-    publicPath: normalize(`${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
+    publicPath: normalize(`/${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
     library: getLIBRuntimeName(snakeName),
     libraryTarget: "var",
   };
@@ -36,7 +36,7 @@ export const getDllOutput = (CWD: string, isDevelopment: boolean): webpack.Outpu
 
   return {
     path: getDLLBundleOutputPath(CWD, snakeName, isDevelopment),
-    publicPath: normalize(`${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
+    publicPath: normalize(`/${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
     library: getDLLRuntimeName(snakeName),
     libraryTarget: "var",
   };
