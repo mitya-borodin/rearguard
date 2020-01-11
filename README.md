@@ -1,11 +1,45 @@
 # Rearguard
 
-- [What is it rearguard ?](#whatIsIt)
-- [Technology](#tech)
-- [CLI](#cli)
-- [Install](#install)
-- [Examples](#examples)
-- [Documentation / Документация](#docs)
+- [Rearguard](#rearguard)
+  - [Getting Started](#getting-started)
+  - [What is it rearguard](#what-is-it-rearguard)
+  - [Technology](#technology)
+  - [CLI](#cli)
+    - [Project Initialization / Refresh](#project-initialization--refresh)
+    - [Develop mode](#develop-mode)
+    - [Build mode](#build-mode)
+    - [Testing mode](#testing-mode)
+    - [Validating](#validating)
+    - [Group service](#group-service)
+  - [Install](#install)
+  - [Examples](#examples)
+  - [Documentation / Документация](#documentation--%d0%94%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d0%b0%d1%86%d0%b8%d1%8f)
+
+<a name="gettingStarted"></a>
+
+## Getting Started
+
+```sh
+  npm i -g rearguard
+  mkdir my-new-app
+  cd my-new-app
+  rearguard init browser app
+  npm start
+```
+
+- You will get a ready-made project for developing a browser application with an `index.tsx` entry point.
+- Then you can add your code to the index.tsx.
+- After you install the dependencies, you can list them in vendors.ts, this will allow rearguard to create a dll bundle.
+
+```typescript
+import "react";
+import "react-dom";
+import "mobx";
+```
+
+For create DLL bundle you should run `npm run build`, after that you will have DLL bundle and you can run `npm start`.
+
+- The dll bundle is necessary in order to exclude rarely changing pieces of code from the Assembly process, thus saving time
 
 <a name="whatIsIt"></a>
 

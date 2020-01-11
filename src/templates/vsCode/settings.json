@@ -27,16 +27,12 @@
   "typescript.updateImportsOnFileMove.enabled": "never",
 
   "eslint.alwaysShowStatus": true,
-  "eslint.autoFixOnSave": true,
   "eslint.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
-  ],
   "eslint.packageManager": "npm",
   "eslint.workingDirectories": ["."],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
 
   "cSpell.words": ["rtcts"],
   "cSpell.language": "en,ru",
