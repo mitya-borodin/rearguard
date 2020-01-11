@@ -71,5 +71,12 @@ export const getDllReferencePlugin = async (
     );
   }
 
+  console.log(
+    1111,
+    result,
+    dllManifestPathForCurrentProject,
+    fs.existsSync(dllManifestPathForCurrentProject),
+  );
+
   return result;
 };

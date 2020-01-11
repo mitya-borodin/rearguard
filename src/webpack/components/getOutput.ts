@@ -9,11 +9,11 @@ import {
   getBundleSubDir,
 } from "../../helpers/bundleNaming";
 
-export const getAppOutput = (CWD: string): webpack.Output => {
+export const getAppOutput = (CWD: string, isDevelopment: boolean): webpack.Output => {
   const rearguardConfig = new RearguardConfig(CWD);
   const { path, publicPath } = rearguardConfig.getOutput();
 
-  return { path: resolve(CWD, path), publicPath };
+  return { path: resolve(CWD, path), publicPath: isDevelopment ? "" : publicPath };
 };
 
 export const getLibOutput = (CWD: string, isDevelopment: boolean): webpack.Output => {

@@ -24,8 +24,17 @@ export const getManifestPlugin = (CWD: string, output: webpack.Output): webpack.
             return manifest;
           }, seed);
 
-          const key = Object.keys(entrypoints)[0];
-          const entrypointFiles = entrypoints[key].filter((fileName) => !fileName.endsWith(".map"));
+          const entrypointFiles: string[] = [];
+
+          for (const key in entrypoints) {
+            if (entrypoints.hasOwnProperty(key)) {
+              entrypoints[key]
+                .filter((fileName) => !fileName.endsWith(".map"))
+                .forEach((fileName) => {
+                  entrypointFiles.push(fileName);
+                });
+            }
+          }
 
           return {
             files: manifestFiles,

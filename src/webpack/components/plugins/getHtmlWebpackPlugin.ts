@@ -1,19 +1,20 @@
-import { isString } from "@rtcts/utils";
-import chalk from "chalk";
+import fs from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
-import fs from "fs";
 import webpack from "webpack";
 import { getBundleIntrospections } from "../../../components/procedures/getBundleIntrospection";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import {
   getDLLAssetsPath,
+  getPublicDirPath,
   getDLLRuntimeName,
   getLIBRuntimeName,
-  getPublicDirPath,
 } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
+import { InlineChunkHtmlPlugin } from "./InlineChunkHtmlPlugin";
 import { InterpolateHtmlPlugin } from "./InterpolateHtmlPlugin";
+import { isString } from "@rtcts/utils";
+import chalk from "chalk";
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -98,12 +99,17 @@ class ComputeDataForHWP {
           console.log("");
           console.log("");
           console.log(chalk.bold.green("[ HtmlWebpackPlugin ][ BUILD ][ index.html ]"));
+          console.log("");
+
           for (const css of data.assets.css) {
             console.log(chalk.green(`[ CSS ][ ${css} ]`));
           }
           for (const js of data.assets.js) {
             console.log(chalk.green(`[ JS ][ ${js} ]`));
           }
+
+          console.log("");
+
           // Tell webpack to move on
           callback(null, data);
         },
@@ -124,6 +130,16 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
     template = path.resolve(__dirname, "../../../templates/indexHtml", "index.html");
   }
 
+  let PUBLIC_URL: string = path.normalize(publicPath);
+
+  if (PUBLIC_URL[PUBLIC_URL.length - 1] === "/") {
+    PUBLIC_URL = PUBLIC_URL.slice(0, -1);
+  }
+
+  if (isDevelopment) {
+    PUBLIC_URL = "/";
+  }
+
   return [
     new HtmlWebpackPlugin(
       Object.assign(
@@ -132,6 +148,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
           inject: true,
           template,
         },
+        {},
         !isDevelopment
           ? {
               minify: {
@@ -151,10 +168,16 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
       ),
     ),
     new ComputeDataForHWP(CWD, isDevelopment),
+
+    // Inlines the webpack runtime script. This script is too small to warrant
+    // a network request.
+    // https://github.com/facebook/create-react-app/issues/5358
+    ...(isDevelopment ? [] : [new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/])]),
+
     // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
-      PUBLIC_URL: publicPath,
+      PUBLIC_URL,
       // You can pass any key-value pairs, this was just an example.
       // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
     }),

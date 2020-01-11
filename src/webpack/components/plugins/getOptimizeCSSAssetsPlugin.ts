@@ -25,6 +25,9 @@ export const getOptimizeCSSAssetsPlugin = (
               }
             : false,
         },
+        cssProcessorPluginOptions: {
+          preset: ["default", { minifyFontValues: { removeQuotes: false } }],
+        },
       }),
     ];
   }

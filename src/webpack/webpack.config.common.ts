@@ -4,7 +4,6 @@ import path from "path";
 import webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
-import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
@@ -13,6 +12,7 @@ import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSA
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
+import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
 
 export const getGeneralWebpackConfig = async (
@@ -43,10 +43,55 @@ export const getGeneralWebpackConfig = async (
   const rawFileRegExp = /\.(text|csv)(\?.*)?$/;
 
   return {
+    mode: isDevelopment ? "development" : "production",
+    bail: !isDevelopment,
+    devtool: isDebug ? "source-map" : false,
     context: contextPath,
     entry,
     externals: { ...(await getExternals(CWD, isDevelopment)), ...externals },
-    mode: /* isDevelopment ? "development" : "production" */ "none",
+    output: {
+      pathinfo: isDevelopment,
+
+      filename: "[name].[hash:8].js",
+      chunkFilename: "[name].[hash:8].chunk.js",
+
+      // this defaults to 'window', but by setting it to 'this' then
+      // module chunks which are built will work in web workers as well.
+      globalObject: "this",
+
+      // Prevents conflicts when multiple Webpack runtimes (from different apps)
+      // are used on the same page.
+      jsonpFunction: `webpackJsonp_rearguard_${rearguardConfig.getSnakeName()}`,
+
+      // TODO: remove this when upgrading to webpack 5
+      futureEmitAssets: true,
+      ...output,
+    },
+    optimization: {
+      minimize: !isDevelopment,
+      minimizer: [
+        ...getTerserWebpackPlugin(isDevelopment),
+        ...getOptimizeCSSAssetsPlugin(isDevelopment, isDebug),
+      ],
+      ...(isDll ? [] : getChunkOptimization(CWD)),
+    },
+    resolve: {
+      modules,
+      extensions: [".ts", ".tsx", ".css", ".scss", ".sass", ".js", ".jsx", ".json"],
+      alias: {
+        ...(isProfile
+          ? {
+              "react-dom$": "react-dom/profiling",
+              "scheduler/tracing": "scheduler/tracing-profiling",
+            }
+          : {}),
+      },
+    },
+    resolveLoader: {
+      modules,
+      extensions: [".js", ".json"],
+      mainFields: ["loader", "main"],
+    },
     module: {
       strictExportPresence: true,
       rules: [
@@ -87,73 +132,27 @@ export const getGeneralWebpackConfig = async (
         },
       ],
     },
-    output: {
-      filename: "[name].js?[hash:8]",
-      chunkFilename: "[name].chunk.js?[hash:8]",
-      // this defaults to 'window', but by setting it to 'this' then
-      // module chunks which are built will work in web workers as well.
-      globalObject: "this",
-      // Prevents conflicts when multiple Webpack runtimes (from different apps)
-      // are used on the same page.
-      jsonpFunction: `webpackJsonp_rearguard_${rearguardConfig.getSnakeName()}`,
-      pathinfo: isDevelopment,
-      // TODO: remove this when upgrading to webpack 5
-      futureEmitAssets: true,
-      ...output,
-    },
-
-    resolve: {
-      extensions: [".ts", ".tsx", ".css", ".scss", ".sass", ".js", ".json"],
-      modules,
-      alias: {
-        ...(isProfile
-          ? {
-              "react-dom$": "react-dom/profiling",
-              "scheduler/tracing": "scheduler/tracing-profiling",
-            }
-          : {}),
-      },
-    },
-    resolveLoader: {
-      extensions: [".js", ".json"],
-      mainFields: ["loader", "main"],
-      modules,
-    },
     plugins: [
-      new webpack.WatchIgnorePlugin([/node_modules/]),
-      new webpack.ProgressPlugin(),
       new CaseSensitivePathsPlugin(),
-      new CleanWebpackPlugin(),
-      ...plugins,
-      ...getMiniCssExtractPlugin(CWD, isDevelopment),
-      ...getManifestPlugin(CWD, output),
-      new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
+      new webpack.ProgressPlugin(),
+      new webpack.WatchIgnorePlugin([/node_modules/]),
+
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
       // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
       // You can remove this if you don't use Moment.js:
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+      ...getMiniCssExtractPlugin(CWD, isDevelopment),
+      ...getManifestPlugin(CWD, output),
+
+      ...plugins,
+
+      new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
+      new CleanWebpackPlugin(),
       ...(await getWebpackBundleAnalyzerPlugin(CWD, isDebug)),
     ],
-    bail: !isDevelopment,
-    cache: true,
-    devtool: isDebug ? "source-map" : false,
-    optimization: {
-      concatenateModules: false,
-      flagIncludedChunks: false,
-      occurrenceOrder: false,
-      namedModules: isDevelopment,
-      namedChunks: isDevelopment,
-      nodeEnv: isDevelopment ? "development" : "production",
-      minimize: !isDevelopment,
-      noEmitOnErrors: !isDevelopment,
-      minimizer: [
-        ...getTerserWebpackPlugin(isDevelopment),
-        ...getOptimizeCSSAssetsPlugin(isDevelopment, isDebug),
-      ],
-      ...(isDll ? [] : getChunkOptimization(CWD)),
-    },
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
@@ -167,7 +166,6 @@ export const getGeneralWebpackConfig = async (
       child_process: "empty",
     },
     profile: true,
-    recordsPath: path.resolve(CWD, "node_modules/.cache/webpack/[confighash]/records.json"),
   };
 };
 

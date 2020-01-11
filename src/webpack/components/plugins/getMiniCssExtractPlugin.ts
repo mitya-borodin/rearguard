@@ -11,8 +11,8 @@ export const getMiniCssExtractPlugin = (CWD: string, isDevelopment: boolean): we
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: "[name].css?[hash:8]",
-        chunkFilename: "[name].chunk.css?[hash:8]",
+        filename: "[name].[hash:8].css",
+        chunkFilename: "[name].[hash:8].chunk.css",
       }),
     ];
   }
