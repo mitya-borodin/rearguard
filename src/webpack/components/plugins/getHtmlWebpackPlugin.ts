@@ -1,8 +1,8 @@
 import { isString } from "@rtcts/utils";
 import chalk from "chalk";
-import fs from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
+import fs from "fs";
 import webpack from "webpack";
 import { getBundleIntrospections } from "../../../components/procedures/getBundleIntrospection";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
@@ -13,6 +13,7 @@ import {
   getPublicDirPath,
 } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
+import { InterpolateHtmlPlugin } from "./InterpolateHtmlPlugin";
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -103,10 +104,6 @@ class ComputeDataForHWP {
           for (const js of data.assets.js) {
             console.log(chalk.green(`[ JS ][ ${js} ]`));
           }
-          console.log("");
-
-          // console.log(JSON.stringify(data, null, 2));
-
           // Tell webpack to move on
           callback(null, data);
         },
@@ -119,6 +116,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
   const rearguardConfig = new RearguardConfig(CWD);
   const isBrowser = rearguardConfig.isBrowser();
   const isApp = rearguardConfig.isApp();
+  const { publicPath } = rearguardConfig.getOutput();
 
   let template = path.resolve(CWD, getPublicDirPath(CWD), "index.html");
 
@@ -127,12 +125,38 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
   }
 
   return [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      inject: false,
-      template,
-      meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
-    }),
+    new HtmlWebpackPlugin(
+      Object.assign(
+        {},
+        {
+          inject: true,
+          template,
+        },
+        !isDevelopment
+          ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+          : undefined,
+      ),
+    ),
     new ComputeDataForHWP(CWD, isDevelopment),
+    // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
+    // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
+      PUBLIC_URL: publicPath,
+      // You can pass any key-value pairs, this was just an example.
+      // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
+    }),
   ];
 };
