@@ -4,16 +4,16 @@ import path from "path";
 import webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
+import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
 import { getExternals } from "./components/getExternals";
 import { getTypescriptLoader } from "./components/getTypescriptLoader";
+import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
 import { getMiniCssExtractPlugin } from "./components/plugins/getMiniCssExtractPlugin";
 import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSAssetsPlugin";
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
-import { getChunkOptimization } from "./components/getChunkOptimization";
-import { getManifestPlugin } from "./components/plugins/getManifestPlugin";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -133,6 +133,9 @@ export const getGeneralWebpackConfig = async (
       ],
     },
     plugins: [
+      // ! CleanWebpackPlugin should be before other plugins
+      new CleanWebpackPlugin({ verbose: true }),
+
       new CaseSensitivePathsPlugin(),
       new webpack.ProgressPlugin(),
       new webpack.WatchIgnorePlugin([/node_modules/]),
@@ -150,7 +153,6 @@ export const getGeneralWebpackConfig = async (
       ...plugins,
 
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
-      new CleanWebpackPlugin(),
       ...(await getWebpackBundleAnalyzerPlugin(CWD, isDebug)),
     ],
     // Some libraries import Node modules but don't use them in the browser.
