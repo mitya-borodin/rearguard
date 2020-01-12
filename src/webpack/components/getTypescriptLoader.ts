@@ -1,7 +1,10 @@
 import path from "path";
+import resolve from "resolve";
 import webpack from "webpack";
+import PnpWebpackPlugin from "pnp-webpack-plugin";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { TS_CONFIG_FILE_NAME } from "../../const";
+import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 
 export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
   const rearguardConfig = new RearguardConfig(CWD);
@@ -10,16 +13,19 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
 
   // * Prepare settings
   const include = [contextPath];
-  const test = /\.(ts|tsx)?$/;
+  const test = /\.(ts|tsx|js|jsx)?$/;
 
   return [
     {
       enforce: "pre",
-      test: /\.(ts|tsx)$/,
+      test,
       exclude: /node_modules/,
       include,
       loader: "eslint-loader",
       options: {
+        eslintPath: resolve.sync("eslint", {
+          basedir: getLocalNodeModulePath(CWD),
+        }),
         cache: true,
         formatter: "stylish",
         failOnError: true,
@@ -33,11 +39,11 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
       use: [
         {
           loader: "ts-loader",
-          options: {
+          options: PnpWebpackPlugin.tsLoaderOptions({
             configFile: configFilePath,
             context: CWD,
             experimentalFileCaching: false,
-          },
+          }),
         },
       ],
     },

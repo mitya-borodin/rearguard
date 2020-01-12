@@ -1,8 +1,12 @@
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import PnpWebpackPlugin from "pnp-webpack-plugin";
 import path from "path";
+import resolve from "resolve";
 import webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
+import { TS_CONFIG_FILE_NAME } from "../const";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
 import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
@@ -30,6 +34,8 @@ export const getGeneralWebpackConfig = async (
 ): Promise<webpack.Configuration> => {
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
+  const tsconfigFilePath = path.resolve(CWD, TS_CONFIG_FILE_NAME);
+
   const modules = [
     // ! First of all, modules from the current project are connected
     ...rearguardConfig.getModules(),
@@ -86,11 +92,13 @@ export const getGeneralWebpackConfig = async (
             }
           : {}),
       },
+      plugins: [PnpWebpackPlugin],
     },
     resolveLoader: {
       modules,
       extensions: [".js", ".json"],
       mainFields: ["loader", "main"],
+      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     module: {
       strictExportPresence: true,
@@ -151,6 +159,26 @@ export const getGeneralWebpackConfig = async (
       ...getManifestPlugin(CWD, output),
 
       ...plugins,
+
+      new ForkTsCheckerWebpackPlugin(
+        PnpWebpackPlugin.forkTsCheckerOptions({
+          typescript: resolve.sync("typescript", {
+            basedir: getLocalNodeModulePath(CWD),
+          }),
+          async: isDevelopment,
+          useTypescriptIncrementalApi: true,
+          checkSyntacticErrors: true,
+          tsconfig: tsconfigFilePath,
+          reportFiles: [
+            "**",
+            "!**/__tests__/**",
+            "!**/?(*.)(spec|test).*",
+            "!**/src/setupProxy.*",
+            "!**/src/setupTests.*",
+          ],
+          silent: true,
+        }),
+      ),
 
       new HashWebpackPlugin(CWD, isDevelopment, needUpdateBuildTime),
       ...(await getWebpackBundleAnalyzerPlugin(CWD, isDebug)),
