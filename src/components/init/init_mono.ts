@@ -1,14 +1,13 @@
 import execa from "execa";
 import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
 import { mkdir } from "../../helpers/mkdir";
+import { gitignoreTemplate } from "../../templates/gitignore";
+import { prettierIgnoreTemplate } from "../../templates/prettierignore";
+import { prettierTemplate } from "../../templates/prettierrc";
 import { vsCodeExtensionsTemplate, vsCodeSettingsTemplate } from "../../templates/vsCode";
 import { initPackage } from "../procedures/initPackage";
-import { prettierTemplate } from "../../templates/prettierrc";
-import { prettierIgnoreTemplate } from "../../templates/prettierignore";
-import { gitignoreTemplate } from "../../templates/gitignore";
-import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
-import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 
 export async function init_mono(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -59,6 +58,4 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
     },
     true,
   );
-
-  await updateVSCodeSettingsForMonoRepo(CWD);
 }

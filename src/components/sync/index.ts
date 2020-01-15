@@ -8,6 +8,7 @@ import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 import moment = require("moment");
 
 export async function sync_component(): Promise<void> {
@@ -21,6 +22,8 @@ export async function sync_component(): Promise<void> {
   const isDll = rearguardConfig.isDll();
   const isNode = rearguardConfig.isNode();
   const rearguardLocalConfig = new RearguardDevConfig(CWD);
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 
   await processQueue.getInQueue(name);
 

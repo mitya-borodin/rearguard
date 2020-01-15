@@ -6,6 +6,7 @@ import { init_isomorphic } from "../init/init_isomorphic";
 import { init_mono } from "../init/init_mono";
 import { init_node_app } from "../init/init_node_app";
 import { init_node_lib } from "../init/init_node_lib";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 
 export async function refresh_executor(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -17,6 +18,8 @@ export async function refresh_executor(options: { force: boolean }): Promise<voi
   const isDll = rearguardConfig.isDll();
   const isLib = rearguardConfig.isLib();
   const isMono = rearguardConfig.isMono();
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 
   if (isDll) {
     await init_browser_dll(options);

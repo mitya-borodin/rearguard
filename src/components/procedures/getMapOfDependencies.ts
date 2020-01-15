@@ -10,11 +10,13 @@ const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
 
 const getMonoDependencyCWD = async (
+  CWD: string,
   monoDependencyDirs: string[],
   dependency: string,
 ): Promise<string | void> => {
   for (const monoDependencyDir of monoDependencyDirs) {
-    const pathToMonoDependency = path.resolve(process.cwd(), monoDependencyDir);
+    const pathToMonoDependency = path.resolve(CWD, monoDependencyDir);
+
     const dependencyDirs = (await readdir(pathToMonoDependency)).map((dirName) =>
       path.resolve(pathToMonoDependency, dirName),
     );
@@ -48,7 +50,7 @@ export const getMapOfDependencies = async (
 
   for (const dependency of dependencies) {
     if (monoDependencyDirs.length > 0) {
-      const monoDependencyCWD = await getMonoDependencyCWD(monoDependencyDirs, dependency);
+      const monoDependencyCWD = await getMonoDependencyCWD(CWD, monoDependencyDirs, dependency);
 
       if (monoDependencyCWD && (await exists(monoDependencyCWD))) {
         const monoRearguardConfig = new RearguardConfig(monoDependencyCWD);

@@ -1,11 +1,12 @@
-import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { build_isomorphic } from "./build_isomorphic";
-import { build_browser_lib } from "./build_browser_lib";
+import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 import { build_browser_app } from "./build_browser_app";
-import { build_node_lib } from "./build_node_lib";
-import { build_node_app } from "./build_node_app";
 import { build_browser_dll } from "./build_browser_dll";
+import { build_browser_lib } from "./build_browser_lib";
+import { build_isomorphic } from "./build_isomorphic";
+import { build_node_app } from "./build_node_app";
+import { build_node_lib } from "./build_node_lib";
 
 const defaultOptions: BuildExecutorOptions = {
   only_dev: false,
@@ -29,6 +30,8 @@ export async function build_component(
   const isApp = rearguardConfig.isApp();
   const isLib = rearguardConfig.isLib();
   const isDll = rearguardConfig.isDll();
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 
   if (isIsomorphic) {
     await build_isomorphic(options);

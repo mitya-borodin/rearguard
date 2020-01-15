@@ -20,6 +20,7 @@ import { getOptimizeCSSAssetsPlugin } from "./components/plugins/getOptimizeCSSA
 import { getTerserWebpackPlugin } from "./components/plugins/getTerserWebpackPlugin";
 import { getWebpackBundleAnalyzerPlugin } from "./components/plugins/getWebpackBundleAnalyzerPlugin";
 import { HashWebpackPlugin } from "./components/plugins/HashWebpackPlugin";
+import { getENV } from "../components/procedures/getENV";
 
 export const getGeneralWebpackConfig = async (
   CWD: string,
@@ -40,6 +41,8 @@ export const getGeneralWebpackConfig = async (
   const styleLintConfigFilePath = path.resolve(CWD, STYLE_LINT_CONFIG_FILE_NAME);
   const isBrowser = rearguardConfig.isBrowser();
   const isIsomorphic = rearguardConfig.isIsomorphic();
+
+  console.log(getENV(CWD).definePlugin);
 
   const modules = [
     // ! First of all, modules from the current project are connected
@@ -147,9 +150,9 @@ export const getGeneralWebpackConfig = async (
     },
     plugins: [
       // ! CleanWebpackPlugin should be before other plugins
-      new CleanWebpackPlugin({ verbose: true }),
-
       new CaseSensitivePathsPlugin(),
+      new CleanWebpackPlugin({ verbose: true }),
+      new webpack.DefinePlugin(getENV(CWD)),
       new webpack.ProgressPlugin(),
       new webpack.WatchIgnorePlugin([/node_modules/]),
 

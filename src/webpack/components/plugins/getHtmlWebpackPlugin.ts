@@ -15,6 +15,7 @@ import { InlineChunkHtmlPlugin } from "./InlineChunkHtmlPlugin";
 import { InterpolateHtmlPlugin } from "./InterpolateHtmlPlugin";
 import { isString } from "@rtcts/utils";
 import chalk from "chalk";
+import { getENV } from "../../../components/procedures/getENV";
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -178,6 +179,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
     // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
       PUBLIC_URL,
+      ...getENV(CWD).interpolationHTML,
       // You can pass any key-value pairs, this was just an example.
       // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
     }),

@@ -1,10 +1,11 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { StartExecutorOptions } from "../../interfaces/executors/StartExecutorOptions";
+import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
+import { start_browser_app } from "./start_browser_app";
 import { start_browser_lib } from "./start_browser_lib";
 import { start_isomorphic } from "./start_isomorphic";
-import { start_browser_app } from "./start_browser_app";
-import { start_node_lib } from "./start_node_lib";
 import { start_node_app } from "./start_node_app";
+import { start_node_lib } from "./start_node_lib";
 
 const defaultOptions: StartExecutorOptions = {
   release: false,
@@ -26,6 +27,8 @@ export async function start_component(
   const isNode = rearguardConfig.isNode();
   const isApp = rearguardConfig.isApp();
   const isLib = rearguardConfig.isLib();
+
+  await updateVSCodeSettingsForMonoRepo(CWD);
 
   if (isIsomorphic) {
     await start_isomorphic(options);
