@@ -66,6 +66,8 @@ interface CompilerOptions {
   diagnostics: boolean;
   extendedDiagnostics: boolean;
   traceResolution: boolean;
+  listEmittedFiles: boolean;
+  listFiles: boolean;
   noErrorTruncation: boolean;
   pretty: boolean;
 
@@ -137,6 +139,8 @@ export class Typescript {
       diagnostics: false,
       extendedDiagnostics: false,
       traceResolution: false,
+      listEmittedFiles: false,
+      listFiles: false,
       noErrorTruncation: true,
       pretty: true,
 
@@ -210,6 +214,8 @@ export class Typescript {
           "diagnostics",
           "extendedDiagnostics",
           "traceResolution",
+          "listEmittedFiles",
+          "listFiles",
           "noErrorTruncation",
           "pretty",
           "experimentalDecorators",
