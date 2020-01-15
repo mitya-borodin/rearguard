@@ -19,8 +19,10 @@ export const VS_CODE_SETTINGS = ".vscode/settings.json";
 
 // ! CONFIG FILE NAMES
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
-export const LINT_CONFIG_FILE_NAME = ".eslintrc.json";
-export const LINT_IGNORE_FILE_NAME = ".eslintignore";
+export const ES_LINT_CONFIG_FILE_NAME = ".eslintrc.json";
+export const ES_LINT_IGNORE_FILE_NAME = ".eslintignore";
+export const STYLE_LINT_CONFIG_FILE_NAME = ".stylelintrc.json";
+export const STYLE_LINT_IGNORE_FILE_NAME = ".stylelintignore";
 export const REARGUARD_DEV_CONFIG_FILE_NAME = "rearguard-dev.json";
 export const PACKAGE_JSON_FILE_NAME = "package.json";
 

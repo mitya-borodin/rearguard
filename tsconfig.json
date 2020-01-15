@@ -35,5 +35,5 @@
     "emitDecoratorMetadata": true
   },
   "include": ["src/**/*", "bin/**/*", "tools/**/*"],
-  "exclude": ["./src/templates/typingNonTypescriptModules/*", "./src_old"]
+  "exclude": ["node_modules", "./src/templates/typingNonTypescriptModules/*", "./src_old"]
 }

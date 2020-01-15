@@ -43,7 +43,7 @@ export class Template {
   }
 
   public async render(
-    templateData: { [key: string]: any } = { force: false },
+    options: { [key: string]: any } = { force: false },
     CWD: string = process.cwd(),
   ): Promise<void> {
     this.CWD = CWD;
@@ -51,7 +51,7 @@ export class Template {
     await this.createTargetDir();
 
     if (this.isExistDestFile) {
-      if (templateData.force) {
+      if (options.force) {
         fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
       }
     } else {

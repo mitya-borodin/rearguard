@@ -2,11 +2,13 @@ import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import PnpWebpackPlugin from "pnp-webpack-plugin";
+import StylelintWebpackPlugin from "stylelint-webpack-plugin";
+import stylelintFormatterPretty from "stylelint-formatter-pretty";
 import path from "path";
 import resolve from "resolve";
 import webpack from "webpack";
 import { RearguardConfig } from "../configs/RearguardConfig";
-import { TS_CONFIG_FILE_NAME } from "../const";
+import { TS_CONFIG_FILE_NAME, STYLE_LINT_CONFIG_FILE_NAME } from "../const";
 import { getLocalNodeModulePath, getRearguardNodeModulesPath } from "../helpers/dependencyPaths";
 import { getChunkOptimization } from "./components/getChunkOptimization";
 import { getCSSLoader } from "./components/getCSSLoader";
@@ -35,6 +37,9 @@ export const getGeneralWebpackConfig = async (
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const tsconfigFilePath = path.resolve(CWD, TS_CONFIG_FILE_NAME);
+  const styleLintConfigFilePath = path.resolve(CWD, STYLE_LINT_CONFIG_FILE_NAME);
+  const isBrowser = rearguardConfig.isBrowser();
+  const isIsomorphic = rearguardConfig.isIsomorphic();
 
   const modules = [
     // ! First of all, modules from the current project are connected
@@ -155,10 +160,25 @@ export const getGeneralWebpackConfig = async (
       // You can remove this if you don't use Moment.js:
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
-      ...getMiniCssExtractPlugin(CWD, isDevelopment),
-      ...getManifestPlugin(CWD, output),
+      ...(isBrowser || isIsomorphic
+        ? [
+            new StylelintWebpackPlugin({
+              stylelintPath: resolve.sync("stylelint", {
+                basedir: getLocalNodeModulePath(CWD),
+              }),
+              configFile: styleLintConfigFilePath,
+              context: contextPath,
+              fix: isDevelopment,
+              files: "**/*.css",
+              formatter: stylelintFormatterPretty,
+            }),
+          ]
+        : []),
 
       ...plugins,
+
+      ...getMiniCssExtractPlugin(CWD, isDevelopment),
+      ...getManifestPlugin(CWD, output, isDevelopment),
 
       new ForkTsCheckerWebpackPlugin(
         PnpWebpackPlugin.forkTsCheckerOptions({

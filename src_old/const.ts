@@ -1,6 +1,6 @@
 import { envConfig } from "./config/env";
 
-export const BUNDLE_SUB_DIR = () => (envConfig.isDevelopment ? "dev" : "prod");
+export const BUNDLE_SUB_DIR = (): string => (envConfig.isDevelopment ? "dev" : "prod");
 export const DLL_MANIFEST_NAME = "manifest.json";
 export const ASSETS_NAME = "assets.json";
 
@@ -15,7 +15,7 @@ export const TESTS_DIR_NAME = "tests";
 export const NON_VERSIONABLE_CONFIG_FILE_NAME = "rearguard.json";
 export const TS_CONFIG_FILE_NAME = "tsconfig.json";
 export const TEST_TS_CONFIG_FILE_NAME = `${TESTS_DIR_NAME}/tsconfig.json`;
-export const TS_LINT_CONFIG_FILE_NAME = "tslint.json";
+export const TS_ES_LINT_CONFIG_FILE_NAME = "tslint.json";
 
-// ! DEFERED_LIST_FILE_NAME
+// ! DEFERRED_LIST_FILE_NAME
 export const DEFERRED_MODULE_LIST = "deferred_module_list.ts";

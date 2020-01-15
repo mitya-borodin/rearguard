@@ -5,6 +5,8 @@ import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { prettierTemplate } from "../../templates/prettierrc";
 import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
 import { vsCodeExtensionsTemplate, vsCodeSettingsTemplate } from "../../templates/vsCode";
+import { stylelintrcTemplate } from "../../templates/stylelint";
+import { stylelintIgnoreTemplate } from "../../templates/stylelintignore";
 
 // TODO Add logging;
 export const staticTemplates = async (
@@ -20,6 +22,9 @@ export const staticTemplates = async (
   const isIsomorphic = rearguardConfig.isIsomorphic();
 
   if (isBrowser || isIsomorphic) {
+    await stylelintrcTemplate.render(options, CWD);
+    await stylelintIgnoreTemplate.render(options, CWD);
+
     // ! Create type declaration for non typescript modules like a .css, .png, etc.
     await typingNonTypescriptModulesTemplate.render(options, context);
   }

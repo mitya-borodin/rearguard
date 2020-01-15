@@ -31,5 +31,6 @@ export const setScripts = async (CWD: string): Promise<void> => {
     validate: "npm run lint && npm run typecheck && npm run validate-prettiness",
     "make-prettier": "prettier --write '**/*.{ts,tsx,json,md}'",
     sync: "rearguard sync",
+    refresh: "rearguard refresh",
   });
 };

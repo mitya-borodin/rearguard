@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "5.1.21",
+  "version": "5.2.0",
   "description": "Tools for development browser (dll, lib, app), node (lib, app), isomorphic (lib).",
   "engines": {
     "node": ">=10 <13",
@@ -103,6 +103,8 @@
     "sass-loader": "8.0.1",
     "semver": "6.3.0",
     "style-loader": "1.1.2",
+    "stylelint-formatter-pretty": "1.1.4",
+    "stylelint-webpack-plugin": "1.2.0",
     "terser-webpack-plugin": "2.3.2",
     "ts-loader": "6.2.1",
     "ts-node": "8.6.1",
@@ -141,6 +143,7 @@
     "@types/prettier-package-json": "2.1.0",
     "@types/resolve": "^1.14.0",
     "@types/semver": "6.2.0",
+    "@types/stylelint-webpack-plugin": "0.1.5",
     "@types/terser-webpack-plugin": "2.2.0",
     "@types/webpack": "4.41.2",
     "@types/webpack-bundle-analyzer": "2.13.3",
@@ -173,10 +176,12 @@
     "react",
     "postcss",
     "eslint",
+    "stylelint",
     "css-loader",
     "style-loader",
     "eslint-loader",
     "ts-loader",
+    "stylelint-webpack-plugin",
     "fork-ts-checker-webpack-plugin",
     "worker-loader",
     "jest"

@@ -97,7 +97,7 @@ export class Typescript {
       module: "commonjs",
       lib: ["dom", "es2018", "esnext.asynciterable"],
       allowJs: true,
-      checkJs: true,
+      checkJs: false,
       jsx: "react",
       removeComments: true,
       skipLibCheck: true,

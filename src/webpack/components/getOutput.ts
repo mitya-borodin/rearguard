@@ -23,7 +23,9 @@ export const getLibOutput = (CWD: string, isDevelopment: boolean): webpack.Outpu
 
   return {
     path: getLIBBundleOutputPath(CWD, snakeName, isDevelopment),
-    publicPath: normalize(`/${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
+    publicPath: normalize(
+      `/${isDevelopment ? "/" : publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`,
+    ),
     library: getLIBRuntimeName(snakeName),
     libraryTarget: "var",
   };
@@ -36,7 +38,9 @@ export const getDllOutput = (CWD: string, isDevelopment: boolean): webpack.Outpu
 
   return {
     path: getDLLBundleOutputPath(CWD, snakeName, isDevelopment),
-    publicPath: normalize(`/${publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`),
+    publicPath: normalize(
+      `/${isDevelopment ? "/" : publicPath}/${snakeName}/${getBundleSubDir(isDevelopment)}/`,
+    ),
     library: getDLLRuntimeName(snakeName),
     libraryTarget: "var",
   };

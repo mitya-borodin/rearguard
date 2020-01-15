@@ -21,8 +21,6 @@ declare module "html-webpack-plugin" {
   import { compilation, Plugin } from "webpack";
   import * as webpack from "webpack";
 
-  export = HtmlWebpackPlugin;
-
   class HtmlWebpackPlugin extends Plugin {
     public static getHooks(compilation: any): any;
 

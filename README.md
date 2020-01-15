@@ -95,7 +95,7 @@ The rearguard as a caring parent :-)
     - [postcss-normalize](https://github.com/csstools/postcss-normalize)
     - possibility to connect third-party postcss plugins via `postcss.config.js`
   - browserslist settings from `package.json`
-  - stylelint **no yet implemented**
+  - stylelint
 - Webpack
 - WebpackDevServer
 - DllPlugin and DllReferencePlugin are applied
@@ -105,7 +105,7 @@ The rearguard as a caring parent :-)
 - Mono and poly repositories support
 - BundleAnalyzer supported
 - The eslint with access to configuration from the project (rearguard use .eslint.json for eslint-loader)
-- The stylelint with access to configuration from the project (rearguard use .stylelintrc.json for stylelint-loader) **no yet implemented**
+- The stylelint with access to configuration from the project (rearguard use .stylelintrc.json for stylelint-loader)
 - Supported testing environment (Jest, Karma), with access to configuration from the project **no yet implemented**
 - Workbox included **no yet implemented**
 
