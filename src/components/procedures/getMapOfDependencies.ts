@@ -17,15 +17,17 @@ const getMonoDependencyCWD = async (
   for (const monoDependencyDir of monoDependencyDirs) {
     const pathToMonoDependency = path.resolve(CWD, monoDependencyDir);
 
-    const dependencyDirs = (await readdir(pathToMonoDependency)).map((dirName) =>
-      path.resolve(pathToMonoDependency, dirName),
-    );
+    if (await exists(pathToMonoDependency)) {
+      const dependencyDirs = (await readdir(pathToMonoDependency)).map((dirName) =>
+        path.resolve(pathToMonoDependency, dirName),
+      );
 
-    for (const dependencyCWD of dependencyDirs) {
-      const rearguardConfig = new RearguardConfig(dependencyCWD);
+      for (const dependencyCWD of dependencyDirs) {
+        const rearguardConfig = new RearguardConfig(dependencyCWD);
 
-      if (dependency === rearguardConfig.getName()) {
-        return dependencyCWD;
+        if (dependency === rearguardConfig.getName()) {
+          return dependencyCWD;
+        }
       }
     }
   }
