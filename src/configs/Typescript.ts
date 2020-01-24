@@ -107,7 +107,7 @@ export class Typescript {
 
       /* Strict Type-Checking Options */
       strict: true,
-      noImplicitAny: false,
+      noImplicitAny: true,
       strictNullChecks: true,
       noImplicitThis: true,
       alwaysStrict: true,
