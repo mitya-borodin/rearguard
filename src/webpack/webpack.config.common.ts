@@ -42,8 +42,6 @@ export const getGeneralWebpackConfig = async (
   const isBrowser = rearguardConfig.isBrowser();
   const isIsomorphic = rearguardConfig.isIsomorphic();
 
-  console.log(getENV(CWD).definePlugin);
-
   const modules = [
     // ! First of all, modules from the current project are connected
     ...rearguardConfig.getModules(),

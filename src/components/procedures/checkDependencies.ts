@@ -89,4 +89,10 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
       console.error(error);
     }
   }
+
+  if (needInstallDeps || needInstallDevDeps) {
+    await execa("npx", ["typesync"], execaOptions);
+  }
+
+  await rearguardConfig.reformat();
 };

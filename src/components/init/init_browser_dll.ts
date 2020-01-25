@@ -6,6 +6,7 @@ import { gitignoreTemplate } from "../../templates/gitignore";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { createEntryPoints } from "../procedures/createEntryPoints";
 import { initPackage } from "../procedures/initPackage";
+import { checkDependencies } from "../procedures/checkDependencies";
 
 export async function init_browser_dll(options: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -37,7 +38,7 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
 
   // ! Set scripts;
   await rearguardConfig.setScripts({
-    build: "npx rearguard build",
+    build: "rearguard build",
   });
 
   // ! Create entry points: index.tsx, export.ts, vendors.ts;
@@ -55,4 +56,7 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
     list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
     force: rearguardConfig.isOverwriteGitIgnore() || options.force,
   });
+
+  // ! Check/Install dependencies.
+  await checkDependencies(CWD);
 }

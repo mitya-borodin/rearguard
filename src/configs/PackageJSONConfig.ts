@@ -177,6 +177,10 @@ export class PackageJSONConfig {
     return await this.setPkg(new PackageJSON({ ...this.getPkg(), rearguard }));
   }
 
+  async reformat(): Promise<void> {
+    await this.setPkg(this.getPkg());
+  }
+
   private async setPkg(origin: Readonly<PackageJSON>): Promise<Readonly<PackageJSON>> {
     try {
       if (fs.existsSync(this.pathToPackageJsonFile)) {
@@ -184,7 +188,7 @@ export class PackageJSONConfig {
 
         // ! ==========================================
         // !
-        // ! Manky patching for cancel script sorting;
+        // ! Manky patching for cancel script sort;
         // !
         // ! ==========================================
 
