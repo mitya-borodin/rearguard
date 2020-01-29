@@ -10,6 +10,8 @@ interface CompilerOptions {
   allowJs: boolean;
   checkJs: boolean;
 
+  incremental: boolean;
+
   jsx: string;
 
   removeComments: boolean;
@@ -54,6 +56,7 @@ interface CompilerOptions {
   allowSyntheticDefaultImports: boolean;
   esModuleInterop: boolean;
   importHelpers: boolean;
+  resolveJsonModule: boolean;
 
   /* Source Map Options */
   sourceMap: boolean;
@@ -100,6 +103,7 @@ export class Typescript {
       lib: ["dom", "es2018", "esnext.asynciterable"],
       allowJs: true,
       checkJs: false,
+      incremental: true,
       jsx: "react",
       removeComments: true,
       skipLibCheck: true,
@@ -129,6 +133,7 @@ export class Typescript {
       allowSyntheticDefaultImports: true,
       esModuleInterop: true,
       importHelpers: true,
+      resolveJsonModule: true,
 
       /* Source Map Options */
       sourceMap: true,
@@ -189,6 +194,7 @@ export class Typescript {
         for (const item of [
           "allowJs",
           "checkJs",
+          "incremental",
           "removeComments",
           "skipLibCheck",
           "forceConsistentCasingInFileNames",
@@ -208,6 +214,7 @@ export class Typescript {
           "allowSyntheticDefaultImports",
           "esModuleInterop",
           "importHelpers",
+          "resolveJsonModule",
           "sourceMap",
           "inlineSourceMap",
           "inlineSources",

@@ -9,6 +9,8 @@
     "removeComments": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "incremental": true,
 
     /* Strict Type-Checking Options */
     "strict": true,
