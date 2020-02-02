@@ -103,7 +103,7 @@ export class Typescript {
       lib: ["dom", "es2018", "esnext.asynciterable"],
       allowJs: true,
       checkJs: false,
-      incremental: true,
+      incremental: false,
       jsx: "react",
       removeComments: true,
       skipLibCheck: true,
