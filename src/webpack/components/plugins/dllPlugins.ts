@@ -7,7 +7,7 @@ import { RearguardConfig } from "../../../configs/RearguardConfig";
 import { getDLLManifestPath, getDLLRuntimeName } from "../../../helpers/bundleNaming";
 import { BundleIntrospection } from "../../../interfaces/BundleIntrospection";
 
-export const getDllPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugin => {
+export const getDllPlugin = (CWD: string, isDevelopment: boolean, options = {}): webpack.Plugin => {
   const rearguardConfig = new RearguardConfig(CWD);
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const snakeName = rearguardConfig.getSnakeName();
@@ -16,6 +16,7 @@ export const getDllPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugi
     context: contextPath,
     name: getDLLRuntimeName(snakeName),
     path: getDLLManifestPath(CWD, snakeName, isDevelopment),
+    ...options,
   });
 };
 

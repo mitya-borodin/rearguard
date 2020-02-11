@@ -3,6 +3,7 @@ import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { commonPreset } from "../procedures/commonPreset";
 import { initPackage } from "../procedures/initPackage";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { copyPublicAssets } from "../../templates/indexHtml";
 
 export async function init_isomorphic(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -30,4 +31,5 @@ export async function init_isomorphic(flags: { force: boolean }): Promise<void> 
   // ! Apply static templates to project
   // ! Check/Install dependencies
   await commonPreset(flags, CWD);
+  await copyPublicAssets(CWD, flags.force);
 }

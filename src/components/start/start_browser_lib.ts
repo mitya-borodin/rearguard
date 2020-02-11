@@ -22,7 +22,7 @@ export async function start_browser_lib(options: StartExecutorOptions): Promise<
 
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
-  await deleteExternalBundles(CWD, true);
+  await deleteExternalBundles(CWD);
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
   await createListOfLoadOnDemand(CWD, true);

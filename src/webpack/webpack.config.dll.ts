@@ -1,7 +1,7 @@
 import webpack from "webpack";
 import { getDllEntryPoint } from "./components/getEntryPoints";
 import { getDllOutput } from "./components/getOutput";
-import { getDllPlugin } from "./components/plugins/dllPlugins";
+import { getDllPlugin, getDllReferencePlugin } from "./components/plugins/dllPlugins";
 import { getAssetsWebpackPlugin } from "./components/plugins/getAsstetsPlugin";
 import { getGeneralWebpackConfig } from "./webpack.config.common";
 
@@ -16,7 +16,11 @@ export const getDLLWebpackConfig = async (
     isDevelopment,
     await getDllEntryPoint(CWD),
     getDllOutput(CWD, isDevelopment),
-    [getDllPlugin(CWD, isDevelopment), getAssetsWebpackPlugin(CWD, isDevelopment, false)],
+    [
+      getDllPlugin(CWD, isDevelopment),
+      ...(await getDllReferencePlugin(CWD, isDevelopment)),
+      getAssetsWebpackPlugin(CWD, isDevelopment, false),
+    ],
     isDebug,
     needUpdateBuildTime,
     false,

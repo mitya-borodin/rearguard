@@ -23,7 +23,7 @@ export async function start_browser_app(options: StartExecutorOptions): Promise<
 
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
-  await deleteExternalBundles(CWD, false);
+  await deleteExternalBundles(CWD);
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
   await createListOfLoadOnDemand(CWD, true);

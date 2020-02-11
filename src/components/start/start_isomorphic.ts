@@ -23,7 +23,7 @@ export async function start_isomorphic(options: StartExecutorOptions): Promise<v
 
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
-  await deleteExternalBundles(CWD, true);
+  await deleteExternalBundles(CWD);
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
   await createListOfLoadOnDemand(CWD, true);

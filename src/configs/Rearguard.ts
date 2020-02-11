@@ -18,6 +18,7 @@ export class Rearguard {
     runtime: "browser" | "node" | "isomorphic";
     type: "dll" | "app" | "lib" | "mono";
     will_load_on_demand: boolean;
+    unPublishedDependency: string[];
     components: string[];
   };
 
@@ -61,6 +62,7 @@ export class Rearguard {
       will_load_on_demand: false,
       runtime: "browser",
       type: "app",
+      unPublishedDependency: [],
       components: ["components"],
     };
 
@@ -126,11 +128,23 @@ export class Rearguard {
           this.project.type = data.project.type;
         }
 
+        if (isArray(data.project.unPublishedDependency)) {
+          this.project.unPublishedDependency = [];
+
+          for (const item of data.project.unPublishedDependency) {
+            if (isString(item)) {
+              this.project.unPublishedDependency.push(item);
+            }
+          }
+        }
+
         if (isArray(data.project.components)) {
           this.project.components = [];
 
           for (const item of data.project.components) {
-            this.project.components.push(item);
+            if (isString(item)) {
+              this.project.components.push(item);
+            }
           }
         }
       }
@@ -193,6 +207,7 @@ export class Rearguard {
       project: {
         runtime: this.project.runtime,
         type: this.project.type,
+        unPublishedDependency: this.project.unPublishedDependency,
       },
     };
 
@@ -235,6 +250,7 @@ export class Rearguard {
           runtime: this.project.runtime,
           type: this.project.type,
           will_load_on_demand: this.project.will_load_on_demand,
+          unPublishedDependency: this.project.unPublishedDependency,
         },
         distribution: {
           publish_to_git: this.distribution.publish_to_git,

@@ -11,7 +11,9 @@ import {
 import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { BundleIntrospection } from "../../interfaces/BundleIntrospection";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
-import { hasVendorImports } from "./hasVendorImports";
+import { promisify } from "util";
+
+const exists = promisify(fs.exists);
 
 export const getBundleIntrospections = async (
   CWD: string,
@@ -32,7 +34,7 @@ export const getBundleIntrospections = async (
 
     const dllManifestPath = getDLLManifestPath(CWD, pkgSnakeName, isDevelopment);
 
-    const hasDll = fs.existsSync(dllManifestPath) && (await hasVendorImports(dependencyCWD));
+    const hasDll = await exists(dllManifestPath);
     const hasBrowserLib = (isBrowser && isLib) || isIsomorphic;
 
     bundleIntrospections.push({

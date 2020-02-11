@@ -29,7 +29,7 @@ export class PackageJSONConfig {
 
         return new PackageJSON(origin);
       } else {
-        console.error(`File ${this.pathToPackageJsonFile} not found`);
+        console.trace(`File ${this.pathToPackageJsonFile} not found`);
 
         process.exit(1);
       }
@@ -198,7 +198,7 @@ export class PackageJSONConfig {
 
         fs.writeFileSync(this.pathToPackageJsonFile, content, { encoding: "utf-8" });
       } else {
-        console.error(`File ${this.pathToPackageJsonFile} not found`);
+        console.trace(`File ${this.pathToPackageJsonFile} not found`);
 
         process.exit(1);
       }

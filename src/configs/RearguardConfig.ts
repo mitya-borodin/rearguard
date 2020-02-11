@@ -54,6 +54,10 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.getRearguard().webpack.output;
   }
 
+  public getUnPublishedDependency(): string[] {
+    return this.getRearguard().project.unPublishedDependency;
+  }
+
   public getComponents(): string[] {
     return this.getRearguard().project.components;
   }
@@ -162,7 +166,21 @@ export class RearguardConfig extends PackageJSONConfig {
     monoDependencyDirs: string[] = [],
     searchInMonoDirectory = false,
   ): Promise<Set<string>> {
-    const projectDeps: Set<string> = new Set();
+    // ! У проекта могут быть два типа зависимостей
+    // ! 1) Те которые опубликованы в каком либо npm registry
+    // ! 2) Те которые доступны в глобальном node_modules и в моно репозитории рядом с проектом
+
+    // ? Основная причина почему существует список не опубликованных зависимостей в том, что
+    // ? Rearguard определяет зависимости исходя из ключей (package.json).dependencies.
+    // ? Так как зависимости не опубликованы то их нельзя указать в package.json).dependencies,
+    // ? Но подключить их в сборку необходимо, и по этому существует список неопубликованных зависимостей,
+    // ? которые находятся радом в моно репозитории. Так же они могут быть и не в моно репозитории, но
+    // ? они должны быть слинкованны перед запуском сборки, иначе система их не найдет.
+
+    // * При работе с моно репозиторием никаких проблем быть не должно, так как в момент npm run bootstrap
+    // * все необходимые линки будут установлены.
+
+    const projectDeps: Set<string> = new Set(this.getUnPublishedDependency());
 
     if (searchInMonoDirectory) {
       for (const monoDependencyDir of monoDependencyDirs) {
@@ -202,15 +220,17 @@ export class RearguardConfig extends PackageJSONConfig {
           continue;
         }
 
-        if (!dependenciesNotCreatedWithRearguard.has(dependencyName)) {
-          const pkgPath = path.resolve(nodeModulePath, dependencyName, this.packageJsonFileName);
+        if (dependenciesNotCreatedWithRearguard.has(dependencyName)) {
+          continue;
+        }
 
-          if (await RearguardConfig.isRearguard(pkgPath)) {
-            projectDeps.add(dependencyName);
-            dependenciesCreatedWithRearguard.add(dependencyName);
-          } else {
-            dependenciesNotCreatedWithRearguard.add(dependencyName);
-          }
+        const pkgPath = path.resolve(nodeModulePath, dependencyName, this.packageJsonFileName);
+
+        if (await RearguardConfig.isRearguard(pkgPath)) {
+          projectDeps.add(dependencyName);
+          dependenciesCreatedWithRearguard.add(dependencyName);
+        } else {
+          dependenciesNotCreatedWithRearguard.add(dependencyName);
         }
       }
     }

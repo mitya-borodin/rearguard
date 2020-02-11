@@ -133,7 +133,7 @@ export const getMapOfDependencies = async (
 
     console.log(
       chalk.bold.red(
-        `[ FLAT_LIST_OF_DEPENDENCIES ][ You haven't link in global node_modules ${globalDependencyCWD}; ]`,
+        `[ FLAT_LIST_OF_DEPENDENCIES ][ You haven't link in global node_modules ${globalDependencyCWD} ]`,
       ),
     );
 
