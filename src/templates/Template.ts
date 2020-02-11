@@ -52,14 +52,18 @@ export class Template {
 
     if (this.isExistDestFile) {
       if (options.force) {
-        fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
+        fs.writeFileSync(this.destinationFilePath, this.prepareContent(), { encoding: "utf-8" });
       }
     } else {
-      fs.writeFileSync(this.destinationFilePath, this.sourceContent, { encoding: "utf-8" });
+      fs.writeFileSync(this.destinationFilePath, this.prepareContent(), { encoding: "utf-8" });
     }
   }
 
   public async createTargetDir(): Promise<void> {
     mkdir(path.dirname(this.destinationFilePath));
+  }
+
+  protected prepareContent(): string {
+    return this.sourceContent;
   }
 }

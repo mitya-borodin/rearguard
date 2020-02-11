@@ -1,6 +1,6 @@
 {
   "name": "rearguard",
-  "version": "5.2.17",
+  "version": "5.2.18",
   "description": "Tools for development browser (dll, lib, app), node (lib, app), isomorphic (lib).",
   "engines": {
     "node": ">=10 <13",

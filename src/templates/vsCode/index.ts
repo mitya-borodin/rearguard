@@ -1,9 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { Template } from "../Template";
-import { PACKAGE_JSON_FILE_NAME } from "../../const";
-import { RearguardConfig } from "../../configs/RearguardConfig";
+import prettier from "prettier";
 import { promisify } from "util";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { PACKAGE_JSON_FILE_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";
+import { Template } from "../Template";
 
 const rmdir = promisify(fs.rmdir);
 const exists = promisify(fs.exists);
@@ -18,6 +19,10 @@ class VSCodeTemplate extends Template {
     } else if (templateData.force) {
       await rmdir(path.resolve(CWD, ".vscode"), { recursive: true });
     }
+  }
+
+  protected prepareContent(): string {
+    return prettier.format(this.sourceContent, PRETTIER_JSON_STRINGIFY);
   }
 
   private async isPartOfMonoRepository(CWD: string, deep = 0): Promise<boolean> {
