@@ -6,6 +6,8 @@ import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildDllBundles } from "../procedures/build/buildDllBundles";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 
 export async function build_browser_dll(options: BuildExecutorOptions): Promise<void> {
   try {
@@ -23,6 +25,8 @@ export async function build_browser_dll(options: BuildExecutorOptions): Promise<
     await rearguardLocalConfig.setBuildStatus("in_progress");
 
     await deleteExternalBundles(CWD, true);
+    await copyGlobalLinkedModules(CWD);
+    await copyBundlesToProject(CWD);
 
     await buildDllBundles(CWD, options);
 

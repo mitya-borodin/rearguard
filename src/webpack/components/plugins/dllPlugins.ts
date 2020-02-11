@@ -16,8 +16,9 @@ export const getDllPlugin = (CWD: string, isDevelopment: boolean, options = {}):
     context: contextPath,
     name: getDLLRuntimeName(snakeName),
     path: getDLLManifestPath(CWD, snakeName, isDevelopment),
+    format: true,
     ...options,
-  });
+  } as any);
 };
 
 export const getDllReferencePlugin = async (
