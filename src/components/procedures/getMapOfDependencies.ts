@@ -122,12 +122,6 @@ export const getMapOfDependencies = async (
         mapOfDependencies.set(target, targetWeight + localDependencies.size);
       }
 
-      await getMapOfDependencies(
-        localDependencyCWD,
-        monoDependencyDirs,
-        mapOfDependencies,
-        target === "" ? dependency : target,
-      );
       continue;
     }
 

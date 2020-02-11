@@ -6,6 +6,8 @@ import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/d
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
 
 export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> => {
+  console.log(chalk.bold.grey(`[ CHECK_OUTDATE_DEPENDENCY ]`));
+
   // * Result dependency Set
   const outdatedDependency: Set<string> = new Set();
 
@@ -37,6 +39,8 @@ export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> =
 
               // * I_MODULE_LAST_BUILD_TIME <= K_MODULE_LAST_BUILD_TIME
               if (i_moduleLastBuildTime.isSameOrBefore(k_moduleLastBuildTime)) {
+                console.log(chalk.bold.grey(`[ ${i_modulePath} ][ OUTDATED ]`));
+
                 outdatedDependency.add(i_modulePath);
                 break;
               }
@@ -44,20 +48,20 @@ export const getOutdatedDependency = async (CWD: string): Promise<Set<string>> =
               outdatedDependency.add(i_modulePath);
             }
           } else {
-            console.log(
-              chalk.bold.grey(`[ MODULE_SET_FOR_RE_BUILD ][ ${k_modulePath} ][ NOT_FOUND ]`),
-            );
+            console.log(chalk.bold.grey(`[ ${k_modulePath} ][ NOT_FOUND ]`));
           }
         }
       } else {
         outdatedDependency.add(i_modulePath);
       }
     } else if (fs.existsSync(path.resolve(localNodeModulePath, i_module))) {
-      console.log(chalk.grey(`[ MODULE_SET_FOR_RE_BUILD ][ ${i_module} ][ LOCAL_INSTALLED ]`));
+      console.log(chalk.grey(`[ ${i_module} ][ LOCAL_INSTALLED ]`));
     } else {
-      console.log(chalk.grey(`[ MODULE_SET_FOR_RE_BUILD ][ ${i_module} ][ NOT_FOUND ]`));
+      console.log(chalk.grey(`[ ${i_module} ][ NOT_FOUND ]`));
     }
   }
+
+  console.log(chalk.grey(``));
 
   return outdatedDependency;
 };
