@@ -16,6 +16,10 @@ import { InterpolateHtmlPlugin } from "./InterpolateHtmlPlugin";
 import { isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { getENV } from "../../../components/procedures/getENV";
+import { promisify } from "util";
+
+const exists = promisify(fs.exists);
+const readFile = promisify(fs.readFile);
 
 class ComputeDataForHWP {
   private CWD: string;
@@ -65,32 +69,40 @@ class ComputeDataForHWP {
             pkgSnakeName,
           } of bundleIntrospection) {
             if (!willLoadOnDemand) {
-              if (hasDll && fs.existsSync(assetsPath.dll)) {
-                const source = require(assetsPath.dll)[getDLLRuntimeName(pkgSnakeName)];
+              if (hasDll && (await exists(assetsPath.dll))) {
+                const content = await readFile(assetsPath.dll, { encoding: "utf-8" });
+                const source = JSON.parse(content);
+                const dll = source[getDLLRuntimeName(pkgSnakeName)];
 
-                if (isString(source.js)) {
-                  assets.js.push(source.js);
+                if (isString(dll.js)) {
+                  assets.js.push(dll.js);
                 }
-                if (isString(source.css)) {
-                  assets.css.push(source.css);
+                if (isString(dll.css)) {
+                  assets.css.push(dll.css);
                 }
               }
 
-              if (hasBrowserLib && fs.existsSync(assetsPath.lib)) {
-                const source = require(assetsPath.lib)[getLIBRuntimeName(pkgSnakeName)];
+              if (hasBrowserLib && (await exists(assetsPath.lib))) {
+                const content = await readFile(assetsPath.lib, { encoding: "utf-8" });
+                const source = JSON.parse(content);
+                const lib = source[getLIBRuntimeName(pkgSnakeName)];
 
-                if (isString(source.js)) {
-                  assets.js.push(source.js);
+                if (isString(lib.js)) {
+                  assets.js.push(lib.js);
                 }
-                if (isString(source.css)) {
-                  assets.css.push(source.css);
+                if (isString(lib.css)) {
+                  assets.css.push(lib.css);
                 }
               }
             }
           }
 
-          if (!willLoadOnDemand && fs.existsSync(dllAssetsPath)) {
-            assets.js.push(require(dllAssetsPath)[getDLLRuntimeName(snakeName)].js);
+          if (!willLoadOnDemand && (await exists(dllAssetsPath))) {
+            const content = await readFile(dllAssetsPath, { encoding: "utf-8" });
+            const source = JSON.parse(content);
+            const dll = source[getDLLRuntimeName(snakeName)];
+
+            assets.js.push(dll.js);
           }
 
           // Manipulate the content
