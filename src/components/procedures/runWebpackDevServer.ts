@@ -25,7 +25,12 @@ export const runWebpackDevServer = async (
 
   const { host, port } = await rearguardLocalConfig.getWDSConfig();
 
-  pubSub.on(events.SYNCED, () => wds.middleware.invalidate());
+  pubSub.on(events.SYNCED, () => {
+    console.log("[ WDS ][ INVALIDATED ]");
+    console.log("");
+
+    wds.middleware.invalidate();
+  });
 
   process.on("SIGINT", () => {
     wds.close();

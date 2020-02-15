@@ -113,7 +113,7 @@ export const watchLinkedModules = async (CWD: string): Promise<void> => {
             await copyGlobalLinkedModules(CWD);
 
             if (isBrowser || isIsomorphic) {
-              await deleteExternalBundles(CWD, true);
+              await deleteExternalBundles(CWD);
               await copyBundlesToProject(CWD);
             }
 

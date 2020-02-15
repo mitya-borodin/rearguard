@@ -18,10 +18,10 @@ export const getWebpackDevServerConfig = async (
     contentBase: [DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME],
     watchContentBase: false,
     before(app: any, server: any): void {
-      pubSub.on(events.SYNCED, () => {
-        server.middleware.waitUntilValid(() => {
-          server.sockWrite(server.sockets, "content-changed");
-        });
+      pubSub.on(events.RELOAD_BROWSER, () => {
+        console.log("[ WDS ][ RELOAD_BROWSER ]");
+        console.log("");
+        server.sockWrite(server.sockets, "content-changed");
       });
     },
     historyApiFallback: true,

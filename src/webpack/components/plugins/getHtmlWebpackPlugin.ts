@@ -17,6 +17,7 @@ import { isString } from "@rtcts/utils";
 import chalk from "chalk";
 import { getENV } from "../../../components/procedures/getENV";
 import { promisify } from "util";
+import { pubSub, events } from "../../../helpers/pubSub";
 
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
@@ -37,7 +38,7 @@ class ComputeDataForHWP {
   public apply(compiler: webpack.Compiler): void {
     compiler.hooks.compilation.tap("compute_data_for_html_webpack_plugin", (compilation) => {
       HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
-        "compute_data_for_html_webpack_plugin", // <-- Set a meaningful name here for stacktraces
+        "html_webpack_plugin__inject_externals", // <-- Set a meaningful name here for stacktraces
         async (
           data: {
             assets: {
@@ -125,6 +126,13 @@ class ComputeDataForHWP {
 
           // Tell webpack to move on
           callback(null, data);
+        },
+      );
+
+      HtmlWebpackPlugin.getHooks(compilation).afterEmit.tapPromise(
+        "html_webpack_plugin__reload_browser_after_emit",
+        async () => {
+          pubSub.emit(events.RELOAD_BROWSER);
         },
       );
     });
