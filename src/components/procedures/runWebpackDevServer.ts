@@ -4,7 +4,6 @@ import WDS from "webpack-dev-server";
 import { getWebpackDevServerConfig } from "../../webpack/components/getWebpackDevServerConfig";
 import { getAppWebpackConfig } from "../../webpack/webpack.config.app";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
-import { pubSub, events } from "../../helpers/pubSub";
 
 export const runWebpackDevServer = async (
   CWD: string,
@@ -24,13 +23,6 @@ export const runWebpackDevServer = async (
   const wds: any = new WDS(compiler, webpackDevServerConfig);
 
   const { host, port } = await rearguardLocalConfig.getWDSConfig();
-
-  pubSub.on(events.SYNCED, () => {
-    console.log("[ WDS ][ INVALIDATED ]");
-    console.log("");
-
-    wds.middleware.invalidate();
-  });
 
   process.on("SIGINT", () => {
     wds.close();

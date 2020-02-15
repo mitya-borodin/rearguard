@@ -152,7 +152,7 @@ export const getGeneralWebpackConfig = async (
       new CleanWebpackPlugin({ verbose: true }),
       new webpack.DefinePlugin(getENV(CWD)),
       new webpack.ProgressPlugin(),
-      new webpack.WatchIgnorePlugin([/node_modules/]),
+      new webpack.WatchIgnorePlugin([/node_modules/, /webpack-dll-manifest.json/]),
 
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
@@ -207,6 +207,9 @@ export const getGeneralWebpackConfig = async (
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
+      global: false,
+      __filename: "mock",
+      __dirname: "mock",
       module: "empty",
       dgram: "empty",
       dns: "mock",
@@ -215,6 +218,7 @@ export const getGeneralWebpackConfig = async (
       net: "empty",
       tls: "empty",
       child_process: "empty",
+      utils: "empty",
     },
     profile: true,
   };
