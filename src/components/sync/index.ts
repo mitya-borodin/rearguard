@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";
+import { SyncExecutorOptions } from "../../interfaces/executors/SyncExecutorOptions";
 import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
@@ -11,7 +12,7 @@ import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
 import moment = require("moment");
 
-export async function sync_component(): Promise<void> {
+export async function sync_component(options: SyncExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ SYNC ][ START ]`));
   console.log("");
   const startTime = moment();
@@ -25,7 +26,7 @@ export async function sync_component(): Promise<void> {
 
   await updateVSCodeSettingsForMonoRepo(CWD);
 
-  await processQueue.getInQueue(name);
+  await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
@@ -45,7 +46,7 @@ export async function sync_component(): Promise<void> {
 
   await rearguardLocalConfig.setBuildStatus("done");
 
-  await processQueue.getOutQueue(name);
+  await processQueue.getOutQueue(name, options.bypass_the_queue);
 
   console.log("");
   console.log(

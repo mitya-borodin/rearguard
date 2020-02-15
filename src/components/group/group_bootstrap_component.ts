@@ -33,6 +33,8 @@ export const group_bootstrap_component = async (options: {
     await execa("npm", ["install"], execaOptions);
     await execa("npm", ["link"], execaOptions);
 
+    await execa("npm", ["run", "sync", "--", "--bypass_the_queue"], execaOptions);
+
     if (!isDll) {
       await execa("npm", ["run", "validate"], execaOptions);
     }
