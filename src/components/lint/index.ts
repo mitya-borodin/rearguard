@@ -114,7 +114,11 @@ export async function lint_executor({ fix }: Flags = defaultFlags): Promise<void
 
   // ! Run.
   try {
-    await execa("eslint", args, { stdout: "inherit", stderr: "inherit", cwd: process.cwd() });
+    await execa("eslint", [...args, "--no-error-on-unmatched-pattern"], {
+      stdout: "inherit",
+      stderr: "inherit",
+      cwd: process.cwd(),
+    });
   } catch (error) {
     console.log(chalk.bold.magenta(`CWD: ${process.cwd()}`));
     console.log("");

@@ -1,8 +1,10 @@
 import chalk from "chalk";
 import execa from "execa";
+import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { getSortedListOfMonoComponents } from "../procedures/getSortedListOfDependencies";
 import { processQueue } from "../../helpers/processQueue";
+import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
+import { getSortedListOfMonoComponents } from "../procedures/getSortedListOfDependencies";
 
 export const group_bootstrap_component = async (options: {
   only_dev: boolean;
@@ -24,7 +26,16 @@ export const group_bootstrap_component = async (options: {
       cwd: pathToComponent,
     };
     const rearguardConfigItem = new RearguardConfig(pathToComponent);
+    const context = path.resolve(pathToComponent, rearguardConfig.getContext());
     const isDll = rearguardConfigItem.isDll();
+
+    const isBrowser = rearguardConfig.isBrowser();
+    const isIsomorphic = rearguardConfig.isIsomorphic();
+
+    if (isBrowser || isIsomorphic) {
+      // ! Create type declaration for non typescript modules like a .css, .png, etc.
+      await typingNonTypescriptModulesTemplate.render(options, context);
+    }
 
     console.log(chalk.bold.blue(`[ ${pathToComponent} ]`));
     console.log("");
