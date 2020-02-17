@@ -4,6 +4,7 @@ import { processQueue } from "../../helpers/processQueue";
 import { StartExecutorOptions } from "../../interfaces/executors/StartExecutorOptions";
 import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
@@ -20,6 +21,7 @@ export async function start_browser_lib(options: StartExecutorOptions): Promise<
 
   await processQueue.getInQueue(name);
 
+  await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD);

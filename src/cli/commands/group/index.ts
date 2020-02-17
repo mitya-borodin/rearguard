@@ -14,6 +14,7 @@ import { group_validate_prettiness_component } from "../../../components/group/g
 import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
 import { group_start_component } from "../../../components/group/group_start_component";
+import { group_install_component } from "../../../components/group/group_install_component";
 
 const group_bootstrap = new Command(
   "bootstrap",
@@ -39,6 +40,8 @@ group_build.addFlag("--only_dev");
 group_build.addFlag("--debug");
 
 const group_clear = new Command("clear", group_clear_component);
+
+const group_install = new Command("install", group_install_component);
 
 const group_link = new Command("link", group_link_component);
 
@@ -109,6 +112,7 @@ export const group = new Command("group");
 
 group.addCommand(group_bootstrap);
 group.addCommand(group_clear);
+group.addCommand(group_install);
 group.addCommand(group_link);
 group.addCommand(group_start);
 group.addCommand(group_lint);

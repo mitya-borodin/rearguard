@@ -32,7 +32,14 @@ export const buildUnfinishedDependencies = async (CWD: string): Promise<void> =>
     }
 
     if (dependencyPath === "") {
-      console.trace("Dependency path not found");
+      console.log(chalk.red.bold(`!!! ERROR !!!`));
+      console.log("");
+      console.log(chalk.red(`${dependency} not found`));
+      console.log("");
+      console.log(chalk.red(`Global path to dependency: ${dependencyGlobalPath}`));
+      console.log(chalk.red(`Local path to dependency: ${dependencyLocalPath}`));
+      console.log("");
+      console.trace(chalk.red.bold(`Path to ${dependency} not found`));
 
       process.exit(1);
     }

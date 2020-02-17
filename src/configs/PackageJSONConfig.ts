@@ -106,15 +106,27 @@ export class PackageJSONConfig {
     const devDependencies = { ...pkg.devDependencies };
     const peerDependencies = { ...pkg.peerDependencies };
 
-    if (dependencies[dependencyName] && semver.valid(version)) {
+    if (
+      dependencies[dependencyName] &&
+      dependencies[dependencyName].indexOf("file") === -1 &&
+      semver.valid(version)
+    ) {
       dependencies[dependencyName] = version;
     }
 
-    if (devDependencies[dependencyName] && semver.valid(version)) {
+    if (
+      devDependencies[dependencyName] &&
+      devDependencies[dependencyName].indexOf("file") === -1 &&
+      semver.valid(version)
+    ) {
       devDependencies[dependencyName] = version;
     }
 
-    if (peerDependencies[dependencyName] && semver.valid(version)) {
+    if (
+      peerDependencies[dependencyName] &&
+      peerDependencies[dependencyName].indexOf("file") === -1 &&
+      semver.valid(version)
+    ) {
       peerDependencies[dependencyName] = version;
     }
 

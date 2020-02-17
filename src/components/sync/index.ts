@@ -5,6 +5,7 @@ import { processQueue } from "../../helpers/processQueue";
 import { SyncExecutorOptions } from "../../interfaces/executors/SyncExecutorOptions";
 import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
@@ -29,6 +30,8 @@ export async function sync_component(options: SyncExecutorOptions): Promise<void
   await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
+
+  await checkNotInstalledDependencies(CWD);
 
   if (!isDll && !isNode) {
     await buildUnfinishedDependencies(CWD);

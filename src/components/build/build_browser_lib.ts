@@ -14,6 +14,7 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 
 export async function build_browser_lib(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ LIB ][ BUILD ][ START ]`));
@@ -30,6 +31,7 @@ export async function build_browser_lib(options: BuildExecutorOptions): Promise<
   await rearguardLocalConfig.setBuildStatus("in_progress");
   await updatePkgFiles(CWD);
 
+  await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD, true);

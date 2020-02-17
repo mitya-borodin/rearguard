@@ -17,7 +17,7 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
   };
 
   await initPackage(CWD);
-  await execa("npm", ["install", "-D", "husky"], execaOptions);
+  await execa("npm", ["install", "-D", "-E", "husky"], execaOptions);
   await mkdir(path.resolve(CWD, "components"));
 
   // ! Create .vscode/settings.json.

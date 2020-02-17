@@ -14,6 +14,7 @@ import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOp
 import { buildNodeApp } from "../procedures/build/buildNodeApp";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -41,6 +42,7 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
     console.log("");
   }
 
+  await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await copyGlobalLinkedModules(CWD);
 

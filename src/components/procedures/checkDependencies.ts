@@ -72,7 +72,7 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
       const curDepList = rearguardConfig.getDependencyList();
       const toInstall = targetDepKeys.filter((name) => !curDepList.includes(name));
 
-      await execa("npm", ["install", "-S", ...toInstall], execaOptions);
+      await execa("npm", ["install", "-S", "-E", ...toInstall], execaOptions);
     } catch (error) {
       console.error(error);
     }
@@ -84,7 +84,7 @@ export const checkDependencies = async (CWD: string = process.cwd()): Promise<vo
       const curDevDepList = rearguardConfig.getDevDependencyList();
       const toInstall = targetDevDepKeys.filter((name) => !curDevDepList.includes(name));
 
-      await execa("npm", ["install", "-D", ...toInstall], execaOptions);
+      await execa("npm", ["install", "-D", "-E", ...toInstall], execaOptions);
     } catch (error) {
       console.error(error);
     }

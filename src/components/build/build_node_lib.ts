@@ -8,6 +8,7 @@ import { buildLib } from "../procedures/build/buildLib";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 
 export async function build_node_lib(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ LIB ][ BUILD ][ START ]`));
@@ -24,6 +25,7 @@ export async function build_node_lib(options: BuildExecutorOptions): Promise<voi
   await rearguardLocalConfig.setBuildStatus("in_progress");
   await updatePkgFiles(CWD);
 
+  await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await copyGlobalLinkedModules(CWD);
 

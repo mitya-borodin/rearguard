@@ -3,6 +3,7 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { processQueue } from "../../helpers/processQueue";
 import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
+import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
@@ -19,6 +20,7 @@ export async function start_node_app(): Promise<void> {
 
   await processQueue.getInQueue(name);
 
+  await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await buildOutdatedDependency(CWD);
   await deleteExternalBundles(CWD, true);
