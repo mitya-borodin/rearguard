@@ -25,12 +25,11 @@ export async function sync_component(options: SyncExecutorOptions): Promise<void
   const isNode = rearguardConfig.isNode();
   const rearguardLocalConfig = new RearguardDevConfig(CWD);
 
-  await updateVSCodeSettingsForMonoRepo(CWD);
-
   await processQueue.getInQueue(name, options.bypass_the_queue);
 
   await rearguardLocalConfig.setBuildStatus("in_progress");
 
+  await updateVSCodeSettingsForMonoRepo(CWD);
   await checkNotInstalledDependencies(CWD);
 
   if (!isDll && !isNode) {

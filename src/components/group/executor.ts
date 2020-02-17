@@ -29,10 +29,19 @@ export const group_command_executor = async (
     const rearguardConfigItem = new RearguardConfig(pathToComponent);
     const isDll = rearguardConfigItem.isDll();
 
-    console.log(chalk.bold.blue(`[ ${pathToComponent} ]`));
+    console.log(
+      chalk.bold.magenta(
+        `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
+      ),
+    );
+    console.log("");
+    console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
     console.log("");
 
     if (!isDll || withDll) {
+      console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${[command, ...params].join(" ")} ]`));
+      console.log("");
+
       await execa(command, params, execaOptions);
     }
 
