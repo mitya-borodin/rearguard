@@ -8,6 +8,7 @@ import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSetti
 export const group_command_executor = async (
   [command, ...params]: string[],
   withDll = false,
+  bypassTheQueue = false,
 ): Promise<void> => {
   const CWD = process.cwd();
   const rearguardConfig = new RearguardConfig(CWD);
@@ -16,7 +17,7 @@ export const group_command_executor = async (
 
   await updateVSCodeSettingsForMonoRepo(CWD);
 
-  await processQueue.getInQueue(name);
+  await processQueue.getInQueue(name, bypassTheQueue);
 
   const sortedListOfMonoComponents = await getSortedListOfMonoComponents(CWD, components);
 
@@ -48,5 +49,5 @@ export const group_command_executor = async (
     console.log("");
   }
 
-  await processQueue.getOutQueue(name);
+  await processQueue.getOutQueue(name, bypassTheQueue);
 };

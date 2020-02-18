@@ -36,9 +36,10 @@ export const group_bootstrap_component = async (options: {
       LIB_DIR_NAME,
     ],
     true,
+    true,
   );
-  await group_command_executor(["npm", "install"], true);
-  await group_command_executor(["npm", "link"], true);
+  await group_command_executor(["npm", "install"], true, true);
+  await group_command_executor(["npm", "link"], true, true);
 
   const sortedListOfMonoComponents = await getSortedListOfMonoComponents(CWD, components);
 
