@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import moment from "moment";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { processQueue } from "../../helpers/processQueue";
@@ -11,7 +12,6 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { updateVSCodeSettingsForMonoRepo } from "../procedures/updateVSCodeSettingsForMonoRepo";
-import moment = require("moment");
 
 export async function sync_component(options: SyncExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ SYNC ][ START ]`));
@@ -31,19 +31,14 @@ export async function sync_component(options: SyncExecutorOptions): Promise<void
 
   await updateVSCodeSettingsForMonoRepo(CWD);
   await checkNotInstalledDependencies(CWD);
+  await buildUnfinishedDependencies(CWD);
+  await buildOutdatedDependency(CWD);
+  await copyGlobalLinkedModules(CWD);
 
   if (!isDll && !isNode) {
-    await buildUnfinishedDependencies(CWD);
-    await buildOutdatedDependency(CWD);
-    await deleteExternalBundles(CWD, true);
-    await copyGlobalLinkedModules(CWD);
+    await deleteExternalBundles(CWD);
     await copyBundlesToProject(CWD);
     await createListOfLoadOnDemand(CWD, false);
-  }
-
-  if (isNode) {
-    await buildUnfinishedDependencies(CWD);
-    await copyGlobalLinkedModules(CWD);
   }
 
   await rearguardLocalConfig.setBuildStatus("done");

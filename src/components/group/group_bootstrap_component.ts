@@ -1,15 +1,17 @@
+import chalk from "chalk";
+import execa from "execa";
 import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { processQueue } from "../../helpers/processQueue";
-import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
-import { getSortedListOfMonoComponents } from "../procedures/getSortedListOfDependencies";
-import { group_command_executor } from "./executor";
 import {
   DISTRIBUTIVE_DIR_NAME,
   DLL_BUNDLE_DIR_NAME,
   LIB_BUNDLE_DIR_NAME,
   LIB_DIR_NAME,
 } from "../../const";
+import { processQueue } from "../../helpers/processQueue";
+import { typingNonTypescriptModulesTemplate } from "../../templates/typingNonTypescriptModules";
+import { getSortedListOfMonoComponents } from "../procedures/getSortedListOfDependencies";
+import { group_command_executor } from "./executor";
 
 export const group_bootstrap_component = async (options: {
   only_dev: boolean;
@@ -21,21 +23,6 @@ export const group_bootstrap_component = async (options: {
   const components = rearguardConfig.getComponents();
 
   await processQueue.getInQueue(name);
-
-  const sortedListOfMonoComponents = await getSortedListOfMonoComponents(CWD, components);
-
-  for (const pathToComponent of sortedListOfMonoComponents) {
-    const rearguardConfigItem = new RearguardConfig(pathToComponent);
-    const context = path.resolve(pathToComponent, rearguardConfig.getContext());
-
-    const isBrowser = rearguardConfigItem.isBrowser();
-    const isIsomorphic = rearguardConfigItem.isIsomorphic();
-
-    if (isBrowser || isIsomorphic) {
-      // ! Create type declaration for non typescript modules like a .css, .png, etc.
-      await typingNonTypescriptModulesTemplate.render(options, context);
-    }
-  }
 
   await group_command_executor(
     [
@@ -52,19 +39,78 @@ export const group_bootstrap_component = async (options: {
   );
   await group_command_executor(["npm", "install"], true);
   await group_command_executor(["npm", "link"], true);
-  await group_command_executor(["npm", "run", "sync", "--", "--bypass_the_queue"], true);
-  await group_command_executor(["npm", "run", "validate"], false);
-  await group_command_executor(
-    [
+
+  const sortedListOfMonoComponents = await getSortedListOfMonoComponents(CWD, components);
+
+  for (const pathToComponent of sortedListOfMonoComponents) {
+    const rearguardConfigItem = new RearguardConfig(pathToComponent);
+    const context = path.resolve(pathToComponent, rearguardConfig.getContext());
+
+    const isDll = rearguardConfigItem.isDll();
+    const isBrowser = rearguardConfigItem.isBrowser();
+    const isIsomorphic = rearguardConfigItem.isIsomorphic();
+
+    if (isBrowser || isIsomorphic) {
+      // ! Create type declaration for non typescript modules like a .css, .png, etc.
+      await typingNonTypescriptModulesTemplate.render(options, context);
+    }
+
+    const execaOptions: execa.Options = {
+      stdout: "inherit",
+      stderr: "inherit",
+      cwd: pathToComponent,
+    };
+
+    console.log(
+      chalk.bold.magenta(
+        `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
+      ),
+    );
+    console.log("");
+    console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
+    console.log("");
+
+    console.log(
+      chalk.magenta(
+        `[ EXECUTED COMMAND ][ ${["npm", "run", "sync", "--", "--bypass_the_queue"].join(" ")} ]`,
+      ),
+    );
+    console.log("");
+
+    await execa("npm", ["run", "sync", "--", "--bypass_the_queue"], execaOptions);
+
+    if (!isDll) {
+      console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "run", "validate"].join(" ")} ]`));
+      console.log("");
+      await execa("npm", ["run", "validate"], execaOptions);
+    }
+
+    console.log(
+      chalk.magenta(
+        `[ EXECUTED COMMAND ][ ${[
+          "npm",
+          "run",
+          "build",
+          ...(options.debug ? ["--", "--debug"] : []),
+          ...(options.only_dev ? ["--", "--only_dev"] : []),
+          ...["--", "--bypass_the_queue"],
+        ].join(" ")} ]`,
+      ),
+    );
+    console.log("");
+
+    await execa(
       "npm",
-      "run",
-      "build",
-      ...(options.debug ? ["--", "--debug"] : []),
-      ...(options.only_dev ? ["--", "--only_dev"] : []),
-      ...["--", "--bypass_the_queue"],
-    ],
-    true,
-  );
+      [
+        "run",
+        "build",
+        ...(options.debug ? ["--", "--debug"] : []),
+        ...(options.only_dev ? ["--", "--only_dev"] : []),
+        ...["--", "--bypass_the_queue"],
+      ],
+      execaOptions,
+    );
+  }
 
   await processQueue.getOutQueue(name);
 };

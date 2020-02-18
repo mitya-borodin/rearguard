@@ -37,9 +37,14 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
   await prettierIgnoreTemplate.render(options);
 
   // ! Set scripts;
-  await rearguardConfig.setScripts({
-    build: "rearguard build",
-  });
+  await rearguardConfig.setScripts(
+    {
+      build: "rearguard build",
+      sync: "rearguard sync",
+      refresh: "rearguard refresh",
+    },
+    options.force,
+  );
 
   // ! Create entry points: index.tsx, export.ts, vendors.ts;
   await createEntryPoints(CWD);
@@ -58,5 +63,5 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
   });
 
   // ! Check/Install dependencies.
-  await checkDependencies(CWD);
+  await checkDependencies(CWD, options.force);
 }

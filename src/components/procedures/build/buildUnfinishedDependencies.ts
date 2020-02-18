@@ -44,22 +44,31 @@ export const buildUnfinishedDependencies = async (CWD: string): Promise<void> =>
       process.exit(1);
     }
 
-    const rearguardConfig = new RearguardConfig(dependencyPath);
+    if (!(await exist(dependencyGlobalPath))) {
+      continue;
+    }
+
+    const rearguardConfig = new RearguardConfig(dependencyGlobalPath);
 
     const pkgFiles = rearguardConfig.getFiles();
     const snakeName = rearguardConfig.getSnakeName();
 
     for (const pkgFile of pkgFiles) {
-      const pkgFilePath = path.resolve(dependencyPath, pkgFile);
+      const pkgFilePath = path.resolve(dependencyGlobalPath, pkgFile);
 
       if (pkgFile === DLL_BUNDLE_DIR_NAME || pkgFile === LIB_BUNDLE_DIR_NAME) {
         if (!(await exist(pkgFilePath))) {
           // ! If DLL_BUNDLE_DIR_NAME or LIB_BUNDLE_DIR_NAME doesn't exist
-          unfinishedDependencies.add(dependencyPath);
+          unfinishedDependencies.add(dependencyGlobalPath);
         } else {
-          const devSubDir = path.resolve(dependencyPath, pkgFile, snakeName, getBundleSubDir(true));
+          const devSubDir = path.resolve(
+            dependencyGlobalPath,
+            pkgFile,
+            snakeName,
+            getBundleSubDir(true),
+          );
           const prodSubDir = path.resolve(
-            dependencyPath,
+            dependencyGlobalPath,
             pkgFile,
             snakeName,
             getBundleSubDir(false),
@@ -67,22 +76,22 @@ export const buildUnfinishedDependencies = async (CWD: string): Promise<void> =>
 
           if (!(await exist(devSubDir)) || !(await exist(prodSubDir))) {
             // ! If SUB_DIR doesn't exist
-            unfinishedDependencies.add(dependencyPath);
+            unfinishedDependencies.add(dependencyGlobalPath);
           } else if ((await exist(devSubDir)) && fs.readdirSync(devSubDir).length === 0) {
             // ! If DEV_SUB_DIR hasn't items
-            unfinishedDependencies.add(dependencyPath);
+            unfinishedDependencies.add(dependencyGlobalPath);
           } else if ((await exist(prodSubDir)) && fs.readdirSync(prodSubDir).length === 0) {
             // ! If PROD_SUB_DIR hasn't items
-            unfinishedDependencies.add(dependencyPath);
+            unfinishedDependencies.add(dependencyGlobalPath);
           }
         }
       } else if (pkgFile === LIB_DIR_NAME) {
         // ! If LIB_DIR_NAME doesn't exist
         if (!(await exist(pkgFilePath))) {
-          unfinishedDependencies.add(dependencyPath);
+          unfinishedDependencies.add(dependencyGlobalPath);
           // ! If LIB_DIR_NAME hasn't items
         } else if (fs.readdirSync(pkgFilePath).length === 0) {
-          unfinishedDependencies.add(dependencyPath);
+          unfinishedDependencies.add(dependencyGlobalPath);
         }
       }
     }

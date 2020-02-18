@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { PUBLIC_DIR_NAME } from "../../const";
 import { Template } from "../Template";
+import { mkdir } from "../../helpers/mkdir";
 
 export const indexHtmlTemplate = new Template(
   "index.html",
@@ -44,6 +45,8 @@ export const copyPublicAssets = async (CWD: string, force = false): Promise<void
     for (const fileName of fileNames) {
       const pathToSourceFile = path.resolve(pathToSource, fileName);
       const pathToDestinationFile = path.resolve(pathToDestination, fileName);
+
+      mkdir(pathToDestination);
 
       fs.copyFileSync(pathToSourceFile, pathToDestinationFile);
     }

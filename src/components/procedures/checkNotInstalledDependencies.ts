@@ -3,32 +3,28 @@ import execa from "execa";
 import fs from "fs";
 import path from "path";
 import { promisify } from "util";
-import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
+import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 
 const exist = promisify(fs.exists);
 
 export const checkNotInstalledDependencies = async (CWD: string): Promise<void> => {
+  const rearguardConfig = new RearguardConfig(CWD);
   const dependencies = await getSortedListOfDependencies(CWD);
-  const globalNodeModulePath = getGlobalNodeModulePath();
   const localNodeModulePath = getLocalNodeModulePath(CWD);
 
   const dependenciesWhichShouldBeInstalled: string[] = [];
 
   for (const dependency of dependencies) {
-    let dependencyPath = "";
-
-    const dependencyGlobalPath = path.resolve(globalNodeModulePath, dependency);
     const dependencyLocalPath = path.resolve(localNodeModulePath, dependency);
 
-    if (await exist(dependencyLocalPath)) {
-      dependencyPath = dependencyLocalPath;
-    } else if (await exist(dependencyGlobalPath)) {
-      dependencyPath = dependencyGlobalPath;
-    }
+    if (!(await exist(dependencyLocalPath))) {
+      const unPublishedDependency = rearguardConfig.getUnPublishedDependency();
 
-    if (dependencyPath === "") {
-      dependenciesWhichShouldBeInstalled.push(dependency);
+      if (!unPublishedDependency.includes(dependency)) {
+        dependenciesWhichShouldBeInstalled.push(dependency);
+      }
     }
   }
 

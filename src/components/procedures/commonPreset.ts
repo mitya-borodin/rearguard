@@ -22,5 +22,5 @@ export const commonPreset = async (
   await staticTemplates(flags, CWD);
 
   // ! Check/Install dependencies.
-  await checkDependencies(CWD);
+  await checkDependencies(CWD, flags.force);
 };

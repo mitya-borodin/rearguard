@@ -15,6 +15,8 @@ import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
 import { group_start_component } from "../../../components/group/group_start_component";
 import { group_install_component } from "../../../components/group/group_install_component";
+import { group_un_link_component } from "../../../components/group/group_un_link_component";
+import { group_sync_component } from "../../../components/group/group_sync_component";
 
 const group_bootstrap = new Command(
   "bootstrap",
@@ -44,6 +46,7 @@ const group_clear = new Command("clear", group_clear_component);
 const group_install = new Command("install", group_install_component);
 
 const group_link = new Command("link", group_link_component);
+const group_unlink = new Command("unlink", group_un_link_component);
 
 const group_start = new Command(
   "start",
@@ -88,6 +91,13 @@ const group_refresh = new Command(
   },
 );
 
+const sync_refresh = new Command(
+  "sync",
+  async (): Promise<void> => {
+    await group_sync_component();
+  },
+);
+
 group_refresh.addFlag("--force");
 
 const group_test = new Command(
@@ -114,6 +124,7 @@ group.addCommand(group_bootstrap);
 group.addCommand(group_clear);
 group.addCommand(group_install);
 group.addCommand(group_link);
+group.addCommand(group_unlink);
 group.addCommand(group_start);
 group.addCommand(group_lint);
 group.addCommand(group_lint_fix);
@@ -125,3 +136,4 @@ group.addCommand(group_build);
 group.addCommand(group_test);
 group.addCommand(group_publish);
 group.addCommand(group_refresh);
+group.addCommand(sync_refresh);

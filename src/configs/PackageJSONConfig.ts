@@ -54,6 +54,13 @@ export class PackageJSONConfig {
     return this.getPkg().version;
   }
 
+  public async setVersion(version: string): Promise<Readonly<PackageJSON>> {
+    const origin = this.getPkg();
+    const pkg = new PackageJSON({ ...origin, version });
+
+    return this.setPkg(pkg);
+  }
+
   public getFiles(): string[] {
     return this.getPkg().files;
   }
