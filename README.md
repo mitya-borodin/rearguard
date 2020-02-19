@@ -1,7 +1,5 @@
 # Rearguard
 
-[wwwww](https://www.codewars.com/users/mitya-borodin/badges/large)
-
 - [Rearguard](#rearguard)
   - [Getting Started](#getting-started)
   - [What is it rearguard](#what-is-it-rearguard)
