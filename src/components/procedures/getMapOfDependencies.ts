@@ -2,9 +2,9 @@ import { isNumber } from "@rtcts/utils";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { promisify } from "util";
+import { RearguardConfig } from "../../configs/RearguardConfig";
+import { getGlobalNodeModulePath } from "../../helpers/dependencyPaths";
 
 const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
@@ -48,7 +48,7 @@ export const getMapOfDependencies = async (
     searchInMonoDirectory,
   );
   const globalNodeModulePath = getGlobalNodeModulePath();
-  const localNodeModulePath = getLocalNodeModulePath(CWD);
+  const localNodeModulePath = RearguardConfig.findNodeModulesInParentDirectory(CWD);
 
   for (const dependency of dependencies) {
     if (monoDependencyDirs.length > 0) {
@@ -122,6 +122,12 @@ export const getMapOfDependencies = async (
         mapOfDependencies.set(target, targetWeight + localDependencies.size);
       }
 
+      await getMapOfDependencies(
+        localDependencyCWD,
+        monoDependencyDirs,
+        mapOfDependencies,
+        target === "" ? dependency : target,
+      );
       continue;
     }
 

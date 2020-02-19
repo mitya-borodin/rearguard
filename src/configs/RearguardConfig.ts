@@ -24,6 +24,22 @@ export class RearguardConfig extends PackageJSONConfig {
 
     return false;
   };
+
+  static findNodeModulesInParentDirectory = (CWD: string, count = 0): string => {
+    const nodeModules = getLocalNodeModulePath(CWD);
+
+    if (fs.existsSync(nodeModules)) {
+      return nodeModules;
+    } else if (count <= 3) {
+      // ! Looking for above to 3 level, because npm package may have namespace
+      return RearguardConfig.findNodeModulesInParentDirectory(path.resolve(CWD, ".."), count + 1);
+    } else {
+      throw new Error(
+        `[ FIND_NODE_MODULES_IN_PARENT ][ node_modules not found here: ${nodeModules} ]`,
+      );
+    }
+  };
+
   public getBin(): string {
     return this.getRearguard().bin;
   }
@@ -211,7 +227,7 @@ export class RearguardConfig extends PackageJSONConfig {
         }
       }
     } else {
-      const nodeModulePath = this.findNodeModulesInParentDirectory(this.CWD);
+      const nodeModulePath = RearguardConfig.findNodeModulesInParentDirectory(this.CWD);
       const dependencyList = this.getDependencyList();
 
       for (const dependencyName of dependencyList) {
@@ -236,20 +252,5 @@ export class RearguardConfig extends PackageJSONConfig {
     }
 
     return projectDeps;
-  }
-
-  public findNodeModulesInParentDirectory(CWD: string, count = 0): string {
-    const nodeModules = getLocalNodeModulePath(CWD);
-
-    if (fs.existsSync(nodeModules)) {
-      return nodeModules;
-    } else if (count <= 3) {
-      // ! Looking for above to 3 level, because npm package may have namespace
-      return this.findNodeModulesInParentDirectory(path.resolve(CWD, ".."), count + 1);
-    } else {
-      throw new Error(
-        `[ FIND_NODE_MODULES_IN_PARENT ][ node_modules not found here: ${nodeModules} ]`,
-      );
-    }
   }
 }
