@@ -13,8 +13,11 @@ import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildNodeApp } from "../procedures/build/buildNodeApp";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
-import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
+import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicToDist";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
+import { copyNonCodeFiles } from "../procedures/copyNonCodeFiles";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -45,6 +48,8 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
   await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
   await copyGlobalLinkedModules(CWD);
+  await createListOfLoadOnDemand(CWD, false);
+  await copyBundlesAndPublicToDist(CWD, true);
 
   await buildNodeApp(CWD);
 
@@ -78,6 +83,8 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
   } catch (error) {
     console.error(error);
   }
+
+  await copyNonCodeFiles(path.resolve(CWD, "src"), path.resolve(CWD, DISTRIBUTIVE_DIR_NAME, "src"));
 
   await rearguardLocalConfig.setBuildStatus("done");
 

@@ -9,6 +9,7 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { runNodeServer } from "../procedures/runNodeServer";
 import { watchLinkedModules } from "../procedures/watchLinkedModules";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 
 export async function start_node_app(): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE APP ][ START ]`));
@@ -26,6 +27,7 @@ export async function start_node_app(): Promise<void> {
   await deleteExternalBundles(CWD);
   await copyGlobalLinkedModules(CWD);
   await copyBundlesToProject(CWD);
+  await createListOfLoadOnDemand(CWD, false);
   await watchLinkedModules(CWD);
 
   await processQueue.getOutQueue(name);
