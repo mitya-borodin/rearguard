@@ -18,6 +18,9 @@ import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicTo
 import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { copyNonCodeFiles } from "../procedures/copyNonCodeFiles";
+import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
+import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -47,7 +50,10 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
 
   await checkNotInstalledDependencies(CWD);
   await buildUnfinishedDependencies(CWD);
+  await buildOutdatedDependency(CWD);
   await copyGlobalLinkedModules(CWD);
+  await deleteExternalBundles(CWD);
+  await copyBundlesToProject(CWD);
   await createListOfLoadOnDemand(CWD, false);
   await copyBundlesAndPublicToDist(CWD, true);
 
