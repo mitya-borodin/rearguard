@@ -150,6 +150,12 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.isNode() && type === "app";
   }
 
+  public createListOfLoadOnDemandForAll(): boolean {
+    const { createListOfLoadOnDemandForAll } = this.getRearguard().project;
+
+    return createListOfLoadOnDemandForAll;
+  }
+
   public willLoadOnDemand(): boolean {
     const { will_load_on_demand } = this.getRearguard().project;
 

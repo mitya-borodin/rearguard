@@ -18,6 +18,7 @@ export class Rearguard {
     runtime: "browser" | "node" | "isomorphic";
     type: "dll" | "app" | "lib" | "mono";
     will_load_on_demand: boolean;
+    createListOfLoadOnDemandForAll: boolean;
     unPublishedDependency: string[];
     components: string[];
   };
@@ -60,6 +61,7 @@ export class Rearguard {
 
     this.project = {
       will_load_on_demand: false,
+      createListOfLoadOnDemandForAll: false,
       runtime: "browser",
       type: "app",
       unPublishedDependency: [],
@@ -118,6 +120,9 @@ export class Rearguard {
       if (isObject(data.project)) {
         if (isBoolean(data.project.will_load_on_demand)) {
           this.project.will_load_on_demand = data.project.will_load_on_demand;
+        }
+        if (isBoolean(data.project.createListOfLoadOnDemandForAll)) {
+          this.project.createListOfLoadOnDemandForAll = data.project.createListOfLoadOnDemandForAll;
         }
 
         if (["browser", "node", "isomorphic"].includes(data.project.runtime)) {
@@ -208,6 +213,7 @@ export class Rearguard {
         runtime: this.project.runtime,
         type: this.project.type,
         unPublishedDependency: this.project.unPublishedDependency,
+        createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
       },
     };
 
@@ -250,6 +256,7 @@ export class Rearguard {
           runtime: this.project.runtime,
           type: this.project.type,
           will_load_on_demand: this.project.will_load_on_demand,
+          createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
           unPublishedDependency: this.project.unPublishedDependency,
         },
         distribution: {
