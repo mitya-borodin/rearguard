@@ -32,4 +32,6 @@ export const copyNonCodeFiles = async (from = "src", to = "dist/src"): Promise<v
     .catch((error: any) => {
       return console.error("Copy failed: " + error);
     });
+
+  console.log("");
 };

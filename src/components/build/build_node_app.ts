@@ -12,15 +12,16 @@ import { DISTRIBUTIVE_DIR_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";
 import { processQueue } from "../../helpers/processQueue";
 import { BuildExecutorOptions } from "../../interfaces/executors/BuildExecutorOptions";
 import { buildNodeApp } from "../procedures/build/buildNodeApp";
+import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 import { buildUnfinishedDependencies } from "../procedures/build/buildUnfinishedDependencies";
 import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
 import { copyBundlesAndPublicToDist } from "../procedures/copyBundlesAndPublicToDist";
-import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
-import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
-import { copyNonCodeFiles } from "../procedures/copyNonCodeFiles";
 import { copyBundlesToProject } from "../procedures/copyBundlesToProject";
+import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
+import { copyNonCodeFiles } from "../procedures/copyNonCodeFiles";
+import { copyUnpublishedDepsToDistNodeModules } from "../procedures/copyUnpublishedDepsToDistNodeModules";
+import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
-import { buildOutdatedDependency } from "../procedures/build/buildOutdatedDependency";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -91,6 +92,8 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
   }
 
   await copyNonCodeFiles(path.resolve(CWD, "src"), path.resolve(CWD, DISTRIBUTIVE_DIR_NAME, "src"));
+
+  await copyUnpublishedDepsToDistNodeModules(CWD);
 
   await rearguardLocalConfig.setBuildStatus("done");
 
