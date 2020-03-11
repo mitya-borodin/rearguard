@@ -66,6 +66,18 @@ export class RearguardConfig extends PackageJSONConfig {
   public getOutput(): {
     path: string;
     publicPath: string;
+    library?: string;
+    libraryTarget:
+      | "var"
+      | "assign"
+      | "this"
+      | "window"
+      | "global"
+      | "commonjs"
+      | "commonjs2"
+      | "amd"
+      | "umd"
+      | "jsonp";
   } {
     return this.getRearguard().webpack.output;
   }
@@ -166,6 +178,12 @@ export class RearguardConfig extends PackageJSONConfig {
     const { postcssPlugins, useOnlyIsomorphicStyleLoader } = this.getRearguard().css;
 
     return [postcssPlugins, useOnlyIsomorphicStyleLoader];
+  }
+
+  public getHTML(): {
+    noInjectAssets: boolean;
+  } {
+    return this.getRearguard().html;
   }
 
   public async setRuntime(runtime: "browser" | "node" | "isomorphic"): Promise<void> {

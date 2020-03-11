@@ -11,6 +11,18 @@ export class Rearguard {
     output: {
       path: string;
       publicPath: string;
+      library?: string;
+      libraryTarget:
+        | "var"
+        | "assign"
+        | "this"
+        | "window"
+        | "global"
+        | "commonjs"
+        | "commonjs2"
+        | "amd"
+        | "umd"
+        | "jsonp";
     };
   };
 
@@ -44,6 +56,10 @@ export class Rearguard {
     useOnlyIsomorphicStyleLoader: boolean;
   };
 
+  public html: {
+    noInjectAssets: boolean;
+  };
+
   constructor(data?: any) {
     this.bin = "";
 
@@ -56,6 +72,7 @@ export class Rearguard {
       output: {
         path: "dist",
         publicPath: "/",
+        libraryTarget: "var",
       },
     };
 
@@ -88,6 +105,10 @@ export class Rearguard {
       useOnlyIsomorphicStyleLoader: false,
     };
 
+    this.html = {
+      noInjectAssets: false,
+    };
+
     if (data) {
       if (isString(data.bin)) {
         this.bin = data.bin;
@@ -109,7 +130,7 @@ export class Rearguard {
         }
 
         if (isObject(data.webpack.output)) {
-          for (const fieldName of ["path", "publicPath"]) {
+          for (const fieldName of ["path", "publicPath", "library", "libraryTarget"]) {
             if (isString(data.webpack.output[fieldName])) {
               this.webpack.output[fieldName] = data.webpack.output[fieldName];
             }
@@ -192,6 +213,12 @@ export class Rearguard {
         }
       }
 
+      if (isObject(data.html)) {
+        if (isBoolean(data.html.noInjectAssets)) {
+          this.html.noInjectAssets = data.html.noInjectAssets;
+        }
+      }
+
       if (this.project.runtime === "isomorphic") {
         this.css.useOnlyIsomorphicStyleLoader = true;
       }
@@ -199,15 +226,6 @@ export class Rearguard {
   }
 
   public toJSON(): object {
-    if (this.project.type === "mono") {
-      return {
-        project: {
-          type: this.project.type,
-          components: this.project.components,
-        },
-      };
-    }
-
     const project = {
       project: {
         runtime: this.project.runtime,
@@ -224,49 +242,16 @@ export class Rearguard {
       },
     };
 
-    if (this.project.runtime === "node" && this.project.type === "app") {
+    if (this.project.type === "dll") {
       return {
-        bin: this.bin,
-        ...{
-          ...project,
-          components: this.project.components,
+        webpack: {
+          context: this.webpack.context,
+          dll_entry: this.webpack.dll_entry,
         },
-        ...appDistribution,
-        configs: this.configs,
-      };
-    }
-
-    if (this.project.runtime === "node" && this.project.type === "lib") {
-      return {
         ...project,
         distribution: {
           publish_to_git: this.distribution.publish_to_git,
         },
-        configs: this.configs,
-      };
-    }
-
-    if (
-      (this.project.runtime === "isomorphic" || this.project.runtime === "browser") &&
-      this.project.type === "lib"
-    ) {
-      return {
-        webpack: this.webpack,
-        project: {
-          runtime: this.project.runtime,
-          type: this.project.type,
-          will_load_on_demand: this.project.will_load_on_demand,
-          createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
-          unPublishedDependency: this.project.unPublishedDependency,
-        },
-        distribution: {
-          publish_to_git: this.distribution.publish_to_git,
-        },
-        configs: this.configs,
-        css:
-          this.project.runtime === "isomorphic"
-            ? { postcssPlugins: this.css.postcssPlugins }
-            : { ...this.css },
       };
     }
 
@@ -274,28 +259,77 @@ export class Rearguard {
       if (this.project.type === "app") {
         return {
           webpack: this.webpack,
+          html: {
+            noInjectAssets: this.html.noInjectAssets,
+          },
+          css: { ...this.css },
           ...{
             ...project,
             components: this.project.components,
           },
           ...appDistribution,
           configs: this.configs,
-          css: { ...this.css },
         };
       }
+    }
 
-      if (this.project.type === "dll") {
+    if (this.project.runtime === "browser" || this.project.runtime === "isomorphic") {
+      if (this.project.type === "lib") {
         return {
-          webpack: {
-            context: this.webpack.context,
-            dll_entry: this.webpack.dll_entry,
+          webpack: this.webpack,
+          html: {
+            noInjectAssets: this.html.noInjectAssets,
           },
-          ...project,
+          css:
+            this.project.runtime === "isomorphic"
+              ? { postcssPlugins: this.css.postcssPlugins }
+              : { ...this.css },
+          project: {
+            runtime: this.project.runtime,
+            type: this.project.type,
+            will_load_on_demand: this.project.will_load_on_demand,
+            createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
+            unPublishedDependency: this.project.unPublishedDependency,
+          },
+          configs: this.configs,
           distribution: {
             publish_to_git: this.distribution.publish_to_git,
           },
         };
       }
+    }
+
+    if (this.project.runtime === "node") {
+      if (this.project.type === "app") {
+        return {
+          bin: this.bin,
+          ...{
+            ...project,
+            components: this.project.components,
+          },
+          configs: this.configs,
+          ...appDistribution,
+        };
+      }
+
+      if (this.project.type === "lib") {
+        return {
+          ...project,
+          configs: this.configs,
+          distribution: {
+            publish_to_git: this.distribution.publish_to_git,
+          },
+        };
+      }
+    }
+
+    if (this.project.type === "mono") {
+      return {
+        project: {
+          type: this.project.type,
+          components: this.project.components,
+        },
+      };
     }
 
     return this;

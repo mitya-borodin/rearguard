@@ -38,12 +38,13 @@
 
   "npm.enableScriptExplorer": false,
 
-  "workbench.colorTheme": "Darcula - WebStorm Edition",
+  "workbench.colorTheme": "Webstorm IntelliJ Darcula Theme",
   "workbench.iconTheme": "vscode-icons",
   "workbench.editor.revealIfOpen": true,
 
   "vsicons.dontShowNewVersionMessage": true,
 
   "cSpell.words": ["rtcts"],
-  "cSpell.language": "en,ru"
+  "cSpell.language": "en,ru",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

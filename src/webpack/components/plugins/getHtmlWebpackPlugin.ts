@@ -143,6 +143,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
   const rearguardConfig = new RearguardConfig(CWD);
   const isBrowser = rearguardConfig.isBrowser();
   const isApp = rearguardConfig.isApp();
+  const { noInjectAssets } = rearguardConfig.getHTML();
   const { publicPath } = rearguardConfig.getOutput();
 
   let template = path.resolve(CWD, getPublicDirPath(CWD), "index.html");
@@ -166,7 +167,7 @@ export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpa
       Object.assign(
         {},
         {
-          inject: true,
+          inject: !noInjectAssets,
           template,
         },
         {},
