@@ -6,7 +6,7 @@ import { Template } from "../Template";
 export class GitignoreTemplate extends Template {
   public async render(templateData: {
     publish_to_git: boolean;
-    list_for_load_on_demand: string;
+    listOfModulesWhichLoadOnDemand: string;
     force: boolean;
   }): Promise<void> {
     await this.createTargetDir();

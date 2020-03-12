@@ -2,7 +2,7 @@ import fs from "fs";
 import { resolve } from "path";
 import prettier from "prettier";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { LIST_OF_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
+import { LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
 import { getDLLRuntimeName, getLIBRuntimeName } from "../../helpers/bundleNaming";
 import { getBundleIntrospections } from "./getBundleIntrospection";
 import { promisify } from "util";
@@ -17,7 +17,7 @@ export const createListOfLoadOnDemand = async (
   const bundleIntrospections = await getBundleIntrospections(CWD, isDevelopment);
   const rearguardConfig = new RearguardConfig(CWD);
   const content: string[] = [];
-  const createListOfLoadOnDemandForAll = rearguardConfig.createListOfLoadOnDemandForAll();
+  const buildListOfLoadOnDemandModulesForAll = rearguardConfig.buildListOfLoadOnDemandModulesForAll();
 
   for (const {
     pkgSnakeName,
@@ -26,7 +26,7 @@ export const createListOfLoadOnDemand = async (
     assetsPath,
     willLoadOnDemand,
   } of bundleIntrospections) {
-    if (willLoadOnDemand || createListOfLoadOnDemandForAll) {
+    if (willLoadOnDemand || buildListOfLoadOnDemandModulesForAll) {
       const dllName = getDLLRuntimeName(pkgSnakeName);
       const libName = getLIBRuntimeName(pkgSnakeName);
       let libPublicPath = "";
@@ -74,7 +74,7 @@ export const createListOfLoadOnDemand = async (
     content.unshift("/* eslint-disable @typescript-eslint/camelcase */ \n\r");
 
     await writeFile(
-      resolve(CWD, rearguardConfig.getContext(), LIST_OF_LOAD_ON_DEMAND),
+      resolve(CWD, rearguardConfig.getContext(), LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND),
       prettier.format(content.join(" "), PRETTIER_DEFAULT),
     );
   }

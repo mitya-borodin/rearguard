@@ -26,8 +26,8 @@ export const STYLE_LINT_IGNORE_FILE_NAME = ".stylelintignore";
 export const REARGUARD_DEV_CONFIG_FILE_NAME = "rearguard-dev.json";
 export const PACKAGE_JSON_FILE_NAME = "package.json";
 
-// ! LIST_OF_LOAD_ON_DEMAND
-export const LIST_OF_LOAD_ON_DEMAND = "list_for_load_on_demand.ts";
+// ! LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND
+export const LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND = "listOfModulesWhichLoadOnDemand.ts";
 
 // ! PRETTIER_CONFIG
 export const PRETTIER_DEFAULT: PrettierOptions = {

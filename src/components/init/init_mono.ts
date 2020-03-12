@@ -1,7 +1,7 @@
 import execa from "execa";
 import path from "path";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { LIST_OF_LOAD_ON_DEMAND } from "../../const";
+import { LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND } from "../../const";
 import { mkdir } from "../../helpers/mkdir";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
@@ -31,7 +31,7 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
   // ! Create .gitignore configuration;
   await gitignoreTemplate.render({
     publish_to_git: false,
-    list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
+    listOfModulesWhichLoadOnDemand: LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND,
     force: flags.force,
   });
 

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import prettier from "prettier";
 import { getBundleIntrospections } from "./getBundleIntrospection";
-import { LIST_OF_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
+import { LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND, PRETTIER_DEFAULT } from "../../const";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export const createListModulesForLoadOnDemand = async (
@@ -14,7 +14,7 @@ export const createListModulesForLoadOnDemand = async (
   const listModulesForLoadOnDemandPath = path.resolve(
     CWD,
     rearguardConfig.getContext(),
-    LIST_OF_LOAD_ON_DEMAND,
+    LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND,
   );
 
   let source = "/* eslint:disable */\r";

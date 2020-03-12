@@ -1,7 +1,7 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { TypescriptConfig } from "../../configs/TypescriptConfig";
-import { DLL_BUNDLE_DIR_NAME, LIST_OF_LOAD_ON_DEMAND } from "../../const";
+import { DLL_BUNDLE_DIR_NAME, LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
 import { prettierIgnoreTemplate } from "../../templates/prettierignore";
 import { createEntryPoints } from "../procedures/createEntryPoints";
@@ -58,7 +58,7 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
   // ! Create .gitignore configuration;
   await gitignoreTemplate.render({
     publish_to_git: rearguardConfig.isPublishToGit(),
-    list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
+    listOfModulesWhichLoadOnDemand: LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND,
     force: rearguardConfig.isOverwriteGitIgnore() || options.force,
   });
 

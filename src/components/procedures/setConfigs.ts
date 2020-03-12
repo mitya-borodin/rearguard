@@ -6,7 +6,7 @@ import {
   DLL_BUNDLE_DIR_NAME,
   LIB_BUNDLE_DIR_NAME,
   LIB_DIR_NAME,
-  LIST_OF_LOAD_ON_DEMAND,
+  LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND,
   TESTS_DIR_NAME,
 } from "../../const";
 import { gitignoreTemplate } from "../../templates/gitignore";
@@ -109,7 +109,7 @@ export const setConfigs = async (
   // ! Create .gitignore configuration;
   await gitignoreTemplate.render({
     publish_to_git: rearguardConfig.isPublishToGit(),
-    list_for_load_on_demand: LIST_OF_LOAD_ON_DEMAND,
+    listOfModulesWhichLoadOnDemand: LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND,
     force: rearguardConfig.isOverwriteGitIgnore() || options.force,
   });
 };

@@ -41,7 +41,7 @@ export async function build_browser_lib(options: BuildExecutorOptions): Promise<
 
   await buildDllBundles(CWD, options);
   await buildLibBundles(CWD, options);
-  await buildLib(CWD, false); // TODO Продумать эту ситуацию.
+  await buildLib(CWD, true);
 
   await deleteExternalBundles(CWD);
 

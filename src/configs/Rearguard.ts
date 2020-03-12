@@ -31,9 +31,8 @@ export class Rearguard {
     type: "dll" | "app" | "lib" | "mono";
     components: string[];
     unPublishedDependency: string[];
-    will_load_on_demand: boolean;
-    createListOfLoadOnDemandForAll: boolean;
-    includeAllDependenciesToBundle: boolean;
+    thisModuleWillLoadOnDemand: boolean;
+    buildListOfLoadOnDemandModulesForAll: boolean;
   };
 
   public distribution: {
@@ -82,9 +81,8 @@ export class Rearguard {
       type: "app",
       components: ["components"],
       unPublishedDependency: [],
-      will_load_on_demand: false,
-      createListOfLoadOnDemandForAll: false,
-      includeAllDependenciesToBundle: false,
+      thisModuleWillLoadOnDemand: false,
+      buildListOfLoadOnDemandModulesForAll: false,
     };
 
     this.distribution = {
@@ -169,16 +167,13 @@ export class Rearguard {
           }
         }
 
-        if (isBoolean(data.project.will_load_on_demand)) {
-          this.project.will_load_on_demand = data.project.will_load_on_demand;
+        if (isBoolean(data.project.thisModuleWillLoadOnDemand)) {
+          this.project.thisModuleWillLoadOnDemand = data.project.thisModuleWillLoadOnDemand;
         }
 
-        if (isBoolean(data.project.createListOfLoadOnDemandForAll)) {
-          this.project.createListOfLoadOnDemandForAll = data.project.createListOfLoadOnDemandForAll;
-        }
-
-        if (isBoolean(data.project.includeAllDependenciesToBundle)) {
-          this.project.includeAllDependenciesToBundle = data.project.includeAllDependenciesToBundle;
+        if (isBoolean(data.project.buildListOfLoadOnDemandModulesForAll)) {
+          this.project.buildListOfLoadOnDemandModulesForAll =
+            data.project.buildListOfLoadOnDemandModulesForAll;
         }
       }
 
@@ -238,8 +233,7 @@ export class Rearguard {
         runtime: this.project.runtime,
         type: this.project.type,
         unPublishedDependency: this.project.unPublishedDependency,
-        createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
-        includeAllDependenciesToBundle: this.project.includeAllDependenciesToBundle,
+        buildListOfLoadOnDemandModulesForAll: this.project.buildListOfLoadOnDemandModulesForAll,
       },
     };
 
@@ -255,6 +249,7 @@ export class Rearguard {
         webpack: {
           context: this.webpack.context,
           dll_entry: this.webpack.dll_entry,
+          output: this.webpack.output,
         },
         ...project,
         distribution: {
@@ -295,10 +290,9 @@ export class Rearguard {
           project: {
             runtime: this.project.runtime,
             type: this.project.type,
-            will_load_on_demand: this.project.will_load_on_demand,
-            createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
+            thisModuleWillLoadOnDemand: this.project.thisModuleWillLoadOnDemand,
+            buildListOfLoadOnDemandModulesForAll: this.project.buildListOfLoadOnDemandModulesForAll,
             unPublishedDependency: this.project.unPublishedDependency,
-            includeAllDependenciesToBundle: this.project.includeAllDependenciesToBundle,
           },
           configs: this.configs,
           distribution: {

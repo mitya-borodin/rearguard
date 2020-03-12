@@ -3,7 +3,7 @@ import path from "path";
 import prettier from "prettier";
 import { promisify } from "util";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { PACKAGE_JSON_FILE_NAME, PRETTIER_JSON_STRINGIFY } from "../../const";
+import { PACKAGE_JSON_FILE_NAME, PRETTIER_JSON } from "../../const";
 import { Template } from "../Template";
 
 const rmdir = promisify(fs.rmdir);
@@ -22,7 +22,7 @@ class VSCodeTemplate extends Template {
   }
 
   protected prepareContent(): string {
-    return prettier.format(this.sourceContent, PRETTIER_JSON_STRINGIFY);
+    return prettier.format(this.sourceContent, PRETTIER_JSON);
   }
 
   private async isPartOfMonoRepository(CWD: string, deep = 0): Promise<boolean> {
