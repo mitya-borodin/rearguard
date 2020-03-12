@@ -162,16 +162,22 @@ export class RearguardConfig extends PackageJSONConfig {
     return this.isNode() && type === "app";
   }
 
+  public willLoadOnDemand(): boolean {
+    const { will_load_on_demand } = this.getRearguard().project;
+
+    return will_load_on_demand;
+  }
+
   public createListOfLoadOnDemandForAll(): boolean {
     const { createListOfLoadOnDemandForAll } = this.getRearguard().project;
 
     return createListOfLoadOnDemandForAll;
   }
 
-  public willLoadOnDemand(): boolean {
-    const { will_load_on_demand } = this.getRearguard().project;
+  public includeAllDependenciesToBundle(): boolean {
+    const { includeAllDependenciesToBundle } = this.getRearguard().project;
 
-    return will_load_on_demand;
+    return includeAllDependenciesToBundle;
   }
 
   public getCSS(): [string, boolean] {

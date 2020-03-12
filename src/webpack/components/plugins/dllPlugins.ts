@@ -26,6 +26,11 @@ export const getDllReferencePlugin = async (
   isDevelopment: boolean,
 ): Promise<webpack.Plugin[]> => {
   const rearguardConfig = new RearguardConfig(CWD);
+
+  if (rearguardConfig.includeAllDependenciesToBundle()) {
+    return [];
+  }
+
   const pkgSnakeName = rearguardConfig.getSnakeName();
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
 

@@ -3,11 +3,18 @@ import webpack from "webpack";
 import { getBundleIntrospections } from "../../components/procedures/getBundleIntrospection";
 import { BundleIntrospection } from "../../interfaces/BundleIntrospection";
 import { getLIBRuntimeName } from "../../helpers/bundleNaming";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 
 export const getExternals = async (
   CWD: string,
   isDevelopment: boolean,
 ): Promise<webpack.ExternalsObjectElement> => {
+  const rearguardConfig = new RearguardConfig(CWD);
+
+  if (rearguardConfig.includeAllDependenciesToBundle()) {
+    return {};
+  }
+
   const bundleIntrospection: BundleIntrospection[] = await getBundleIntrospections(
     CWD,
     isDevelopment,

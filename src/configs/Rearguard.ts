@@ -29,10 +29,11 @@ export class Rearguard {
   public project: {
     runtime: "browser" | "node" | "isomorphic";
     type: "dll" | "app" | "lib" | "mono";
+    components: string[];
+    unPublishedDependency: string[];
     will_load_on_demand: boolean;
     createListOfLoadOnDemandForAll: boolean;
-    unPublishedDependency: string[];
-    components: string[];
+    includeAllDependenciesToBundle: boolean;
   };
 
   public distribution: {
@@ -77,12 +78,13 @@ export class Rearguard {
     };
 
     this.project = {
-      will_load_on_demand: false,
-      createListOfLoadOnDemandForAll: false,
       runtime: "browser",
       type: "app",
-      unPublishedDependency: [],
       components: ["components"],
+      unPublishedDependency: [],
+      will_load_on_demand: false,
+      createListOfLoadOnDemandForAll: false,
+      includeAllDependenciesToBundle: false,
     };
 
     this.distribution = {
@@ -139,19 +141,22 @@ export class Rearguard {
       }
 
       if (isObject(data.project)) {
-        if (isBoolean(data.project.will_load_on_demand)) {
-          this.project.will_load_on_demand = data.project.will_load_on_demand;
-        }
-        if (isBoolean(data.project.createListOfLoadOnDemandForAll)) {
-          this.project.createListOfLoadOnDemandForAll = data.project.createListOfLoadOnDemandForAll;
-        }
-
         if (["browser", "node", "isomorphic"].includes(data.project.runtime)) {
           this.project.runtime = data.project.runtime;
         }
 
         if (["dll", "app", "lib", "mono"].includes(data.project.type)) {
           this.project.type = data.project.type;
+        }
+
+        if (isArray(data.project.components)) {
+          this.project.components = [];
+
+          for (const item of data.project.components) {
+            if (isString(item)) {
+              this.project.components.push(item);
+            }
+          }
         }
 
         if (isArray(data.project.unPublishedDependency)) {
@@ -164,14 +169,16 @@ export class Rearguard {
           }
         }
 
-        if (isArray(data.project.components)) {
-          this.project.components = [];
+        if (isBoolean(data.project.will_load_on_demand)) {
+          this.project.will_load_on_demand = data.project.will_load_on_demand;
+        }
 
-          for (const item of data.project.components) {
-            if (isString(item)) {
-              this.project.components.push(item);
-            }
-          }
+        if (isBoolean(data.project.createListOfLoadOnDemandForAll)) {
+          this.project.createListOfLoadOnDemandForAll = data.project.createListOfLoadOnDemandForAll;
+        }
+
+        if (isBoolean(data.project.includeAllDependenciesToBundle)) {
+          this.project.includeAllDependenciesToBundle = data.project.includeAllDependenciesToBundle;
         }
       }
 
@@ -232,6 +239,7 @@ export class Rearguard {
         type: this.project.type,
         unPublishedDependency: this.project.unPublishedDependency,
         createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
+        includeAllDependenciesToBundle: this.project.includeAllDependenciesToBundle,
       },
     };
 
@@ -290,6 +298,7 @@ export class Rearguard {
             will_load_on_demand: this.project.will_load_on_demand,
             createListOfLoadOnDemandForAll: this.project.createListOfLoadOnDemandForAll,
             unPublishedDependency: this.project.unPublishedDependency,
+            includeAllDependenciesToBundle: this.project.includeAllDependenciesToBundle,
           },
           configs: this.configs,
           distribution: {

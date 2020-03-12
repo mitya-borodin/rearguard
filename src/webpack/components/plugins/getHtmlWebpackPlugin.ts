@@ -141,16 +141,10 @@ class ComputeDataForHWP {
 
 export const getHtmlWebpackPlugin = (CWD: string, isDevelopment: boolean): webpack.Plugin[] => {
   const rearguardConfig = new RearguardConfig(CWD);
-  const isBrowser = rearguardConfig.isBrowser();
-  const isApp = rearguardConfig.isApp();
   const { noInjectAssets } = rearguardConfig.getHTML();
   const { publicPath } = rearguardConfig.getOutput();
 
-  let template = path.resolve(CWD, getPublicDirPath(CWD), "index.html");
-
-  if (!(isBrowser && isApp)) {
-    template = path.resolve(__dirname, "../../../templates/indexHtml", "index.html");
-  }
+  const template = path.resolve(CWD, getPublicDirPath(CWD), "index.html");
 
   let PUBLIC_URL: string = path.normalize(publicPath);
 
