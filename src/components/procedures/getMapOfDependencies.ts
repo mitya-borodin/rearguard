@@ -48,7 +48,6 @@ export const getMapOfDependencies = async (
     searchInMonoDirectory,
   );
   const globalNodeModulePath = getGlobalNodeModulePath();
-  const localNodeModulePath = RearguardConfig.findNodeModulesInParentDirectory(CWD);
 
   for (const dependency of dependencies) {
     if (monoDependencyDirs.length > 0) {
@@ -106,7 +105,7 @@ export const getMapOfDependencies = async (
       continue;
     }
 
-    const localDependencyCWD = path.resolve(localNodeModulePath, dependency);
+    const localDependencyCWD = RearguardConfig.findDependencyInParentNodeModules(CWD, dependency);
 
     if (await exists(localDependencyCWD)) {
       const localRearguardConfig = new RearguardConfig(localDependencyCWD);
