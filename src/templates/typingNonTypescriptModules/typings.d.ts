@@ -1,7 +1,3 @@
-declare module "isomorphic-style-loader/StyleContext";
-declare module "isomorphic-style-loader/withStyles";
-declare module "isomorphic-style-loader/useStyles";
-
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: "development" | "production" | "test";
@@ -19,58 +15,98 @@ declare module "worker-loader!*" {
   export default WebpackWorker;
 }
 
+declare module "isomorphic-style-loader/StyleContext";
+declare module "isomorphic-style-loader/withStyles";
+declare module "isomorphic-style-loader/useStyles";
+
+type _getContent = () => [string, string, string] | string;
+type _getCss = () => string;
+type _insertCss = () => removeCss;
+type removeCss = () => void;
+
 declare module "*.css" {
-  const classes: { readonly [key: string]: string };
+  const classes: {
+    readonly [key: string]: string | _insertCss | _getContent | _getCss;
+    _getContent(): [string, string, string] | string;
+    _getCss(): string;
+    _insertCss(): removeCss;
+  };
+
   export default classes;
 }
 
 declare module "*.module.css" {
-  const classes: { readonly [key: string]: string };
+  const classes: {
+    readonly [key: string]: string | _insertCss | _getContent | _getCss;
+    _getContent(): [string, string, string] | string;
+    _getCss(): string;
+    _insertCss(): removeCss;
+  };
+
   export default classes;
 }
 
 declare module "*.module.scss" {
-  const classes: { readonly [key: string]: string };
+  const classes: {
+    readonly [key: string]: string | _insertCss | _getContent | _getCss;
+    _getContent(): [string, string, string] | string;
+    _getCss(): string;
+    _insertCss(): removeCss;
+  };
+
   export default classes;
 }
 
 declare module "*.module.sass" {
-  const classes: { readonly [key: string]: string };
+  const classes: {
+    readonly [key: string]: string | _insertCss | _getContent | _getCss;
+    _getContent(): [string, string, string] | string;
+    _getCss(): string;
+    _insertCss(): removeCss;
+  };
+
   export default classes;
 }
 
 declare module "*.ico" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.bmp" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.gif" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.jpg" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.jpeg" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.png" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.webp" {
   const src: string;
+
   export default src;
 }
 
@@ -80,40 +116,48 @@ declare module "*.svg" {
   export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
   const src: string;
+
   export default src;
 }
 
 declare module "*.eot" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.otf" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.ttf" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.woff" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.woff2" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.csv" {
   const src: string;
+
   export default src;
 }
 
 declare module "*.text" {
   const src: string;
+
   export default src;
 }
