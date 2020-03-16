@@ -27,7 +27,7 @@ export const getWebpackDevServerConfig = async (
     compress: true,
     contentBase: [DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME],
     watchContentBase: false,
-    useLocalIp: false,
+    useLocalIp: true,
     before(app: any, server: any): void {
       // ! HACK for forcing invalidation of the webpack compiler
       pubSub.on(events.SYNCED, () => {

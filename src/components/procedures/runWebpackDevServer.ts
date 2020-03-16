@@ -22,7 +22,7 @@ export const runWebpackDevServer = async (
 
   const wds: any = new WDS(compiler, webpackDevServerConfig);
 
-  const { host, port } = await rearguardLocalConfig.getWDSConfig();
+  const { port } = await rearguardLocalConfig.getWDSConfig();
 
   process.on("SIGINT", () => {
     wds.close();
@@ -40,5 +40,5 @@ export const runWebpackDevServer = async (
     process.exit(1);
   });
 
-  wds.listen(port, host);
+  wds.listen(port);
 };
