@@ -3,9 +3,10 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { VS_CODE_SETTINGS } from "../../const";
+import { VS_CODE_SETTINGS, PRETTIER_JSON } from "../../const";
 import { getSortedListOfMonoComponents } from "./getSortedListOfDependencies";
 import { vsCodeSettingsTemplate, vsCodeExtensionsTemplate } from "../../templates/vsCode";
+import prettier from "prettier";
 
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
@@ -52,9 +53,13 @@ export const updateVSCodeSettingsForMonoRepo = async (CWD: string): Promise<void
         changeProcessCWD: true,
       }));
 
-      await writeFile(vsCodeSettingsPath, JSON.stringify(vsCodeSettings, null, 2), {
-        encoding: "utf-8",
-      });
+      await writeFile(
+        vsCodeSettingsPath,
+        prettier.format(JSON.stringify(vsCodeSettings), PRETTIER_JSON),
+        {
+          encoding: "utf-8",
+        },
+      );
     }
   } else if (await exists(path.resolve(CWD, "package.json"))) {
     const vsCodeSettingsPath = path.resolve(CWD, VS_CODE_SETTINGS);
@@ -71,8 +76,12 @@ export const updateVSCodeSettingsForMonoRepo = async (CWD: string): Promise<void
     vsCodeSettings["eslint.packageManager"] = "npm";
     vsCodeSettings["eslint.workingDirectories"] = ["."];
 
-    await writeFile(vsCodeSettingsPath, JSON.stringify(vsCodeSettings, null, 2), {
-      encoding: "utf-8",
-    });
+    await writeFile(
+      vsCodeSettingsPath,
+      prettier.format(JSON.stringify(vsCodeSettings), PRETTIER_JSON),
+      {
+        encoding: "utf-8",
+      },
+    );
   }
 };
