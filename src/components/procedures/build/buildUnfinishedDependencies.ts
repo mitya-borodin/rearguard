@@ -3,12 +3,12 @@ import execa from "execa";
 import fs from "fs";
 import ora from "ora";
 import path from "path";
-import { getSortedListOfDependencies } from "../getSortedListOfDependencies";
-import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../../helpers/dependencyPaths";
+import { promisify } from "util";
 import { RearguardConfig } from "../../../configs/RearguardConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, LIB_DIR_NAME } from "../../../const";
 import { getBundleSubDir } from "../../../helpers/bundleNaming";
-import { promisify } from "util";
+import { getGlobalNodeModulePath, getLocalNodeModulePath } from "../../../helpers/dependencyPaths";
+import { getSortedListOfDependencies } from "../getSortedListOfDependencies";
 
 const exist = promisify(fs.exists);
 

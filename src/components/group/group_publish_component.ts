@@ -39,28 +39,32 @@ export const group_publish_component = async (options: {
 
   await group_command_executor(["npm", "run", "build", "--", "--bypass_the_queue"], true);
 
-  for (const pathToComponent of sortedListOfMonoComponents) {
-    const rearguardConfigItem = new RearguardConfig(pathToComponent);
+  try {
+    for (const pathToComponent of sortedListOfMonoComponents) {
+      const rearguardConfigItem = new RearguardConfig(pathToComponent);
 
-    console.log(
-      chalk.bold.magenta(
-        `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
-      ),
-    );
-    console.log("");
-    console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
-    console.log("");
+      console.log(
+        chalk.bold.magenta(
+          `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
+        ),
+      );
+      console.log("");
+      console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
+      console.log("");
 
-    console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "publish"].join(" ")} ]`));
-    console.log("");
+      console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "publish"].join(" ")} ]`));
+      console.log("");
 
-    const execaOptions: execa.Options = {
-      stdout: "inherit",
-      stderr: "inherit",
-      cwd: pathToComponent,
-    };
+      const execaOptions: execa.Options = {
+        stdout: "inherit",
+        stderr: "inherit",
+        cwd: pathToComponent,
+      };
 
-    await execa("npm", ["publish"], execaOptions);
+      await execa("npm", ["publish"], execaOptions);
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   console.log("");

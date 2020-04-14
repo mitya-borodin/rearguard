@@ -3,9 +3,9 @@ import execa from "execa";
 import fs from "fs";
 import path from "path";
 import { promisify } from "util";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 import { getSortedListOfDependencies } from "./getSortedListOfDependencies";
-import { RearguardConfig } from "../../configs/RearguardConfig";
 
 const exist = promisify(fs.exists);
 
@@ -41,10 +41,15 @@ export const checkNotInstalledDependencies = async (CWD: string): Promise<void> 
     console.log(chalk.blue(`npm install -S -E ${dependenciesWhichShouldBeInstalled.join(" ")}`));
     console.log("");
 
-    await execa("npm", ["install", "-S", "-E", ...dependenciesWhichShouldBeInstalled], {
-      stdout: "inherit",
-      stderr: "inherit",
-    });
+    try {
+      await execa("npm", ["install", "-S", "-E", ...dependenciesWhichShouldBeInstalled], {
+        stdout: "inherit",
+        stderr: "inherit",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log("");
   }
 };

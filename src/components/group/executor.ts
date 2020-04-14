@@ -21,32 +21,36 @@ export const group_command_executor = async (
 
   const sortedListOfMonoComponents = await getSortedListOfMonoComponents(CWD, components);
 
-  for (const pathToComponent of sortedListOfMonoComponents) {
-    const execaOptions: execa.Options = {
-      stdout: "inherit",
-      stderr: "inherit",
-      cwd: pathToComponent,
-    };
-    const rearguardConfigItem = new RearguardConfig(pathToComponent);
-    const isDll = rearguardConfigItem.isDll();
+  try {
+    for (const pathToComponent of sortedListOfMonoComponents) {
+      const execaOptions: execa.Options = {
+        stdout: "inherit",
+        stderr: "inherit",
+        cwd: pathToComponent,
+      };
+      const rearguardConfigItem = new RearguardConfig(pathToComponent);
+      const isDll = rearguardConfigItem.isDll();
 
-    console.log(
-      chalk.bold.magenta(
-        `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
-      ),
-    );
-    console.log("");
-    console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
-    console.log("");
-
-    if (!isDll || withDll) {
-      console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${[command, ...params].join(" ")} ]`));
+      console.log(
+        chalk.bold.magenta(
+          `[ ${rearguardConfigItem.getName()} ][ ${rearguardConfigItem.getVersion()} ]`,
+        ),
+      );
+      console.log("");
+      console.log(chalk.magenta(`[ CWD ][ ${pathToComponent} ]`));
       console.log("");
 
-      await execa(command, params, execaOptions);
-    }
+      if (!isDll || withDll) {
+        console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${[command, ...params].join(" ")} ]`));
+        console.log("");
 
-    console.log("");
+        await execa(command, params, execaOptions);
+      }
+
+      console.log("");
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   await processQueue.getOutQueue(name, bypassTheQueue);

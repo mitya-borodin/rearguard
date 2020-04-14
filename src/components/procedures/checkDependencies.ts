@@ -1,6 +1,6 @@
+import execa from "execa";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { DependencyMap } from "../../interfaces/configs/PackageJSON";
-import execa from "execa";
 
 const targetDepKeys: Set<string> = new Set(["tslib"]);
 const targetDevDepKeys: Set<string> = new Set([

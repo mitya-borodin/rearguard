@@ -16,9 +16,13 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
     stderr: "inherit",
   };
 
-  await initPackage(CWD);
-  await execa("npm", ["install", "-D", "-E", "husky"], execaOptions);
-  await mkdir(path.resolve(CWD, "components"));
+  try {
+    await initPackage(CWD);
+    await execa("npm", ["install", "-D", "-E", "husky"], execaOptions);
+    await mkdir(path.resolve(CWD, "components"));
+  } catch (error) {
+    console.error(error);
+  }
 
   // ! Create .vscode/settings.json.
   await vsCodeSettingsTemplate.render(flags);

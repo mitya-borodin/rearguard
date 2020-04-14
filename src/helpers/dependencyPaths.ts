@@ -8,10 +8,13 @@ export const getGlobalNodeModulePath = (): string => {
   if (cacheGlobalNodeModulePath !== "") {
     return cacheGlobalNodeModulePath;
   }
+  try {
+    const { stdout } = execa.sync("npm", ["root", "-g"], { encoding: "utf-8" });
 
-  const { stdout } = execa.sync("npm", ["root", "-g"], { encoding: "utf-8" });
-
-  cacheGlobalNodeModulePath = stdout.replace("\n", "");
+    cacheGlobalNodeModulePath = stdout.replace("\n", "");
+  } catch (error) {
+    console.error(error);
+  }
 
   return cacheGlobalNodeModulePath;
 };

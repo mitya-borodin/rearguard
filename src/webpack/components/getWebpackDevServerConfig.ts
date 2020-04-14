@@ -1,11 +1,11 @@
+import path from "path";
 import WebpackDevServer from "webpack-dev-server";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { DLL_BUNDLE_DIR_NAME, LIB_BUNDLE_DIR_NAME, PUBLIC_DIR_NAME } from "../../const";
+import { applyHackForForceReCompile } from "../../helpers/applyHackForForceReCompile";
 import { events, pubSub } from "../../helpers/pubSub";
 import { getWebpackStats } from "./getWebpackStats";
-import { RearguardConfig } from "../../configs/RearguardConfig";
-import path from "path";
-import fs from "fs";
 
 export const getWebpackDevServerConfig = async (
   CWD: string,
@@ -30,23 +30,10 @@ export const getWebpackDevServerConfig = async (
     useLocalIp: true,
     before(app: any, server: any): void {
       // ! HACK for forcing invalidation of the webpack compiler
-      pubSub.on(events.SYNCED, () => {
-        if (fs.existsSync(pathToEntryPoint)) {
-          let content = fs.readFileSync(pathToEntryPoint, { encoding: "utf-8" });
-          const title = "// HACK for forcing invalidation of the webpack compiler, timestamp:";
-          const start = content.indexOf(title);
+      pubSub.on(events.SYNCED, async () => {
+        await applyHackForForceReCompile(pathToEntryPoint);
 
-          if (start !== -1) {
-            content = content.substring(0, start);
-          } else {
-            content += `\r`;
-          }
-
-          content += `${title} ${Date.now()}`;
-
-          needReloadBrowser = true;
-          fs.writeFileSync(pathToEntryPoint, content);
-        }
+        needReloadBrowser = true;
       });
 
       pubSub.on(events.RELOAD_BROWSER, () => {

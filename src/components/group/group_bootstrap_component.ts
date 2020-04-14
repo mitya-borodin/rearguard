@@ -78,39 +78,45 @@ export const group_bootstrap_component = async (options: {
     );
     console.log("");
 
-    await execa("npm", ["run", "sync", "--", "--bypass_the_queue"], execaOptions);
+    try {
+      await execa("npm", ["run", "sync", "--", "--bypass_the_queue"], execaOptions);
 
-    if (!isDll) {
-      console.log(chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "run", "validate"].join(" ")} ]`));
+      if (!isDll) {
+        console.log(
+          chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "run", "validate"].join(" ")} ]`),
+        );
+        console.log("");
+        await execa("npm", ["run", "validate"], execaOptions);
+      }
+
+      console.log(
+        chalk.magenta(
+          `[ EXECUTED COMMAND ][ ${[
+            "npm",
+            "run",
+            "build",
+            ...(options.debug ? ["--", "--debug"] : []),
+            ...(options.only_dev ? ["--", "--only_dev"] : []),
+            ...["--", "--bypass_the_queue"],
+          ].join(" ")} ]`,
+        ),
+      );
       console.log("");
-      await execa("npm", ["run", "validate"], execaOptions);
-    }
 
-    console.log(
-      chalk.magenta(
-        `[ EXECUTED COMMAND ][ ${[
-          "npm",
+      await execa(
+        "npm",
+        [
           "run",
           "build",
           ...(options.debug ? ["--", "--debug"] : []),
           ...(options.only_dev ? ["--", "--only_dev"] : []),
           ...["--", "--bypass_the_queue"],
-        ].join(" ")} ]`,
-      ),
-    );
-    console.log("");
-
-    await execa(
-      "npm",
-      [
-        "run",
-        "build",
-        ...(options.debug ? ["--", "--debug"] : []),
-        ...(options.only_dev ? ["--", "--only_dev"] : []),
-        ...["--", "--bypass_the_queue"],
-      ],
-      execaOptions,
-    );
+        ],
+        execaOptions,
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   await processQueue.getOutQueue(name);

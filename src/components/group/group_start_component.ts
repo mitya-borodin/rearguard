@@ -45,15 +45,19 @@ export const group_start_component = async (options: {
     cwd: appCWD,
   };
 
-  await execa(
-    "npm",
-    [
-      "run",
-      "start",
-      ...(options.release ? ["--", "--release"] : []),
-      ...(options.debug ? ["--", "--debug"] : []),
-      ...(options.ts_node_dev ? ["--", "--ts_node_dev"] : []),
-    ],
-    execaOptions,
-  );
+  try {
+    await execa(
+      "npm",
+      [
+        "run",
+        "start",
+        ...(options.release ? ["--", "--release"] : []),
+        ...(options.debug ? ["--", "--debug"] : []),
+        ...(options.ts_node_dev ? ["--", "--ts_node_dev"] : []),
+      ],
+      execaOptions,
+    );
+  } catch (error) {
+    console.error(error);
+  }
 };
