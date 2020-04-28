@@ -22,6 +22,7 @@ export const setScripts = async (CWD: string): Promise<void> => {
   // ! Set scripts;
   await rearguardConfig.setScripts({
     ...startScripts,
+    watch: "rearguard watch",
     build: "rearguard build",
     test: "rearguard test",
     lint: `rearguard lint`,

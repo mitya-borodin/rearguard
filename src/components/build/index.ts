@@ -18,42 +18,46 @@ const defaultOptions: BuildExecutorOptions = {
 export async function build_component(
   options: BuildExecutorOptions = defaultOptions,
 ): Promise<void> {
-  const CWD: string = process.cwd();
+  try {
+    const CWD: string = process.cwd();
 
-  // * Create rearguard config
-  const rearguardConfig = new RearguardConfig(CWD);
+    // * Create rearguard config
+    const rearguardConfig = new RearguardConfig(CWD);
 
-  // * Prepare data
-  const isIsomorphic = rearguardConfig.isIsomorphic();
-  const isBrowser = rearguardConfig.isBrowser();
-  const isNode = rearguardConfig.isNode();
-  const isApp = rearguardConfig.isApp();
-  const isLib = rearguardConfig.isLib();
-  const isDll = rearguardConfig.isDll();
+    // * Prepare data
+    const isIsomorphic = rearguardConfig.isIsomorphic();
+    const isBrowser = rearguardConfig.isBrowser();
+    const isNode = rearguardConfig.isNode();
+    const isApp = rearguardConfig.isApp();
+    const isLib = rearguardConfig.isLib();
+    const isDll = rearguardConfig.isDll();
 
-  await updateVSCodeSettingsForMonoRepo(CWD);
+    await updateVSCodeSettingsForMonoRepo(CWD);
 
-  if (isIsomorphic) {
-    await build_isomorphic(options);
-  }
+    if (isIsomorphic) {
+      await build_isomorphic(options);
+    }
 
-  if (isBrowser && isDll) {
-    await build_browser_dll(options);
-  }
+    if (isBrowser && isDll) {
+      await build_browser_dll(options);
+    }
 
-  if (isBrowser && isLib) {
-    await build_browser_lib(options);
-  }
+    if (isBrowser && isLib) {
+      await build_browser_lib(options);
+    }
 
-  if (isBrowser && isApp) {
-    await build_browser_app(options);
-  }
+    if (isBrowser && isApp) {
+      await build_browser_app(options);
+    }
 
-  if (isNode && isLib) {
-    await build_node_lib(options);
-  }
+    if (isNode && isLib) {
+      await build_node_lib(options);
+    }
 
-  if (isNode && isApp) {
-    await build_node_app(options);
+    if (isNode && isApp) {
+      await build_node_app(options);
+    }
+  } catch (error) {
+    console.error(error);
   }
 }

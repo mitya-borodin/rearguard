@@ -11,10 +11,10 @@ const exists = promisify(fs.exists);
 
 class VSCodeTemplate extends Template {
   public async render(
-    templateData: { [key: string]: any } = { force: false },
+    templateData: { [key: string]: any } = { force: false, forceRender: false },
     CWD: string = process.cwd(),
   ): Promise<void> {
-    if (!(await this.isPartOfMonoRepository(path.resolve(CWD, "..")))) {
+    if (templateData.forceRender || !(await this.isPartOfMonoRepository(path.resolve(CWD, "..")))) {
       await super.render(templateData, CWD);
     } else if (templateData.force) {
       await rmdir(path.resolve(CWD, ".vscode"), { recursive: true });

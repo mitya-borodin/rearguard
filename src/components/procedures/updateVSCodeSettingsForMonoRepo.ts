@@ -1,12 +1,13 @@
 import { isString } from "@rtcts/utils";
 import fs from "fs";
 import path from "path";
+import prettier from "prettier";
 import { promisify } from "util";
 import { RearguardConfig } from "../../configs/RearguardConfig";
-import { VS_CODE_SETTINGS, PRETTIER_JSON } from "../../const";
+import { PRETTIER_JSON, VS_CODE_SETTINGS } from "../../const";
+import { mkdir } from "../../helpers/mkdir";
+import { vsCodeExtensionsTemplate, vsCodeSettingsTemplate } from "../../templates/vsCode";
 import { getSortedListOfMonoComponents } from "./getSortedListOfDependencies";
-import { vsCodeSettingsTemplate, vsCodeExtensionsTemplate } from "../../templates/vsCode";
-import prettier from "prettier";
 
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
@@ -33,7 +34,7 @@ export const getMonorepoWorkDirectory = async (CWD: string): Promise<string | vo
 export const updateVSCodeSettingsForMonoRepo = async (CWD: string): Promise<void> => {
   const MWD: string | void = await getMonorepoWorkDirectory(CWD);
 
-  if (isString(MWD)) {
+  if (isString(MWD) && (await exists(path.resolve(MWD, "package.json")))) {
     const rearguardConfig = new RearguardConfig(MWD);
     const components = rearguardConfig.getComponents();
     const sortedListOfMonoComponents = await getSortedListOfMonoComponents(MWD, components);
@@ -42,6 +43,8 @@ export const updateVSCodeSettingsForMonoRepo = async (CWD: string): Promise<void
     for (const pathToComponent of sortedListOfMonoComponents) {
       workDirectories.push(`./${path.relative(MWD, pathToComponent)}`);
     }
+
+    mkdir(path.resolve(MWD, ".vscode"));
 
     const vsCodeSettingsPath = path.resolve(MWD, VS_CODE_SETTINGS);
 
@@ -61,12 +64,16 @@ export const updateVSCodeSettingsForMonoRepo = async (CWD: string): Promise<void
         },
       );
     }
-  } else if (await exists(path.resolve(CWD, "package.json"))) {
+  }
+
+  if (MWD !== CWD && (await exists(path.resolve(CWD, "package.json")))) {
     const vsCodeSettingsPath = path.resolve(CWD, VS_CODE_SETTINGS);
 
+    mkdir(path.resolve(CWD, ".vscode"));
+
     if (!(await exists(vsCodeSettingsPath))) {
-      await vsCodeSettingsTemplate.render();
-      await vsCodeExtensionsTemplate.render();
+      await vsCodeSettingsTemplate.render({ forceRender: true });
+      await vsCodeExtensionsTemplate.render({ forceRender: true });
     }
 
     const vsCodeSettings = JSON.parse(await readFile(vsCodeSettingsPath, { encoding: "utf-8" }));
