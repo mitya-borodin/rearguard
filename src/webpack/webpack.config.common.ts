@@ -150,7 +150,7 @@ export const getGeneralWebpackConfig = async (
       // ! CleanWebpackPlugin should be before other plugins
       new CaseSensitivePathsPlugin(),
       new CleanWebpackPlugin({ verbose: true }),
-      new webpack.DefinePlugin(getENV(CWD)),
+      new webpack.DefinePlugin({ definitions: getENV(CWD) }),
       new webpack.ProgressPlugin(),
       new webpack.WatchIgnorePlugin([/node_modules/, /webpack-dll-manifest.json/]),
 

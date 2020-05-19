@@ -5,7 +5,7 @@ export const copyNonCodeFiles = async (from = "src", to = "dist/src"): Promise<v
     overwrite: true,
     dot: true,
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    filter: function(arg: string) {
+    filter: function (arg: string) {
       return (
         arg.indexOf(".ts") === -1 &&
         arg.indexOf("d.ts") === -1 &&
@@ -20,10 +20,10 @@ export const copyNonCodeFiles = async (from = "src", to = "dist/src"): Promise<v
     .on(copy.events.COPY_FILE_START, (copyOperation: any) => {
       console.info("Copying file " + copyOperation.src + "...");
     })
-    .on(copy.events.COPY_FILE_COMPLETE, function(copyOperation: any) {
+    .on(copy.events.COPY_FILE_COMPLETE, function (copyOperation: any) {
       console.info("Copied to " + copyOperation.dest);
     })
-    .on(copy.events.ERROR, function(error: any, copyOperation: any) {
+    .on(copy.events.ERROR, function (error: any, copyOperation: any) {
       console.error("Unable to copy " + copyOperation.dest);
     })
     .then((results: any) => {

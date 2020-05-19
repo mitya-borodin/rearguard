@@ -1,6 +1,7 @@
 import path from "path";
+import webpack from "webpack";
 
-export const getENV = (CWD: string): { interpolationHTML: object; definePlugin: object } => {
+export const getENV = (CWD: string): { [key: string]: webpack.DefinePlugin.CodeValueObject } => {
   try {
     const { parsed = {} } = require("dotenv").config({
       path: path.resolve(CWD, ".env"),
@@ -8,8 +9,8 @@ export const getENV = (CWD: string): { interpolationHTML: object; definePlugin: 
     });
 
     return {
-      interpolationHTML: parsed,
-      definePlugin: Object.keys(parsed).reduce((env, key) => {
+      ...parsed,
+      ...Object.keys(parsed).reduce((env, key) => {
         env[`process.env.${key}`] = JSON.stringify(parsed[key]);
 
         return env;
