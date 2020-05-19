@@ -1,6 +1,6 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
-import { copyPublicAssets } from "../../templates/indexHtml";
+import { copyPublicAssets, indexHtmlTemplate } from "../../templates/indexHtml";
 import { commonPreset } from "../procedures/commonPreset";
 import { initPackage } from "../procedures/initPackage";
 import { updatePkgFiles } from "../procedures/updatePkgFiles";
@@ -31,5 +31,6 @@ export async function init_browser_lib(flags: { force: boolean }): Promise<void>
   // ! Apply static templates to project
   // ! Check/Install dependencies
   await commonPreset(flags, CWD);
+  await indexHtmlTemplate.render(flags);
   await copyPublicAssets(CWD, flags.force);
 }
