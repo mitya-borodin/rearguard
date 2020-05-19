@@ -30,7 +30,8 @@ export async function init_browser_lib(flags: { force: boolean }): Promise<void>
   // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore
   // ! Apply static templates to project
   // ! Check/Install dependencies
+  // ! Set dll entry name which depend on pkg.name
   await commonPreset(flags, CWD);
-  await indexHtmlTemplate.render(flags);
   await copyPublicAssets(CWD, flags.force);
+  await indexHtmlTemplate.render(flags);
 }

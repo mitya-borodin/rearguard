@@ -26,12 +26,16 @@ export async function init_mono(flags: { force: boolean }): Promise<void> {
 
   // ! Create .vscode/settings.json.
   await vsCodeSettingsTemplate.render(flags);
+
   // ! Create .vscode/extensions.json.
   await vsCodeExtensionsTemplate.render(flags);
+
   // ! Create .prettier in json format.
   await prettierTemplate.render(flags);
+
   // ! Create .prettierignore in json format.
   await prettierIgnoreTemplate.render(flags);
+
   // ! Create .gitignore configuration;
   await gitignoreTemplate.render({
     publish_to_git: false,

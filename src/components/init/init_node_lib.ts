@@ -1,8 +1,8 @@
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { RearguardDevConfig } from "../../configs/RearguardDevConfig";
 import { commonPreset } from "../procedures/commonPreset";
-import { updatePkgFiles } from "../procedures/updatePkgFiles";
 import { initPackage } from "../procedures/initPackage";
+import { updatePkgFiles } from "../procedures/updatePkgFiles";
 
 export async function init_node_lib(flags: { force: boolean }): Promise<void> {
   const CWD: string = process.cwd();
@@ -29,5 +29,6 @@ export async function init_node_lib(flags: { force: boolean }): Promise<void> {
   // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore
   // ! Apply static templates to project
   // ! Check/Install dependencies
+  // ! Set dll entry name which depend on pkg.name
   await commonPreset(flags, CWD);
 }

@@ -43,5 +43,6 @@ export async function init_node_app(flags: { force: boolean }): Promise<void> {
   // ! Set configuration files: tsconfig.json, tests/tsconfig.json, .eslintrc, .gitignore
   // ! Apply static templates to project
   // ! Check/Install dependencies
+  // ! Set dll entry name which depend on pkg.name
   await commonPreset(flags, CWD);
 }

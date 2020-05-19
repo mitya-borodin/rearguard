@@ -21,6 +21,11 @@ export async function init_browser_dll(options: { force: boolean }): Promise<voi
   const context = rearguardConfig.getContext();
   const exclude: string[] = ["node_modules", DLL_BUNDLE_DIR_NAME];
 
+  const packageName = rearguardConfig.getName();
+
+  // ! Set dll entry name which depend on pkg.name
+  rearguardConfig.setDllEntry(`${packageName}_vendors.ts`);
+
   // ! Set status.
   await rearguardLocalConfig.setBuildStatus("init");
 

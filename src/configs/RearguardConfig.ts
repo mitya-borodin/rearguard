@@ -226,6 +226,12 @@ export class RearguardConfig extends PackageJSONConfig {
     await this.setRearguard(new Rearguard(merge(this.getRearguard(), { project: { components } })));
   }
 
+  public async setDllEntry(dllEntry: string): Promise<void> {
+    await this.setRearguard(
+      new Rearguard(merge(this.getRearguard(), { webpack: { dll_entry: dllEntry } })),
+    );
+  }
+
   public async getDependenciesCreatedWithRearguard(
     monoDependencyDirs: string[] = [],
     searchInMonoDirectory = false,
