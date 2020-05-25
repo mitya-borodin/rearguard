@@ -1,22 +1,22 @@
 import { group_bootstrap_component } from "../../../components/group/group_bootstrap_component";
 import { group_build_component } from "../../../components/group/group_build_component";
 import { group_clear_component } from "../../../components/group/group_clear_component";
+import { group_install_component } from "../../../components/group/group_install_component";
 import { group_link_component } from "../../../components/group/group_link_component";
 import { group_lint_component } from "../../../components/group/group_lint_component";
 import { group_lint_fix_component } from "../../../components/group/group_lint_fix_component";
 import { group_make_prettier_component } from "../../../components/group/group_make_prettier_component";
 import { group_publish_component } from "../../../components/group/group_publish_component";
 import { group_refresh_component } from "../../../components/group/group_refresh_component";
+import { group_start_component } from "../../../components/group/group_start_component";
+import { group_sync_component } from "../../../components/group/group_sync_component";
 import { group_test_component } from "../../../components/group/group_test_component";
 import { group_typecheck_component } from "../../../components/group/group_typecheck_component";
+import { group_un_link_component } from "../../../components/group/group_un_link_component";
 import { group_validate_component } from "../../../components/group/group_validate_component";
 import { group_validate_prettiness_component } from "../../../components/group/group_validate_prettiness_component";
 import { Command } from "../../common/Command";
 import { Flags } from "../../common/Flags";
-import { group_start_component } from "../../../components/group/group_start_component";
-import { group_install_component } from "../../../components/group/group_install_component";
-import { group_un_link_component } from "../../../components/group/group_un_link_component";
-import { group_sync_component } from "../../../components/group/group_sync_component";
 
 const group_bootstrap = new Command(
   "bootstrap",
@@ -121,19 +121,23 @@ const group_validate = new Command("validate", group_validate_component);
 export const group = new Command("group");
 
 group.addCommand(group_bootstrap);
+
+group.addCommand(group_start);
+group.addCommand(group_build);
+group.addCommand(group_test);
+group.addCommand(group_publish);
+
+group.addCommand(sync_refresh);
+group.addCommand(group_validate);
+group.addCommand(group_lint_fix);
+group.addCommand(group_make_prettier);
+
+group.addCommand(group_refresh);
 group.addCommand(group_clear);
 group.addCommand(group_install);
 group.addCommand(group_link);
 group.addCommand(group_unlink);
-group.addCommand(group_start);
 group.addCommand(group_lint);
-group.addCommand(group_lint_fix);
-group.addCommand(group_typecheck);
+
 group.addCommand(group_validate_prettiness);
-group.addCommand(group_validate);
-group.addCommand(group_make_prettier);
-group.addCommand(group_build);
-group.addCommand(group_test);
-group.addCommand(group_publish);
-group.addCommand(group_refresh);
-group.addCommand(sync_refresh);
+group.addCommand(group_typecheck);

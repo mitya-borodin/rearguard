@@ -12,6 +12,8 @@ const targetDevDepKeys: Set<string> = new Set([
   "eslint-config-prettier",
   "@typescript-eslint/parser",
   "@typescript-eslint/eslint-plugin",
+  "eslint-plugin-jest",
+  "eslint-plugin-import",
 ]);
 
 // TODO Add logging.
@@ -22,15 +24,35 @@ export const checkDependencies = async (
   // * Create rearguard configs;
   const rearguardConfig = new RearguardConfig(CWD);
   const isBrowser = rearguardConfig.isBrowser();
+  const isDll = rearguardConfig.isDll();
   const isIsomorphic = rearguardConfig.isIsomorphic();
+  const isNode = rearguardConfig.isNode();
 
-  if (isBrowser || isIsomorphic) {
+  if (isBrowser && isDll) {
+    targetDepKeys.delete("tslib");
+    targetDevDepKeys.delete("eslint");
+    targetDevDepKeys.delete("eslint-config-prettier");
+    targetDevDepKeys.delete("@typescript-eslint/parser");
+    targetDevDepKeys.delete("@typescript-eslint/eslint-plugin");
+    targetDevDepKeys.delete("eslint-plugin-jest");
+    targetDevDepKeys.delete("eslint-plugin-import");
+    targetDevDepKeys.delete("husky");
+    targetDevDepKeys.delete("pretty-quick");
+    targetDevDepKeys.delete("prettier");
+  }
+
+  if ((isBrowser || isIsomorphic) && !isDll) {
     targetDevDepKeys.add("eslint-plugin-react");
+    targetDevDepKeys.add("eslint-plugin-react-hooks");
     targetDevDepKeys.add("normalize.css");
     targetDevDepKeys.add("stylelint");
     targetDevDepKeys.add("stylelint-config-standard");
     targetDevDepKeys.add("stylelint-config-prettier");
     targetDevDepKeys.add("stylelint-config-css-modules");
+  }
+
+  if (isNode) {
+    targetDepKeys.add("eslint-plugin-node");
   }
 
   // * Prepare data;

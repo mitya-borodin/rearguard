@@ -6,8 +6,14 @@ import { RearguardConfig } from "../../configs/RearguardConfig";
 import { TS_CONFIG_FILE_NAME } from "../../const";
 import { getLocalNodeModulePath } from "../../helpers/dependencyPaths";
 
-export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
+export const getTypescriptLoader = (
+  CWD: string,
+): {
+  eslintLoader: webpack.RuleSetRule | undefined;
+  tsLoader: webpack.RuleSetRule;
+} => {
   const rearguardConfig = new RearguardConfig(CWD);
+  const isDll = rearguardConfig.isDll();
   const contextPath = path.resolve(CWD, rearguardConfig.getContext());
   const configFilePath = path.resolve(CWD, TS_CONFIG_FILE_NAME);
 
@@ -15,8 +21,29 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
   const include = [contextPath];
   const test = /\.(ts|tsx|js|jsx)?$/;
 
-  return [
-    {
+  const rules: {
+    eslintLoader: webpack.RuleSetRule | undefined;
+    tsLoader: webpack.RuleSetRule;
+  } = {
+    eslintLoader: undefined,
+    tsLoader: {
+      test,
+      include,
+      use: [
+        {
+          loader: "ts-loader",
+          options: PnpWebpackPlugin.tsLoaderOptions({
+            configFile: configFilePath,
+            context: CWD,
+            experimentalFileCaching: false,
+          }),
+        },
+      ],
+    },
+  };
+
+  if (!isDll) {
+    rules.eslintLoader = {
       enforce: "pre",
       test,
       exclude: /node_modules/,
@@ -32,20 +59,8 @@ export const getTypescriptLoader = (CWD: string): webpack.RuleSetRule[] => {
         failOnWarning: false,
         cwd: CWD,
       },
-    },
-    {
-      test,
-      include,
-      use: [
-        {
-          loader: "ts-loader",
-          options: PnpWebpackPlugin.tsLoaderOptions({
-            configFile: configFilePath,
-            context: CWD,
-            experimentalFileCaching: false,
-          }),
-        },
-      ],
-    },
-  ];
+    };
+  }
+
+  return rules;
 };

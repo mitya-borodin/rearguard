@@ -83,6 +83,12 @@ export const group_bootstrap_component = async (options: {
 
       if (!isDll) {
         console.log(
+          chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "run", "make-prettier"].join(" ")} ]`),
+        );
+        console.log("");
+        await execa("npm", ["run", "make-prettier"], execaOptions);
+
+        console.log(
           chalk.magenta(`[ EXECUTED COMMAND ][ ${["npm", "run", "validate"].join(" ")} ]`),
         );
         console.log("");

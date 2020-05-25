@@ -11,7 +11,7 @@ export const commonPreset = async (
   CWD: string = process.cwd(),
 ): Promise<void> => {
   const rearguardConfig = new RearguardConfig(CWD);
-  const packageName = rearguardConfig.getName();
+  const packageName = rearguardConfig.getSnakeName();
 
   // ! Set scripts;
   await setScripts(CWD);

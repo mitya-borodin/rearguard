@@ -12,19 +12,19 @@ export const createEntryPoints = async (CWD: string): Promise<void> => {
   const context = rearguardConfig.getContext();
   const entry = rearguardConfig.getEntry();
   const libEntry = rearguardConfig.getLibEntry();
-  const dllEntry = rearguardConfig.getDllEntry();
   const isBrowser = rearguardConfig.isBrowser();
   const isIsomorphic = rearguardConfig.isIsomorphic();
   const isNode = rearguardConfig.isNode();
   const isLib = rearguardConfig.isLib();
   const isApp = rearguardConfig.isApp();
   const isDll = rearguardConfig.isDll();
+  const packageName = rearguardConfig.getSnakeName();
 
   // * Prepare data for creating files;
   const contextPath = path.resolve(CWD, context);
   const entryPath = path.resolve(contextPath, entry);
   const libEntryPath = path.resolve(contextPath, libEntry);
-  const dllEntryPath = path.resolve(contextPath, dllEntry);
+  const dllEntryPath = path.resolve(contextPath, `${packageName}_vendors.ts`);
 
   // ! Create context directory;
   mkdir(contextPath);

@@ -50,7 +50,7 @@ export const getGeneralWebpackConfig = async (
     // ! The modules from rearguard node_modules are connected last.
     getRearguardNodeModulesPath(CWD),
   ];
-  const [eslintLoader, tsLoader] = getTypescriptLoader(CWD);
+  const { eslintLoader, tsLoader } = getTypescriptLoader(CWD);
   const fileRegExp = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|bmp|gif)(\?.*)?$/;
   const rawFileRegExp = /\.(text|csv)(\?.*)?$/;
 
@@ -112,7 +112,7 @@ export const getGeneralWebpackConfig = async (
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
         // First, run the linter.
-        eslintLoader,
+        ...(eslintLoader ? [eslintLoader] : []),
         {
           oneOf: [
             // A loader for webpack which transforms files into base64 URIs.
@@ -161,7 +161,7 @@ export const getGeneralWebpackConfig = async (
       // You can remove this if you don't use Moment.js:
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
-      ...(isBrowser || isIsomorphic
+      ...((isBrowser || isIsomorphic) && !isDll
         ? [
             new StylelintWebpackPlugin({
               stylelintPath: resolve.sync("stylelint", {

@@ -280,13 +280,21 @@ export class PackageJSON {
   public toJSON(): object {
     const { project } = this.rearguard;
 
+    if (project.type === "dll") {
+      const { husky, ...other } = this;
+
+      return other;
+    }
+
     if (project.type === "mono") {
       const { browserslist, husky, bin, files, types, main, ...other } = this;
 
       return {
         ...other,
         husky: {
-          ["pre-push"]: "npm run validate",
+          hooks: {
+            ["pre-push"]: "npm run validate",
+          },
         },
       };
     }
