@@ -47,7 +47,8 @@
     "@typescript-eslint/ban-types": "warn",
     "@typescript-eslint/unbound-method": "warn",
     "@typescript-eslint/no-misused-promises": "warn",
-    "@typescript-eslint/restrict-template-expressions": ["warn", { "allowAny": true }]
+    "@typescript-eslint/restrict-template-expressions": ["warn", { "allowAny": true }],
+    "react/prop-types": "warn"
   },
   "settings": {
     "react": {

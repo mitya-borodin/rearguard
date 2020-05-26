@@ -9,3 +9,4 @@ lib
 dist
 src/typings.d.ts
 examples
+listOfModulesWhichLoadOnDemand.ts

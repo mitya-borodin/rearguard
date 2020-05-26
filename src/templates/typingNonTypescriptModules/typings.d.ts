@@ -26,46 +26,54 @@ type removeCss = () => void;
 
 declare module "*.css" {
   const classes: {
-    readonly [key: string]: string | _insertCss | _getContent | _getCss;
-    _getContent(): [string, string, string] | string;
-    _getCss(): string;
-    _insertCss(): removeCss;
+    readonly [key: string]: string | undefined;
   };
 
   export default classes;
+
+  export const _getContent: _getContent;
+  export const _getCss: _getCss;
+  export const _insertCss: _insertCss;
+  export const removeCss: removeCss;
 }
 
 declare module "*.module.css" {
   const classes: {
-    readonly [key: string]: string | _insertCss | _getContent | _getCss;
-    _getContent(): [string, string, string] | string;
-    _getCss(): string;
-    _insertCss(): removeCss;
+    readonly [key: string]: string | undefined;
   };
 
   export default classes;
+
+  export const _getContent: _getContent;
+  export const _getCss: _getCss;
+  export const _insertCss: _insertCss;
+  export const removeCss: removeCss;
 }
 
 declare module "*.module.scss" {
   const classes: {
-    readonly [key: string]: string | _insertCss | _getContent | _getCss;
-    _getContent(): [string, string, string] | string;
-    _getCss(): string;
-    _insertCss(): removeCss;
+    readonly [key: string]: string | undefined;
   };
 
   export default classes;
+
+  export const _getContent: _getContent;
+  export const _getCss: _getCss;
+  export const _insertCss: _insertCss;
+  export const removeCss: removeCss;
 }
 
 declare module "*.module.sass" {
   const classes: {
-    readonly [key: string]: string | _insertCss | _getContent | _getCss;
-    _getContent(): [string, string, string] | string;
-    _getCss(): string;
-    _insertCss(): removeCss;
+    readonly [key: string]: string | undefined;
   };
 
   export default classes;
+
+  export const _getContent: _getContent;
+  export const _getCss: _getCss;
+  export const _insertCss: _insertCss;
+  export const removeCss: removeCss;
 }
 
 declare module "*.ico" {

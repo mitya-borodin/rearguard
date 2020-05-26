@@ -71,7 +71,6 @@ export const createListOfLoadOnDemand = async (
 
   if (content.length > 0) {
     content.unshift("export declare type LoadOnDemand = { dll: string[], lib: string[] }; \n\r");
-    content.unshift("/* eslint-disable @typescript-eslint/camelcase */ \n\r");
 
     await writeFile(
       resolve(CWD, rearguardConfig.getContext(), LIST_OF_MODULES_WHICH_LOAD_ON_DEMAND),
