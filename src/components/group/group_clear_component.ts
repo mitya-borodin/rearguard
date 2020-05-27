@@ -12,7 +12,7 @@ export const group_clear_component = async (): Promise<void> => {
       "rm",
       "-rf",
       "./node_modules",
-      "package-lock.json",
+      // "package-lock.json",
       DISTRIBUTIVE_DIR_NAME,
       DLL_BUNDLE_DIR_NAME,
       LIB_BUNDLE_DIR_NAME,

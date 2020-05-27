@@ -22,6 +22,7 @@ import { copyNonCodeFiles } from "../procedures/copyNonCodeFiles";
 import { copyUnpublishedDepsToDistNodeModules } from "../procedures/copyUnpublishedDepsToDistNodeModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
+import { showDockerCommands } from "../procedures/showDockerCommand";
 
 export async function build_node_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ NODE ][ APP ][ BUILD ][ START ]`));
@@ -98,6 +99,8 @@ export async function build_node_app(options: BuildExecutorOptions): Promise<voi
   await rearguardLocalConfig.setBuildStatus("done");
 
   await processQueue.getOutQueue(name, options.bypass_the_queue);
+
+  await showDockerCommands(CWD);
 
   console.log("");
   console.log(

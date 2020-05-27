@@ -48,7 +48,7 @@ interface CompilerOptions {
 
   /* Module Resolution Options */
   moduleResolution: string;
-  baseUrl: string;
+  baseUrl?: string;
   paths?: { [key: string]: any };
   rootDirs?: string[];
   typeRoots?: string[];
@@ -100,7 +100,7 @@ export class Typescript {
       /* Basic Options */
       target: "es2018",
       module: "commonjs",
-      lib: ["dom", "es2018", "esnext.asynciterable"],
+      lib: ["ES2018", "ESNext.AsyncIterable", "DOM"],
       allowJs: true,
       checkJs: false,
       incremental: false,
@@ -128,7 +128,7 @@ export class Typescript {
 
       /* Module Resolution Options */
       moduleResolution: "node",
-      baseUrl: "src",
+      // baseUrl: "",
       typeRoots: ["./types", "./node_modules/@types"],
       allowSyntheticDefaultImports: true,
       esModuleInterop: true,

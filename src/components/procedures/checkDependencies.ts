@@ -1,5 +1,6 @@
 import execa from "execa";
 import { RearguardConfig } from "../../configs/RearguardConfig";
+import { getTypesyncNodeDevBin } from "../../helpers/dependencyPaths";
 import { DependencyMap } from "../../interfaces/configs/PackageJSON";
 
 const targetDepKeys: Set<string> = new Set(["tslib"]);
@@ -125,7 +126,7 @@ export const checkDependencies = async (
   }
 
   if (needInstallDeps || needInstallDevDeps) {
-    await execa("npx", ["typesync"], execaOptions);
+    await execa(getTypesyncNodeDevBin(CWD), execaOptions);
   }
 
   await rearguardConfig.reformat();

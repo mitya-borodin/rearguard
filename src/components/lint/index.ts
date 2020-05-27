@@ -1,11 +1,11 @@
-import fs from "fs";
-import path from "path";
-import glob from "glob";
+import chalk from "chalk";
 import execa from "execa";
+import fs from "fs";
+import glob from "glob";
+import path from "path";
 import { Flags } from "../../cli/common/Flags";
 import { RearguardConfig } from "../../configs/RearguardConfig";
 import { BIN_DIR_NAME, TESTS_DIR_NAME } from "../../const";
-import chalk from "chalk";
 
 const defaultFlags: Flags = { fix: false };
 

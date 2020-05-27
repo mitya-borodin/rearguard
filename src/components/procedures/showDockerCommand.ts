@@ -1,8 +1,12 @@
 import chalk from "chalk";
-import { IRearguardConfig } from "../interfaces/config/IRearguardConfig";
+import { RearguardConfig } from "../../configs/RearguardConfig";
 
-export function show_docker_commands(rearguardConfig: IRearguardConfig) {
-  const { pkg, docker_org_name } = rearguardConfig;
+export const showDockerCommands = async (CWD: string): Promise<void> => {
+  const rearguardConfig = new RearguardConfig(CWD);
+
+  const name = rearguardConfig.getName();
+  const version = rearguardConfig.getVersion();
+  const dockerOrgNamespace = rearguardConfig.getRearguard().distribution.docker.org_namespace;
 
   console.log(chalk.bold.magenta(`========================================`));
   console.log("");
@@ -12,13 +16,13 @@ export function show_docker_commands(rearguardConfig: IRearguardConfig) {
   console.log(chalk.bold.magenta(`[ BUILD IMAGE ]`));
   console.log(
     chalk.bold.cyan(
-      `docker build --no-cache -f ./build/Dockerfile -t ${docker_org_name}/${pkg.name}:${pkg.version} .`,
+      `docker build --no-cache -f ./build/Dockerfile -t ${dockerOrgNamespace}/${name}:${version} .`,
     ),
   );
   console.log("");
 
   console.log(chalk.bold.magenta(`[ PUSH IMAGE ]`));
-  console.log(chalk.bold.cyan(`docker push ${docker_org_name}/${pkg.name}:${pkg.version}`));
+  console.log(chalk.bold.cyan(`docker push ${dockerOrgNamespace}/${name}:${version}`));
   console.log("");
 
   console.log(chalk.bold.magenta(`[ DOCKER-COMPOSE.YML EXAMPLE ]`));
@@ -27,4 +31,4 @@ export function show_docker_commands(rearguardConfig: IRearguardConfig) {
 
   console.log(chalk.bold.magenta(`========================================`));
   console.log("");
-}
+};

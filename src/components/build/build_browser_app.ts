@@ -14,6 +14,7 @@ import { copyGlobalLinkedModules } from "../procedures/copyGlobalLinkedModules";
 import { createListOfLoadOnDemand } from "../procedures/createListOfLoadOnDemand";
 import { deleteExternalBundles } from "../procedures/deleteExternalBundles";
 import { checkNotInstalledDependencies } from "../procedures/checkNotInstalledDependencies";
+import { showDockerCommands } from "../procedures/showDockerCommand";
 
 export async function build_browser_app(options: BuildExecutorOptions): Promise<void> {
   console.log(chalk.bold.blue(`[ BROWSER ][ APP ][ BUILD ][ START ]`));
@@ -46,6 +47,8 @@ export async function build_browser_app(options: BuildExecutorOptions): Promise<
   await rearguardLocalConfig.setBuildStatus("done");
 
   await processQueue.getOutQueue(name, options.bypass_the_queue);
+
+  await showDockerCommands(CWD);
 
   console.log("");
   console.log(

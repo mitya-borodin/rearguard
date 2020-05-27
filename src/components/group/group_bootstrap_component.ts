@@ -29,7 +29,7 @@ export const group_bootstrap_component = async (options: {
       "rm",
       "-rf",
       "./node_modules",
-      "package-lock.json",
+      // "package-lock.json",
       DISTRIBUTIVE_DIR_NAME,
       DLL_BUNDLE_DIR_NAME,
       LIB_BUNDLE_DIR_NAME,

@@ -54,3 +54,7 @@ export const getTypescriptBin = (CWD: string): string => {
 export const getTypescriptNodeDevBin = (CWD: string): string => {
   return path.resolve(getRearguardNodeModulesPath(CWD), ".bin/ts-node-dev");
 };
+
+export const getTypesyncNodeDevBin = (CWD: string): string => {
+  return path.resolve(getRearguardNodeModulesPath(CWD), ".bin/typesync");
+};
