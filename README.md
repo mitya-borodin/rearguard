@@ -1,5 +1,11 @@
 # Rearguard
 
+Rearguard is good preset for developing libraries, node applications and browser application. I tried optimized developing speed through separating code base per library and building those separately. While you develop your main browser application, every libraries which was builded separate, automatic added to `index.html`. Your webpack pipeline contains code only of your browser application. This way you can always control the build speed by separating parts of the app as libraries.
+
+But if you look more broadly, you can understand that using ESM during development is so good idea. Because you can build every file separately and you can use dynamic import for code splitting. Therefore if you use `import()`, you will build not all files of your application in moment. Therefore you build only those files that are necessary for a specific page, it is mean that you don't need separating your application as list of library and build their separately. 
+
+I think you should try [Vite](https://github.com/vitejs/vite) and [Snowpack](https://www.snowpack.dev), they both support developing throught ESM. 
+
 - [Rearguard](#rearguard)
   - [Getting Started](#getting-started)
   - [What is it rearguard](#what-is-it-rearguard)
