@@ -1,10 +1,10 @@
 # Rearguard
 
-Rearguard is good preset for developing libraries, node applications and browser application. I tried optimized developing speed through separating code base per library and building those separately. While you develop your main browser application, every libraries which was builded separate, automatic added to `index.html`. Your webpack pipeline contains code only of your browser application. This way you can always control the build speed by separating parts of the app as libraries.
+Rearguard is a good preset for developing libraries, node applications and browser applications. I tried to optimize building speed by dividing the code base into libraries and assembling those separately. When a main browser application is developed, all libraries which were built separately are automatically added to index.html. The webpack pipeline contains only the browser’s application code. This way you can always control building speed by separating application parts into libraries.
 
-But if you look more broadly, you can understand that using ESM during development is so good idea. Because you can build every file separately and you can use dynamic import for code splitting. Therefore if you use `import()`, you will build not all files of your application in moment. Therefore you build only those files that are necessary for a specific page, it is mean that you don't need separating your application as list of library and build their separately. 
+But if you look at the bigger picture, you can see that using ESM during development is a very good idea. Because you can build every file separately, when you need it, and also you can use dynamic import for code splitting. Therefore if import() is used, not all application files will be assembled simultaneously, because of that, for a specific page only necessary files are built. It means that you don’t need to separate your project into libraries and it remains as it is.  
 
-I think you should try [Vite](https://github.com/vitejs/vite) and [Snowpack](https://www.snowpack.dev), they both support developing throught ESM. 
+I definitely think you should try Vite and Snowpack, because both of them support development through ESM.
 
 - [Rearguard](#rearguard)
   - [Getting Started](#getting-started)
