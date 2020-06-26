@@ -18,8 +18,6 @@ I definitely think you should try [Vite](https://github.com/vitejs/vite) and [Sn
     - [Validating](#validating)
     - [Group service](#group-service)
   - [Install](#install)
-  - [Examples](#examples)
-  - [Documentation / Документация](#documentation--%d0%94%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d0%b0%d1%86%d0%b8%d1%8f)
 
 <a name="gettingStarted"></a>
 
@@ -67,7 +65,7 @@ Rearguard supports the following types of projects: browser (dll, lib, app), nod
 - The rearguard supports two schemes of code organization known as a mono repository and poly repository.
 - The rearguard also covers a large number of household moments, which eliminates the need to take care of these moments.
 
-The rearguard as a caring parent :-)
+The rearguard is like caring parent :-)
 
 <a name="tech"></a>
 
@@ -179,22 +177,3 @@ Locally, in the project for saves the exact version.
 ```sh
 npm install -D rearguard
 ```
-
-<a name="examples"></a>
-
-## Examples
-
-You can see an example of how to use it in the following projects:
-
-**!!! They're not perfect at the moment, but I'll upgrade them to a canonical look as much as I can.**
-
-- [base-code](https://github.com/mitya-borodin/base-code)
-- [example](https://github.com/mitya-borodin/example)
-- [home-tracker](https://github.com/mitya-borodin/home-tracker)
-
-<a name="docs"></a>
-
-## Documentation / Документация
-
-- [English](./docs/en/index.md)
-- [Русский](./docs/ru/index.md)
