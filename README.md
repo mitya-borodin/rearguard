@@ -4,7 +4,7 @@ Rearguard is a good preset for developing libraries, node applications and brows
 
 But if you look at the bigger picture, you can see that using ESM during development is a very good idea. Because you can build every file separately, when you need it, and also you can use dynamic import for code splitting. Therefore if import() is used, not all application files will be assembled simultaneously, because of that, for a specific page only necessary files are built. It means that you don’t need to separate your project into libraries and it remains as it is.  
 
-I definitely think you should try Vite and Snowpack, because both of them support development through ESM.
+I definitely think you should try (https://github.com/vitejs/vite)[Vite] and (https://www.snowpack.dev)[Snowpack], because both of them support development through ESM.
 
 - [Rearguard](#rearguard)
   - [Getting Started](#getting-started)
